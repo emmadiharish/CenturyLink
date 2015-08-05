@@ -48,7 +48,7 @@
 			}
 
 			var bundleproductIds = [];
-            if(service.currentproductoptiongroups != '')
+            if(!_.isEmpty(service.currentproductoptiongroups))
             {
                 bundleproductIds = getAllBundleProductsinCurrentOptiongroups(service.currentproductoptiongroups, 'productOptionComponents', 'hasOptions', 'productId');
             }else{
