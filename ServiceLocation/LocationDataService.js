@@ -4,7 +4,7 @@
 	function LocationDataService($q, $log, LocationCache, QuoteDataService, RemoteService) {
 		var service = this;
 
-		service.selectedlpa = '';
+		service.selectedlpa = {};
 		service.hasServicelocations = false;
 		service.locationIdSet = [];
 
