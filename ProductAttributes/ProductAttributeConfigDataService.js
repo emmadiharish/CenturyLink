@@ -75,10 +75,12 @@
                 })
             }
             
-            /*if(c.hasOwnProperty(d))
+            if(!_.isUndefined(c)
+            	&& !_.isNull(c)
+            	&& _.has(c, d))
             {
                 res.push(c[d]);
-            }*/
+            }
             return res;
         }
 

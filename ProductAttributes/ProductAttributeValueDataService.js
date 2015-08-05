@@ -61,7 +61,10 @@
         }
 
         function setbundleproductattributevalues(pav){
-        	service.bundleproductattributevalues = pav;
+        	if(_.isEmpty(service.bundleproductattributevalues))
+        	{
+        		service.bundleproductattributevalues = pav;
+        	}
         }
 
         function getbundleproductattributevalues(){
