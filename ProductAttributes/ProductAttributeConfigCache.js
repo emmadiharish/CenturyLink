@@ -14,7 +14,7 @@
 		service.initializeProductAttributes = initializeProductAttributes;
 		
 		function getProductAttributesConfig() {
-			var attributeResult = {'prodductIdtoattributegroupsMap' : service.prodductIdtoattributegroupsMap};
+			var attributeResult = {'prodductIdtoattributegroupsMap' : service.prodductIdtoattributegroupsMap, 'productIdtodynamicattributegroupMap': service.productIdtodynamicattributegroupMap};
 			return attributeResult;
 		}
 
