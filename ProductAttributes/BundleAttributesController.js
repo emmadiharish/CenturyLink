@@ -11,7 +11,7 @@
             $scope.bundledynamicattributegroups = [];// to be set using remoteaction function.
             $scope.bundleproductattributevalues = {};
             
-            $scope.retrievebundleattributeConfig();// load the bundle attributes on page load.
+            $scope.retrievebundleattributes();// load the bundle attributes on page load.
         }
 
         $scope.$watch('locationService.getselectedlpa()', function(newVal) {
