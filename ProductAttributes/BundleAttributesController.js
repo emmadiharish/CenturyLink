@@ -9,8 +9,6 @@
 
             $scope.bundleAttributeGroups = [];// attributes for main bundle.
             $scope.bundleproductattributevalues = {};
-            
-            $scope.retrievebundleattributes();// load the bundle attributes on page load.
         }
 
         $scope.$watch('locationService.getselectedlpa()', function(newVal, oldValue) {
@@ -21,10 +19,11 @@
                 $scope.safeApply();
             }    
         });
-        
-        $scope.retrievebundleattributes = function(){
-            //var alllocationIdSet = LocationDataService.getalllocationIdSet();
-            $scope.locationService.getlocItems().then(function(result) {
+
+        $scope.$watch('locationService.getisRemotecallComplete()', function(newVal, oldVal) {
+            if(newVal != oldVal
+                && newVal == true)
+            {   
                 var alllocationIdSet = $scope.locationService.getalllocationIdSet();
                 var selectedlpa = LocationDataService.getselectedlpa();
                 var selectedlocationId = _.isObject(selectedlpa) ? selectedlpa.Id : '';
@@ -35,9 +34,9 @@
                         $scope.renderBundleAttributes(attributeconfigresult, pavresult);
                     })
                 })
-            })
-        }
-
+            }    
+        });
+        
         $scope.renderBundleAttributes = function(attrgroups, pav){
             // clear the previous option attribute groups.
             $scope.bundleAttributeGroups = attrgroups;

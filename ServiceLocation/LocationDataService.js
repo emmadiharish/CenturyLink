@@ -6,6 +6,7 @@
 
 		service.locationIdSet = [];
 		service.selectedlpa = {};
+		service.isRemotecallComplete = false;
 		service.hasServicelocations = false;
 
 		// location methods.
@@ -13,6 +14,7 @@
 		service.getselectedlpa = getselectedlpa;
 		service.setselectedlpa = setselectedlpa;
 		service.getalllocationIdSet = getalllocationIdSet;
+		service.getisRemotecallComplete = getisRemotecallComplete;
 		
 		function getlocItems() {
 			if (LocationCache.isValid) {
@@ -25,6 +27,7 @@
 			var requestPromise = RemoteService.getServiceLocations(QuoteDataService.getbundleproductId(), QuoteDataService.getopportunityId());
 			return requestPromise.then(function(response){
 				LocationCache.initializeLocations(response.locations);
+				isRemotecallComplete = true;
 				if(response.locations.length > 0)
 				{
 					service.hasServicelocations = true;
@@ -57,10 +60,14 @@
 		function setalllocationIdSet(locIds){
 			service.locationIdSet = locIds;
 		}
+
 		function getalllocationIdSet(){
 			return service.locationIdSet;
 		}
 
+		function getisRemotecallComplete(){
+			return service.isRemotecallComplete;
+		}
 		/*function createlocationRequestDO(){
 			var request = [];
 			$log.log('argument count inside createlocationRequestDO is: '+arguments.length);
