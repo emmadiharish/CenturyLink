@@ -14,9 +14,8 @@
         $scope.$watch('locationService.getselectedlpa()', function(newVal, oldValue) {
             if(!_.isEmpty(newVal)
                 && !_.isEqual(newVal, oldValue))
-            {   var prodpluslocationId = QuoteDataService.getbundleproductId()+newVal.Id;
+            {   
                 $scope.retrievebundleattributes();
-                $scope.safeApply();
             }    
         });
 
@@ -24,19 +23,23 @@
             if(newVal != oldVal
                 && newVal == true)
             {   
-                var alllocationIdSet = $scope.locationService.getalllocationIdSet();
-                var selectedlpa = LocationDataService.getselectedlpa();
-                var selectedlocationId = _.isObject(selectedlpa) ? selectedlpa.Id : '';
-                var bundleProductId = QuoteDataService.getbundleproductId();
-                ProductAttributeConfigDataService.getProductAttributesConfig(bundleProductId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
-                    $scope.PAVService.getProductAttributeValues(bundleProductId).then(function(pavresult)
-                    {
-                        $scope.renderBundleAttributes(attributeconfigresult, pavresult);
-                    })
-                })
+                $scope.retrievebundleattributes();
             }    
         });
         
+        $scope.retrievebundleattributes = function(){
+            var alllocationIdSet = $scope.locationService.getalllocationIdSet();
+            var selectedlpa = LocationDataService.getselectedlpa();
+            var selectedlocationId = _.isObject(selectedlpa) ? selectedlpa.Id : '';
+            var bundleProductId = QuoteDataService.getbundleproductId();
+            ProductAttributeConfigDataService.getProductAttributesConfig(bundleProductId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
+                $scope.PAVService.getProductAttributeValues(bundleProductId).then(function(pavresult)
+                {
+                    $scope.renderBundleAttributes(attributeconfigresult, pavresult);
+                })
+            })
+        }
+
         $scope.renderBundleAttributes = function(attrgroups, pav){
             // clear the previous option attribute groups.
             $scope.bundleAttributeGroups = attrgroups;
