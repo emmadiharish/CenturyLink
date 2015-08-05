@@ -28,7 +28,7 @@
 				if(response.locations.length > 0)
 				{
 					service.hasServicelocations = true;
-					setalllocationIdSet(_.pluck(result, 'Id'));
+					setalllocationIdSet(_.pluck(response.locations, 'Id'));
 				}
 				
 				// logTransaction(response, categoryRequest);
