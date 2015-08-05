@@ -28,7 +28,7 @@
         $scope.retrievebundleattributes = function(){
             //var alllocationIdSet = LocationDataService.getalllocationIdSet();
             $scope.locationService.getlocItems().then(function(result) {
-                var alllocationIdSet = _.pluck(result, 'Id');
+                var alllocationIdSet = $scope.locationService.getalllocationIdSet();
                 var selectedlpa = LocationDataService.getselectedlpa();
                 var selectedlocationId = _.isObject(selectedlpa) ? selectedlpa.Id : '';
                 var bundleProductId = QuoteDataService.getbundleproductId();

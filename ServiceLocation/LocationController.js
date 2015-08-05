@@ -6,12 +6,10 @@
         $scope.init = function(){
             LocationDataService.getlocItems().then(function(result) {
                 $scope.locItems = result;
+                $scope.selectedlpa = LocationDataService.getselectedlpa();
             })
             
             $scope.newserviceLocationURL = QuoteDataService.getnewLocationURL();
-            // set the color and height for status bar.
-            //ngProgress.color('#5c8427');
-            //ngProgress.height('4px');
         }
         $scope.init();
 

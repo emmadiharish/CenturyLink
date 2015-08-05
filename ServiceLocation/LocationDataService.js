@@ -4,9 +4,9 @@
 	function LocationDataService($q, $log, LocationCache, QuoteDataService, RemoteService) {
 		var service = this;
 
+		service.locationIdSet = [];
 		service.selectedlpa = {};
 		service.hasServicelocations = false;
-		service.locationIdSet = [];
 
 		// location methods.
 		service.getlocItems = getlocItems;
@@ -28,7 +28,9 @@
 				if(response.locations.length > 0)
 				{
 					service.hasServicelocations = true;
+					setalllocationIdSet(_.pluck(result, 'Id'));
 				}
+				
 				// logTransaction(response, categoryRequest);
 				var locationId = QuoteDataService.getbundleServiceLocation();
                 if(locationId)
@@ -52,13 +54,10 @@
 			service.selectedlpa = selectedlpa;
 		}
 
+		function setalllocationIdSet(locIds){
+			service.locationIdSet = locIds;
+		}
 		function getalllocationIdSet(){
-			if(_.isEmpty(service.locationIdSet))
-			{
-				service.getlocItems().then(function(result) {
-	            	service.locationIdSet = _.pluck(result, 'Id');
-	            })
-			}
 			return service.locationIdSet;
 		}
 
