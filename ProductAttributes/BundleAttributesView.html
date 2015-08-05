@@ -1,0 +1,26 @@
+<accordion-group is-open="true">
+	<accordion-heading>
+		<div class="accodian-heading-cap">
+			{{optionattrgrp.groupName}}
+		</div>
+	</accordion-heading>
+	<div ng-repeat="optionattr in optionattrgrp.productAtributes" class="staticAttributesTr">
+		<div class="labelCol vfLabelColTextWrap staticAttributesTd">
+			<div class="staticAttributesLabelDiv">
+				{{optionattr.fieldLabel}}
+			</div>
+			<div class="staticAttributesValuesDiv" ng-switch="optionattr.fieldType">
+				<input ng-switch-when="text" type="text" ng-value="bundleproductattributevalues[optionattr.fieldName]" ng-model="bundleproductattributevalues[optionattr.fieldName]" class="inputWitdhAttr"/>
+				<input ng-switch-when="number" type="number" ng-value="bundleproductattributevalues[optionattr.fieldName]" ng-model="bundleproductattributevalues[optionattr.fieldName]" class="inputWitdhAttr"/>
+				<input ng-switch-when="checkbox" type="checkbox" ng-value="bundleproductattributevalues[optionattr.fieldName]" ng-model="bundleproductattributevalues[optionattr.fieldName]" class="inputWitdhAttr"/>
+				<input ng-switch-when="date" type="date" ng-value="bundleproductattributevalues[optionattr.fieldName]" ng-model="bundleproductattributevalues[optionattr.fieldName]" class="inputWitdhAttr"/>
+				<input ng-switch-when="datetime" type="datetime" ng-value="bundleproductattributevalues[optionattr.fieldName]" ng-model="bundleproductattributevalues[optionattr.fieldName]" class="inputWitdhAttr"/>
+				<input ng-switch-when="time" type="time" ng-value="bundleproductattributevalues[optionattr.fieldName]" ng-model="bundleproductattributevalues[optionattr.fieldName]" class="inputWitdhAttr"/>
+				<input ng-switch-when="url" type="url" ng-value="bundleproductattributevalues[optionattr.fieldName]" ng-model="bundleproductattributevalues[optionattr.fieldName]" class="inputWitdhAttr"/>
+				<input ng-switch-when="email" type="email" ng-value="bundleproductattributevalues[optionattr.fieldName]" ng-model="bundleproductattributevalues[optionattr.fieldName]" class="inputWitdhAttr"/>
+				<select ng-switch-when="picklist" ng-options="o.value as o.key for o in optionattr.selectOptions" ng-model="bundleproductattributevalues[optionattr.fieldName]" class="inputWitdhAttr"></select>
+				<input ng-show="optionattr.fieldType == 'picklist' && bundleproductattributevalues[optionattr.fieldName] == 'Other'" type="text" class="inputWitdhAttr" ng-model="bundleproductattributevalues[optionattr.fieldName+'Other']"/>
+			</div>
+		</div>
+	</div>
+</accordion-group>
