@@ -3,9 +3,13 @@
 	ProductAttributeValueDataService.$inject = ['$q', '$log', 'BaseService', 'QuoteDataService','RemoteService', 'OptionGroupDataService', 'ProductAttributeValueCache'];
 	function ProductAttributeValueDataService($q, $log, BaseService, QuoteDataService, RemoteService, OptionGroupDataService, ProductAttributeValueCache) {
 		var service = this;
-		
+
+		service.bundleproductattributevalues = {};
+
 		service.getAllProductAttributeValues = ProductAttributeValueCache.getProductAttributeValues;
 		service.getProductAttributeValues = getProductAttributeValues;
+		service.getbundleproductattributevalues = getbundleproductattributevalues;
+		service.setbundleproductattributevalues = setbundleproductattributevalues;
 
 		function getProductAttributeValues_bulk(productIds){
 			// check if cachedProductAttributes has products requested for else make a remote call.
@@ -54,6 +58,14 @@
             });
             res = _.flatten(res);// Flattens a nested array.
             return res;
+        }
+
+        function setbundleproductattributevalues(pav){
+        	service.bundleproductattributevalues = pav;
+        }
+
+        function getbundleproductattributevalues(){
+        	return service.bundleproductattributevalues;
         }
 	}
 })();

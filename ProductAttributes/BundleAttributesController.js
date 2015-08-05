@@ -5,15 +5,16 @@
 		// all variable intializations.
         $scope.init = function(){
         	$scope.locationService = LocationDataService;
+            $scope.PAVService = ProductAttributeValueDataService;
+            
             $scope.bundlestaticattributegroups = [];// static attributes for main bundle.
             $scope.bundledynamicattributegroups = [];// to be set using remoteaction function.
             $scope.bundleproductattributevalues = {};
             
-            $scope.retrieveStaticbundleattributeGroupData();// load the bundle attributes on page load.
+            $scope.retrieveStaticbundleattributeConfig();// load the bundle attributes on page load.
         }
 
         $scope.$watch('locationService.getselectedlpa()', function(newVal) {
-            // $log.log('selected service location change:'+newVal);
             if(newVal)
             {   var prodpluslocationId = QuoteDataService.getbundleproductId()+newVal.Id;
                 $scope.bundledynamicattributegroups = ProductAttributeConfigDataService.getDynamicGroups(prodpluslocationId);
@@ -21,23 +22,24 @@
             }    
         });
         
-        $scope.retrieveStaticbundleattributeGroupData = function(){
+        $scope.retrieveStaticbundleattributeConfig = function(){
             var alllocationIdSet = LocationDataService.getalllocationIdSet();
             var selectedlpa = LocationDataService.getselectedlpa();
             var selectedlocationId = _.isObject(selectedlpa) ? selectedlpa.Id : '';
             var bundleProductId = QuoteDataService.getbundleproductId();
             ProductAttributeConfigDataService.getProductAttributesConfig(bundleProductId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
-                ProductAttributeValueDataService.getProductAttributeValues(bundleProductId).then(function(pavresult)
+                $scope.PAVService.getProductAttributeValues(bundleProductId).then(function(pavresult)
                 {
-                    $scope.renderBundleAttributes(attributeconfigresult, pavresult);
+                    $scope.renderStaticBundleAttributes(attributeconfigresult, pavresult);
                 })
             })
         }
 
-        $scope.renderBundleAttributes = function(attrgroups, pav){
+        $scope.renderStaticBundleAttributes = function(attrgroups, pav){
             // clear the previous option attribute groups.
             $scope.bundlestaticattributegroups = attrgroups;
-            $scope.bundleproductattributevalues = pav;
+            $scope.PAVService.setbundleproductattributevalues(pav);
+            $scope.bundleproductattributevalues = $scope.PAVService.getbundleproductattributevalues();
             $scope.safeApply();   
         }
 

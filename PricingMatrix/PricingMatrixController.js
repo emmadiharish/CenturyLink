@@ -1,14 +1,14 @@
 (function() {
     var PricingMatrixController;
 
-    PricingMatrixController = function($scope, $filter, $log, QuoteDataService, ProductAttributeConfigDataService, PricingMatrixDataService) {
+    PricingMatrixController = function($scope, $filter, $log, QuoteDataService, ProductAttributeValueDataService, PricingMatrixDataService) {
         /*Initialize Scope Variables*/
 	    $scope.reverse = false;                
 	    $scope.filteredItems = [];
 	    $scope.itemsPerPage = 21;
 	    $scope.pagedItems = [];
 	    $scope.currentPage = 0;
-	    $scope.PAVService = ProductAttributeConfigDataService;
+	    $scope.PAVService = ProductAttributeValueDataService;
 	    $scope.imagesbaseURL = QuoteDataService.getimagesbaseURL();
 	    PricingMatrixDataService.getPricingMatrix().then(function(result) {
 	        $scope.items = result.lines;		
@@ -115,6 +115,6 @@
 	    };
     };
 
-    PricingMatrixController.$inject = ['$scope', '$filter', '$log', 'QuoteDataService', 'ProductAttributeConfigDataService', 'PricingMatrixDataService'];
+    PricingMatrixController.$inject = ['$scope', '$filter', '$log', 'QuoteDataService', 'ProductAttributeValueDataService', 'PricingMatrixDataService'];
     angular.module('APTPS_ngCPQ').controller('PricingMatrixController', PricingMatrixController);
 }).call(this);
