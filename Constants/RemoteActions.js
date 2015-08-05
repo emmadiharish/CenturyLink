@@ -1,5 +1,4 @@
 angular.module('APTPS_ngCPQ').constant('RemoteActions',{
-	getLineItemtest: 'APTPS_CAP_RA.getLineItem',
 	getLineItem: 'APTPS_CAP_RA.getLineItem',
 	getServiceLocations: 'APTPS_CAP_RA.getServiceLocations',
 	getPricingMatrixData: 'APTPS_CAP_RA.getpricingMatrix',
