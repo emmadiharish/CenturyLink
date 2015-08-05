@@ -18,12 +18,12 @@
             if(newVal)
             {   var prodpluslocationId = QuoteDataService.getbundleproductId()+newVal.Id;
                 //$scope.bundledynamicattributegroups = ProductAttributeConfigDataService.getDynamicGroups(prodpluslocationId);
-                $scope.retrievebundleattributeConfig();
+                $scope.retrievebundleattributes();
                 $scope.safeApply();
             }    
         });
         
-        $scope.retrievebundleattributeConfig = function(){
+        $scope.retrievebundleattributes = function(){
             var alllocationIdSet = LocationDataService.getalllocationIdSet();
             var selectedlpa = LocationDataService.getselectedlpa();
             var selectedlocationId = _.isObject(selectedlpa) ? selectedlpa.Id : '';
