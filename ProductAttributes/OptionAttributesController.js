@@ -9,14 +9,13 @@
 	        $scope.selectedoptionattributegroups = [];
 	        $scope.selectedoptionpricingattributes = {};
 	        
-	        $scope.OptionGroupDataService = OptionGroupDataService;
+	        $scope.optionGroupService = OptionGroupDataService;
 	        $scope.Selectedoptionproduct = {};
         }
         
-        $scope.$watch('OptionGroupDataService.getSelectedoptionproduct()', function(newVal) {
-            if(!_.isUndefined(newVal)
-                && !_.isNull(newVal)
-                && newVal != '')
+        $scope.$watch('optionGroupService.getSelectedoptionproduct()', function(newVal) {
+            if(_.isObject(newVal)
+                && !_.isEmpty(newVal))
             {
                 $scope.Selectedoptionproduct = newVal;
                 $scope.retrieveproductattributeGroupData(newVal.productId);    
@@ -27,8 +26,7 @@
         $scope.retrieveproductattributeGroupData = function(productId){
             // collect all products at this level and make a remote call for attributes.
             var alllocationIdSet = LocationDataService.getalllocationIdSet();
-            var selectedlpa = LocationDataService.getselectedlpa();
-            var selectedlocationId = _.isObject(selectedlpa) ? selectedlpa.Id : '';
+            var selectedlocationId = LocationDataService.getselectedlpaId();
             ProductAttributeConfigDataService.getProductAttributesConfig(productId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
                 ProductAttributeValueDataService.getProductAttributeValues(productId).then(function(pavresult)
                 {

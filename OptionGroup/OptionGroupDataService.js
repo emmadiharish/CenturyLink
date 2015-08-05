@@ -4,12 +4,11 @@
 	function OptionGroupDataService($q, $log, BaseService, QuoteDataService, RemoteService, OptionGroupCache) {
 		var service = this;
 
-		service.Selectedoptionproduct = '';
-		service.currentproductoptiongroups = '';
+		service.Selectedoptionproduct = {};
+		service.currentproductoptiongroups = {};
 
 		// option group methods.
 		service.getallOptionGroups = getallOptionGroups;
-		// service.getOptionGroups = getOptionGroups;
 		service.getOptionGroup = getOptionGroup;
 		service.getSelectedoptionproduct = getSelectedoptionproduct;
 		service.setSelectedoptionproduct = setSelectedoptionproduct;
