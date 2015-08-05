@@ -26,14 +26,17 @@
         });
         
         $scope.retrievebundleattributes = function(){
-            var alllocationIdSet = LocationDataService.getalllocationIdSet();
-            var selectedlpa = LocationDataService.getselectedlpa();
-            var selectedlocationId = _.isObject(selectedlpa) ? selectedlpa.Id : '';
-            var bundleProductId = QuoteDataService.getbundleproductId();
-            ProductAttributeConfigDataService.getProductAttributesConfig(bundleProductId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
-                $scope.PAVService.getProductAttributeValues(bundleProductId).then(function(pavresult)
-                {
-                    $scope.renderBundleAttributes(attributeconfigresult, pavresult);
+            //var alllocationIdSet = LocationDataService.getalllocationIdSet();
+            $scope.locationService.getlocItems().then(function(result) {
+                var alllocationIdSet = _.pluck(result, 'Id');
+                var selectedlpa = LocationDataService.getselectedlpa();
+                var selectedlocationId = _.isObject(selectedlpa) ? selectedlpa.Id : '';
+                var bundleProductId = QuoteDataService.getbundleproductId();
+                ProductAttributeConfigDataService.getProductAttributesConfig(bundleProductId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
+                    $scope.PAVService.getProductAttributeValues(bundleProductId).then(function(pavresult)
+                    {
+                        $scope.renderBundleAttributes(attributeconfigresult, pavresult);
+                    })
                 })
             })
         }
