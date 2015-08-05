@@ -46,12 +46,12 @@
 			});
 		}
 
-		function getselectedlpa() {
-			return service.selectedlpa;
-		}
-
 		function setselectedlpa(selectedlpa) {
 			service.selectedlpa = selectedlpa;
+		}
+		
+		function getselectedlpa() {
+			return service.selectedlpa;
 		}
 
 		function setalllocationIdSet(locIds){

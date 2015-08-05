@@ -6,9 +6,8 @@
         $scope.init = function(){
         	$scope.locationService = LocationDataService;
             $scope.PAVService = ProductAttributeValueDataService;
-
-            $scope.bundlestaticattributegroups = [];// static attributes for main bundle.
-            $scope.bundledynamicattributegroups = [];// to be set using remoteaction function.
+            
+            $scope.bundleAttributeGroups = [];// attributes for main bundle.
             $scope.bundleproductattributevalues = {};
             
             $scope.retrievebundleattributes();// load the bundle attributes on page load.
@@ -19,7 +18,6 @@
                 && !_.isNull(newVal)
                 && !_.isEmpty(newVal))
             {   var prodpluslocationId = QuoteDataService.getbundleproductId()+newVal.Id;
-                //$scope.bundledynamicattributegroups = ProductAttributeConfigDataService.getDynamicGroups(prodpluslocationId);
                 $scope.retrievebundleattributes();
                 $scope.safeApply();
             }    
@@ -43,7 +41,7 @@
 
         $scope.renderBundleAttributes = function(attrgroups, pav){
             // clear the previous option attribute groups.
-            $scope.bundlestaticattributegroups = attrgroups;
+            $scope.bundleAttributeGroups = attrgroups;
             $scope.PAVService.setbundleproductattributevalues(pav);
             $scope.bundleproductattributevalues = $scope.PAVService.getbundleproductattributevalues();
             $scope.safeApply();   
