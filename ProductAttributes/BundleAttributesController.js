@@ -6,17 +6,16 @@
         $scope.init = function(){
         	$scope.locationService = LocationDataService;
             $scope.PAVService = ProductAttributeValueDataService;
-            
+
             $scope.bundleAttributeGroups = [];// attributes for main bundle.
             $scope.bundleproductattributevalues = {};
             
             $scope.retrievebundleattributes();// load the bundle attributes on page load.
         }
 
-        $scope.$watch('locationService.getselectedlpa()', function(newVal) {
-            if(!_.isUndefined(newVal)
-                && !_.isNull(newVal)
-                && !_.isEmpty(newVal))
+        $scope.$watch('locationService.getselectedlpa()', function(newVal, oldValue) {
+            if(!_.isEmpty(newVal)
+                && !_.isEqual(newVal, oldValue))
             {   var prodpluslocationId = QuoteDataService.getbundleproductId()+newVal.Id;
                 $scope.retrievebundleattributes();
                 $scope.safeApply();
