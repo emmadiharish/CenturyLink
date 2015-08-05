@@ -6,16 +6,6 @@
         $scope.init = function(){
             LocationDataService.getlocItems().then(function(result) {
                 $scope.locItems = result;
-                var locationId = QuoteDataService.getbundleServiceLocation();
-                if(locationId)
-                {
-                    _.each($scope.locItems , function(la){
-                        if(la.Id == locationId)
-                        {
-                            $scope.setSelectedlocation(la);
-                        }
-                    })
-                }
             })
             
             $scope.newserviceLocationURL = QuoteDataService.getnewLocationURL();

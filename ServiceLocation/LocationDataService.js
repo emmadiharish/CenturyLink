@@ -30,11 +30,16 @@
 					service.hasServicelocations = true;
 				}
 				// logTransaction(response, categoryRequest);
-				var locationId = response.locations;
+				var locationId = QuoteDataService.getbundleServiceLocation();
                 if(locationId)
                 {
-                   service.selectedlpa = _.findWhere(response.locations, {Id: locationId})
-				}
+                    _.each(response.locations , function(la){
+                        if(la.Id == locationId)
+                        {
+                            setselectedlpa(la);
+                        }
+                    })
+                }
 				return LocationCache.getLocations();
 			});
 		}
