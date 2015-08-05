@@ -15,7 +15,9 @@
         }
 
         $scope.$watch('locationService.getselectedlpa()', function(newVal) {
-            if(newVal)
+            if(!_.isUndefined(newVal)
+                && !_.isNull(newVal)
+                && !_.isEmpty(newVal))
             {   var prodpluslocationId = QuoteDataService.getbundleproductId()+newVal.Id;
                 //$scope.bundledynamicattributegroups = ProductAttributeConfigDataService.getDynamicGroups(prodpluslocationId);
                 $scope.retrievebundleattributes();
