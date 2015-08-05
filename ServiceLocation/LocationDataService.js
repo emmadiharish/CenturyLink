@@ -13,6 +13,7 @@
 		service.getlocItems = getlocItems;
 		service.getselectedlpa = getselectedlpa;
 		service.setselectedlpa = setselectedlpa;
+		service.getselectedlpaId = getselectedlpaId;
 		service.getalllocationIdSet = getalllocationIdSet;
 		service.getisRemotecallComplete = getisRemotecallComplete;
 		
@@ -55,6 +56,10 @@
 		
 		function getselectedlpa() {
 			return service.selectedlpa;
+		}
+
+		function getselectedlpaId() {
+			return _.isObject(service.selectedlpa) ? service.selectedlpa.Id : '';
 		}
 
 		function setalllocationIdSet(locIds){
