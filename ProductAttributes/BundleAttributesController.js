@@ -11,9 +11,9 @@
             $scope.bundleproductattributevalues = {};
         }
 
-        $scope.$watch('locationService.getselectedlpa()', function(newVal, oldValue) {
+        $scope.$watch('locationService.getselectedlpa()', function(newVal, oldVal) {
             if(!_.isEmpty(newVal)
-                && !_.isEqual(newVal, oldValue))
+                && !_.isEqual(newVal, oldVal))
             {   
                 $scope.retrievebundleattributes();
             }    

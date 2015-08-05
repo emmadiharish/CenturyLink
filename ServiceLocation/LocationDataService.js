@@ -28,7 +28,7 @@
 			var requestPromise = RemoteService.getServiceLocations(QuoteDataService.getbundleproductId(), QuoteDataService.getopportunityId());
 			return requestPromise.then(function(response){
 				LocationCache.initializeLocations(response.locations);
-				isRemotecallComplete = true;
+				service.isRemotecallComplete = true;
 				if(response.locations.length > 0)
 				{
 					service.hasServicelocations = true;
