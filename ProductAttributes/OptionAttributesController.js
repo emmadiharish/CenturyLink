@@ -13,12 +13,23 @@
 	        $scope.Selectedoptionproduct = {};
         }
         
-        $scope.$watch('optionGroupService.getSelectedoptionproduct()', function(newVal) {
-            if(_.isObject(newVal)
-                && !_.isEmpty(newVal))
+        $scope.$watch('locationService.getselectedlpa()', function(newVal, oldVal) {
+            if(!_.isEmpty(newVal)
+                && !_.isEqual(newVal, oldVal)
+                && !_.isEmpty($scope.Selectedoptionproduct))
+            {   
+                var optionProductId = $scope.Selectedoptionproduct.productId;
+                $scope.retrieveproductattributeGroupData(newVal.productId);
+            }    
+        });
+
+        $scope.$watch('optionGroupService.getSelectedoptionproduct()', function(newVal, oldVal) {
+            if(!_.isEmpty(newVal)
+                && !_.isEqual(newVal, oldVal))
             {
                 $scope.Selectedoptionproduct = newVal;
-                $scope.retrieveproductattributeGroupData(newVal.productId);    
+                var optionProductId = newVal.productId;
+                $scope.retrieveproductattributeGroupData(optionProductId);
             }
         });
         	
