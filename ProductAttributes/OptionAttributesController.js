@@ -52,6 +52,7 @@
             {
                 optionPAV[key] = bundlePAV[key];
             }
+            $scope.productAttributeValues = optionPAV;
         }
             
 
