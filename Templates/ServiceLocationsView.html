@@ -1,0 +1,53 @@
+<label for="newlocation"> Add New Location</label>
+<a href="{{newserviceLocationURL}}" id="newlocation" target="_blank" class="btn btn-primary btn-xs">Add New Location</a>
+<br/>
+<table class="table table-bordered  table-striped table-hover">
+	<thead>
+		<th >Select</th>
+		<th >Loc Name</th>
+		<th >Service Address</th>
+		<th >Primary TN</th>
+		<th >SWC CLLI code</th>
+		<th >Validation Status</td>
+	</thead>
+	<tbody>
+		<tr ng-repeat="lpaAng in locItems" class="angularLocationsTable">
+			<td >
+				<input type="radio" id="{{lpaAng.Id}}" ng-click="setSelectedlocation(lpaAng)" ng-checked="lpaAng.Id == selectedlpa.Id" name="palChk"  />
+			</td>
+			<td >{{lpaAng.Name}}</td>
+			<td >{{lpaAng.Service_Address_Line_1__c}}, {{lpaAng.City__c}}, {{lpaAng.State__c}}, {{lpaAng.Country__c}}, {{lpaAng.Zip__c}}</td>
+			<td >{{lpaAng.Primary_TN__c}}</td>
+			<td >{{lpaAng.SWC_CLLI_code__c}}</td>
+			<td >{{lpaAng.Status__c}}</td>
+		</tr>
+	</tbody>
+</table>
+<!--<table class="angularLocTable">
+	<tr>
+		<td class="newLocHeight">Add New Location</td>
+		<td class="newLocHeight">
+			<a href="{!newserviceLocationURL}" target="_blank" class="addNewLoc">
+				Add New Location
+			</a>
+		</td>                                
+	</tr>
+	<tr class="angularLocTableHead">
+		<th class="no-spacing">Select Loc</th>
+		<th class="no-spacing">Loc Name</th>
+		<th class="no-spacing">Service Address</th>
+		<th class="no-spacing">Primary TN</th>
+		<th class="no-spacing">SWC CLLI code</th>
+		<th class="no-spacing">Validation Status</td>
+	</tr>
+	<tr ng-repeat="lpaAng in locItems" class="angularLocationsTable">
+		<td class="border-bottomLoc firstOne">
+			<input type="radio" id="{{lpaAng.Id}}" ng-click="setSelectedlocation(lpaAng)" ng-checked="lpaAng.Id == selectedlpa.Id" name="palChk"  />
+		</td>
+		<td class="border-bottomLoc">{{lpaAng.Name}}</td>
+		<td class="border-bottomLoc">{{lpaAng.Service_Address_Line_1__c}}, {{lpaAng.City__c}}, {{lpaAng.State__c}}, {{lpaAng.Country__c}}, {{lpaAng.Zip__c}}</td>
+		<td class="border-bottomLoc">{{lpaAng.Primary_TN__c}}</td>
+		<td class="border-bottomLoc">{{lpaAng.SWC_CLLI_code__c}}</td>
+		<td class="border-bottomLoc lastOne">{{lpaAng.Status__c}}</td>
+	</tr>
+</table>-->
