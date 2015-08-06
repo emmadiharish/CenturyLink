@@ -12,7 +12,7 @@
         $scope.validateonsubmit = function(){
             // Validation 1 : Service location has to be selected.
             var servicelocation = LocationDataService.getselectedlpa();
-            var hasLocations = LocationDataService.hasServicelocations();
+            var hasLocations = LocationDataService.gethasServicelocations();
             if(!servicelocation
                 && hasLocations)
             {
