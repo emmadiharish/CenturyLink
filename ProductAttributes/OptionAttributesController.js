@@ -14,6 +14,7 @@
             $scope.Selectedoptionproduct = {};
         }
         
+        // Option Attribute load on location selection.
         $scope.$watch('locationService.getselectedlpa()', function(newVal, oldVal) {
             if(!_.isEmpty(newVal)
                 && !_.isEqual(newVal, oldVal)
@@ -24,6 +25,7 @@
             }    
         });
 
+        // Option Attribute load on option selection.
         $scope.$watch('optionGroupService.getSelectedoptionproduct()', function(newVal, oldVal) {
             if(!_.isEmpty(newVal)
                 && !_.isEqual(newVal, oldVal))
@@ -33,6 +35,21 @@
                 $scope.retrieveproductattributeGroupData(optionProductId);
             }
         });
+
+        // Cascading of bundle attributes to options.
+        $scope.$watchCollection('PAVService.getbundleproductattributevalues()', function(newValue){ 
+            $scope.CascadeBunleAttributestoOptions();
+            $scope.safeApply();
+        });
+
+        $scope.CascadeBunleAttributestoOptions = function(){
+            var bundleProductAttributeValues = $scope.PAVService.getbundleproductattributevalues()
+            var bunldeAttributeKeys = _.keys(bundleProductAttributeValues);
+
+            _.each(bunldeAttributeKeys , function(key){
+                $scope.productAttributeValues[key] = bundleProductAttributeValues[key];
+            });
+        }
             
 
         $scope.retrieveproductattributeGroupData = function(productId){
@@ -51,6 +68,7 @@
             // clear the previous option attribute groups.
             $scope.AttributeGroups = attrgroups;
             $scope.productAttributeValues = pav;
+            $scope.CascadeBunleAttributestoOptions();
             $scope.safeApply();   
         }
         
