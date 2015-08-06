@@ -20,7 +20,7 @@
                 && !_.isEmpty($scope.Selectedoptionproduct))
             {   
                 var optionProductId = $scope.Selectedoptionproduct.productId;
-                $scope.retrieveproductattributeGroupData(newVal.productId);
+                $scope.retrieveproductattributeGroupData(optionProductId);
             }    
         });
 
