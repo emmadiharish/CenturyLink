@@ -38,21 +38,19 @@
 
         // Cascading of bundle attributes to options.
         $scope.$watchCollection('PAVService.getbundleproductattributevalues()', function(newValue){ 
-            $scope.CascadeBunleAttributestoOptions();
-            $scope.safeApply();
+            if(!_.isEmpty(newValue))
+            {
+                $scope.CascadeBunleAttributestoOptions();
+                $scope.safeApply();    
+            }
         });
 
         $scope.CascadeBunleAttributestoOptions = function(){
-            var bundlePAV = $scope.PAVService.getbundleproductattributevalues()
-            /*var optionPAV = $scope.productAttributeValues;
-            var bunldePAVKeys = _.keys(bundlePAV);
-            var optionPAVKeys = _.keys(optionPAV);
-
-            _.each(bunldePAVKeys, key)
+            if(!_.isEmpty($scope.productAttributeValues))
             {
-                optionPAV[key] = bundlePAV[key];
-            }*/
-            $scope.productAttributeValues = _.clone(bundlePAV);
+                var bundlePAV = $scope.PAVService.getbundleproductattributevalues()
+                $scope.productAttributeValues = _.clone(bundlePAV);
+            }
         }
             
 
