@@ -43,12 +43,15 @@
         });
 
         $scope.CascadeBunleAttributestoOptions = function(){
-            var bundleProductAttributeValues = $scope.PAVService.getbundleproductattributevalues()
-            var bunldeAttributeKeys = _.keys(bundleProductAttributeValues);
+            var bundlePAV = $scope.PAVService.getbundleproductattributevalues()
+            var optionPAV = $scope.productAttributeValues;
+            var bunldePAVKeys = _.keys(bundlePAV);
+            var optionPAVKeys = _.keys(optionPAV);
 
-            _.each(bunldeAttributeKeys , function(key){
-                $scope.productAttributeValues[key] = bundleProductAttributeValues[key];
-            });
+            _.each(_.intersection(bunldePAVKeys, optionPAVKeys), key)
+            {
+                optionPAV[key] = bundlePAV[key];
+            }
         }
             
 
