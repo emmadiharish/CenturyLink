@@ -2,15 +2,16 @@
     var OptionAttributesController;
 
     OptionAttributesController = function($scope, $log, LocationDataService, OptionGroupDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService) {
-		$scope.init = function(){
-	    	// all variable intializations.
+        $scope.init = function(){
+            // all variable intializations.
+            $scope.locationService = LocationDataService;
+            $scope.PAVService = ProductAttributeValueDataService;
+            $scope.PAConfigService = ProductAttributeConfigDataService;
+            $scope.optionGroupService = OptionGroupDataService;
 
-	    	// to manage option attribute groups.
-	        $scope.AttributeGroups = [];
-	        $scope.productAttributeValues = {};
-	        
-	        $scope.optionGroupService = OptionGroupDataService;
-	        $scope.Selectedoptionproduct = {};
+            $scope.AttributeGroups = [];
+            $scope.productAttributeValues = {};
+            $scope.Selectedoptionproduct = {};
         }
         
         $scope.$watch('locationService.getselectedlpa()', function(newVal, oldVal) {
@@ -32,14 +33,14 @@
                 $scope.retrieveproductattributeGroupData(optionProductId);
             }
         });
-        	
+            
 
         $scope.retrieveproductattributeGroupData = function(productId){
             // collect all products at this level and make a remote call for attributes.
             var alllocationIdSet = LocationDataService.getalllocationIdSet();
             var selectedlocationId = LocationDataService.getselectedlpaId();
-            ProductAttributeConfigDataService.getProductAttributesConfig(productId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
-                ProductAttributeValueDataService.getProductAttributeValues(productId).then(function(pavresult)
+            $scope.PAConfigService.getProductAttributesConfig(productId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
+                $scope.PAVService.getProductAttributeValues(productId).then(function(pavresult)
                 {
                     $scope.renderOptionAttributes(attributeconfigresult, pavresult);
                 })
@@ -52,9 +53,9 @@
             $scope.productAttributeValues = pav;
             $scope.safeApply();   
         }
-		
-		$scope.init();
+        
+    $scope.init();
     }
     OptionAttributesController.$inject = ['$scope', '$log', 'LocationDataService', 'OptionGroupDataService', 'ProductAttributeConfigDataService', 'ProductAttributeValueDataService'];
-	angular.module('APTPS_ngCPQ').controller('OptionAttributesController', OptionAttributesController);
+    angular.module('APTPS_ngCPQ').controller('OptionAttributesController', OptionAttributesController);
 }).call(this);
