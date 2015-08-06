@@ -1,7 +1,7 @@
 (function() {
     var OptionGroupController;
 
-    OptionGroupController = function($scope, $log, QuoteDataService, OptionGroupDataService) {
+    OptionGroupController = function($scope, $log, $location, QuoteDataService, OptionGroupDataService) {
 		// all variable intializations.
         $scope.init = function(){
         	$scope.imagesbaseURL = QuoteDataService.getimagesbaseURL();
@@ -156,6 +156,6 @@
         $scope.init();
 	};
 
-    OptionGroupController.$inject = ['$scope', '$log', 'QuoteDataService', 'OptionGroupDataService'];
+    OptionGroupController.$inject = ['$scope', '$log', '$location', 'QuoteDataService', 'OptionGroupDataService'];
 	angular.module('APTPS_ngCPQ').controller('OptionGroupController', OptionGroupController);
 }).call(this);
