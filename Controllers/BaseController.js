@@ -5,7 +5,8 @@
         // all variable intializations.
         $scope.locationService = LocationDataService;
         $scope.displaylocations = false;
-
+        $scope.imagesbaseURL = QuoteDataService.getimagesbaseURL();
+        
         $scope.$watch('locationService.hasServicelocations', function(newValue){
             $scope.displaylocations = newValue;
         });
