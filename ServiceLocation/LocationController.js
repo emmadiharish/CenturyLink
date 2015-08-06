@@ -7,6 +7,7 @@
             LocationDataService.getlocItems().then(function(result) {
                 $scope.locItems = result;
                 $scope.selectedlpa = LocationDataService.getselectedlpa();
+                $scope.displaylocations = LocationDataService.hasServicelocations();
             })
             
             $scope.newserviceLocationURL = QuoteDataService.getnewLocationURL();

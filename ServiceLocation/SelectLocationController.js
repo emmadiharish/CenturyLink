@@ -6,6 +6,8 @@
         $scope.init = function(){
             $scope.selectedlpa = {};
             $scope.locationService = LocationDataService;
+            
+            $scope.displaylocations = $scope.locationService.hasServicelocations();
         }
         $scope.init();
 

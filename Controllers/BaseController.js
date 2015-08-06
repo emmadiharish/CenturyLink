@@ -3,14 +3,8 @@
 
     BaseController = function($scope, $q, $log, $location, $dialogs, $anchorScroll, BaseService, QuoteDataService, MessageService, RemoteService, LocationDataService, OptionGroupDataService, ProductAttributeConfigDataService) {
         // all variable intializations.
-        $scope.locationService = LocationDataService;
-        $scope.displaylocations = false;
         $scope.imagesbaseURL = QuoteDataService.getimagesbaseURL();
         
-        $scope.$watch('locationService.hasServicelocations', function(newValue){
-            $scope.displaylocations = newValue;
-        });
-
         $scope.filterpricing = function(){
             // angular.element(j$('#MainWrap')).scope().search();
         }
@@ -18,8 +12,9 @@
         $scope.validateonsubmit = function(){
             // Validation 1 : Service location has to be selected.
             var servicelocation = LocationDataService.getselectedlpa();
+            var hasLocations = LocationDataService.hasServicelocations();
             if(!servicelocation
-                && $scope.displaylocations)
+                && hasLocations)
             {
                 alert('Please select service location to proceed.');
                 return false;
