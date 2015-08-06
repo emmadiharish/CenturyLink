@@ -75,8 +75,7 @@
                 })
             }
             
-            if(!_.isUndefined(c)
-            	&& !_.isNull(c)
+            if(_.isObject(c)
             	&& _.has(c, d))
             {
                 res.push(c[d]);
