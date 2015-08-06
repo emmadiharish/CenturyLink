@@ -10,6 +10,7 @@
 		service.hasServicelocations = false;
 
 		// location methods.
+		service.gethasServicelocations = gethasServicelocations;
 		service.getlocItems = getlocItems;
 		service.getselectedlpa = getselectedlpa;
 		service.setselectedlpa = setselectedlpa;
@@ -50,6 +51,9 @@
 			});
 		}
 
+		function gethasServicelocations(){
+			return service.hasServicelocations;
+		}
 		function setselectedlpa(selectedlpa) {
 			service.selectedlpa = selectedlpa;
 		}
