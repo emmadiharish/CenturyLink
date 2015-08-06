@@ -6,8 +6,8 @@
 	    	// all variable intializations.
 
 	    	// to manage option attribute groups.
-	        $scope.selectedoptionattributegroups = [];
-	        $scope.selectedoptionpricingattributes = {};
+	        $scope.AttributeGroups = [];
+	        $scope.productAttributeValues = {};
 	        
 	        $scope.optionGroupService = OptionGroupDataService;
 	        $scope.Selectedoptionproduct = {};
@@ -37,8 +37,8 @@
 
         $scope.renderOptionAttributes = function(attrgroups, pav){
             // clear the previous option attribute groups.
-            $scope.selectedoptionattributegroups = attrgroups;
-            $scope.selectedoptionpricingattributes = pav;
+            $scope.AttributeGroups = attrgroups;
+            $scope.productAttributeValues = pav;
             $scope.safeApply();   
         }
 		

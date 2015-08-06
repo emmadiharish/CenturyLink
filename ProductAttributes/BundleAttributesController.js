@@ -7,15 +7,15 @@
         	$scope.locationService = LocationDataService;
             $scope.PAVService = ProductAttributeValueDataService;
 
-            $scope.bundleAttributeGroups = [];// attributes for main bundle.
-            $scope.bundleproductattributevalues = {};
+            $scope.AttributeGroups = [];// attribute config groups for main bundle.
+            $scope.productAttributeValues = {};
         }
 
         $scope.$watch('locationService.getselectedlpa()', function(newVal, oldVal) {
             if(!_.isEmpty(newVal)
                 && !_.isEqual(newVal, oldVal))
             {   
-                $scope.retrievebundleattributes();
+                $scope.retrieveproductattributeGroupData();
             }    
         });
 
@@ -23,11 +23,11 @@
             if(newVal != oldVal
                 && newVal == true)
             {   
-                $scope.retrievebundleattributes();
+                $scope.retrieveproductattributeGroupData();
             }    
         });
         
-        $scope.retrievebundleattributes = function(){
+        $scope.retrieveproductattributeGroupData = function(){
             var alllocationIdSet = $scope.locationService.getalllocationIdSet();
             var selectedlocationId = $scope.locationService.getselectedlpaId();
             var bundleProductId = QuoteDataService.getbundleproductId();
@@ -41,9 +41,9 @@
 
         $scope.renderBundleAttributes = function(attrgroups, pav){
             // clear the previous option attribute groups.
-            $scope.bundleAttributeGroups = attrgroups;
+            $scope.AttributeGroups = attrgroups;
             $scope.PAVService.setbundleproductattributevalues(pav);
-            $scope.bundleproductattributevalues = $scope.PAVService.getbundleproductattributevalues();
+            $scope.productAttributeValues = $scope.PAVService.getbundleproductattributevalues();
             $scope.safeApply();   
         }
         
