@@ -6,6 +6,7 @@
         $scope.init = function(){
         	$scope.locationService = LocationDataService;
             $scope.PAVService = ProductAttributeValueDataService;
+            $scope.PAConfigService = ProductAttributeConfigDataService;
 
             $scope.AttributeGroups = [];// attribute config groups for main bundle.
             $scope.productAttributeValues = {};
@@ -31,7 +32,7 @@
             var alllocationIdSet = $scope.locationService.getalllocationIdSet();
             var selectedlocationId = $scope.locationService.getselectedlpaId();
             var bundleProductId = QuoteDataService.getbundleproductId();
-            ProductAttributeConfigDataService.getProductAttributesConfig(bundleProductId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
+            $scope.PAConfigService.getProductAttributesConfig(bundleProductId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
                 $scope.PAVService.getProductAttributeValues(bundleProductId).then(function(pavresult)
                 {
                     $scope.renderBundleAttributes(attributeconfigresult, pavresult);
