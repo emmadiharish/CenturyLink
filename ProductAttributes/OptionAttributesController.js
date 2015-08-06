@@ -44,15 +44,15 @@
 
         $scope.CascadeBunleAttributestoOptions = function(){
             var bundlePAV = $scope.PAVService.getbundleproductattributevalues()
-            var optionPAV = $scope.productAttributeValues;
+            /*var optionPAV = $scope.productAttributeValues;
             var bunldePAVKeys = _.keys(bundlePAV);
             var optionPAVKeys = _.keys(optionPAV);
 
-            _.each(_.intersection(bunldePAVKeys, optionPAVKeys), key)
+            _.each(bunldePAVKeys, key)
             {
                 optionPAV[key] = bundlePAV[key];
-            }
-            $scope.productAttributeValues = optionPAV;
+            }*/
+            $scope.productAttributeValues = _.clone(bundlePAV);
         }
             
 
