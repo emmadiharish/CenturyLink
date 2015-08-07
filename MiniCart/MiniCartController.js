@@ -57,6 +57,6 @@
         
         $scope.init();
     };
-    MiniCartController.$inject = ['$scope',];
+    MiniCartController.$inject = ['$scope','MiniCartDataService'];
     angular.module('APTPS_ngCPQ').controller('MiniCartController', MiniCartController);
 })();         
