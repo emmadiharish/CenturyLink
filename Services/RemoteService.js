@@ -23,6 +23,14 @@
 			return invokeRemoteAction(RemoteActions.getServiceLocations, arguments);
 
 		};
+		service.getPricingItems = function getPricingItems() {
+			return invokeRemoteAction(RemoteActions.getPricingMatrixData, arguments);
+
+		};
+		service.getMiniCartLines = function getMiniCartLines() {
+			return invokeRemoteAction(RemoteActions.getMiniCartLines, arguments);
+
+		};
 		service.getproductoptiongroupsData = function getproductoptiongroupsData() {
 			return invokeRemoteAction(RemoteActions.getproductoptiongroupsData, arguments);
 
@@ -39,10 +47,7 @@
 			return invokeRemoteAction(RemoteActions.saveoptionsandattributes, arguments);
 
 		};
-		service.getPricingItems = function getPricingItems() {
-			return invokeRemoteAction(RemoteActions.getPricingMatrixData, arguments);
-
-		};
+		
 		
 		//Expose general-purpose method
 		service.invokeRemoteAction = invokeRemoteAction;
