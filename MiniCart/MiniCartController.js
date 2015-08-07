@@ -1,5 +1,5 @@
 (function() {
-    var MiniCartController = function($scope, QuoteDataService, MiniCartDataService)
+    var MiniCartController = function($scope, $dialogs, QuoteDataService, MiniCartDataService)
     {
         $scope.init = function(){
             // Initialize Scope Variables
@@ -56,8 +56,31 @@
             $scope.currentPage = this.n;
         };
         
+        $scope.invokeDoConfigure = function(lineNumber){
+            alert('from invokeDoConfigure: '+lineNumber);
+        };
+
+        $scope.deleteLineItemFromCart = function(lineNumber){
+            alert('from deleteLineItemFromCart: '+lineNumber);
+        };
+        
+        $scope.launch = function(which, lineNumber){
+            var dlg = null;
+            switch(which){
+                // Delete Line Item Confirm Dialog
+                case 'confirmRemoveLine':
+                    dlg = $dialogs.confirm('Please Confirm','Are you sure you want to Delete the Line Item?');
+                    dlg.result.then(function(btn){
+                        $scope.deleteLineItemFromCart(lineNumber);
+                    },function(btn){
+                        
+                });
+                break;
+            }; // end switch
+        }; // end launch
+
         $scope.init();
     };
-    MiniCartController.$inject = ['$scope', 'QuoteDataService', 'MiniCartDataService'];
+    MiniCartController.$inject = ['$scope', '$dialogs', 'QuoteDataService', 'MiniCartDataService'];
     angular.module('APTPS_ngCPQ').controller('MiniCartController', MiniCartController);
 })();         
