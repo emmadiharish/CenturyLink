@@ -24,16 +24,6 @@
 	    $scope.search = function () {
 	        
 	        var selectedAttrValues = $scope.PAVService.getbundleproductattributevalues();
-	        // read the selected attribute values.
-	        /*var attrgroups = angular.element(j$('#staticattributes')).scope().attrgroups;
-	        var selectedAttrValues = new Object();
-	        for(var i = 0; i<attrgroups.length; i++)
-	        {
-	            for(var j=0; j< attrgroups[i].attributes.length; j++)
-	            {
-	                selectedAttrValues[attrgroups[i].attributes[j].fieldName] = attrgroups[i].attributes[j].selectedvalue;
-	            }
-	        }*/
 	        var fieldapis_nonbalnk = [];
 	        j$.each($scope.fieldapis, function(index, field) {
 	            if(selectedAttrValues[field] != undefined

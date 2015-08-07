@@ -8,9 +8,9 @@
 		service.miniCartLines = {};
 				
 		// Pricing Methods.
-		service.getPricingMatrix = getPricingMatrix;
+		service.getMiniCartLines = getMiniCartLines;
 		
-		function getPricingMatrix() {
+		function getMiniCartLines() {
 			if (service.isValid) {
 				return $q.when(service.miniCartLines);
 			}
