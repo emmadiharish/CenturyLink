@@ -69,7 +69,7 @@
             switch(which){
                 // Delete Line Item Confirm Dialog
                 case 'confirmRemoveLine':
-                    dlg = $dialogs.confirm('Please Confirm','Are you sure you want to Delete '+productName+ from cart'?');
+                    dlg = $dialogs.confirm('Please Confirm','Are you sure you want to Delete '+productName+ 'from cart'?');
                     dlg.result.then(function(btn){
                         $scope.deleteLineItemFromCart(lineNumber);
                     },function(btn){
