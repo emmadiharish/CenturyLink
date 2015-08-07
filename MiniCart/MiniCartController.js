@@ -1,15 +1,16 @@
 (function() {
-    var MiniCartController = function($scope, MiniCartDataService)
+    var MiniCartController = function($scope, QuoteDataService, MiniCartDataService)
     {
         $scope.init = function(){
             // Initialize Scope Variables
             $scope.miniCartService = MiniCartDataService;
-
+            $scope.quoteService = QuoteDataService;
+            
             $scope.reverse = false;                
             $scope.itemsPerPage = 5;
             $scope.pagedItems = [];
             $scope.currentPage = 0;
-                
+            $scope.imagesbaseURL = $scope.quoteService.getimagesbaseURL();    
             // Group by pages
             $scope.groupToPages();
         }
@@ -57,6 +58,6 @@
         
         $scope.init();
     };
-    MiniCartController.$inject = ['$scope','MiniCartDataService'];
+    MiniCartController.$inject = ['$scope', 'QuoteDataService', 'MiniCartDataService'];
     angular.module('APTPS_ngCPQ').controller('MiniCartController', MiniCartController);
 })();         

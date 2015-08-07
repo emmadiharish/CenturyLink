@@ -3,14 +3,18 @@
 
     PricingMatrixController = function($scope, $filter, $log, QuoteDataService, ProductAttributeValueDataService, PricingMatrixDataService) {
         /*Initialize Scope Variables*/
+        $scope.pricingMatrixService = PricingMatrixDataService;
+	    $scope.PAVService = ProductAttributeValueDataService;
+	    $scope.quoteService = QuoteDataService;
+
 	    $scope.reverse = false;                
 	    $scope.filteredItems = [];
 	    $scope.itemsPerPage = 21;
 	    $scope.pagedItems = [];
 	    $scope.currentPage = 0;
-	    $scope.PAVService = ProductAttributeValueDataService;
-	    $scope.imagesbaseURL = QuoteDataService.getimagesbaseURL();
-	    PricingMatrixDataService.getPricingMatrix().then(function(result) {
+	    
+	    $scope.imagesbaseURL = $scope.quoteService.getimagesbaseURL();
+	    $scope.pricingMatrixService.getPricingMatrix().then(function(result) {
 	        $scope.items = result.lines;		
 			$scope.fieldapis = result.pricingFields;
 			$scope.fieldsmap = result.pricingFieldsMap;
