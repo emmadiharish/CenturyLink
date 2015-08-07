@@ -46,11 +46,8 @@
         });
 
         $scope.CascadeBunleAttributestoOptions = function(){
-            if(!_.isEmpty($scope.productAttributeValues))
-            {
-                var bundlePAV = $scope.PAVService.getbundleproductattributevalues()
-                $scope.productAttributeValues = _.clone(bundlePAV);
-            }
+            var bundlePAV = $scope.PAVService.getbundleproductattributevalues()
+            $scope.productAttributeValues = _.clone(bundlePAV);
         }
             
 
