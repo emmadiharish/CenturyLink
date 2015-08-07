@@ -64,12 +64,12 @@
             alert('from deleteLineItemFromCart: '+lineNumber);
         };
         
-        $scope.launch = function(which, lineNumber){
+        $scope.launch = function(which, productName, lineNumber){
             var dlg = null;
             switch(which){
                 // Delete Line Item Confirm Dialog
                 case 'confirmRemoveLine':
-                    dlg = $dialogs.confirm('Please Confirm','Are you sure you want to Delete the Line Item?');
+                    dlg = $dialogs.confirm('Please Confirm','Are you sure you want to Delete '+productName+ from cart'?');
                     dlg.result.then(function(btn){
                         $scope.deleteLineItemFromCart(lineNumber);
                     },function(btn){
