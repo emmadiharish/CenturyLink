@@ -56,8 +56,8 @@
             $scope.currentPage = this.n;
         };
         
-        $scope.invokeDoConfigure = function(lineNumber){
-            alert('from invokeDoConfigure: '+lineNumber);
+        $scope.invokeDoConfigure = function(lineItemId){
+            alert('from invokeDoConfigure: '+lineItemId);
         };
 
         $scope.deleteLineItemFromCart = function(lineNumber){
