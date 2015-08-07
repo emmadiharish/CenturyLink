@@ -41,9 +41,9 @@
                 {
                     $scope.currentproductoptiongroups[groupindex].selectedproduct = prodcomponent.productId;
                 }
-                else if(forceselectoption == true){// checkbox.
+                /*else if(forceselectoption == true){// checkbox.
                      prodcomponent.isselected = true;
-                }
+                }*/
             }
         }
         

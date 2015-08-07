@@ -28,7 +28,6 @@
                         $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)].push($scope.items[i]);
                     }
                 }
-                $scope.safeApply();
             })
         };
             
