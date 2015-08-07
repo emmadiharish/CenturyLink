@@ -18,7 +18,7 @@
         $scope.groupToPages = function () {
             $scope.currentPage = 0;
             $scope.miniCartService.getMiniCartLines().then(function(result) {
-                $scope.items = result.miniCartLines;        
+                $scope.items = result;        
                 $scope.pagedItems = [];
                 for (var i = 0; i < $scope.items.length; i++) {
                     if (i % $scope.itemsPerPage === 0) {
