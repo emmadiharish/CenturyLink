@@ -31,27 +31,27 @@
             })
         };
             
-        $scope.firstPagemc = function () {
+        $scope.firstPage = function () {
             $scope.currentPage = 0;
         };
         
-        $scope.lastPagemc = function () {
+        $scope.lastPage = function () {
             $scope.currentPage = $scope.pagedItems.length-1;
         };
         
-        $scope.prevPagemc = function () {
+        $scope.prevPage = function () {
             if ($scope.currentPage > 0) {
                 $scope.currentPage--;
             }
         };
         
-        $scope.nextPagemc = function () {
+        $scope.nextPage = function () {
             if ($scope.currentPage < $scope.pagedItems.length - 1) {
                 $scope.currentPage++;
             }
         };
         
-        $scope.setPagemc = function () {
+        $scope.setPage = function () {
             $scope.currentPage = this.n;
         };
         
