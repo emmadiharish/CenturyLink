@@ -18,10 +18,10 @@
         $scope.$watch('miniCartService.getminiCartLinesCount()', function(newVal, oldVal) {
             $scope.lineCount = $scope.miniCartService.getminiCartLinesCount();
         });
-        
+
         $scope.init();
     };
 
-    QuoteController.$inject = ['$scope', 'QuoteDataService'];
+    QuoteController.$inject = ['$scope', 'QuoteDataService', 'MiniCartDataService'];
     angular.module('APTPS_ngCPQ').controller('QuoteController', QuoteController);
 }).call(this);
