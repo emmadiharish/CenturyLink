@@ -56,7 +56,6 @@
         };
         
         $scope.invokeDoConfigure = function(lineItemId){
-            alert('from invokeDoConfigure: '+lineItemId);
             var cartId = $scope.quoteService.getcartId(), configRequestId = $scope.quoteService.getconfigRequestId();
             $scope.miniCartService.configureLineItem(cartId, configRequestId, lineItemId).then(function(result){
 
@@ -64,10 +63,11 @@
         };
 
         $scope.deleteLineItemFromCart = function(lineNumber_tobedeleted){
-            alert('from deleteLineItemFromCart: '+lineNumber);
             var cartId = $scope.quoteService.getcartId(), configRequestId = $scope.quoteService.getconfigRequestId(), currentlineNumber = $scope.quoteService.getcontextLineNumber();
             $scope.miniCartService.deleteLineItemFromCart(cartId, configRequestId, lineNumber_tobedeleted, currentlineNumber).then(function(result){
-
+                // mark minicart as dirty and reload minicart.
+                $scope.miniCartService.setMinicartasDirty();
+                $scope.groupToPages();
             })
         };
         

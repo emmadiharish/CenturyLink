@@ -5,10 +5,14 @@
 		var service = this;
 
 		service.isValid = false;
-		service.miniCartLines = {};
+		service.miniCartLines = [];
+		service.miniCartLinesCount = 0;
 				
 		// Pricing Methods.
 		service.getMiniCartLines = getMiniCartLines;
+		service.getminiCartLinesCount = getminiCartLinesCount;
+		service.setMinicartasDirty = setMinicartasDirty;
+
 		
 		function getMiniCartLines() {
 			if (service.isValid) {
@@ -21,6 +25,14 @@
 				service.miniCartLines = response;
 				return service.miniCartLines;
 			});
+		}
+
+		function setMinicartasDirty(){
+			service.isValid = false;
+		}
+
+		function getminiCartLinesCount(){
+			return service.miniCartLines.length;
 		}
 	}
 })();
