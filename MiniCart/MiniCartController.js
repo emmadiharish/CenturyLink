@@ -11,6 +11,7 @@
             $scope.pagedItems = [];
             $scope.currentPage = 0;
             $scope.imagesbaseURL = $scope.quoteService.getimagesbaseURL();    
+            
             // Group by pages
             $scope.groupToPages();
         }

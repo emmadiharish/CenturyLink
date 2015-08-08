@@ -23,6 +23,7 @@
 			return requestPromise.then(function(response){
 				service.isValid = true;
 				service.miniCartLines = response;
+				service.miniCartLinesCount = response.length;
 				return service.miniCartLines;
 			});
 		}
@@ -32,7 +33,7 @@
 		}
 
 		function getminiCartLinesCount(){
-			return service.miniCartLines.length;
+			return service.miniCartLinesCount;
 		}
 	}
 })();
