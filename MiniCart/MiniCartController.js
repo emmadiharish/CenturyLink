@@ -11,7 +11,7 @@
             $scope.itemsPerPage = 5;
             $scope.pagedItems = [];
             $scope.currentPage = 0;
-            $scope.imagesbaseURL = $scope.quoteService.getimagesbaseURL();    
+            $scope.capResourcebaseURL = $scope.quoteService.getCAPResourcebaseURL();    
             $scope.lineCount = 0;
 
             // Group by pages
