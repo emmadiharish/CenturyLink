@@ -57,10 +57,18 @@
         
         $scope.invokeDoConfigure = function(lineItemId){
             alert('from invokeDoConfigure: '+lineItemId);
+            var cartId = $scope.quoteService.getcartId(), configRequestId = $scope.quoteService.getconfigRequestId();
+            $scope.miniCartService.configureLineItem(cartId, configRequestId, lineItemId).then(function(result)){
+
+            })
         };
 
-        $scope.deleteLineItemFromCart = function(lineNumber){
+        $scope.deleteLineItemFromCart = function(lineNumber_tobedeleted){
             alert('from deleteLineItemFromCart: '+lineNumber);
+            var cartId = $scope.quoteService.getcartId(), configRequestId = $scope.quoteService.getconfigRequestId(), currentlineNumber = $scope.quoteService.getcontextLineNumber();
+            $scope.miniCartService.deleteLineItemFromCart(cartId, configRequestId, lineNumber_tobedeleted, currentlineNumber).then(function(result)){
+
+            })
         };
         
         $scope.launch = function(which, productName, lineNumber){
@@ -68,7 +76,7 @@
             switch(which){
                 // Delete Line Item Confirm Dialog
                 case 'confirmRemoveLine':
-                    dlg = $dialogs.confirm('Please Confirm','Are you sure you want to Delete '+productName+ 'from cart ?');
+                    dlg = $dialogs.confirm('Please Confirm','Are you sure you want to Delete "'+productName+ '" from cart ?');
                     dlg.result.then(function(btn){
                         $scope.deleteLineItemFromCart(lineNumber);
                     },function(btn){

@@ -47,6 +47,15 @@
 			return invokeRemoteAction(RemoteActions.saveoptionsandattributes, arguments);
 
 		};
+		service.configureLineItem = function configureLineItem() {
+			return invokeRemoteAction(RemoteActions.configureLineItem, arguments);
+
+		};
+		service.deleteLineItemFromCart = function deleteLineItemFromCart() {
+			return invokeRemoteAction(RemoteActions.deleteLineItemFromCart, arguments);
+
+		};
+
 		
 		
 		//Expose general-purpose method

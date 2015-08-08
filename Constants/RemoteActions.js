@@ -5,6 +5,8 @@ angular.module('APTPS_ngCPQ').constant('RemoteActions',{
 	getMiniCartLines: 'APTPS_CAP_RA.getMiniCartLines',
 	getproductoptiongroupsData: 'APTPS_CAP_RA.getproductoptiongroupsData',
 	getattributeGroupsConfigData: 'APTPS_CAP_RA.getattributeGroupsConfigData',
+	getProductAttributeValueData: 'APTPS_CAP_RA.getProductAttributeValueData',
 	saveoptionsandattributes: 'APTPS_CAP_RA.saveoptionsandattributes',
-	getProductAttributeValueData: 'APTPS_CAP_RA.getProductAttributeValueData'	
+	configureLineItem: 'APTPS_CAP_RA.configureLineItem',
+	deleteLineItemFromCart: 'APTPS_CAP_RA.deleteLineItemFromCart'
 });
