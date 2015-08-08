@@ -12,6 +12,8 @@
 		service.getMiniCartLines = getMiniCartLines;
 		service.getminiCartLinesCount = getminiCartLinesCount;
 		service.setMinicartasDirty = setMinicartasDirty;
+		service.configureLineItem = configureLineItem;
+		service.deleteLineItemFromCart = deleteLineItemFromCart;
 
 		
 		function getMiniCartLines() {
@@ -25,6 +27,22 @@
 				service.miniCartLines = response;
 				service.miniCartLinesCount = response.length;
 				return service.miniCartLines;
+			});
+		}
+
+		function configureLineItem(lineItemId){
+			var cartId = $scope.quoteService.getcartId(), configRequestId = $scope.quoteService.getconfigRequestId();
+			var requestPromise = RemoteService.configureLineItem(cartId, configRequestId, lineItemId);
+			return requestPromise.then(function(response){
+				return response;
+			});
+		}
+
+		function deleteLineItemFromCart(lineNumber_tobedeleted){
+			var cartId = $scope.quoteService.getcartId(), configRequestId = $scope.quoteService.getconfigRequestId(), currentlineNumber = $scope.quoteService.getcontextLineNumber();
+            var requestPromise = RemoteService.configureLineItem(cartId, configRequestId, lineNumber_tobedeleted, currentlineNumber);
+			return requestPromise.then(function(response){
+				return response;
 			});
 		}
 

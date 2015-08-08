@@ -5,13 +5,15 @@
             // Initialize Scope Variables
             $scope.miniCartService = MiniCartDataService;
             $scope.quoteService = QuoteDataService;
+            $scope.remoteService = QuoteDataService;
             
             $scope.reverse = false;                
             $scope.itemsPerPage = 5;
             $scope.pagedItems = [];
             $scope.currentPage = 0;
             $scope.imagesbaseURL = $scope.quoteService.getimagesbaseURL();    
-            
+            $scope.lineCount = 0;
+
             // Group by pages
             $scope.groupToPages();
         }
@@ -21,6 +23,7 @@
             $scope.currentPage = 0;
             $scope.miniCartService.getMiniCartLines().then(function(result) {
                 $scope.items = result;        
+                $scope.lineCount = $scope.items.length;
                 $scope.pagedItems = [];
                 for (var i = 0; i < $scope.items.length; i++) {
                     if (i % $scope.itemsPerPage === 0) {
@@ -57,15 +60,13 @@
         };
         
         $scope.invokeDoConfigure = function(lineItemId){
-            var cartId = $scope.quoteService.getcartId(), configRequestId = $scope.quoteService.getconfigRequestId();
-            $scope.miniCartService.configureLineItem(cartId, configRequestId, lineItemId).then(function(result){
+            $scope.miniCartService.configureLineItem(lineItemId).then(function(result){
 
             })
         };
 
         $scope.deleteLineItemFromCart = function(lineNumber_tobedeleted){
-            var cartId = $scope.quoteService.getcartId(), configRequestId = $scope.quoteService.getconfigRequestId(), currentlineNumber = $scope.quoteService.getcontextLineNumber();
-            $scope.miniCartService.deleteLineItemFromCart(cartId, configRequestId, lineNumber_tobedeleted, currentlineNumber).then(function(result){
+            $scope.miniCartService.deleteLineItemFromCart(lineNumber_tobedeleted).then(function(result){
                 // mark minicart as dirty and reload minicart.
                 $scope.miniCartService.setMinicartasDirty();
                 $scope.groupToPages();

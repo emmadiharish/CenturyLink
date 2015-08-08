@@ -70,15 +70,13 @@
         };
         
         $scope.invokeDoConfigure = function(lineItemId){
-            var cartId = $scope.quoteService.getcartId(), configRequestId = $scope.quoteService.getconfigRequestId();
-            $scope.miniCartService.configureLineItem(cartId, configRequestId, lineItemId).then(function(result){
-            
+            $scope.miniCartService.configureLineItem(lineItemId).then(function(result){
+
             })
         };
 
         $scope.deleteLineItemFromCart = function(lineNumber_tobedeleted){
-            var cartId = $scope.quoteService.getcartId(), configRequestId = $scope.quoteService.getconfigRequestId(), currentlineNumber = $scope.quoteService.getcontextLineNumber();
-            $scope.miniCartService.deleteLineItemFromCart(cartId, configRequestId, lineNumber_tobedeleted, currentlineNumber).then(function(result){
+            $scope.miniCartService.deleteLineItemFromCart(lineNumber_tobedeleted).then(function(result){
                 // mark minicart as dirty and reload minicart.
                 $scope.miniCartService.setMinicartasDirty();
                 $scope.groupToPages();
