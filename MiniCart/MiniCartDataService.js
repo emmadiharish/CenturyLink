@@ -14,7 +14,7 @@
 		service.setMinicartasDirty = setMinicartasDirty;
 		service.configureLineItem = configureLineItem;
 		service.deleteLineItemFromCart = deleteLineItemFromCart;
-
+		
 		
 		function getMiniCartLines() {
 			if (service.isValid) {

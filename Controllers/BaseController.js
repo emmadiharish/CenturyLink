@@ -3,7 +3,9 @@
 
     BaseController = function($scope, $q, $log, $location, $dialogs, $anchorScroll, BaseService, QuoteDataService, MessageService, RemoteService, LocationDataService, OptionGroupDataService, ProductAttributeConfigDataService) {
         // all variable intializations.
-        $scope.imagesbaseURL = QuoteDataService.getimagesbaseURL();
+        $scope.quoteService = QuoteDataService;
+        
+        $scope.imagesbaseURL = $scope.quoteService.getCAPResourcebaseURL()+'/Images';
         
         $scope.filterpricing = function(){
             // angular.element(j$('#MainWrap')).scope().search();
@@ -130,7 +132,7 @@
                 var bunldleLinePAV = ProductAttributeConfigDataService.getbundleproductattributevalues();
                 bunldleLinePAV = $scope.formatPAVBeforeSave(bunldleLinePAV);
                 
-                var requestPromise = RemoteService.saveoptionsandattributes(QuoteDataService.getbundleLineId(), productcomponents, servicelocationId, QuoteDataService.getcartId(), QuoteDataService.getcontextLineNumber(), bunldleLinePAV);
+                var requestPromise = RemoteService.saveoptionsandattributes($scope.quoteService.getbundleLineId(), productcomponents, servicelocationId, $scope.quoteService.getcartId(), $scope.quoteService.getcontextLineNumber(), bunldleLinePAV);
                 requestPromise.then(function(result){
                     if(result.isSuccess)// if save call is successfull.
                     {

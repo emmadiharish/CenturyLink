@@ -4,7 +4,9 @@
     OptionGroupController = function($scope, $log, $location, QuoteDataService, OptionGroupDataService) {
 		// all variable intializations.
         $scope.init = function(){
-        	$scope.imagesbaseURL = QuoteDataService.getimagesbaseURL();
+        	$scope.quoteService = QuoteDataService;
+            
+            $scope.imagesbaseURL = $scope.quoteService.getCAPResourcebaseURL()+'/Images';
             $scope.currentbundleproductId = '';
             
             $scope.productGroupList =[];// to load hierarchy

@@ -11,7 +11,8 @@
             $scope.itemsPerPage = 5;
             $scope.pagedItems = [];
             $scope.currentPage = 0;
-            $scope.capResourcebaseURL = $scope.quoteService.getCAPResourcebaseURL()+'/Templates/MiniCartView.html';    
+            $scope.paginationLinksTemplateURL = $scope.quoteService.getCAPResourcebaseURL()+'/Templates/PaginationLinksView.html';
+            $scope.miniCartTemplateURL = $scope.quoteService.getCAPResourcebaseURL()+'/Templates/MiniCartView.html';
             $scope.lineCount = 0;
 
             // Group by pages

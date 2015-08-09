@@ -13,7 +13,8 @@
 	    $scope.pagedItems = [];
 	    $scope.currentPage = 0;
 	    
-	    $scope.imagesbaseURL = $scope.quoteService.getimagesbaseURL();
+	    $scope.imagesbaseURL = $scope.quoteService.getCAPResourcebaseURL()+'/Images';
+	    $scope.paginationLinksTemplateURL = $scope.quoteService.getCAPResourcebaseURL()+'/Templates/PaginationLinksView.html';
 	    $scope.pricingMatrixService.getPricingMatrix().then(function(result) {
 	        $scope.items = result.lines;		
 			$scope.fieldapis = result.pricingFields;
