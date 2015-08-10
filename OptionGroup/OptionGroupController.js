@@ -122,7 +122,9 @@
             // select the product and add to tree.
             $scope.selectproductandrenderhierarchy(prodcomponent, groupindex, true);
             if(prodcomponent != null
-                && !prodcomponent.hasAttributes)
+                && !prodcomponent.hasAttributes
+                && (prodcomponent.ischeckbox == true 
+                     && prodcomponent.isselected == false))
             {
                 return;
             }
@@ -130,12 +132,6 @@
             OptionGroupDataService.setSelectedoptionproduct(prodcomponent);
         }
         
-        $scope.renderoptionattributes = function(attrgroups){
-            // clear the previous option attribute groups.
-            $scope.selectedoptionattributegroups = attrgroups;
-            $scope.safeApply();   
-        }
-
         // anchor links in option groups.
         $scope.gotosection = function(sectionId) {
             // set the location.hash to the id of
