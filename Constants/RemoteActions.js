@@ -8,5 +8,6 @@ angular.module('APTPS_ngCPQ').constant('RemoteActions',{
 	getProductAttributeValueData: 'APTPS_CAP_RA.getProductAttributeValueData',
 	saveoptionsandattributes: 'APTPS_CAP_RA.saveoptionsandattributes',
 	configureLineItem: 'APTPS_CAP_RA.configureLineItem',
-	deleteLineItemFromCart: 'APTPS_CAP_RA.deleteLineItemFromCart'
+	deleteLineItemFromCart: 'APTPS_CAP_RA.deleteLineItemFromCart',
+	getPAVDependentPickListsConfig: 'APTPS_CAP_RA.getPAVDependentPickListsConfig'
 });

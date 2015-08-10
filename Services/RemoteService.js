@@ -55,6 +55,10 @@
 			return invokeRemoteAction(RemoteActions.deleteLineItemFromCart, arguments);
 
 		};
+		service.getPAVDependentPickListsConfig = function getPAVDependentPickListsConfig() {
+			return invokeRemoteAction(RemoteActions.getPAVDependentPickListsConfig, arguments);
+
+		};
 
 		
 		
