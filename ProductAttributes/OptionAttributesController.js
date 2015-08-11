@@ -78,8 +78,33 @@
                 $log.log('LoadDependentPiclistsConfig is complete.');
             })
         }
+
+        $scope.PAVPicklistChange = function(fieldName){
+            var selectedPAVValue = productAttributeValues[fieldName];
+            $scope.PAVDPicklistService.getDependentPicklistInformation(fieldName).then(function(response){
+                var dFields = response.dFields;
+                var dPicklistResult = response.dPicklistResult;
+                // Iterate over all dependent fields and change its dropdown values according to controlling field value selected.
+                _.each($scope.AttributeGroups, function(attributeGroup){
+                    _.each(attributeGroup.productAtributes, function(attributeConfig){
+                        // dependent field existing in the attribute group configuration.
+                        // change the selectOptions of depenedent picklist fields.
+                        var dField = attributeConfig.fieldName;
+                        if(_.findIndex(dFields, dField) != -1)
+                        {
+                            var dPicklistConfig = dPicklistResult[fieldName+dField];
+                            var options = [];
+                            _.each(dPicklistConfig[selectedPAVValue], function(lov){
+                                options.push({key:lov, value:lov});
+                            })
+                            attributeConfig.selectOptions = options;
+                        }
+                    })    
+                })    
+            })
+        }
         
-    $scope.init();
+        $scope.init();
     }
     OptionAttributesController.$inject = ['$scope', '$log', '$timeout', 'LocationDataService', 'OptionGroupDataService', 'ProductAttributeConfigDataService', 'ProductAttributeValueDataService', 'DependentPicklistDataService'];
     angular.module('APTPS_ngCPQ').controller('OptionAttributesController', OptionAttributesController);
