@@ -10,6 +10,7 @@
 
 		service.getDependentPicklistInformation_bulk = getDependentPicklistInformation_bulk;
 		service.getDependentPicklistInformation = getDependentPicklistInformation;
+		service.getStructuredDependentFields = getStructuredDependentFields;
 
 		function getDependentPicklistInformation(cField){
 			if (service.isValid){
