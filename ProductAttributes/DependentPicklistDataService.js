@@ -5,7 +5,8 @@
 		var service = this;
 
 		service.isValid = false;
-		service.PAVDependentPicklistResult = {};
+		service.PAVControllingfieldtoDependentfieldsMap = {};
+		service.PAVFieldCombinationtoDependentOptionsMap = {};
 
 		service.getProductAttributeValues = getProductAttributeValues;
 
@@ -22,9 +23,16 @@
 		}
 
 		function initializePAVDependentPicklistResult(response){
+			var res = {};
 			_.each(response, function(dpwrapper){
-				// service.PAVDependentPicklistResult.push(dpwrapper.pControllingFieldName, );
-			})
+				var cField = dpwrapper.pControllingFieldName;
+				var dField = dpwrapper.pDependentFieldName;
+				var dependentFields = _.has(res, cField) ?  _.propertyOf(res)('cField') : [];
+            	dependentFields.push(dField);
+            	res[cField] = dependentFields;
+            });
+            service.PAVFieldCombinationtoDependentOptionsMap[cField+dField] = dpwrapper.objResult;
+			service.PAVControllingfieldtoDependentfieldsMap = res;
 		}
 	}
 })();
