@@ -24,7 +24,7 @@
 		function getDependentPicklistInformation_bulk(){
 			var requestPromise = RemoteService.getPAVDependentPickListsConfig();
 			return requestPromise.then(function(response){
-				service.initializePAVDependentPicklistResult(response);
+				initializePAVDependentPicklistResult(response);
 				return response;
 			});
 		}
