@@ -80,7 +80,7 @@
         }
 
         $scope.PAVPicklistChange = function(fieldName){
-            var selectedPAVValue = productAttributeValues[fieldName];
+            var selectedPAVValue = $scope.productAttributeValues[fieldName];
             $scope.PAVDPicklistService.getDependentPicklistInformation(fieldName).then(function(response){
                 var dFields = response.dFields;
                 var dPicklistResult = response.dPicklistResult;
