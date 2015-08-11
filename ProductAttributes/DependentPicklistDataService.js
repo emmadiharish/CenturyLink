@@ -37,9 +37,9 @@
 				var dependentFields = _.has(res, cField) ?  _.propertyOf(res)(cField) : [];
             	dependentFields.push(dField);
             	res[cField] = dependentFields;
+            	service.PAVFieldDOptionsMap[cField+dField] = dpwrapper.objResult;
             });
-            service.PAVFieldDOptionsMap[cField+dField] = dpwrapper.objResult;
-			service.PAVcFieldtodFieldssMap = res;
+            service.PAVcFieldtodFieldssMap = res;
 		}
 
 		function getStructuredDependentFields(cField){
