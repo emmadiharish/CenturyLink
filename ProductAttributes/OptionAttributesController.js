@@ -1,17 +1,19 @@
 (function() {
     var OptionAttributesController;
 
-    OptionAttributesController = function($scope, $log, LocationDataService, OptionGroupDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService) {
+    OptionAttributesController = function($scope, $log, $timeout, LocationDataService, OptionGroupDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, DependentPicklistDataService) {
         $scope.init = function(){
             // all variable intializations.
             $scope.locationService = LocationDataService;
             $scope.PAVService = ProductAttributeValueDataService;
             $scope.PAConfigService = ProductAttributeConfigDataService;
             $scope.optionGroupService = OptionGroupDataService;
+            $scope.PAVDPicklistService = DependentPicklistDataService;
 
             $scope.AttributeGroups = [];
             $scope.productAttributeValues = {};
             $scope.Selectedoptionproduct = {};
+            $timeout(LoadDependentPiclistsConfig, 3000);
         }
         
         // Option Attribute load on location selection.
@@ -70,9 +72,15 @@
             $scope.CascadeBunleAttributestoOptions();
             $scope.safeApply();   
         }
+
+        function LoadDependentPiclistsConfig(){
+            $scope.PAVDPicklistService.getDependentPicklistInformation_bulk().then(function(response){
+                $log.log('LoadDependentPiclistsConfig is complete.');
+            })
+        }
         
     $scope.init();
     }
-    OptionAttributesController.$inject = ['$scope', '$log', 'LocationDataService', 'OptionGroupDataService', 'ProductAttributeConfigDataService', 'ProductAttributeValueDataService'];
+    OptionAttributesController.$inject = ['$scope', '$log', '$timeout', 'LocationDataService', 'OptionGroupDataService', 'ProductAttributeConfigDataService', 'ProductAttributeValueDataService', 'DependentPicklistDataService'];
     angular.module('APTPS_ngCPQ').controller('OptionAttributesController', OptionAttributesController);
 }).call(this);

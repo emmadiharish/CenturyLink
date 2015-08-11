@@ -5,20 +5,27 @@
 		var service = this;
 
 		service.isValid = false;
-		service.PAVControllingfieldtoDependentfieldsMap = {};
-		service.PAVFieldCombinationtoDependentOptionsMap = {};
+		service.PAVcFieldtodFieldssMap = {};
+		service.PAVFieldDOptionsMap = {};
 
-		service.getProductAttributeValues = getProductAttributeValues;
+		service.getDependentPicklistInformation_bulk = getDependentPicklistInformation_bulk;
+		service.getDependentPicklistInformation = getDependentPicklistInformation;
 
-		function getProductAttributeValues(){
+		function getDependentPicklistInformation(cField){
 			if (service.isValid){
-				return $q.when(service.PAVDependentPicklistResult);
+				return $q.when(getStructuredDependentFields(cField));
 			}
 
-			var requestPromise = RemoteService.(productIds_filtered, QuoteDataService.getcartId(), QuoteDataService.getcontextLineNumber());
+			return getDependentPicklistInformation_bulk().then(function(response){
+				return getStructuredDependentFields(cField);
+			});
+		}
+
+		function getDependentPicklistInformation_bulk(){
+			var requestPromise = RemoteService.getPAVDependentPickListsConfig();
 			return requestPromise.then(function(response){
 				service.initializePAVDependentPicklistResult(response);
-				return service.PAVDependentPicklistResult;
+				return response;
 			});
 		}
 
@@ -27,12 +34,37 @@
 			_.each(response, function(dpwrapper){
 				var cField = dpwrapper.pControllingFieldName;
 				var dField = dpwrapper.pDependentFieldName;
-				var dependentFields = _.has(res, cField) ?  _.propertyOf(res)('cField') : [];
+				var dependentFields = _.has(res, cField) ?  _.propertyOf(res)(cField) : [];
             	dependentFields.push(dField);
             	res[cField] = dependentFields;
             });
-            service.PAVFieldCombinationtoDependentOptionsMap[cField+dField] = dpwrapper.objResult;
-			service.PAVControllingfieldtoDependentfieldsMap = res;
+            service.PAVFieldDOptionsMap[cField+dField] = dpwrapper.objResult;
+			service.PAVcFieldtodFieldssMap = res;
+		}
+
+		function getStructuredDependentFields(cField){
+			var res = {};
+			if(_.has(service.PAVcFieldtodFieldssMap, cField))
+			{
+				var dFields = [];
+				_.each(service.PAVcFieldtodFieldssMap[cField], function(fields){
+					dFields = fields;
+				});
+				
+				var dFieldResult = [];
+				_.each(dFields, function(dField){
+					var fieldcombination = cField+dField;
+					if(_.has(service.PAVcFieldtodFieldssMap, fieldcombination))
+					{
+						_.each(service.PAVcFieldtodFieldssMap[fieldcombination], function(objResult)
+						{
+							dFieldResult.push({fieldcombination:objResult});
+						});
+					}
+				});
+				res = {'dFields': dFields, 'dPicklistResult':dFieldResult};
+			}
+			return res;	
 		}
 	}
 })();
