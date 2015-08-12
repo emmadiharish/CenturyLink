@@ -58,10 +58,12 @@
 					var fieldcombination = cField+dField;
 					if(_.has(service.PAVFieldDOptionsMap, fieldcombination))
 					{
-						_.each(service.PAVFieldDOptionsMap[fieldcombination], function(objResult)
+						var combinations = [];
+						_.each(service.PAVFieldDOptionsMap[fieldcombination], function(values, key)
 						{
-							dFieldResult.push({fieldcombination:objResult});
+							combinations.push({key:values});
 						});
+						dFieldResult.push({fieldcombination:combinations});
 					}
 				});
 				res = {'dFields': dFields, 'dPicklistResult':dFieldResult};
