@@ -55,9 +55,9 @@
 				var dFieldResult = [];
 				_.each(dFields, function(dField){
 					var fieldcombination = cField+dField;
-					if(_.has(service.PAVcFieldtodFieldssMap, fieldcombination))
+					if(_.has(service.PAVFieldDOptionsMap, fieldcombination))
 					{
-						_.each(service.PAVcFieldtodFieldssMap[fieldcombination], function(objResult)
+						_.each(service.PAVFieldDOptionsMap[fieldcombination], function(objResult)
 						{
 							dFieldResult.push({fieldcombination:objResult});
 						});
