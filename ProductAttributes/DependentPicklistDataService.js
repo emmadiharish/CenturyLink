@@ -49,9 +49,10 @@
 			{
 				var dFields = [];
 				_.each(service.PAVcFieldtodFieldssMap[cField], function(fields){
-					dFields = fields;
+					dFields.push(fields);
 				});
-				
+				dFields = _.flatten(dFields);
+
 				var dFieldResult = [];
 				_.each(dFields, function(dField){
 					var fieldcombination = cField+dField;

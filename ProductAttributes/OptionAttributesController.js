@@ -13,7 +13,7 @@
             $scope.AttributeGroups = [];
             $scope.productAttributeValues = {};
             $scope.Selectedoptionproduct = {};
-            $timeout(LoadDependentPiclistsConfig, 3000);
+            $timeout(LoadDependentPiclistsConfig, 2000);
         }
         
         // Option Attribute load on location selection.
