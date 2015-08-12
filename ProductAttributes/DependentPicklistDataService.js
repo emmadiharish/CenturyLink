@@ -41,7 +41,8 @@
             	res[cField] = dependentFields;
             	service.PAVFieldDOptionsMap[cField+dField] = dpwrapper.objResult;
             	
-            	var dFieldDefination[dField] = dpwrapper.objResult;
+            	var dFieldDefination = {};
+            	dFieldDefination[dField] = dpwrapper.objResult;
             	var dFieldDefinationList = [];
             	if(_.has(service.PAVcFieldtodFieldDefinationMap, cField))
             	{
