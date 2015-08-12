@@ -67,6 +67,7 @@
                             options.push({key:lov, value:lov});
                         })
                         attributeConfig.selectOptions = options;
+                        $scope.productAttributeValues[dField] = null;
                     }
                 })    
             })    
