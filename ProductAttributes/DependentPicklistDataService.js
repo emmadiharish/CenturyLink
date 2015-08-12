@@ -52,16 +52,16 @@
 					dFields.push(fields);
 				});
 				dFields = _.flatten(dFields);
+				res['dFields'] = dFields;
 
 				_.each(dFields, function(dField){
 					var fieldcombination = cField+dField;
 					$log.log('fieldcombination is: '+fieldcombination);
 					if(_.has(service.PAVFieldDOptionsMap, fieldcombination))
 					{
-						res = {'dFields': dFields, fieldcombination:service.PAVFieldDOptionsMap[fieldcombination]};
+						res[fieldcombination] = service.PAVFieldDOptionsMap[fieldcombination];
 					}
 				});
-				
 			}
 			return res;	
 		}
