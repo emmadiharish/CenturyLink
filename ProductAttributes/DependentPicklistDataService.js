@@ -53,20 +53,15 @@
 				});
 				dFields = _.flatten(dFields);
 
-				var dFieldResult = [];
 				_.each(dFields, function(dField){
 					var fieldcombination = cField+dField;
+					$log.log('fieldcombination is: '+fieldcombination);
 					if(_.has(service.PAVFieldDOptionsMap, fieldcombination))
 					{
-						var combinations = [];
-						_.each(service.PAVFieldDOptionsMap[fieldcombination], function(values, key)
-						{
-							combinations.push({key:values});
-						});
-						dFieldResult.push({fieldcombination:combinations});
+						res = {'dFields': dFields, fieldcombination:service.PAVFieldDOptionsMap[fieldcombination]};
 					}
 				});
-				res = {'dFields': dFields, 'dPicklistResult':dFieldResult};
+				
 			}
 			return res;	
 		}
