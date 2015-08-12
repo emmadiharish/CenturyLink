@@ -89,10 +89,11 @@
                     // dependent field existing in the attribute group configuration.
                     // change the selectOptions of depenedent picklist fields.
                     var dField = attributeConfig.fieldName;
-                    if(_.findIndex(dFields, dField) != -1)
+                    if(_.indexOf(dFields, dField) != -1)
                     {
                         var dPicklistConfig = DependentPLResult[fieldName+dField];
                         var options = [];
+                        options.push({key:'--None--', value:null});
                         _.each(dPicklistConfig[selectedPAVValue], function(lov){
                             options.push({key:lov, value:lov});
                         })
