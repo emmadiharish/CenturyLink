@@ -93,12 +93,13 @@
                     {
                         var dPicklistConfig = dFieldDefinations[dField];
                         var options = [];
+                        $scope.productAttributeValues[dField] = null;
                         options.push({key:'--None--', value:null});
                         _.each(dPicklistConfig[selectedPAVValue], function(lov){
                             options.push({key:lov, value:lov});
                         })
                         attributeConfig.selectOptions = options;
-                        $scope.productAttributeValues[dField] = null;
+                        $scope.PAVPicklistChange(dField);
                     }
                 })    
             })    
