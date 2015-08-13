@@ -99,7 +99,7 @@
                             options.push({key:lov, value:lov});
                         })
                         attributeConfig.selectOptions = options;
-                        $scope.PAVPicklistChange(dField);
+                        $scope.PAVPicklistChange(dField);// more than one level-dependency could exist.
                     }
                 })    
             })    
