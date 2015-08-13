@@ -54,7 +54,7 @@
                 $log.log('ajsdbas is: '+ajsdbas);
                 allCFields_selectedPAV.push.apply(ajsdbas);
             })
-
+		$log.log('allCFields_selectedPAV are:'+allCFields_selectedPAV);
 			// if config field is controlling field then apply dependencies.
             _.each(allCFields_selectedPAV, function(fieldName){
             	applyDependency_singleField(attributeGroups, PAV, fieldName);
