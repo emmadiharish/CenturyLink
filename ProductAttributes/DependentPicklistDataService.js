@@ -12,7 +12,7 @@
 		service.applyDependency_AllField = applyDependency_AllField;
 		service.getStructuredDependentFields = getStructuredDependentFields;
 
-		function getDependentPicklistInformation_bulk(){
+		function getDependentPicklistInformation(){
 			var requestPromise = RemoteService.getPAVDependentPickListsConfig();
 			return requestPromise.then(function(response){
 				initializePAVDependentPicklistResult(response);
