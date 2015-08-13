@@ -1,12 +1,13 @@
 (function() {
     var BundleAttributesController;
 
-    BundleAttributesController = function($scope, $log, QuoteDataService, LocationDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService) {
+    BundleAttributesController = function($scope, $log, QuoteDataService, LocationDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, DependentPicklistDataService) {
 		// all variable intializations.
         $scope.init = function(){
         	$scope.locationService = LocationDataService;
             $scope.PAVService = ProductAttributeValueDataService;
             $scope.PAConfigService = ProductAttributeConfigDataService;
+            $scope.PAVDPicklistService = DependentPicklistDataService;
 
             $scope.AttributeGroups = [];// attribute config groups for main bundle.
             $scope.productAttributeValues = {};
@@ -32,10 +33,13 @@
             var alllocationIdSet = $scope.locationService.getalllocationIdSet();
             var selectedlocationId = $scope.locationService.getselectedlpaId();
             var bundleProductId = QuoteDataService.getbundleproductId();
-            $scope.PAConfigService.getProductAttributesConfig(bundleProductId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
-                $scope.PAVService.getProductAttributeValues(bundleProductId).then(function(pavresult)
-                {
-                    $scope.renderBundleAttributes(attributeconfigresult, pavresult);
+            $scope.PAVDPicklistService.getDependentPicklistInformation().then(function(response){
+                $scope.PAConfigService.getProductAttributesConfig(bundleProductId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
+                    $scope.PAVService.getProductAttributeValues(bundleProductId).then(function(pavresult)
+                    {
+                        var res = $scope.PAVDPicklistService.applyDependency_AllField(attributeconfigresult, pavresult);
+                        $scope.renderBundleAttributes(res.pavConfigGroups, res.PAVObj);
+                    })
                 })
             })
         }
@@ -62,20 +66,21 @@
                     {
                         var dPicklistConfig = DependentPLResult[fieldName+dField];
                         var options = [];
+                        $scope.productAttributeValues[dField] = null;
                         options.push({key:'--None--', value:null});
                         _.each(dPicklistConfig[selectedPAVValue], function(lov){
                             options.push({key:lov, value:lov});
                         })
                         attributeConfig.selectOptions = options;
-                        $scope.productAttributeValues[dField] = null;
+                        $scope.PAVPicklistChange(dField);// more than one level-dependency could exist.
                     }
                 })    
             })    
         }
-
+        
         $scope.init();
 	};
 
-    BundleAttributesController.$inject = ['$scope', '$log', 'QuoteDataService', 'LocationDataService', 'ProductAttributeConfigDataService', 'ProductAttributeValueDataService'];
+    BundleAttributesController.$inject = ['$scope', '$log', 'QuoteDataService', 'LocationDataService', 'ProductAttributeConfigDataService', 'ProductAttributeValueDataService', 'DependentPicklistDataService'];
 	angular.module('APTPS_ngCPQ').controller('BundleAttributesController', BundleAttributesController);
 }).call(this);

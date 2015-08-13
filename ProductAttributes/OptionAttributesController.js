@@ -13,7 +13,6 @@
             $scope.AttributeGroups = [];
             $scope.productAttributeValues = {};
             $scope.Selectedoptionproduct = {};
-            $timeout(LoadDependentPiclistsConfig, 2000);
         }
         
         // Option Attribute load on location selection.
@@ -57,10 +56,13 @@
             // collect all products at this level and make a remote call for attributes.
             var alllocationIdSet = LocationDataService.getalllocationIdSet();
             var selectedlocationId = LocationDataService.getselectedlpaId();
-            $scope.PAConfigService.getProductAttributesConfig(productId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
-                $scope.PAVService.getProductAttributeValues(productId).then(function(pavresult)
-                {
-                    $scope.renderOptionAttributes(attributeconfigresult, pavresult);
+            $scope.PAVDPicklistService.getDependentPicklistInformation().then(function(response){
+                $scope.PAConfigService.getProductAttributesConfig(productId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
+                    $scope.PAVService.getProductAttributeValues(productId).then(function(pavresult)
+                    {
+                        var res = $scope.PAVDPicklistService.applyDependency_AllField(attributeconfigresult, pavresult);
+                        $scope.renderOptionAttributes(res.pavConfigGroups, res.PAVObj);
+                    })
                 })
             })
         }
@@ -71,12 +73,6 @@
             $scope.productAttributeValues = pav;
             $scope.CascadeBunleAttributestoOptions();
             $scope.safeApply();   
-        }
-
-        function LoadDependentPiclistsConfig(){
-            $scope.PAVDPicklistService.getDependentPicklistInformation_bulk().then(function(response){
-                $log.log('LoadDependentPiclistsConfig is complete.');
-            })
         }
 
         $scope.PAVPicklistChange = function(fieldName){
