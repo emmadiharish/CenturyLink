@@ -62,7 +62,7 @@
 		}
 
 		function applyDependency_singleField(attributeGroups, PAV, fieldName){
-            var selectedPAVValue = _.has(PAV, fieldName) ? PAV[fieldName] : null;
+            var selectedPAVValue = _.has(PAV, fieldName) ? PAV[fieldName] : '';
             var dFieldDefinations = getStructuredDependentFields(fieldName);
             var dFields = _.keys(dFieldDefinations);
             // Iterate over all dependent fields and change its dropdown values according to controlling field value selected.
