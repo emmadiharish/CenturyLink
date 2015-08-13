@@ -49,7 +49,7 @@
 			var res = {};
 			var allCFields = [];
 			_.each(attributeGroups, function(attributeGroup){
-                push.apply(allCFields, _.intersection(_.keys(service.PAVcFieldtodFieldDefinationMap), _.pluck(attributeGroup.productAtributes, 'fieldName')));
+                allCFields.push.apply(allCFields, _.intersection(_.keys(service.PAVcFieldtodFieldDefinationMap), _.pluck(attributeGroup.productAtributes, 'fieldName')));
             })
 
 			// if config field is controlling field then apply dependencies.
