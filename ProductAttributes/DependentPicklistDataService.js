@@ -48,6 +48,7 @@
 		function applyDependency_AllField(attributeGroups, PAV){
 			var res = {};
 			var allCFields = [];
+			// get the intersection of fields in attribute groups and controlling fields from PAV object.
 			_.each(attributeGroups, function(attributeGroup){
                 allCFields.push.apply(allCFields, _.intersection(_.keys(service.PAVcFieldtodFieldDefinationMap), _.pluck(attributeGroup.productAtributes, 'fieldName')));
             })

@@ -56,13 +56,11 @@
             // collect all products at this level and make a remote call for attributes.
             var alllocationIdSet = LocationDataService.getalllocationIdSet();
             var selectedlocationId = LocationDataService.getselectedlpaId();
-            $scope.PAVDPicklistService.getDependentPicklistInformation().then(function(response){
-                $scope.PAConfigService.getProductAttributesConfig(productId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
-                    $scope.PAVService.getProductAttributeValues(productId).then(function(pavresult)
-                    {
-                        var res = $scope.PAVDPicklistService.applyDependency_AllField(attributeconfigresult, pavresult);
-                        $scope.renderOptionAttributes(res.pavConfigGroups, res.PAVObj);
-                    })
+            $scope.PAConfigService.getProductAttributesConfig(productId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
+                $scope.PAVService.getProductAttributeValues(productId).then(function(pavresult)
+                {
+                    var res = $scope.PAVDPicklistService.applyDependency_AllField(attributeconfigresult, pavresult);
+                    $scope.renderOptionAttributes(res.pavConfigGroups, res.PAVObj);
                 })
             })
         }
