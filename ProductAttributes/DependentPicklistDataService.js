@@ -49,7 +49,6 @@
 		var res = {};
 			var allCFields_selectedPAV = [];
 			_.each(attributeGroups, function(attributeGroup){
-                var fieldsinAttributeGroup = ;
                 var ajsdbas = _.intersection(_.keys(service.PAVcFieldtodFieldDefinationMap), _.pluck(attributeGroup.productAtributes, 'fieldName'));
                 $log.log('ajsdbas is: '+ajsdbas);
                 allCFields_selectedPAV.push.apply(ajsdbas);
