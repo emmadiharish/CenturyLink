@@ -51,7 +51,8 @@
 			var allCFields_selectedPAV = [];
 			_.each(attributeGroups, function(attributeGroup){
                 var fieldsinAttributeGroup = _.pluck(attributeGroup.productAtributes, 'fieldName');
-                allCFields_selectedPAV.push.apply(_.intersection(allCFields, fieldsinAttributeGroup));
+                var ajsdbas = _.intersection(allCFields, fieldsinAttributeGroup);
+                allCFields_selectedPAV.push.apply(ajsdbas);
             })
 
 			// if config field is controlling field then apply dependencies.
