@@ -49,6 +49,7 @@
 			var res = {};
 			var allCFields = _.keys(service.PAVcFieldtodFieldDefinationMap);
 			var allCFields_selectedPAV = [];
+			var xyz = _.intersection([1,2,3,4,5], [1,1,2]);
 			_.each(attributeGroups, function(attributeGroup){
                 var fieldsinAttributeGroup = _.pluck(attributeGroup.productAtributes, 'fieldName');
                 var ajsdbas = _.intersection(allCFields, fieldsinAttributeGroup);
