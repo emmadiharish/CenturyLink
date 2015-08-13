@@ -41,15 +41,13 @@
             	res[cField] = dependentFields;
             	service.PAVFieldDOptionsMap[cField+dField] = dpwrapper.objResult;
             	
-            	var dFieldDefination = {};
-            	dFieldDefination[dField] = dpwrapper.objResult;
-            	var dFieldDefinationList = [];
+            	var dFieldDefinations = {};
             	if(_.has(service.PAVcFieldtodFieldDefinationMap, cField))
             	{
-            		dFieldDefinationList = service.PAVcFieldtodFieldDefinationMap[cField];
+            		dFieldDefinations = service.PAVcFieldtodFieldDefinationMap[cField];
             	}
-            	dFieldDefinationList.push(dFieldDefination);
-            	service.PAVcFieldtodFieldDefinationMap[cField] = dFieldDefinationList;
+            	dFieldDefinations[dField] = dpwrapper.objResult;
+            	service.PAVcFieldtodFieldDefinationMap[cField] = dFieldDefinations;
             });
 
             service.PAVcFieldtodFieldssMap = res;
