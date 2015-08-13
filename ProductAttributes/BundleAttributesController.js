@@ -54,8 +54,8 @@
         
         $scope.PAVPicklistChange = function(fieldName){
             var selectedPAVValue = $scope.productAttributeValues[fieldName];
-            var DependentPLResult = $scope.PAVDPicklistService.getStructuredDependentFields(fieldName);
-            var dFields = DependentPLResult.dFields;
+            var dFieldDefinations = $scope.PAVDPicklistService.getStructuredDependentFields(fieldName);
+            var dFields = _.keys(dFieldDefinations);
             // Iterate over all dependent fields and change its dropdown values according to controlling field value selected.
             _.each($scope.AttributeGroups, function(attributeGroup){
                 _.each(attributeGroup.productAtributes, function(attributeConfig){
@@ -64,7 +64,7 @@
                     var dField = attributeConfig.fieldName;
                     if(_.indexOf(dFields, dField) != -1)
                     {
-                        var dPicklistConfig = DependentPLResult[fieldName+dField];
+                        var dPicklistConfig = dFieldDefinations[dField];
                         var options = [];
                         $scope.productAttributeValues[dField] = null;
                         options.push({key:'--None--', value:null});
