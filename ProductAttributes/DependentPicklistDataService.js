@@ -47,17 +47,13 @@
 
 		function applyDependency_AllField(attributeGroups, PAV){
 			var res = {};
-			var allCFields = _.keys(service.PAVcFieldtodFieldDefinationMap);
-			var allCFields_selectedPAV = [];
+			var allCFields = [];
 			_.each(attributeGroups, function(attributeGroup){
-                var fieldsinAttributeGroup = _.pluck(attributeGroup.productAtributes, 'fieldName');
-                var ajsdbas = _.intersection(allCFields, fieldsinAttributeGroup);
-                $log.log('fieldsinAttributeGroup are: '+fieldsinAttributeGroup+'ajsdbas is: '+ajsdbas+'allCFields are: '+allCFields);
-                allCFields_selectedPAV.push.apply(ajsdbas);
+                push.apply(allCFields, _.intersection(_.keys(service.PAVcFieldtodFieldDefinationMap), _.pluck(attributeGroup.productAtributes, 'fieldName')));
             })
 
 			// if config field is controlling field then apply dependencies.
-            _.each(allCFields_selectedPAV, function(fieldName){
+            _.each(allCFields, function(fieldName){
             	applyDependency_singleField(attributeGroups, PAV, fieldName);
 			})
             res = {pavConfigGroups: attributeGroups, PAVObj: PAV};
