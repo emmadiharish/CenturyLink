@@ -46,13 +46,12 @@
 		}
 
 		function applyDependency_AllField(attributeGroups, PAV){
-			var res = {};
-			var allCFields = _.keys(service.PAVcFieldtodFieldDefinationMap);
+		var res = {};
 			var allCFields_selectedPAV = [];
 			_.each(attributeGroups, function(attributeGroup){
-                var fieldsinAttributeGroup = _.pluck(attributeGroup.productAtributes, 'fieldName');
-                var ajsdbas = _.intersection(allCFields, fieldsinAttributeGroup);
-                $log.log('fieldsinAttributeGroup are: '+fieldsinAttributeGroup+'ajsdbas is: '+ajsdbas+'allCFields are: '+allCFields);
+                var fieldsinAttributeGroup = ;
+                var ajsdbas = _.intersection(_.keys(service.PAVcFieldtodFieldDefinationMap), _.pluck(attributeGroup.productAtributes, 'fieldName'));
+                $log.log('ajsdbas is: '+ajsdbas);
                 allCFields_selectedPAV.push.apply(ajsdbas);
             })
 
