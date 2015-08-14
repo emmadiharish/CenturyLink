@@ -51,7 +51,7 @@
 			_.each(attributeGroups, function(attributeGroup){
                 _.each(attributeGroup.productAtributes, function(attributeConfig){
                     var fieldName = attributeConfig.fieldName;
-                    var selectedvalue = PAV.fieldName;
+                    var selectedvalue = PAV[fieldName];
                     // if other option doesn't exist in the options then add it.
                     if(!_.contains(_.pluck(attributeConfig.selectOptions, 'value'), selectedvalue) )
                     {
