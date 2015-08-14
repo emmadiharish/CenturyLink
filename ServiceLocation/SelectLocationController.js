@@ -6,8 +6,6 @@
         $scope.init = function(){
             $scope.selectedlpa = {};
             $scope.locationService = LocationDataService;
-            
-            $scope.displaylocations = $scope.locationService.gethasServicelocations();
         }
         $scope.init();
 
@@ -15,6 +13,14 @@
             if(newVal)
             {
                 $scope.selectedlpa = newVal;
+            }    
+        });
+
+        $scope.$watch('locationService.gethasServicelocations()', function(newVal, oldVal) {
+            if(newVal != $modelValue
+                && !_.isNull(newVale))
+            {
+                $scope.displaylocations = $scope.locationService.gethasServicelocations();
             }    
         });
     };
