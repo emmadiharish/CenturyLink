@@ -17,9 +17,26 @@
 
 		function initializeOptionGroups(prodIdtoOptionGroupsMap) {
 			_.map(prodIdtoOptionGroupsMap, (function(optionGroups, prodId){
+                 /* removal of special characters*/
+                _.each(optionGroups, function(group){
+                	group.groupName = characterRepace(group.groupName);
+                	_.each(group.productOptionComponents, function(component){
+                		component.productName = characterRepace(component.productName);
+                	})
+                })
                 service.prodIdtoOptionGroupsMap[prodId] = optionGroups;
             }));
 			service.isValid = true;
 		}
+
+		function characterRepace(item){
+            var changedItem = item;
+            if(item.indexOf("&#39;") >= 0){
+                changedItem = item.replace("&#39;","'");
+            }if(item.indexOf("&amp;") >= 0){
+                changedItem = item.replace("&amp;","&");
+            }           
+            return changedItem;
+        }
 	}
 })();
