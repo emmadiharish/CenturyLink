@@ -60,6 +60,7 @@
                 $scope.PAVService.getProductAttributeValues(productId).then(function(pavresult)
                 {
                     var res = $scope.PAVDPicklistService.applyDependency_AllField(attributeconfigresult, pavresult);
+                    res = $scope.PAVDPicklistService.addOtherPicklisttoDropDowns(res.pavConfigGroups, res.PAVObj);
                     $scope.renderOptionAttributes(res.pavConfigGroups, res.PAVObj);
                 })
             })
