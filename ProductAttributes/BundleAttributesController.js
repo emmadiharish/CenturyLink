@@ -38,6 +38,7 @@
                     $scope.PAVService.getProductAttributeValues(bundleProductId).then(function(pavresult)
                     {
                         var res = $scope.PAVDPicklistService.applyDependency_AllField(attributeconfigresult, pavresult);
+                        res = $scope.PAVDPicklistService.addOtherPicklisttoDropDowns(res.pavConfigGroups, res.PAVObj);
                         $scope.renderBundleAttributes(res.pavConfigGroups, res.PAVObj);
                     })
                 })
@@ -77,7 +78,6 @@
                 })    
             })    
         }
-        
         $scope.init();
 	};
 

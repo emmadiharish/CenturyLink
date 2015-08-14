@@ -11,6 +11,7 @@
 		service.applyDependency_singleField = applyDependency_singleField;
 		service.applyDependency_AllField = applyDependency_AllField;
 		service.getStructuredDependentFields = getStructuredDependentFields;
+		service.addOtherPicklisttoDropDowns = addOtherPicklisttoDropDowns;
 
 		function getDependentPicklistInformation(){
 			var requestPromise = RemoteService.getPAVDependentPickListsConfig();
@@ -43,6 +44,23 @@
 				res = service.PAVcFieldtodFieldDefinationMap[cField];
 			}
 			return res;	
+		}
+
+		function addOtherPicklisttoDropDowns(attributeGroups, PAV){
+			var res = {};
+			_.each(attributeGroups, function(attributeGroup){
+                _.each(attributeGroup.productAtributes, function(attributeConfig){
+                    var fieldName = attributeConfig.fieldName;
+                    var selectedvalue = PAV.fieldName;
+                    // if other option doesn't exist in the options then add it.
+                    if(!_.contains(_.pluck(attributeConfig.selectOptions, 'value'), selectedvalue) )
+                    {
+                    	attributeConfig.selectOptions.push({key:selectedvalue, value:selectedvalue});
+                    }
+                })
+            })
+            res = {pavConfigGroups: attributeGroups, PAVObj: PAV};
+			return res;
 		}
 
 		function applyDependency_AllField(attributeGroups, PAV){
