@@ -6,7 +6,7 @@ angular.module('APTPS_ngCPQ').constant('RemoteActions',{
 	getproductoptiongroupsData: 'APTPS_CAP_RA.getproductoptiongroupsData',
 	getattributeGroupsConfigData: 'APTPS_CAP_RA.getattributeGroupsConfigData',
 	getProductAttributeValueData: 'APTPS_CAP_RA.getProductAttributeValueData',
-	saveoptionsandattributes: 'APTPS_CAP_RA.saveoptionsandattributes',
+	saveoptionsandattributes: 'APTPS_CAP_RA.saveQuoteConfig',
 	configureLineItem: 'APTPS_CAP_RA.configureLineItem',
 	deleteLineItemFromCart: 'APTPS_CAP_RA.deleteLineItemFromCart',
 	getPAVDependentPickListsConfig: 'APTPS_CAP_RA.getPAVDependentPickListsConfig'

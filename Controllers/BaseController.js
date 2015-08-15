@@ -101,6 +101,17 @@
             if($scope.validateonsubmit())
             {
                 baseService.startprogress();// start progress bar.
+                
+                // selected service location Id.
+                var servicelocationId = null;
+                var servicelocation = LocationDataService.getselectedlpa();
+                if(servicelocation)
+                {
+                    servicelocationId = servicelocation.Id;    
+                }
+
+                var bundleLineItem ={Id:, Apttus_Config2__ConfigurationId__c:, Service_Location__c:servicelocationId, Apttus_Config2__ProductId__c:, Apttus_Config2__LineNumber__c:};
+
                 var productcomponents = [];
                 var allOptionGroups = OptionGroupDataService.getallOptionGroups();
                 _.each(allOptionGroups, function(optiongroups, bundleprodId){
@@ -110,9 +121,6 @@
                                 || (productcomponent.productId == optiongroup.selectedproduct && !optiongroup.ischeckbox))
                             {
                                 productcomponent.isselected = true;
-                                productcomponent.pav = $scope.formatPAVBeforeSave(productcomponent.pav);
-                                // productcomponent.removeAttr('$$hashKey');
-                                //delete productcomponent.$$hashKey;
                                 productcomponent = _.omit(productcomponent, '$$hashKey');
                                 productcomponents.push(productcomponent);
                             }
@@ -120,19 +128,9 @@
                     })
                 })
 
-                // selected service location Id.
-                var servicelocationId = '';
-                var servicelocation = LocationDataService.getselectedlpa();
-                if(servicelocation)
-                {
-                    servicelocationId = servicelocation.Id;    
-                }
-                
-                // prepare Product attribute value record of bundle line item.
-                var bunldleLinePAV = ProductAttributeConfigDataService.getbundleproductattributevalues();
-                bunldleLinePAV = $scope.formatPAVBeforeSave(bunldleLinePAV);
-                
-                var requestPromise = RemoteService.saveoptionsandattributes($scope.quoteService.getbundleLineId(), productcomponents, servicelocationId, $scope.quoteService.getcartId(), $scope.quoteService.getcontextLineNumber(), bunldleLinePAV);
+                var productIdtoPAVMap = {};
+
+                var requestPromise = RemoteService.saveoptionsandattributes(bundleLineItem, productcomponents, productIdtoPAVMap);
                 requestPromise.then(function(result){
                     if(result.isSuccess)// if save call is successfull.
                     {
