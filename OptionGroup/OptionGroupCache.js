@@ -19,9 +19,9 @@
 			_.map(prodIdtoOptionGroupsMap, (function(optionGroups, prodId){
                  /* removal of special characters*/
                 _.each(optionGroups, function(group){
-                	group.groupName = characterRepace(group.groupName);
+                	//group.groupName = characterRepace(group.groupName);
                 	_.each(group.productOptionComponents, function(component){
-                		component.productName = characterRepace(component.productName);
+                		//component.productName = characterRepace(component.productName);
                 	})
                 })
                 service.prodIdtoOptionGroupsMap[prodId] = optionGroups;

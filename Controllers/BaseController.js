@@ -7,7 +7,7 @@
         $scope.baseService = BaseService;
         $scope.locationService = LocationDataService;
         $scope.optionGroupService = OptionGroupDataService;
-        $scope.pavService = ProductAttributeValueDataService;
+        $scope.PAVService = ProductAttributeValueDataService;
 
 
         $scope.imagesbaseURL = $scope.quoteService.getCAPResourcebaseURL()+'/Images';
@@ -134,7 +134,7 @@
                     })
                 })
 
-                var productIdtoPAVMap = $scope.pavService.getAllProductAttributeValues();
+                var productIdtoPAVMap = $scope.PAVService.getAllProductAttributeValues();
 
                 var requestPromise = RemoteService.saveoptionsandattributes(bundleLineItem, productcomponents, productIdtoPAVMap);
                 requestPromise.then(function(result){
