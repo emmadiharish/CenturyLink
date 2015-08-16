@@ -1,13 +1,13 @@
 (function() {
-	angular.module('APTPS_ngCPQ').service('PAVConfigDataService', PAVConfigDataService); 
-	PAVConfigDataService.$inject = ['$q', '$log', 'BaseService', 'RemoteService'];
-	function PAVConfigDataService($q, $log, BaseService, RemoteService) {
+	angular.module('APTPS_ngCPQ').service('PAVConfigService', PAVConfigService); 
+	PAVConfigService.$inject = ['$q', '$log', 'BaseService', 'RemoteService'];
+	function PAVConfigService($q, $log, BaseService, RemoteService) {
 		var service = this;
 		service.isvalid = false;
 		service.fieldNametoDFRMap = {};
 
 		service.getPAVFieldMetaData = getPAVFieldMetaData;
-		
+
 		function getPAVFieldMetaData(){
 			if(service.isvalid == true)
 			{
