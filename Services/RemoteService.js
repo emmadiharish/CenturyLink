@@ -60,6 +60,11 @@
 
 		};
 
+		service.getPAVFieldMetaData = function getPAVFieldMetaData() {
+			return invokeRemoteAction(RemoteActions.getPAVFieldMetaData, arguments);
+		
+		};
+
 		
 		
 		//Expose general-purpose method
