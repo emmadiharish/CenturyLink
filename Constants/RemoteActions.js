@@ -10,5 +10,5 @@ angular.module('APTPS_ngCPQ').constant('RemoteActions',{
 	configureLineItem: 'APTPS_CAP_RA.configureLineItem',
 	deleteLineItemFromCart: 'APTPS_CAP_RA.deleteLineItemFromCart',
 	getPAVDependentPickListsConfig: 'APTPS_CAP_RA.getPAVDependentPickListsConfig',
-	getPAVFieldMetaData: 'getPAVFieldMetaData'
+	getPAVFieldMetaData: 'APTPS_CAP_RA.getPAVFieldMetaData'
 });
