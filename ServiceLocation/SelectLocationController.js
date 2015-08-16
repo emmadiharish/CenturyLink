@@ -19,7 +19,7 @@
 
         $scope.$watch('locationService.gethasServicelocations()', function(newVal, oldVal) {
             if(newVal != oldVal
-                && !_.isNull(newVale))
+                && !_.isNull(newVal))
             {
                 $scope.displaylocations = $scope.locationService.gethasServicelocations();
             }    

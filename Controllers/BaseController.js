@@ -4,7 +4,7 @@
     BaseController = function($scope, $q, $log, $location, $dialogs, $anchorScroll, BaseService, QuoteDataService, MessageService, RemoteService, LocationDataService, OptionGroupDataService, ProductAttributeConfigDataService) {
         // all variable intializations.
         $scope.quoteService = QuoteDataService;
-        
+        $scope.baseService = BaseService;
         $scope.imagesbaseURL = $scope.quoteService.getCAPResourcebaseURL()+'/Images';
         
         $scope.filterpricing = function(){
@@ -100,7 +100,7 @@
             deferred = $q.defer();
             if($scope.validateonsubmit())
             {
-                baseService.startprogress();// start progress bar.
+                $scope.baseService.startprogress();// start progress bar.
                 
                 // selected service location Id.
                 var servicelocationId = null;
@@ -153,7 +153,7 @@
                             })
                         })
                         $scope.safeApply();
-                        baseService.completeprogress();// end progress bar.
+                        $scope.baseService.completeprogress();// end progress bar.
                         if(numErrors > 0)
                         {
                             res = false;
