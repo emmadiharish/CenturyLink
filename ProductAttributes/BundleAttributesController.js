@@ -39,7 +39,7 @@
             var selectedlocationId = $scope.locationService.getselectedlpaId();
             var bundleProductId = QuoteDataService.getbundleproductId();
             $scope.PAVConfigService.getPAVFieldMetaData().then(function(fieldDescribeMap){
-                var prettyfieldDescribeMap = angular.toJson(fieldDescribeMap, 1);
+                var prettyfieldDescribeMap = angular.toJson(fieldDescribeMap, 5);
                 $scope.PAVDPicklistService.getDependentPicklistInformation().then(function(response){
                     $scope.PAConfigService.getProductAttributesConfig(bundleProductId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
                         $scope.PAVService.getProductAttributeValues(bundleProductId).then(function(pavresult)
