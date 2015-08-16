@@ -33,7 +33,7 @@
 			var requestPromise = RemoteService.getproductoptiongroupsData(prodIds_filtered, QuoteDataService.getcartId(), QuoteDataService.getcontextLineNumber());
 			BaseService.startprogress();// start progress bar.
 			return requestPromise.then(function(response){
-				OptionGroupCache.initializeOptionGroups(response);
+				OptionGroupCache.initializeOptionGroups(angular.fromJson(response));
 				BaseService.completeprogress();
 				// logTransaction(response, categoryRequest);
 				return OptionGroupCache.getOptionGroups();
