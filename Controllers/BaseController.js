@@ -1,10 +1,15 @@
 (function() {
     var BaseController;
 
-    BaseController = function($scope, $q, $log, $location, $dialogs, $anchorScroll, BaseService, QuoteDataService, MessageService, RemoteService, LocationDataService, OptionGroupDataService, ProductAttributeConfigDataService) {
+    BaseController = function($scope, $q, $log, $dialogs, BaseService, QuoteDataService, MessageService, RemoteService, LocationDataService, OptionGroupDataService, ProductAttributeValueDataService) {
         // all variable intializations.
         $scope.quoteService = QuoteDataService;
         $scope.baseService = BaseService;
+        $scope.locationService = LocationDataService;
+        $scope.optionGroupService = OptionGroupDataService;
+        $scope.pavService = ProductAttributeValueDataService;
+
+
         $scope.imagesbaseURL = $scope.quoteService.getCAPResourcebaseURL()+'/Images';
         
         $scope.filterpricing = function(){
@@ -13,8 +18,8 @@
 
         $scope.validateonsubmit = function(){
             // Validation 1 : Service location has to be selected.
-            var servicelocation = LocationDataService.getselectedlpa();
-            var hasLocations = LocationDataService.gethasServicelocations();
+            var servicelocation = $scope.locationService.getselectedlpa();
+            var hasLocations = $scope.locationService.gethasServicelocations();
             if(!servicelocation
                 && hasLocations)
             {
@@ -104,7 +109,7 @@
                 
                 // selected service location Id.
                 var servicelocationId = null;
-                var servicelocation = LocationDataService.getselectedlpa();
+                var servicelocation = $scope.locationService.getselectedlpa();
                 if(servicelocation)
                 {
                     servicelocationId = servicelocation.Id;    
@@ -114,7 +119,7 @@
                 var bundleLineItem ={Id:bundleLine.Id, Apttus_Config2__ConfigurationId__c:bundleLine.Apttus_Config2__ConfigurationId__c, Service_Location__c:servicelocationId, Apttus_Config2__ProductId__c:bundleLine.Apttus_Config2__ProductId__c, Apttus_Config2__LineNumber__c:bundleLine.Apttus_Config2__LineNumber__c};
 
                 var productcomponents = [];
-                var allOptionGroups = OptionGroupDataService.getallOptionGroups();
+                var allOptionGroups = $scope.optionGroupService.getallOptionGroups();
                 _.each(allOptionGroups, function(optiongroups, bundleprodId){
                     _.each(optiongroups, function(optiongroup){
                         _.each(optiongroup.productOptionComponents, function(productcomponent){
@@ -129,7 +134,7 @@
                     })
                 })
 
-                var productIdtoPAVMap = {};
+                var productIdtoPAVMap = $scope.pavService.getAllProductAttributeValues();
 
                 var requestPromise = RemoteService.saveoptionsandattributes(bundleLineItem, productcomponents, productIdtoPAVMap);
                 requestPromise.then(function(result){
@@ -204,6 +209,6 @@
         }
     };
 
-    BaseController.$inject = ['$scope', '$q', '$log', '$location', '$dialogs', '$anchorScroll', 'BaseService', 'QuoteDataService', 'MessageService', 'RemoteService', 'LocationDataService', 'OptionGroupDataService', 'ProductAttributeConfigDataService'];
+    BaseController.$inject = ['$scope', '$q', '$log', '$dialogs', 'BaseService', 'QuoteDataService', 'MessageService', 'RemoteService', 'LocationDataService', 'OptionGroupDataService', 'ProductAttributeValueDataService'];
     angular.module('APTPS_ngCPQ').controller('BaseController', BaseController);
 }).call(this);

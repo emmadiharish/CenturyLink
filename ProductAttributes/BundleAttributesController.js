@@ -11,11 +11,13 @@
 
             $scope.AttributeGroups = [];// attribute config groups for main bundle.
             $scope.productAttributeValues = {};
+            $scope.remotecallinitiated = false;
         }
 
         $scope.$watch('locationService.getselectedlpa()', function(newVal, oldVal) {
             if(!_.isEmpty(newVal)
-                && !_.isEqual(newVal, oldVal))
+                && !_.isEqual(newVal, oldVal)
+                && $scope.remotecallinitiated == false)
             {   
                 $scope.retrieveproductattributeGroupData();
             }    
@@ -23,13 +25,15 @@
 
         $scope.$watch('locationService.getisRemotecallComplete()', function(newVal, oldVal) {
             if(newVal != oldVal
-                && newVal == true)
+                && newVal == true
+                && $scope.remotecallinitiated == false)
             {   
                 $scope.retrieveproductattributeGroupData();
             }    
         });
         
         $scope.retrieveproductattributeGroupData = function(){
+            $scope.remotecallinitiated = true;
             var alllocationIdSet = $scope.locationService.getalllocationIdSet();
             var selectedlocationId = $scope.locationService.getselectedlpaId();
             var bundleProductId = QuoteDataService.getbundleproductId();
@@ -40,6 +44,7 @@
                         var res = $scope.PAVDPicklistService.applyDependency_AllField(attributeconfigresult, pavresult);
                         res = $scope.PAVDPicklistService.addOtherPicklisttoDropDowns(res.pavConfigGroups, res.PAVObj);
                         $scope.renderBundleAttributes(res.pavConfigGroups, res.PAVObj);
+                        $scope.remotecallinitiated = false;
                     })
                 })
             })
