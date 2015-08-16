@@ -110,7 +110,8 @@
                     servicelocationId = servicelocation.Id;    
                 }
 
-                var bundleLineItem ={Id:, Apttus_Config2__ConfigurationId__c:, Service_Location__c:servicelocationId, Apttus_Config2__ProductId__c:, Apttus_Config2__LineNumber__c:};
+                var bundleLine = $scope.quoteService.getlineItem();
+                var bundleLineItem ={Id:bundleLine.Id, Apttus_Config2__ConfigurationId__c:bundleLine.Apttus_Config2__ConfigurationId__c, Service_Location__c:servicelocationId, Apttus_Config2__ProductId__c:bundleLine.Apttus_Config2__ProductId__c, Apttus_Config2__LineNumber__c:bundleLine.Apttus_Config2__LineNumber__c};
 
                 var productcomponents = [];
                 var allOptionGroups = OptionGroupDataService.getallOptionGroups();
