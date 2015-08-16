@@ -1,14 +1,14 @@
 (function() {
     var BundleAttributesController;
 
-    BundleAttributesController = function($scope, $log, QuoteDataService, LocationDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVConfigDataService, DependentPicklistDataService) {
+    BundleAttributesController = function($scope, $log, QuoteDataService, LocationDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVConfigService, DependentPicklistDataService) {
 		// all variable intializations.
         $scope.init = function(){
         	$scope.locationService = LocationDataService;
             $scope.PAVService = ProductAttributeValueDataService;
             $scope.PAConfigService = ProductAttributeConfigDataService;
             $scope.PAVDPicklistService = DependentPicklistDataService;
-            $scope.PAVConfigService = PAVConfigDataService;
+            $scope.PAVConfigService = PAVConfigService;
 
             $scope.AttributeGroups = [];// attribute config groups for main bundle.
             $scope.productAttributeValues = {};
@@ -89,6 +89,6 @@
         $scope.init();
 	};
 
-    BundleAttributesController.$inject = ['$scope', '$log', 'QuoteDataService', 'LocationDataService', 'ProductAttributeConfigDataService', 'ProductAttributeValueDataService', 'PAVConfigDataService', 'DependentPicklistDataService'];
+    BundleAttributesController.$inject = ['$scope', '$log', 'QuoteDataService', 'LocationDataService', 'ProductAttributeConfigDataService', 'ProductAttributeValueDataService', 'PAVConfigService', 'DependentPicklistDataService'];
 	angular.module('APTPS_ngCPQ').controller('BundleAttributesController', BundleAttributesController);
 }).call(this);
