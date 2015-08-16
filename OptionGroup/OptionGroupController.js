@@ -25,7 +25,7 @@
                     $scope.selectproductandrenderhierarchy(prodcomponent, groupindex, forceselectoption);
                     $scope.currentproductoptiongroups = OptionGroupDataService.getcurrentproductoptiongroups();
                     // As the official documentation states "The remote method call executes synchronously, but it doesn’t wait for the response to return. When the response returns, the callback function handles it asynchronously."
-                    $scope.safeApply();
+                    // $scope.safeApply();
                 })
             }
         }

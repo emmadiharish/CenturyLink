@@ -17,7 +17,7 @@
 	    $scope.paginationLinksTemplateURL = $scope.quoteService.getCAPResourcebaseURL()+'/Templates/PaginationLinksView.html';
 	    $scope.pricingMatrixService.getPricingMatrix().then(function(result) {
 	        $scope.items = result.lines;		
-			$scope.fieldapis = result.pricingFields;
+			$scope.fieldapis = _.keys(result.pricingFieldsMap);
 			$scope.fieldsmap = result.pricingFieldsMap;
 			$scope.currentPage = 0;   
 	    	

@@ -42,7 +42,7 @@
             if(!_.isEmpty(newValue))
             {
                 $scope.CascadeBunleAttributestoOptions();
-                $scope.safeApply();    
+                //$scope.safeApply();    
             }
         });
 
