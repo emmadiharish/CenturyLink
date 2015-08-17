@@ -195,14 +195,15 @@
                         return deferred.promise;
                     }
                 })
+                deferred.resolve(res);
             }
             else{
                 deferred.reject('Validations Failed.');
                 res = false;
+                deferred.resolve(res);
                 return deferred.promise;
                 // baseService.completeprogress();// end progress bar.
             }
-            deferred.resolve(res);
             return deferred.promise;
         }
         
