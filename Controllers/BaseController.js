@@ -174,10 +174,10 @@
                                 // get all error messages and add to MessageService.
                                 // possible message types : danger, warning, info, success.
                                 var message = ActionDo.Message;
-                                var MessageType = ActionDo.MessageType == 'Error' ? 'danger' : ActionDo.MessageType;
-                                if(!_.isEmpty(ActionDo.Message))
+                                var messageType = ActionDo.MessageType == 'Error' ? 'danger' : ActionDo.MessageType;
+                                if(!_.isEmpty(Message))
                                 {
-                                    MessageService.addMessage(MessageType, message);
+                                    MessageService.addMessage(messageType, message);
                                     numErrors++;    
                                 }
                                 // process the rule action only if auto executed is false.
