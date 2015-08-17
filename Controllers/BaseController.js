@@ -168,7 +168,7 @@
                         var constraintActionDoList = result.appliedActionDOList;
                         var numErrors = 0;
                         _.each(constraintActionDoList, function(ActionDo){
-                            if(ActionDo.IsPending == true)
+                            if(ActionDo.IsPending == false)
                             {
                                 var TriggeringProductIds = ActionDo.TriggeringProductIds;
                                 // get all error messages and add to MessageService.
