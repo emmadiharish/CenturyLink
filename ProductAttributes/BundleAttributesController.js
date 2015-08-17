@@ -59,7 +59,7 @@
             $scope.AttributeGroups = attrgroups;
             $scope.PAVService.setbundleproductattributevalues(pav);
             $scope.productAttributeValues = $scope.PAVService.getbundleproductattributevalues();
-            // $scope.safeApply();   
+            $scope.safeApply();   
         }
         
         $scope.PAVPicklistChange = function(fieldName){
