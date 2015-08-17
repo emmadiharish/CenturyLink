@@ -174,17 +174,17 @@
                                 // possible message types : danger, warning, info, success.
                                 var message = ActionDo.Message;
                                 var MessageType = ActionDo.MessageType == 'error' ? 'danger' : ActionDo.MessageType;
-                                if(!_.isEmpty(ActionDo.Message)
+                                if(!_.isEmpty(ActionDo.Message))
                                 {
                                     MessageService.addMessage(MessageType, message);
                                     numErrors++;    
                                 }
                             }
                         })
-                        $scope.safeApply();
                         $scope.baseService.completeprogress();// end progress bar.
                         if(numErrors > 0)
                         {
+                            $scope.safeApply();
                             res = false;
                         }
                     }
