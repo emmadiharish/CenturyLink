@@ -100,8 +100,7 @@
         }
 
         $scope.saveinformation = function(){
-            var deferred,res;
-            res = true;
+            var deferred;
             deferred = $q.defer();
             if($scope.validateonsubmit())
             {
@@ -185,7 +184,8 @@
                         if(numErrors > 0)
                         {
                             $scope.safeApply();
-                            res = false;
+                            deferred.reject('Constraint rules Error.');
+                            return deferred.promise;
                         }
                     }
                     else{
@@ -194,13 +194,12 @@
                         deferred.reject(event.message);
                         return deferred.promise;
                     }
+                    // resolver the prmose after remote call is complete.
+                    deferred.resolve(true);
                 })
-                deferred.resolve(res);
             }
             else{
                 deferred.reject('Validations Failed.');
-                res = false;
-                deferred.resolve(res);
                 return deferred.promise;
                 // baseService.completeprogress();// end progress bar.
             }
