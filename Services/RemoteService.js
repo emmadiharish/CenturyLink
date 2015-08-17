@@ -64,7 +64,10 @@
 			return invokeRemoteAction(RemoteActions.getPAVFieldMetaData, arguments);
 		
 		};
-
+		service.getProducts = function getProducts() {
+			return invokeRemoteAction(RemoteActions.getProducts, arguments);
+		
+		};
 		
 		
 		//Expose general-purpose method

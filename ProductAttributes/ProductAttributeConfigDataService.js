@@ -11,7 +11,8 @@
 		function getProductAttributesConfig_bulk(servicelocationIdSet, productIds, groupIds) {
 			// check if cachedProductAttributes has products requested for else make a remote call.
 			var cachedProductAttributes = ProductAttributeConfigCache.getProductAttributesConfig();
-			var productIds_filtered = _.filter(productIds, function(Id){ return !cachedProductAttributes.prodductIdtoattributegroupsMap.hasOwnProperty(Id); });
+			var existingproductIds = _.keys(cachedProductAttributes.prodductIdtoattributegroupsMap);
+			var productIds_filtered = _.filter(productIds, function(Id){ return !_.contains(existingproductIds, Id); });
 			if (ProductAttributeConfigCache.isValid
 				&& productIds_filtered.length < 1) {
 				// logTransaction(cachedProductAttributes);
