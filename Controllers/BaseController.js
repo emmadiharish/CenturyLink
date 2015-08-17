@@ -175,7 +175,7 @@
                                 // possible message types : danger, warning, info, success.
                                 var message = ActionDo.Message;
                                 var messageType = ActionDo.MessageType == 'Error' ? 'danger' : ActionDo.MessageType;
-                                if(!_.isEmpty(Message))
+                                if(!_.isEmpty(message))
                                 {
                                     MessageService.addMessage(messageType, message);
                                     numErrors++;    
