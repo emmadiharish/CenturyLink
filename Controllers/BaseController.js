@@ -140,22 +140,46 @@
                 requestPromise.then(function(result){
                     if(result.isSuccess)// if save call is successfull.
                     {
-                        var prodIdtoErrorMap = result.productIdtoMessageMap;
+                        /*appliedActionDOList is a List<Apttus_CPQApi.CPQ.AppliedActionDO>.
+                        IsPending                       :  Indicates whether the action is pending.
+                        ########################Message Related##########################
+                        TriggeringProductIds (List<Id>) :  The list of triggering product ids that are in the cart.
+
+                        MessageType  (String)           :  Indicates whether the message is of warning type or error 
+                                                           type.
+                        Message     (String)            :  This is the message to be displayed when the rule action is
+                                                           in pending state.
+                        IsShowPrompt                    :  This shows the message as a prompt. If the user cancels
+                                                           the prompt instead of taking action, marks the rule as
+                                                           ignored.
+                        ########################Auto inclusion/auto exclusion related########################
+                        ActionType  (String)            :  This is the type of rule action.
+                        ActionIntent                    :  Picklist on Constraint rule action. action intent depends on action type and SuggestedProductIds.
+                                                           This is the intent of the rule action whether to auto
+                                                           include or disable selection and so on.
+                        SuggestedProductIds (List<Id>)  :  The list of product ids suggested by the rule action to be
+                                                           included or excluded.
+                        AffectedProductIds (List<Id>)   :  list of products being included/excluded by auto-executed = true;
+                                                           The list of product ids added by auto inclusion or flagged
+                                                           by exclusion.
+                        IsAutoExecuted                  :  Indicates whether inclusion was performed by the system.
+                                                           if true, dont worry - Ignore - products will be auto-included.
+                                                           if false, process the rule and include SuggestedProductIds.*/
+                        var constraintActionDoList = result.appliedActionDOList;
                         var numErrors = 0;
-                        _.each(allOptionGroups, function(optiongroups, bundleprodId){
-                            _.each(optiongroups, function(optiongroup){
-                                _.each(optiongroup.productOptionComponents, function(productcomponent){
-                                    var productId = productcomponent.productId;
-                                    if(prodIdtoErrorMap.hasOwnProperty(productId))
-                                    {
-                                        var message = prodIdtoErrorMap[productId];
-                                        optiongroup.isError = true;
-                                        optiongroup.errorMessage = message;
-                                        MessageService.addMessage('danger', message);
-                                        numErrors++;
-                                    }
-                                })
-                            })
+                        _.each(constraintActionDoList, function(ActionDo){
+                            if(ActionDo.IsPending == true)
+                            {
+                                // get all error messages and add to MessageService.
+                                // possible message types : danger, warning, info, success.
+                                var message = ActionDo.Message;
+                                var MessageType = ActionDo.MessageType == 'error' ? 'danger' : ActionDo.MessageType;
+                                if(!_.isEmpty(ActionDo.Message)
+                                {
+                                    MessageService.addMessage(MessageType, message);
+                                    numErrors++;    
+                                }
+                            }
                         })
                         $scope.safeApply();
                         $scope.baseService.completeprogress();// end progress bar.
