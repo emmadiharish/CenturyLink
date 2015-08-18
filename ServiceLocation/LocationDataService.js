@@ -38,9 +38,10 @@
 				
 				// logTransaction(response, categoryRequest);
 				var locationId = QuoteDataService.getbundleServiceLocation();
-                if(locationId)
+                if(!_.isUndefined(locationId)
+                	&& !_.isNull(locationId))
                 {
-                    setselectedlpa(_.findWhere(response.locations, {Id = locationId}));
+                    setselectedlpa(_.findWhere(response.locations, {Id:locationId}));
                 }
 				return LocationCache.getLocations();
 			});
