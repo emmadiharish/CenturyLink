@@ -22,6 +22,7 @@
 		}
 
 		function initializefieldNametoDFRMap(response){
+			service.isvalid = true;
 			service.fieldNametoDFRMap = response;
 		}
 	}

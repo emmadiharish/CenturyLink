@@ -14,6 +14,11 @@
 		service.addOtherPicklisttoDropDowns = addOtherPicklisttoDropDowns;
 
 		function getDependentPicklistInformation(){
+			if(service.isValid)
+			{
+				return $q.when(service.PAVcFieldtodFieldDefinationMap);
+			}
+
 			var requestPromise = RemoteService.getPAVDependentPickListsConfig();
 			return requestPromise.then(function(response){
 				initializePAVDependentPicklistResult(response);
@@ -22,7 +27,7 @@
 		}
 
 		function initializePAVDependentPicklistResult(response){
-			var res = {};
+			service.isValid = true;
 			_.each(response, function(dpwrapper){
 				var cField = dpwrapper.pControllingFieldName;
 				var dField = dpwrapper.pDependentFieldName;
