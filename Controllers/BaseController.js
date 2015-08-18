@@ -53,7 +53,7 @@
                 case 'confirmAbandon':
                     dlg = $dialogs.confirm('Please Confirm','Are you sure you want to abandon the current cart?');
                     dlg.result.then(function(btn){
-                        //$scope.Abandon();
+                        $scope.Abandon();
                     },function(btn){
                         
                 });
@@ -63,7 +63,7 @@
                 case 'confirmRemoveItem':
                     dlg = $dialogs.confirm('Please Confirm','Are you sure you want to remove the current Line item?');
                     dlg.result.then(function(btn){
-                        //$scope.removeItemFromCart();
+                        $scope.removeItemFromCart();
                     },function(btn){
                     
                 });
