@@ -40,12 +40,7 @@
 				var locationId = QuoteDataService.getbundleServiceLocation();
                 if(locationId)
                 {
-                    _.each(response.locations , function(la){
-                        if(la.Id == locationId)
-                        {
-                            setselectedlpa(la);
-                        }
-                    })
+                    setselectedlpa(_.findWhere(response.locations, {Id = locationId}));
                 }
 				return LocationCache.getLocations();
 			});

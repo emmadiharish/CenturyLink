@@ -118,6 +118,8 @@
 
                 var productcomponents = [];
                 var allOptionGroups = $scope.optionGroupService.getallOptionGroups();
+                // allOptionGroups = angular.toJson(allOptionGroups);
+
                 _.each(allOptionGroups, function(optiongroups, bundleprodId){
                     _.each(optiongroups, function(optiongroup){
                         _.each(optiongroup.productOptionComponents, function(productcomponent){
@@ -266,21 +268,6 @@
                 this.$apply(fn);
             }
         };
-
-        $scope.formatPAVBeforeSave = function(pav){
-            pav = _.omit(pav, 'attributes');
-            
-            // set the other picklist to original fields.
-            _.each(_.filter(_.keys(pav), function(key){
-                            return key.lastIndexOf('Other') != -1;
-                        }), 
-                function(key){
-                    var keywithnoother = key.slice( 0, key.lastIndexOf( "Other" ) );
-                    pav[keywithnoother] = pav[key];
-                    pav = _.omit(pav, key);
-            })
-            return pav;
-        }
     };
 
     BaseController.$inject = ['$scope', '$q', '$log', '$dialogs', 'BaseService', 'QuoteDataService', 'MessageService', 'RemoteService', 'LocationDataService', 'OptionGroupDataService', 'ProductAttributeValueDataService'];
