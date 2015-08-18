@@ -8,6 +8,7 @@
         service.getMessages = getMessages;
         service.addMessage = addMessage;
         service.removeMessage = removeMessage;
+        service.clearAll = clearAll;
 
         function getMessages(){
             return service.messages;
@@ -19,6 +20,10 @@
         function removeMessage(index)
         {
             service.messages.splice(index, 1);
+        }
+
+        function clearAll(){
+            service.messages = [];
         }
     }
 })();

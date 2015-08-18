@@ -10,10 +10,10 @@
             $scope.currentbundleproductId = '';
             
             $scope.productGroupList =[];// to load hierarchy
-            $scope.rendercurrentproductoptiongroups(QuoteDataService.getbundleproductId(), null, null, true);
+            $scope.rendercurrentproductoptiongroups(QuoteDataService.getbundleproductId(), null, null);
         }
 
-        $scope.rendercurrentproductoptiongroups = function(bundleproductId, prodcomponent, groupindex, forceselectoption){
+        $scope.rendercurrentproductoptiongroups = function(bundleproductId, prodcomponent, groupindex){
             // $scope.selectOptionProduct(prodcomponent, groupindex, true);
             var productId = bundleproductId != null ? bundleproductId : prodcomponent.productId;
             if($scope.currentbundleproductId != productId)
@@ -22,30 +22,25 @@
                 // var allOptionGroups = OptionGroupDataService.getallOptionGroups(); 
                 // make a remote call to get option groups for all bundles in current option groups.
                 OptionGroupDataService.getOptionGroup(productId).then(function(result) {
-                    $scope.selectproductandrenderhierarchy(prodcomponent, groupindex, forceselectoption);
+                    $scope.selectOptionProduct(prodcomponent, groupindex);
+                    $scope.renderhierarchy();
                     $scope.currentproductoptiongroups = OptionGroupDataService.getcurrentproductoptiongroups();
                     // As the official documentation states "The remote method call executes synchronously, but it doesn’t wait for the response to return. When the response returns, the callback function handles it asynchronously."
-                    // $scope.safeApply();
+                    $scope.safeApply();
                 })
             }
         }
 
-        $scope.selectproductandrenderhierarchy = function(prodcomponent, groupindex, forceselectoption){
-            $scope.selectOptionProduct(prodcomponent, groupindex, forceselectoption);
-            $scope.renderhierarchy();
-        }
-
-        $scope.selectOptionProduct = function(prodcomponent, groupindex, forceselectoption ){
+        $scope.selectOptionProduct = function(prodcomponent, groupindex){
             if(prodcomponent != null)
             {
-                // select the product on click.
                 if($scope.currentproductoptiongroups[groupindex].ischeckbox == false)// radio button
                 {
                     $scope.currentproductoptiongroups[groupindex].selectedproduct = prodcomponent.productId;
                 }
-                /*else if(forceselectoption == true){// checkbox.
+                else if(forceselectoption == true){// checkbox.
                      prodcomponent.isselected = true;
-                }*/
+                }
             }
         }
         
@@ -118,16 +113,24 @@
             $scope.productGroupList = target;
         }
 
+        $scope.selectProductrenderoptionproductattributes = function(prodcomponent, groupindex){
+            // select the product and add to tree.
+            $scope.selectOptionProduct(prodcomponent, groupindex);
+            $scope.renderhierarchy();
+            
+            // set selected option product which has watch with option Attribute Controller.
+            OptionGroupDataService.setSelectedoptionproduct(prodcomponent);
+        }
+
         $scope.renderoptionproductattributes = function(prodcomponent, groupindex){
             // select the product and add to tree.
-            $scope.selectproductandrenderhierarchy(prodcomponent, groupindex, true);
+            $scope.renderhierarchy();
             if(prodcomponent != null
-                && !prodcomponent.hasAttributes
-                && (prodcomponent.ischeckbox == true 
-                     && prodcomponent.isselected == false))
+                && !prodcomponent.hasAttributes)
             {
                 return;
             }
+
             // set selected option product which has watch with option Attribute Controller.
             OptionGroupDataService.setSelectedoptionproduct(prodcomponent);
         }

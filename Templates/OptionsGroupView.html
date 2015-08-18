@@ -33,7 +33,7 @@
 				</td>
 				<td class="col-sm-8">
 					<div>
-						<a href="#" title="Configure {{pcomponent.productName}}" ng-click="rendercurrentproductoptiongroups(null, pcomponent, $parent.$index, true)" ng-show="pcomponent.hasOptions">
+						<a href="#" title="Configure {{pcomponent.productName}}" ng-click="rendercurrentproductoptiongroups(null, pcomponent, $parent.$index)" ng-show="pcomponent.hasOptions">
 							<img src="{{imagesbaseURL}}/Apttus_Config2_Configure_bundle.png" alt="Configure"/>
 						</a>
 						<a target="_blank" href="/{{pcomponent.productId}}">
@@ -48,7 +48,7 @@
 					</div>
 				</td>
 				<td class="col-sm-1">
-					<a ng-show="pcomponent.componentId != null && pcomponent.hasAttributes" href="#" title="Configure Attributes" ng-click="renderoptionproductattributes(pcomponent, $parent.$index)">
+					<a ng-show="pcomponent.componentId != null && pcomponent.hasAttributes" href="#" title="Configure Attributes" ng-click="selectProductrenderoptionproductattributes(pcomponent, $parent.$index)">
 						<img src="{{imagesbaseURL}}/Apttus_Config2_configure_attributes.png"/>
 					</a>
 				</td>

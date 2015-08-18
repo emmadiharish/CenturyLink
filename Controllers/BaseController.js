@@ -102,10 +102,9 @@
         $scope.saveinformation = function(){
             var deferred;
             deferred = $q.defer();
+            $scope.baseService.startprogress();// start progress bar.
             if($scope.validateonsubmit())
             {
-                $scope.baseService.startprogress();// start progress bar.
-                
                 // selected service location Id.
                 var servicelocationId = null;
                 var servicelocation = $scope.locationService.getselectedlpa();
@@ -157,8 +156,7 @@
                                                            if false, process the rule and include SuggestedProductIds.
                         ActionType  (String)            :  This is the type of rule action.(Inclusion/Exclusion/Validation/Recommendation/Replacement)
                         ActionIntent                    :  Picklist on Constraint rule action. action intent depends on action type and SuggestedProductIds.
-                                                           This is the intent of the rule action whether to auto
-                                                           include or disable selection and so on.(Auto Include/Prompt/Show Message/Check on Finalization/Disable Selection)
+                                                           This is the intent of the rule action whether to auto include or disable selection and so on.(Auto Include/Prompt/Show Message/Check on Finalization/Disable Selection)
                         SuggestedProductIds (List<Id>)  :  The list of product ids suggested by the rule action to be
                                                            included or excluded.
                         AffectedProductIds (List<Id>)   :  list of products being included/excluded by auto-executed = true;
@@ -167,6 +165,8 @@
                         */
                         var constraintActionDoList = result.appliedActionDOList;
                         var numErrors = 0;
+                        MessageService.clearAll();
+                        var productIdtoActionMap = {};
                         _.each(constraintActionDoList, function(ActionDo){
                             if(ActionDo.IsPending == false)
                             {
@@ -186,11 +186,50 @@
                                     var ActionType = ActionDo.ActionType;
                                     var ActionIntent = ActionDo.ActionIntent;
                                     var SuggestedProductIds = ActionDo.SuggestedProductIds;
-
+                                    _.each(SuggestedProductIds, function(productId){
+                                        productIdtoActionMap[productId] = {'ActionType': ActionType, 'ActionIntent': ActionIntent};
+                                    })
                                 }
                             }
                         })
-                        $scope.baseService.completeprogress();// end progress bar.
+
+                        // exclude or include products according to productIdtoActionMap.
+                        _.each(allOptionGroups, function(optiongroups, bundleprodId){
+                            _.each(optiongroups, function(optiongroup){
+                                _.each(optiongroup.productOptionComponents, function(productcomponent){
+                                    var productId = productcomponent.productId;
+                                    if(_.has(productIdtoActionMap, productId))
+                                    {
+                                        var ActionType = productIdtoActionMap[productId].ActionType;
+                                        var ActionIntent = productIdtoActionMap[productId].ActionIntent;
+                                        // possible values : Prompt/Show Message/Check on Finalization
+                                        switch(ActionType)
+                                        {
+                                            case 'Inclusion':
+                                                if(ActionIntent == 'Auto Include')
+                                                {
+                                                    productcomponent.isselected = true;   
+                                                }
+                                                break;
+                                            case 'Exclusion':
+                                                if(ActionIntent == 'Disable Selection')
+                                                {
+                                                    productcomponent.isselected = false;
+                                                    productcomponent[isDisabled] = true;
+                                                }
+                                                break;
+                                            case 'Validation':
+                                                break;
+                                            case 'Recommendation':
+                                                break;
+                                            case 'Replacement':
+                                                break;
+                                        };
+                                    }
+                                })
+                            })
+                        })
+
                         if(numErrors > 0)
                         {
                             $scope.safeApply();
@@ -204,14 +243,15 @@
                         deferred.reject(event.message);
                         return deferred.promise;
                     }
-                    // resolver the prmose after remote call is complete.
+                    // resolver the promise after remote call is complete.
+                    $scope.baseService.completeprogress();// end progress bar.
                     deferred.resolve(true);
                 })
             }
             else{
+                $scope.baseService.completeprogress();// end progress bar.
                 deferred.reject('Validations Failed.');
                 return deferred.promise;
-                // baseService.completeprogress();// end progress bar.
             }
             return deferred.promise;
         }
