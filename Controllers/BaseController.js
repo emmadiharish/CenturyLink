@@ -183,15 +183,15 @@
                                     numErrors++;    
                                 }
                                 // process the rule action only if auto executed is false.
-                                if(ActionDo.IsAutoExecuted == false)
-                                {
+                                //if(ActionDo.IsAutoExecuted == false)
+                                //{
                                     var ActionType = ActionDo.ActionType;
                                     var ActionIntent = ActionDo.ActionIntent;
                                     var SuggestedProductIds = ActionDo.SuggestedProductIds;
                                     _.each(SuggestedProductIds, function(productId){
                                         productIdtoActionMap[productId] = {'ActionType': ActionType, 'ActionIntent': ActionIntent};
                                     })
-                                }
+                                //}
                             }
                         })
 
