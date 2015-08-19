@@ -232,6 +232,7 @@
                         if(numErrors > 0)
                         {
                             $scope.safeApply();
+                            $scope.baseService.completeprogress();// end progress bar.
                             deferred.reject('Constraint rules Error.');
                             return deferred.promise;
                         }
