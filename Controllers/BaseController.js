@@ -174,7 +174,7 @@
                             var messageType = ActionDo.MessageType == 'Error' ? 'danger' : ActionDo.MessageType;
                             if(!_.isEmpty(message))
                             {
-                                MessageService.addMessage(messageType, message);
+                                MessageService.addMessage(messageType, message+' AppliedRuleInfoId is: '+ActionDo.AppliedRuleInfoId+' AppliedActionId is: '+ActionDo.AppliedActionId);
                                 numErrors++;    
                             }
                             // process the rule action only if auto executed is false.
