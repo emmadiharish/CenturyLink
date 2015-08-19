@@ -19,7 +19,8 @@
             if(_.isEmpty(servicelocation)
                 && hasLocations)
             {
-                alert('Please select service location to proceed.');
+                // alert('Please select service location to proceed.');
+                MessageService.addMessage('danger', 'Please select location to Proceed.');
                 return false;
             }
             return true;
@@ -248,7 +249,6 @@
             }
             else{
                 $scope.baseService.completeprogress();// end progress bar.
-                MessageService.addMessage('danger', 'Please select location to Proceed.');
                 deferred.reject('Validations Failed.');
                 return deferred.promise;
             }
