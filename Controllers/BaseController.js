@@ -214,7 +214,7 @@
                                                 if(ActionIntent == 'Disable Selection')
                                                 {
                                                     productcomponent.isselected = false;
-                                                    productcomponent[isDisabled] = true;
+                                                    productcomponent['isDisabled'] = true;
                                                 }
                                                 break;
                                             case 'Validation':
