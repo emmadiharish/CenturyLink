@@ -138,7 +138,7 @@
                     if(result.isSuccess)// if save call is successfull.
                     {
                         /*appliedActionDOList is a List<Apttus_CPQApi.CPQ.AppliedActionDO>.
-                        IsPending                       :  Indicates whether the action is pending.
+                        IsPending                       :  Indicates Whether the rule action is pending user action.
                         ########################Message Related##########################
                         TriggeringProductIds (List<Id>) :  The list of triggering product ids that are in the cart.
 
@@ -167,29 +167,26 @@
                         MessageService.clearAll();
                         var productIdtoActionMap = {};
                         _.each(constraintActionDoList, function(ActionDo){
-                            if(ActionDo.IsPending == false)
+                            var TriggeringProductIds = ActionDo.TriggeringProductIds;
+                            // get all error messages and add to MessageService.
+                            // possible message types : danger, warning, info, success.
+                            var message = ActionDo.Message;
+                            var messageType = ActionDo.MessageType == 'Error' ? 'danger' : ActionDo.MessageType;
+                            if(!_.isEmpty(message))
                             {
-                                var TriggeringProductIds = ActionDo.TriggeringProductIds;
-                                // get all error messages and add to MessageService.
-                                // possible message types : danger, warning, info, success.
-                                var message = ActionDo.Message;
-                                var messageType = ActionDo.MessageType == 'Error' ? 'danger' : ActionDo.MessageType;
-                                if(!_.isEmpty(message))
-                                {
-                                    MessageService.addMessage(messageType, message);
-                                    numErrors++;    
-                                }
-                                // process the rule action only if auto executed is false.
-                                //if(ActionDo.IsAutoExecuted == false)
-                                //{
-                                    var ActionType = ActionDo.ActionType;
-                                    var ActionIntent = ActionDo.ActionIntent;
-                                    var SuggestedProductIds = ActionDo.SuggestedProductIds;
-                                    _.each(SuggestedProductIds, function(productId){
-                                        productIdtoActionMap[productId] = {'ActionType': ActionType, 'ActionIntent': ActionIntent};
-                                    })
-                                //}
+                                MessageService.addMessage(messageType, message);
+                                numErrors++;    
                             }
+                            // process the rule action only if auto executed is false.
+                            //if(ActionDo.IsAutoExecuted == false)
+                            //{
+                                var ActionType = ActionDo.ActionType;
+                                var ActionIntent = ActionDo.ActionIntent;
+                                var SuggestedProductIds = ActionDo.SuggestedProductIds;
+                                _.each(SuggestedProductIds, function(productId){
+                                    productIdtoActionMap[productId] = {'ActionType': ActionType, 'ActionIntent': ActionIntent};
+                                })
+                            //}
                         })
 
                         // exclude or include products according to productIdtoActionMap.
