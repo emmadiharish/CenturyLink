@@ -125,6 +125,7 @@
         $scope.renderoptionproductattributes = function(prodcomponent, groupindex){
             // select the product and add to tree.
             $scope.renderhierarchy();
+            // do not render attributes when option product is unchecked or product does not have attributes.
             if(prodcomponent != null
                 && (prodcomponent.isselected == false 
                     && $scope.currentproductoptiongroups[groupindex].ischeckbox)
