@@ -16,7 +16,7 @@
             // Validation 1 : Service location has to be selected.
             var servicelocation = $scope.locationService.getselectedlpa();
             var hasLocations = $scope.locationService.gethasServicelocations();
-            if(!servicelocation
+            if(_.isEmpty(servicelocation)
                 && hasLocations)
             {
                 alert('Please select service location to proceed.');
