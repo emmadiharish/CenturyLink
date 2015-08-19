@@ -126,7 +126,8 @@
             // select the product and add to tree.
             $scope.renderhierarchy();
             if(prodcomponent != null
-                && (prodcomponent.isselected == false && prodcomponent.ischeckbox)
+                && (prodcomponent.isselected == false 
+                    && $scope.currentproductoptiongroups[groupindex].ischeckbox)
                 && !prodcomponent.hasAttributes)
             {
                 return;
