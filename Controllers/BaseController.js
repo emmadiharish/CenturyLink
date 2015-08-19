@@ -12,10 +12,6 @@
 
         $scope.imagesbaseURL = $scope.quoteService.getCAPResourcebaseURL()+'/Images';
         
-        $scope.filterpricing = function(){
-            // angular.element(j$('#MainWrap')).scope().search();
-        }
-
         $scope.validateonsubmit = function(){
             // Validation 1 : Service location has to be selected.
             var servicelocation = $scope.locationService.getselectedlpa();
@@ -252,6 +248,7 @@
             }
             else{
                 $scope.baseService.completeprogress();// end progress bar.
+                MessageService.addMessage('danger', 'Please select location to Proceed.');
                 deferred.reject('Validations Failed.');
                 return deferred.promise;
             }
