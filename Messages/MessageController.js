@@ -1,20 +1,20 @@
 (function() {
     var MessageController;
 	MessageController = function($scope, $log, MessageService) {
-	    //$scope.msgService = MessageService;
-	    $scope.messages = MessageService.getMessages();
+	    $scope.msgService = MessageService;
+	    // $scope.messages = MessageService.getMessages();
 	    $scope.closeMsg = function(index) {
 	        $scope.messages[index].remove();
 	    };
 
-	    /*$scope.$watch('msgService.getMessages()', function(newVal) {
+	    $scope.$watch('msgService.getMessages()', function(newVal) {
             if(newVal)
             {
                 $scope.messages = newVal;
             }    
-        });*/
+        });
 		$scope.closeAlert = function(index) {
-			$scope.messages.splice(index, 1);
+			$scope.msgService.removeMessage(index);
 	  	};
 	};
 
