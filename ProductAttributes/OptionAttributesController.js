@@ -60,7 +60,9 @@
             var selectedlocationId = LocationDataService.getselectedlpaId();
             if(_.isEmpty($scope.pavfieldDescribeMap))
             {
-                $scope.pavfieldDescribeMap = $scope.PAVConfigService.getPAVFieldMetaData();
+                $scope.PAVConfigService.getPAVFieldMetaData().then(function(fieldDescribeMap){
+                    $scope.pavfieldDescribeMap = fieldDescribeMap;
+                })
             }
             $scope.PAConfigService.getProductAttributesConfig(productId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
                 $scope.PAVService.getProductAttributeValues(productId).then(function(pavresult)
