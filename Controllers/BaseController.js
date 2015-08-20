@@ -114,9 +114,10 @@
                 var bundleLineItem ={Id:bundleLine.Id, Apttus_Config2__ConfigurationId__c:bundleLine.Apttus_Config2__ConfigurationId__c, Service_Location__c:servicelocationId, Apttus_Config2__ProductId__c:bundleLine.Apttus_Config2__ProductId__c, Apttus_Config2__LineNumber__c:bundleLine.Apttus_Config2__LineNumber__c};
 
                 var productcomponents = [];
+                var productIdtoPAVMap = {};
                 var allOptionGroups = $scope.optionGroupService.getallOptionGroups();
-                // allOptionGroups = angular.toJson(allOptionGroups);
-
+                var allproductIdtoPAVMap = $scope.PAVService.getAllProductAttributeValues();
+                
                 _.each(allOptionGroups, function(optiongroups, bundleprodId){
                     _.each(optiongroups, function(optiongroup){
                         _.each(optiongroup.productOptionComponents, function(productcomponent){
@@ -126,12 +127,17 @@
                                 productcomponent.isselected = true;
                                 productcomponent = _.omit(productcomponent, '$$hashKey');
                                 productcomponents.push(productcomponent);
+                                var productId = productcomponent.productId;
+                                if(_.has(allproductIdtoPAVMap, productId))
+                                {
+                                   productIdtoPAVMap[productId] = allproductIdtoPAVMap[productId]; 
+                                }
                             }
                         })
                     })
                 })
 
-                var productIdtoPAVMap = $scope.PAVService.getAllProductAttributeValues();
+                
 
                 var requestPromise = RemoteService.saveoptionsandattributes(bundleLineItem, productcomponents, productIdtoPAVMap);
                 requestPromise.then(function(result){
