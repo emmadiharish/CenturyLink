@@ -163,129 +163,64 @@
                                                            by exclusion.
                         */
                         var constraintActionDoList = result.appliedActionDOList;
-                        var numErrors = 0;
+                        var numErrors = constraintActionDoList.length;
                         MessageService.clearAll();
-                        var productIdtoActionMap = {};
+                        var productIdtoActionDOMap = {};
+                        
                         _.each(constraintActionDoList, function(ActionDo){
                             // get all error messages and add to MessageService.
-                            // possible message types : danger, warning, info, success.
-                            /*
                             var TriggeringProductIds = ActionDo.TriggeringProductIds;
-                            var message = ActionDo.Message;
-                            var messageType = ActionDo.MessageType == 'Error' ? 'danger' : ActionDo.MessageType;
-                            if(!_.isEmpty(message))
-                            {
-                                MessageService.addMessage(messageType, message+' AppliedRuleInfoId is: '+ActionDo.AppliedRuleInfoId+' AppliedActionId is: '+ActionDo.AppliedActionId);
-                                numErrors++; 
-                            }*/
-                            // process the rule action only if auto executed is false.
-                            numErrors = constraintActionDoList.length;
-                            //if(ActionDo.IsAutoExecuted == false)
-                            //{
-                                var TriggeringProductIds = ActionDo.TriggeringProductIds;
-                                var Message = ActionDo.Message;
-                                var MessageType = ActionDo.MessageType == 'Error' ? 'danger' : ActionDo.MessageType;
-                                var ActionType = ActionDo.ActionType;
-                                var ActionIntent = ActionDo.ActionIntent;
-                                var SuggestedProductIds = ActionDo.SuggestedProductIds;
-                                _.each(SuggestedProductIds, function(productId){
-                                    productIdtoActionMap[productId] = {'ActionType': ActionType, 'ActionIntent': ActionIntent, 'Message':Message, 'MessageType':MessageType};
-                                })
-                            //}
+                            var Message = ActionDo.Message;
+                            // possible message types : danger, warning, info, success.
+                            var MessageType = ActionDo.MessageType == 'Error' ? 'danger' : ActionDo.MessageType;
+                            var ActionType = ActionDo.ActionType;
+                            var ActionIntent = ActionDo.ActionIntent;
+                            var SuggestedProductIds = ActionDo.SuggestedProductIds;
+                            _.each(SuggestedProductIds, function(productId){
+                                productIdtoActionDOMap[productId] = {'ActionType': ActionType, 'ActionIntent': ActionIntent, 'Message':Message, 'MessageType':MessageType};
+                            })
                         })
 
-                        // exclude or include products according to productIdtoActionMap.
+                        // exclude or include products according to productIdtoActionDOMap.
                         _.each(allOptionGroups, function(optiongroups, bundleprodId){
                             _.each(optiongroups, function(optiongroup){
                                 _.each(optiongroup.productOptionComponents, function(productcomponent){
                                     var productId = productcomponent.productId;
-                                    if(_.has(productIdtoActionMap, productId))
+                                    if(_.has(productIdtoActionDOMap, productId))
                                     {
-                                        var ActionType = productIdtoActionMap[productId].ActionType;
-                                        var ActionIntent = productIdtoActionMap[productId].ActionIntent;
-                                        var Message = productIdtoActionMap[productId].Message;
-                                        var MessageType = productIdtoActionMap[productId].MessageType
+                                        var ActionDO = productIdtoActionDOMap[productId];
+                                        var ActionType = ActionDO.ActionType;
+                                        var ActionIntent = ActionDO.ActionIntent;
+                                        var Message = ActionDO.Message;
+                                        var MessageType = ActionDO.MessageType
                                         // possible values : Auto Include/Prompt/Show Message/Check on Finalization/Disable Selection
-                                        switch(ActionType)
+                                        switch(ActionIntent)
                                         {
-                                            case 'Inclusion':
-                                                if(ActionIntent == 'Auto Include')
+                                            case 'Auto Include':
+                                                if(ActionType == 'Inclusion')
                                                 {
-                                                    productcomponent.isselected = true;   
-                                                }
-                                                else if(ActionIntent == 'Prompt')
-                                                {
-                                                    
-                                                }
-                                                else if(ActionIntent == 'Show Message')
-                                                {
-                                                    MessageService.addMessage(MessageType, Message);
-                                                }
-                                                else if(ActionIntent == 'Check on Finalization')
-                                                {
-                                                    
+                                                    productcomponent.isselected = true;
                                                 }
                                                 break;
-                                            case 'Exclusion':
-                                                if(ActionIntent == 'Prompt')
+                                            case 'Prompt':
+                                                break;
+                                            case 'Show Message':
+                                                if(ActionType == 'Inclusion'
+                                                    || ActionType == 'Exclusion'
+                                                    || ActionType == 'Validation'
+                                                    || ActionType == 'Recommendation'
+                                                    || ActionType == 'Replacement')
                                                 {
-
+                                                    MessageService.addMessage(MessageType, Message
                                                 }
-                                                else if(ActionIntent == 'Show Message')
-                                                {
-                                                    MessageService.addMessage(MessageType, Message);
-                                                }
-                                                else if(ActionIntent == 'Check on Finalization')
-                                                {
-                                                    
-                                                }
-                                                else if(ActionIntent == 'Disable Selection')
+                                                break;
+                                            case 'Check on Finalization':
+                                                break;
+                                            case 'Disable Selection':
+                                                if(ActionType == 'Exclusion')
                                                 {
                                                     productcomponent.isselected = false;
                                                     productcomponent['isDisabled'] = true;
-                                                }
-                                                
-                                                break;
-                                            case 'Validation':
-                                                if(ActionIntent == 'Show Message')
-                                                {
-                                                    MessageService.addMessage(MessageType, Message);
-                                                }
-                                                else if(ActionIntent == 'Check on Finalization')
-                                                {
-                                                    
-                                                }
-                                                break;
-                                            case 'Recommendation':
-                                                if(ActionIntent == 'Prompt')
-                                                {
-
-                                                }
-                                                else if(ActionIntent == 'Show Message')
-                                                {
-                                                    MessageService.addMessage(MessageType, Message);
-                                                }
-                                                else if(ActionIntent == 'Check on Finalization')
-                                                {
-                                                    
-                                                }
-                                                break;
-                                            case 'Replacement':
-                                                if(ActionIntent == 'Auto Include')
-                                                {
-                                                    productcomponent.isselected = true;   
-                                                }
-                                                else if(ActionIntent == 'Prompt')
-                                                {
-                                                    
-                                                }
-                                                else if(ActionIntent == 'Show Message')
-                                                {
-                                                    MessageService.addMessage(MessageType, Message);
-                                                }
-                                                else if(ActionIntent == 'Check on Finalization')
-                                                {
-                                                    
                                                 }
                                                 break;
                                         };
