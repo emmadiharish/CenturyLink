@@ -217,7 +217,7 @@
                                                     || ActionType == 'Recommendation'
                                                     || ActionType == 'Replacement')
                                                 {
-                                                    MessageService.addMessage(MessageType, Message
+                                                    MessageService.addMessage(MessageType, Message);
                                                 }
                                                 break;
                                             case 'Check on Finalization':
