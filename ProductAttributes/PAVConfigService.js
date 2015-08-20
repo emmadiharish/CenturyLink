@@ -30,9 +30,9 @@
 
 		function getFieldDescribe(fieldDescribe){
 			var res = {};
-			res[fieldType] = getFieldType(fieldDescribe.type);
-			res[fieldLabel] = fieldDescribe.label;
-			res[picklistValues] = getPicklistValues(fieldDescribe.picklistValues);
+			res['fieldType'] = getFieldType(fieldDescribe.type);
+			res['fieldLabel'] = fieldDescribe.label;
+			res['picklistValues'] = getPicklistValues(fieldDescribe.picklistValues);
 			//res[] = ;
 			//res[] = ;
 			//res[] = ;
