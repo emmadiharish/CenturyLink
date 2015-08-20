@@ -39,18 +39,20 @@
             var alllocationIdSet = $scope.locationService.getalllocationIdSet();
             var selectedlocationId = $scope.locationService.getselectedlpaId();
             var bundleProductId = QuoteDataService.getbundleproductId();
-            $scope.PAVConfigService.getPAVFieldMetaData().then(function(fieldDescribeMap){
-                $scope.pavfieldDescribeMap = fieldDescribeMap;
-                $log.log('fieldType is: '+$scope.pavfieldDescribeMap['Access_Speed__c'].fieldType);
-                $scope.PAVDPicklistService.getDependentPicklistInformation().then(function(response){
-                    $scope.PAConfigService.getProductAttributesConfig(bundleProductId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
-                        $scope.PAVService.getProductAttributeValues(bundleProductId).then(function(pavresult)
-                        {
-                            var res = $scope.PAVDPicklistService.applyDependency_AllField(attributeconfigresult, pavresult);
-                            res = $scope.PAVDPicklistService.addOtherPicklisttoDropDowns(res.pavConfigGroups, res.PAVObj);
-                            $scope.renderBundleAttributes(res.pavConfigGroups, res.PAVObj);
-                            $scope.remotecallinitiated = false;
-                        })
+            if(_.isEmpty($scope.pavfieldDescribeMap))
+            {
+                $scope.PAVConfigService.getPAVFieldMetaData().then(function(fieldDescribeMap){
+                    $scope.pavfieldDescribeMap = fieldDescribeMap;
+                })
+            }
+            $scope.PAVDPicklistService.getDependentPicklistInformation().then(function(response){
+                $scope.PAConfigService.getProductAttributesConfig(bundleProductId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
+                    $scope.PAVService.getProductAttributeValues(bundleProductId).then(function(pavresult)
+                    {
+                        var res = $scope.PAVDPicklistService.applyDependency_AllField(attributeconfigresult, pavresult);
+                        res = $scope.PAVDPicklistService.addOtherPicklisttoDropDowns(res.pavConfigGroups, res.PAVObj);
+                        $scope.renderBundleAttributes(res.pavConfigGroups, res.PAVObj);
+                        $scope.remotecallinitiated = false;
                     })
                 })
             })
