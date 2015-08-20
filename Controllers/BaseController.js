@@ -167,24 +167,29 @@
                         MessageService.clearAll();
                         var productIdtoActionMap = {};
                         _.each(constraintActionDoList, function(ActionDo){
-                            var TriggeringProductIds = ActionDo.TriggeringProductIds;
                             // get all error messages and add to MessageService.
                             // possible message types : danger, warning, info, success.
+                            /*
+                            var TriggeringProductIds = ActionDo.TriggeringProductIds;
                             var message = ActionDo.Message;
                             var messageType = ActionDo.MessageType == 'Error' ? 'danger' : ActionDo.MessageType;
                             if(!_.isEmpty(message))
                             {
                                 MessageService.addMessage(messageType, message+' AppliedRuleInfoId is: '+ActionDo.AppliedRuleInfoId+' AppliedActionId is: '+ActionDo.AppliedActionId);
-                                numErrors++;    
-                            }
+                                numErrors++; 
+                            }*/
                             // process the rule action only if auto executed is false.
+                            numErrors = constraintActionDoList.length;
                             //if(ActionDo.IsAutoExecuted == false)
                             //{
+                                var TriggeringProductIds = ActionDo.TriggeringProductIds;
+                                var Message = ActionDo.Message;
+                                var MessageType = ActionDo.MessageType == 'Error' ? 'danger' : ActionDo.MessageType;
                                 var ActionType = ActionDo.ActionType;
                                 var ActionIntent = ActionDo.ActionIntent;
                                 var SuggestedProductIds = ActionDo.SuggestedProductIds;
                                 _.each(SuggestedProductIds, function(productId){
-                                    productIdtoActionMap[productId] = {'ActionType': ActionType, 'ActionIntent': ActionIntent};
+                                    productIdtoActionMap[productId] = {'ActionType': ActionType, 'ActionIntent': ActionIntent, 'Message':Message, 'MessageType':MessageType};
                                 })
                             //}
                         })
@@ -198,7 +203,9 @@
                                     {
                                         var ActionType = productIdtoActionMap[productId].ActionType;
                                         var ActionIntent = productIdtoActionMap[productId].ActionIntent;
-                                        // possible values : Prompt/Show Message/Check on Finalization
+                                        var Message = productIdtoActionMap[productId].Message;
+                                        var MessageType = productIdtoActionMap[productId].MessageType
+                                        // possible values : Auto Include/Prompt/Show Message/Check on Finalization/Disable Selection
                                         switch(ActionType)
                                         {
                                             case 'Inclusion':
@@ -206,19 +213,80 @@
                                                 {
                                                     productcomponent.isselected = true;   
                                                 }
+                                                else if(ActionIntent == 'Prompt')
+                                                {
+                                                    
+                                                }
+                                                else if(ActionIntent == 'Show Message')
+                                                {
+                                                    MessageService.addMessage(MessageType, Message);
+                                                }
+                                                else if(ActionIntent == 'Check on Finalization')
+                                                {
+                                                    
+                                                }
                                                 break;
                                             case 'Exclusion':
-                                                if(ActionIntent == 'Disable Selection')
+                                                if(ActionIntent == 'Prompt')
+                                                {
+
+                                                }
+                                                else if(ActionIntent == 'Show Message')
+                                                {
+                                                    MessageService.addMessage(MessageType, Message);
+                                                }
+                                                else if(ActionIntent == 'Check on Finalization')
+                                                {
+                                                    
+                                                }
+                                                else if(ActionIntent == 'Disable Selection')
                                                 {
                                                     productcomponent.isselected = false;
                                                     productcomponent['isDisabled'] = true;
                                                 }
+                                                
                                                 break;
                                             case 'Validation':
+                                                if(ActionIntent == 'Show Message')
+                                                {
+                                                    MessageService.addMessage(MessageType, Message);
+                                                }
+                                                else if(ActionIntent == 'Check on Finalization')
+                                                {
+                                                    
+                                                }
                                                 break;
                                             case 'Recommendation':
+                                                if(ActionIntent == 'Prompt')
+                                                {
+
+                                                }
+                                                else if(ActionIntent == 'Show Message')
+                                                {
+                                                    MessageService.addMessage(MessageType, Message);
+                                                }
+                                                else if(ActionIntent == 'Check on Finalization')
+                                                {
+                                                    
+                                                }
                                                 break;
                                             case 'Replacement':
+                                                if(ActionIntent == 'Auto Include')
+                                                {
+                                                    productcomponent.isselected = true;   
+                                                }
+                                                else if(ActionIntent == 'Prompt')
+                                                {
+                                                    
+                                                }
+                                                else if(ActionIntent == 'Show Message')
+                                                {
+                                                    MessageService.addMessage(MessageType, Message);
+                                                }
+                                                else if(ActionIntent == 'Check on Finalization')
+                                                {
+                                                    
+                                                }
                                                 break;
                                         };
                                     }
