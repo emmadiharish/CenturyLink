@@ -11,6 +11,7 @@
             $scope.PAVConfigService = PAVConfigService;
 
             $scope.AttributeGroups = [];// attribute config groups for main bundle.
+            $scope.pavfieldDescribeMap = {};
             $scope.productAttributeValues = {};
             $scope.remotecallinitiated = false;
         }
@@ -39,7 +40,7 @@
             var selectedlocationId = $scope.locationService.getselectedlpaId();
             var bundleProductId = QuoteDataService.getbundleproductId();
             $scope.PAVConfigService.getPAVFieldMetaData().then(function(fieldDescribeMap){
-                var prettyfieldDescribeMap = angular.toJson(fieldDescribeMap, 5);
+                $scope.pavfieldDescribeMap = fieldDescribeMap;
                 $scope.PAVDPicklistService.getDependentPicklistInformation().then(function(response){
                     $scope.PAConfigService.getProductAttributesConfig(bundleProductId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
                         $scope.PAVService.getProductAttributeValues(bundleProductId).then(function(pavresult)

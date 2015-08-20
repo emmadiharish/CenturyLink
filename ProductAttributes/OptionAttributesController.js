@@ -1,7 +1,7 @@
 (function() {
     var OptionAttributesController;
 
-    OptionAttributesController = function($scope, $log, $timeout, LocationDataService, OptionGroupDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, DependentPicklistDataService) {
+    OptionAttributesController = function($scope, $log, $timeout, LocationDataService, OptionGroupDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVConfigService, DependentPicklistDataService) {
         $scope.init = function(){
             // all variable intializations.
             $scope.locationService = LocationDataService;
@@ -9,8 +9,10 @@
             $scope.PAConfigService = ProductAttributeConfigDataService;
             $scope.optionGroupService = OptionGroupDataService;
             $scope.PAVDPicklistService = DependentPicklistDataService;
+            $scope.PAVConfigService = PAVConfigService;
 
             $scope.AttributeGroups = [];
+            $scope.pavfieldDescribeMap = {};
             $scope.productAttributeValues = {};
             $scope.Selectedoptionproduct = {};
         }
@@ -56,14 +58,17 @@
             // collect all products at this level and make a remote call for attributes.
             var alllocationIdSet = LocationDataService.getalllocationIdSet();
             var selectedlocationId = LocationDataService.getselectedlpaId();
-            $scope.PAConfigService.getProductAttributesConfig(productId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
-                $scope.PAVService.getProductAttributeValues(productId).then(function(pavresult)
-                {
-                    var res = $scope.PAVDPicklistService.applyDependency_AllField(attributeconfigresult, pavresult);
-                    res = $scope.PAVDPicklistService.addOtherPicklisttoDropDowns(res.pavConfigGroups, res.PAVObj);
-                    $scope.renderOptionAttributes(res.pavConfigGroups, res.PAVObj);
+            $scope.PAVConfigService.getPAVFieldMetaData().then(function(fieldDescribeMap){
+                $scope.pavfieldDescribeMap = fieldDescribeMap;
+                $scope.PAConfigService.getProductAttributesConfig(productId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
+                    $scope.PAVService.getProductAttributeValues(productId).then(function(pavresult)
+                    {
+                        var res = $scope.PAVDPicklistService.applyDependency_AllField(attributeconfigresult, pavresult);
+                        res = $scope.PAVDPicklistService.addOtherPicklisttoDropDowns(res.pavConfigGroups, res.PAVObj);
+                        $scope.renderOptionAttributes(res.pavConfigGroups, res.PAVObj);
+                    })
                 })
-            })
+            });
         }
 
         $scope.renderOptionAttributes = function(attrgroups, pav){
@@ -102,6 +107,6 @@
         
         $scope.init();
     }
-    OptionAttributesController.$inject = ['$scope', '$log', '$timeout', 'LocationDataService', 'OptionGroupDataService', 'ProductAttributeConfigDataService', 'ProductAttributeValueDataService', 'DependentPicklistDataService'];
+    OptionAttributesController.$inject = ['$scope', '$log', '$timeout', 'LocationDataService', 'OptionGroupDataService', 'ProductAttributeConfigDataService', 'ProductAttributeValueDataService', 'PAVConfigService', 'DependentPicklistDataService'];
     angular.module('APTPS_ngCPQ').controller('OptionAttributesController', OptionAttributesController);
 }).call(this);
