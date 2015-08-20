@@ -41,6 +41,7 @@
             var bundleProductId = QuoteDataService.getbundleproductId();
             $scope.PAVConfigService.getPAVFieldMetaData().then(function(fieldDescribeMap){
                 $scope.pavfieldDescribeMap = fieldDescribeMap;
+                $log.log('fieldType is: '+$scope.pavfieldDescribeMap['Access_Speed__c'].fieldType);
                 $scope.PAVDPicklistService.getDependentPicklistInformation().then(function(response){
                     $scope.PAConfigService.getProductAttributesConfig(bundleProductId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
                         $scope.PAVService.getProductAttributeValues(bundleProductId).then(function(pavresult)
