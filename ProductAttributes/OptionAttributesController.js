@@ -58,18 +58,17 @@
             // collect all products at this level and make a remote call for attributes.
             var alllocationIdSet = LocationDataService.getalllocationIdSet();
             var selectedlocationId = LocationDataService.getselectedlpaId();
-            if(_.isEmpty($scope.pavfieldDescribeMap))
-            {
-                $scope.PAVConfigService.getPAVFieldMetaData().then(function(fieldDescribeMap){
-                    $scope.pavfieldDescribeMap = fieldDescribeMap;
-                })
-            }
-            $scope.PAConfigService.getProductAttributesConfig(productId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
-                $scope.PAVService.getProductAttributeValues(productId).then(function(pavresult)
+            $scope.PAVConfigService.getPAVFieldMetaData().then(function(fieldDescribeMap){
+                if(_.isEmpty($scope.pavfieldDescribeMap))
                 {
-                    var res = $scope.PAVDPicklistService.applyDependency_AllField(attributeconfigresult, pavresult);
-                    res = $scope.PAVDPicklistService.addOtherPicklisttoDropDowns(res.pavConfigGroups, res.PAVObj);
-                    $scope.renderOptionAttributes(res.pavConfigGroups, res.PAVObj);
+                    $scope.pavfieldDescribeMap = fieldDescribeMap;
+                }
+                $scope.PAConfigService.getProductAttributesConfig(productId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
+                    $scope.PAVService.getProductAttributeValues(productId).then(function(pavresult)
+                    {
+                        var res = $scope.PAVConfigService.loadPicklistDropDowns(attributeconfigresult, pavresult);
+                        $scope.renderOptionAttributes(res.pavConfigGroups, res.PAVObj);
+                    })
                 })
             })
         }
