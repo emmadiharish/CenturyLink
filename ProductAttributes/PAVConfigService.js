@@ -28,34 +28,38 @@
 		}
 
 		function loadPicklistDropDowns(attributeGroups, PAV){
-			//var res = $scope.PAVDPicklistService.applyDependency_AllField(attributeconfigresult, pavresult);
-            //res = $scope.PAVDPicklistService.addOtherPicklisttoDropDowns(res.pavConfigGroups, res.PAVObj);
 			var res = {};
 			loadNormalLOVSfromConfig(attributeGroups, PAV);
-			applyDependency_AllField(attributeGroups, PAV);
+			applyDependentLOVSfromConfig_AllFields(attributeGroups, PAV);
 
 			_.each(attributeGroups, function(attributeGroup){
-                _.each(attributeGroup.productAtributes, function(attributeConfig){
-                    var fieldName = attributeConfig.fieldName;
-                    if(service.fieldNametoDFRMap[fieldName].fieldType == 'picklist')
-                    {
-                    	// if other option doesn't exist in the options then add it.
-	                    var selectedvalue = PAV[fieldName];
-	                    if(!_.isUndefined(selectedvalue)
-	                    	&& !_.contains(_.pluck(attributeConfig.picklistValues, 'value'), selectedvalue) )
+				// configure only on page load.
+                if(_.has(attributeGroup, 'isPicklistConfigComplete')
+                	&& attributeGroup.isPicklistConfigComplete == false)
+                {
+	                _.each(attributeGroup.productAtributes, function(attributeConfig){
+	                    var fieldName = attributeConfig.fieldName;
+	                    if(service.fieldNametoDFRMap[fieldName].fieldType == 'picklist')
 	                    {
-	                    	attributeConfig.picklistValues.push(selectoptionObject(true, selectedvalue, selectedvalue, false));
-	                    }  		
-                    	
-                    	// apply default dropdown value from salesforce configuration.
-                    	if(_.isUndefined(selectedvalue))// set the PAV to null if undefined. - To avoid extra dropdown.
-	                    {
-	                    	PAV[fieldName] = null;
+	                    	// if other option doesn't exist in the options then add it.
+		                    var selectedvalue = PAV[fieldName];
+		                    if(!_.isUndefined(selectedvalue)
+		                    	&& !_.contains(_.pluck(attributeConfig.picklistValues, 'value'), selectedvalue) )
+		                    {
+		                    	attributeConfig.picklistValues.push(selectoptionObject(true, selectedvalue, selectedvalue, false));
+		                    }  		
+	                    	
+	                    	// apply default dropdown value from salesforce configuration.
+	                    	if(_.isUndefined(selectedvalue))// set the PAV to null if undefined. - To avoid extra dropdown.
+		                    {
+		                    	PAV[fieldName] = null;
+		                    }
+		                    var defaultLOV = _.findWhere(attributeConfig.picklistValues, {defaultValue:true});
+							PAV[fieldName] = !_.isUndefined(defaultLOV) && _.isNull(PAV[fieldName]) ? defaultLOV.value : PAV[fieldName];
 	                    }
-	                    var defaultLOV = _.findWhere(attributeConfig.picklistValues, {defaultValue:true});
-						PAV[fieldName] = !_.isUndefined(defaultLOV) && _.isNull(PAV[fieldName]) ? defaultLOV.value : PAV[fieldName];
-                    }
-				})
+					})
+					attributeGroup['isPicklistConfigComplete'] = true;
+				}
             })
             res = {pavConfigGroups: attributeGroups, PAVObj: PAV};
 			return res;
@@ -106,7 +110,7 @@
             })
 		}
 
-		function applyDependency_AllField(attributeGroups, PAV){
+		function applyDependentLOVSfromConfig_AllFields(attributeGroups, PAV){
 			var res = {};
 			var allCFields = [];
 			// get the intersection of fields in attribute groups and controlling fields from PAV object.
@@ -116,13 +120,13 @@
 
 			// if config field is controlling field then apply dependencies.
             _.each(allCFields, function(fieldName){
-            	applyDependency_singleField(attributeGroups, PAV, fieldName);
+            	applyDependentLOVSfromConfig_singleField(attributeGroups, PAV, fieldName);
 			})
             //res = {pavConfigGroups: attributeGroups, PAVObj: PAV};
 			//return res;
 		}
 
-		function applyDependency_singleField(attributeGroups, PAV, fieldName){
+		function applyDependentLOVSfromConfig_singleField(attributeGroups, PAV, fieldName){
             var selectedPAVValue = _.has(PAV, fieldName) ? PAV[fieldName] : '';
             var dFieldDefinations = getStructuredDependentFields(fieldName);
             var dFields = _.keys(dFieldDefinations);
