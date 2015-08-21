@@ -39,13 +39,11 @@
             var alllocationIdSet = $scope.locationService.getalllocationIdSet();
             var selectedlocationId = $scope.locationService.getselectedlpaId();
             var bundleProductId = QuoteDataService.getbundleproductId();
-            if(_.isEmpty($scope.pavfieldDescribeMap))
-            {
-                $scope.PAVConfigService.getPAVFieldMetaData().then(function(fieldDescribeMap){
+            $scope.PAVDPicklistService.getDependentPicklistInformation().then(function(fieldDescribeMap){
+                if(_.isEmpty($scope.pavfieldDescribeMap))
+                {
                     $scope.pavfieldDescribeMap = fieldDescribeMap;
-                })
-            }
-            // $scope.PAVDPicklistService.getDependentPicklistInformation().then(function(response){
+                }
                 $scope.PAConfigService.getProductAttributesConfig(bundleProductId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
                     $scope.PAVService.getProductAttributeValues(bundleProductId).then(function(pavresult)
                     {
@@ -54,7 +52,7 @@
                         $scope.remotecallinitiated = false;
                     })
                 })
-            // })
+            })
         }
 
         $scope.renderBundleAttributes = function(attrgroups, pav){
