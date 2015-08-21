@@ -18,7 +18,7 @@
 
 			var requestPromise = RemoteService.getPAVFieldMetaData();
 			return requestPromise.then(function(response_FieldDescribe){
-				RemoteService.getPAVFieldMetaData().then(function(response_depPicklists){
+				RemoteService.getPAVDependentPickListsConfig().then(function(response_depPicklists){
 					initializePAVDependentPicklistResult(response_depPicklists);
 					initializefieldNametoDFRMap(response_FieldDescribe);
 					return service.fieldNametoDFRMap;
