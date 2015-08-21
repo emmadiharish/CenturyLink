@@ -9,6 +9,7 @@
 
 		service.getPAVFieldMetaData = getPAVFieldMetaData;
 		service.loadPicklistDropDowns = loadPicklistDropDowns;
+		service.getStructuredDependentFields = getStructuredDependentFields;
 
 		function getPAVFieldMetaData(){
 			if(service.isvalid == true)
@@ -26,29 +27,6 @@
 			});
 		}
 
-		function initializePAVDependentPicklistResult(response){
-			service.isValid = true;
-			_.each(response, function(dpwrapper){
-				var cField = dpwrapper.pControllingFieldName;
-				var dField = dpwrapper.pDependentFieldName;
-				
-				var dFieldDefinations = {};
-            	if(_.has(service.PAVcFieldtodFieldDefinationMap, cField))
-            	{
-            		dFieldDefinations = service.PAVcFieldtodFieldDefinationMap[cField];
-            	}
-            	dFieldDefinations[dField] = dpwrapper.objResult;
-            	service.PAVcFieldtodFieldDefinationMap[cField] = dFieldDefinations;
-            });
-		}
-
-		function initializefieldNametoDFRMap(response){
-			service.isvalid = true;
-			_.each(response, function(rawfieldDescribe, fieldName){
-				service.fieldNametoDFRMap[fieldName] = getFieldDescribe(rawfieldDescribe);
-			})
-		}
-
 		function loadPicklistDropDowns(attributeGroups, PAV){
 			//var res = $scope.PAVDPicklistService.applyDependency_AllField(attributeconfigresult, pavresult);
             //res = $scope.PAVDPicklistService.addOtherPicklisttoDropDowns(res.pavConfigGroups, res.PAVObj);
@@ -60,11 +38,14 @@
                     if(service.fieldNametoDFRMap[fieldName].fieldType == 'picklist')
                     {
                     	attributeConfig['picklistValues'] = service.fieldNametoDFRMap[fieldName].picklistValues;
+                		
+                		applyDependency_AllField(attributeGroups, PAV);
+
                 		// if other option doesn't exist in the options then add it.
 	                    if(!_.contains(_.pluck(attributeConfig.picklistValues, 'value'), selectedvalue) )
 	                    {
 	                    	attributeConfig.picklistValues.push({active:true, label:selectedvalue, value:selectedvalue, defaultValue: false});
-	                    }    		
+	                    }  		
                     }
                 })
             })
@@ -72,7 +53,87 @@
 			return res;
 		}
 
-		function getFieldDescribe(fieldDescribe){
+		function getStructuredDependentFields(cField){
+			var res = [];
+			if(_.has(service.PAVcFieldtodFieldDefinationMap, cField))
+			{
+				res = service.PAVcFieldtodFieldDefinationMap[cField];
+			}
+			return res;	
+		}
+
+		// ###################### private methods.###############################
+		function initializefieldNametoDFRMap(response){
+			service.isvalid = true;
+			_.each(response, function(rawfieldDescribe, fieldName){
+				service.fieldNametoDFRMap[fieldName] = getFieldDescribe(rawfieldDescribe);
+			})
+		}
+
+		function initializePAVDependentPicklistResult(response){
+			service.isValid = true;
+			_.each(response, function(dpwrapper){
+				var cField = dpwrapper.pControllingFieldName;
+				var dField = dpwrapper.pDependentFieldName;
+				
+				var dFieldDefinations = {};
+            	if(_.has(service.PAVcFieldtodFieldDefinationMap, cField))
+            	{
+            		dFieldDefinations = service.PAVcFieldtodFieldDefinationMap[cField];
+            	}
+            	dFieldDefinations[dField] = prepareOptionsMap(dpwrapper.objResult);
+            	service.PAVcFieldtodFieldDefinationMap[cField] = dFieldDefinations;
+            });
+		}
+
+		function applyDependency_AllField(attributeGroups, PAV){
+			var res = {};
+			var allCFields = [];
+			// get the intersection of fields in attribute groups and controlling fields from PAV object.
+			_.each(attributeGroups, function(attributeGroup){
+                allCFields.push.apply(allCFields, _.intersection(_.keys(service.PAVcFieldtodFieldDefinationMap), _.pluck(attributeGroup.productAtributes, 'fieldName')));
+            })
+
+			// if config field is controlling field then apply dependencies.
+            _.each(allCFields, function(fieldName){
+            	applyDependency_singleField(attributeGroups, PAV, fieldName);
+			})
+            //res = {pavConfigGroups: attributeGroups, PAVObj: PAV};
+			//return res;
+		}
+
+		function applyDependency_singleField(attributeGroups, PAV, fieldName){
+            var selectedPAVValue = _.has(PAV, fieldName) ? PAV[fieldName] : '';
+            var dFieldDefinations = getStructuredDependentFields(fieldName);
+            var dFields = _.keys(dFieldDefinations);
+            // Iterate over all dependent fields and change its dropdown values according to controlling field value selected.
+            _.each(attributeGroups, function(attributeGroup){
+                _.each(attributeGroup.productAtributes, function(attributeConfig){
+                    // dependent field existing in the attribute group configuration.
+                    // change the selectOptions of depenedent picklist fields.
+                    var dField = attributeConfig.fieldName;
+                    if(_.indexOf(dFields, dField) != -1)
+                    {
+                        // var dPicklistConfig = dFieldDefinations[dField];
+                        var options = [];
+                        PAV[dField] = null;
+                        // options.push({label:'--None--', value:null});
+                        options = dFieldDefinations[dField][selectedPAVValue];
+                        options.splice(0, 0, {active:true, label:'--None--', value:null, defaultValue: false});
+                        /*_.map(dPicklistConfig[selectedPAVValue], function(lov){
+                        	return {active:true, label:lov, value:lov, defaultValue: false};
+                        })*/
+
+                        /*_.each(dPicklistConfig[selectedPAVValue], function(lov){
+                            options.push({label:lov, value:lov});
+                        })*/
+                        attributeConfig.picklistValues = options;
+                    }
+                })
+            })    
+        }
+
+        function getFieldDescribe(fieldDescribe){
 			var res = {};
 			res['fieldType'] = getFieldType(fieldDescribe.type);
 			res['fieldLabel'] = fieldDescribe.label;
@@ -123,6 +184,16 @@
 			// add a blank option.{--None--}
 			res = ples;
 			res.splice(0, 0, {active:true, label:'--None--', value:null, defaultValue: false});
+			return res;
+		}
+
+		function prepareOptionsMap(objResult){
+			var res = {};
+			_.each(_.keys(objResult), function(cLOV){
+				res[cLOV] = _.map(objResult[cLOV], function(dlov){
+			                        	return {active:true, label:dlov, value:dlov, defaultValue: false};
+			                });
+			})
 			return res;
 		}
 	}
