@@ -1,13 +1,12 @@
 (function() {
     var BundleAttributesController;
 
-    BundleAttributesController = function($scope, $log, QuoteDataService, LocationDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVConfigService, DependentPicklistDataService) {
+    BundleAttributesController = function($scope, $log, QuoteDataService, LocationDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVConfigService) {
 		// all variable intializations.
         $scope.init = function(){
         	$scope.locationService = LocationDataService;
             $scope.PAVService = ProductAttributeValueDataService;
             $scope.PAConfigService = ProductAttributeConfigDataService;
-            $scope.PAVDPicklistService = DependentPicklistDataService;
             $scope.PAVConfigService = PAVConfigService;
 
             $scope.AttributeGroups = [];// attribute config groups for main bundle.
@@ -64,7 +63,7 @@
         }
         
         $scope.PAVPicklistChange = function(fieldName){
-            var selectedPAVValue = $scope.productAttributeValues[fieldName];
+            /*var selectedPAVValue = $scope.productAttributeValues[fieldName];
             var dFieldDefinations = $scope.PAVDPicklistService.getStructuredDependentFields(fieldName);
             var dFields = _.keys(dFieldDefinations);
             // Iterate over all dependent fields and change its dropdown values according to controlling field value selected.
@@ -86,11 +85,11 @@
                         $scope.PAVPicklistChange(dField);// more than one level-dependency could exist.
                     }
                 })    
-            })    
+            })*/    
         }
         $scope.init();
 	};
 
-    BundleAttributesController.$inject = ['$scope', '$log', 'QuoteDataService', 'LocationDataService', 'ProductAttributeConfigDataService', 'ProductAttributeValueDataService', 'PAVConfigService', 'DependentPicklistDataService'];
+    BundleAttributesController.$inject = ['$scope', '$log', 'QuoteDataService', 'LocationDataService', 'ProductAttributeConfigDataService', 'ProductAttributeValueDataService', 'PAVConfigService'];
 	angular.module('APTPS_ngCPQ').controller('BundleAttributesController', BundleAttributesController);
 }).call(this);

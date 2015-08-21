@@ -1,14 +1,13 @@
 (function() {
     var OptionAttributesController;
 
-    OptionAttributesController = function($scope, $log, $timeout, LocationDataService, OptionGroupDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVConfigService, DependentPicklistDataService) {
+    OptionAttributesController = function($scope, $log, $timeout, LocationDataService, OptionGroupDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVConfigService) {
         $scope.init = function(){
             // all variable intializations.
             $scope.locationService = LocationDataService;
             $scope.PAVService = ProductAttributeValueDataService;
             $scope.PAConfigService = ProductAttributeConfigDataService;
             $scope.optionGroupService = OptionGroupDataService;
-            $scope.PAVDPicklistService = DependentPicklistDataService;
             $scope.PAVConfigService = PAVConfigService;
 
             $scope.AttributeGroups = [];
@@ -82,7 +81,7 @@
         }
 
         $scope.PAVPicklistChange = function(fieldName){
-            var selectedPAVValue = $scope.productAttributeValues[fieldName];
+            /*var selectedPAVValue = $scope.productAttributeValues[fieldName];
             var dFieldDefinations = $scope.PAVDPicklistService.getStructuredDependentFields(fieldName);
             var dFields = _.keys(dFieldDefinations);
             // Iterate over all dependent fields and change its dropdown values according to controlling field value selected.
@@ -104,11 +103,11 @@
                         $scope.PAVPicklistChange(dField);// more than one level-dependency could exist.
                     }
                 })    
-            })    
+            })*/    
         }
         
         $scope.init();
     }
-    OptionAttributesController.$inject = ['$scope', '$log', '$timeout', 'LocationDataService', 'OptionGroupDataService', 'ProductAttributeConfigDataService', 'ProductAttributeValueDataService', 'PAVConfigService', 'DependentPicklistDataService'];
+    OptionAttributesController.$inject = ['$scope', '$log', '$timeout', 'LocationDataService', 'OptionGroupDataService', 'ProductAttributeConfigDataService', 'ProductAttributeValueDataService', 'PAVConfigService'];
     angular.module('APTPS_ngCPQ').controller('OptionAttributesController', OptionAttributesController);
 }).call(this);
