@@ -77,8 +77,8 @@
 		function getPicklistValues(ples){
 			var res = [];// defaultValue
 			// add a blank option.{--None--}
-			res.push({active:true, label:'--None--', value:null, defaultValue: false});
-			res.push.apply(ples);
+			res = ples;
+			res.splice(0, 0, {active:true, label:'--None--', value:null, defaultValue: false});
 			return res;
 		}
 	}
