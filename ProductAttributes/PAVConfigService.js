@@ -21,8 +21,8 @@
 				initializefieldNametoDFRMap(response_FieldDescribe);
 				RemoteService.getPAVDependentPickListsConfig().then(function(response_depPicklists){
 					initializePAVDependentPicklistResult(response_depPicklists);
-					return service.fieldNametoDFRMap;
 				})
+				return service.fieldNametoDFRMap;
 			});
 		}
 
