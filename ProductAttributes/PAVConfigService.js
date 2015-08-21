@@ -34,20 +34,30 @@
 			_.each(attributeGroups, function(attributeGroup){
                 _.each(attributeGroup.productAtributes, function(attributeConfig){
                     var fieldName = attributeConfig.fieldName;
-                    var selectedvalue = PAV[fieldName];
                     if(service.fieldNametoDFRMap[fieldName].fieldType == 'picklist')
                     {
+                    	var selectedvalue = PAV[fieldName];
+                    	if(_.isUndefined(selectedvalue))// set the PAV to null if undefined. - To avoid extra dropdown.
+	                    {
+	                    	PAV[fieldName] = null;
+	                    }
+
                     	attributeConfig['picklistValues'] = service.fieldNametoDFRMap[fieldName].picklistValues;
                 		
                 		applyDependency_AllField(attributeGroups, PAV);
 
                 		// if other option doesn't exist in the options then add it.
-	                    if(!_.contains(_.pluck(attributeConfig.picklistValues, 'value'), selectedvalue) )
+	                    if(!_.isNull(selectedvalue)
+	                    	&& !_.contains(_.pluck(attributeConfig.picklistValues, 'value'), selectedvalue) )
 	                    {
-	                    	attributeConfig.picklistValues.push({active:true, label:selectedvalue, value:selectedvalue, defaultValue: false});
+	                    	attributeConfig.picklistValues.push(selectoptionObject(true, selectedvalue, selectedvalue, false));
 	                    }  		
+                    	
+                    	// apply default dropdown value from salesforce configuration.
+                    	var defaultLOV = _.findWhere(attributeConfig.picklistValues, {defaultValue:true});
+                    	PAV[fieldName] = !_.isUndefined(defaultLOV) ? defaultLOV.value : PAV[fieldName];
                     }
-                })
+				})
             })
             res = {pavConfigGroups: attributeGroups, PAVObj: PAV};
 			return res;
@@ -119,7 +129,7 @@
                         PAV[dField] = null;
                         // options.push({label:'--None--', value:null});
                         options = dFieldDefinations[dField][selectedPAVValue];
-                        options.splice(0, 0, {active:true, label:'--None--', value:null, defaultValue: false});
+                        options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
                         /*_.map(dPicklistConfig[selectedPAVValue], function(lov){
                         	return {active:true, label:lov, value:lov, defaultValue: false};
                         })*/
@@ -183,7 +193,7 @@
 			var res = [];// defaultValue
 			// add a blank option.{--None--}
 			res = ples;
-			res.splice(0, 0, {active:true, label:'--None--', value:null, defaultValue: false});
+			res.splice(0, 0, selectoptionObject(true, '--None--', null, false));
 			return res;
 		}
 
@@ -191,10 +201,14 @@
 			var res = {};
 			_.each(_.keys(objResult), function(cLOV){
 				res[cLOV] = _.map(objResult[cLOV], function(dlov){
-			                        	return {active:true, label:dlov, value:dlov, defaultValue: false};
+			                        	return selectoptionObject(true, dlov, dlov, false);
 			                });
 			})
 			return res;
+		}
+
+		function selectoptionObject(active, label, value, isdefault){
+			return {active:active, label:label, value:value, defaultValue:isdefault};
 		}
 	}
 })();
