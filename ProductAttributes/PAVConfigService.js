@@ -112,7 +112,7 @@
             var selectedPAVValue = _.has(PAV, dependentField) ? PAV[dependentField] : '';
             var dFieldDefinations = getStructuredDependentFields(controllingField, dependentField);
             PAV[dependentField] = null;// set the dependentFile PAV to null.
-            var options = dFieldDefinations[dependentField][selectedPAVValue];
+            var options = dFieldDefinations[selectedPAVValue];
             options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
         	attributeConfig.picklistValues = options;
 		}
