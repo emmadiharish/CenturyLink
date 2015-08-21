@@ -8,7 +8,8 @@
 		service.PAVcFieldtodFieldDefinationMap = {};
 
 		service.getPAVFieldMetaData = getPAVFieldMetaData;
-
+		service.loadPicklistDropDowns = loadPicklistDropDowns;
+		
 		function getPAVFieldMetaData(){
 			if(service.isvalid == true)
 			{
