@@ -5,6 +5,7 @@
 		var service = this;
 		service.isvalid = false;
 		service.fieldNametoDFRMap = {};
+		service.PAVcFieldtodFieldDefinationMap = {};
 
 		service.getPAVFieldMetaData = getPAVFieldMetaData;
 
@@ -15,10 +16,29 @@
 			}
 
 			var requestPromise = RemoteService.getPAVFieldMetaData();
-			return requestPromise.then(function(response){
-				initializefieldNametoDFRMap(response);
-				return service.fieldNametoDFRMap;
+			return requestPromise.then(function(response_FieldDescribe){
+				RemoteService.getPAVFieldMetaData().then(function(response_depPicklists){
+					initializePAVDependentPicklistResult(response_depPicklists);
+					initializefieldNametoDFRMap(response_FieldDescribe);
+					return service.fieldNametoDFRMap;
+				})
 			})
+		}
+
+		function initializePAVDependentPicklistResult(response){
+			service.isValid = true;
+			_.each(response, function(dpwrapper){
+				var cField = dpwrapper.pControllingFieldName;
+				var dField = dpwrapper.pDependentFieldName;
+				
+				var dFieldDefinations = {};
+            	if(_.has(service.PAVcFieldtodFieldDefinationMap, cField))
+            	{
+            		dFieldDefinations = service.PAVcFieldtodFieldDefinationMap[cField];
+            	}
+            	dFieldDefinations[dField] = dpwrapper.objResult;
+            	service.PAVcFieldtodFieldDefinationMap[cField] = dFieldDefinations;
+            });
 		}
 
 		function initializefieldNametoDFRMap(response){
@@ -26,6 +46,29 @@
 			_.each(response, function(rawfieldDescribe, fieldName){
 				service.fieldNametoDFRMap[fieldName] = getFieldDescribe(rawfieldDescribe);
 			})
+		}
+
+		function loadPicklistDropDowns(attributeGroups, PAV){
+			//var res = $scope.PAVDPicklistService.applyDependency_AllField(attributeconfigresult, pavresult);
+            //res = $scope.PAVDPicklistService.addOtherPicklisttoDropDowns(res.pavConfigGroups, res.PAVObj);
+			var res = {};
+			_.each(attributeGroups, function(attributeGroup){
+                _.each(attributeGroup.productAtributes, function(attributeConfig){
+                    var fieldName = attributeConfig.fieldName;
+                    var selectedvalue = PAV[fieldName];
+                    if(fieldNametoDFRMap[fieldName].fieldType == 'picklist')
+                    {
+                    	attributeConfig['picklistValues'] = fieldNametoDFRMap[fieldName].picklistValues;
+                		// if other option doesn't exist in the options then add it.
+	                    if(!_.contains(_.pluck(attributeConfig.picklistValues, 'value'), selectedvalue) )
+	                    {
+	                    	attributeConfig.picklistValues.push({active:true, label:selectedvalue, value:selectedvalue, defaultValue: false});
+	                    }    		
+                    }
+                })
+            })
+            res = {pavConfigGroups: attributeGroups, PAVObj: PAV};
+			return res;
 		}
 
 		function getFieldDescribe(fieldDescribe){

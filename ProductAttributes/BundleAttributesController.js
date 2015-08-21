@@ -45,17 +45,16 @@
                     $scope.pavfieldDescribeMap = fieldDescribeMap;
                 })
             }
-            $scope.PAVDPicklistService.getDependentPicklistInformation().then(function(response){
+            // $scope.PAVDPicklistService.getDependentPicklistInformation().then(function(response){
                 $scope.PAConfigService.getProductAttributesConfig(bundleProductId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
                     $scope.PAVService.getProductAttributeValues(bundleProductId).then(function(pavresult)
                     {
-                        var res = $scope.PAVDPicklistService.applyDependency_AllField(attributeconfigresult, pavresult);
-                        res = $scope.PAVDPicklistService.addOtherPicklisttoDropDowns(res.pavConfigGroups, res.PAVObj);
+                        var res = $scope.PAVConfigService.loadPicklistDropDowns(attributeconfigresult, pavresult);
                         $scope.renderBundleAttributes(res.pavConfigGroups, res.PAVObj);
                         $scope.remotecallinitiated = false;
                     })
                 })
-            })
+            // })
         }
 
         $scope.renderBundleAttributes = function(attrgroups, pav){
