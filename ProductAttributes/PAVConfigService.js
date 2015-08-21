@@ -9,7 +9,7 @@
 
 		service.getPAVFieldMetaData = getPAVFieldMetaData;
 		service.loadPicklistDropDowns = loadPicklistDropDowns;
-		
+
 		function getPAVFieldMetaData(){
 			if(service.isvalid == true)
 			{
@@ -57,9 +57,9 @@
                 _.each(attributeGroup.productAtributes, function(attributeConfig){
                     var fieldName = attributeConfig.fieldName;
                     var selectedvalue = PAV[fieldName];
-                    if(fieldNametoDFRMap[fieldName].fieldType == 'picklist')
+                    if(service.fieldNametoDFRMap[fieldName].fieldType == 'picklist')
                     {
-                    	attributeConfig['picklistValues'] = fieldNametoDFRMap[fieldName].picklistValues;
+                    	attributeConfig['picklistValues'] = service.fieldNametoDFRMap[fieldName].picklistValues;
                 		// if other option doesn't exist in the options then add it.
 	                    if(!_.contains(_.pluck(attributeConfig.picklistValues, 'value'), selectedvalue) )
 	                    {
