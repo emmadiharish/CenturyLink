@@ -5,6 +5,7 @@
 		var service = this;
 		service.isvalid = false;
 		service.fieldNametoDFRMap = {};
+		service.dependentFieltoControllingFieldMap = {};
 		service.PAVcFieldtodFieldDefinationMap = {};
 
 		service.getPAVFieldMetaData = getPAVFieldMetaData;
@@ -29,19 +30,26 @@
 
 		function loadPicklistDropDowns(attributeGroups, PAV){
 			var res = {};
-			loadNormalLOVSfromConfig(attributeGroups, PAV);
-			applyDependentLOVSfromConfig_AllFields(attributeGroups, PAV);
-
 			_.each(attributeGroups, function(attributeGroup){
 				// configure only on page load.
-                if(_.has(attributeGroup, 'isPicklistConfigComplete')
-                	&& attributeGroup.isPicklistConfigComplete == false)
+                if(!_.has(attributeGroup, 'isPicklistConfigComplete')
+                	|| attributeGroup.isPicklistConfigComplete == false)
                 {
 	                _.each(attributeGroup.productAtributes, function(attributeConfig){
 	                    var fieldName = attributeConfig.fieldName;
 	                    if(service.fieldNametoDFRMap[fieldName].fieldType == 'picklist')
 	                    {
-	                    	// if other option doesn't exist in the options then add it.
+	                    	// load Normal picklist LOV's from Salesforce config.
+	                    	attributeConfig['picklistValues'] = service.fieldNametoDFRMap[fieldName].picklistValues;
+
+	                    	// load dependent picklists if current field is dependentField.
+	                    	if(_.has(service.dependentFieltoControllingFieldMap, fieldName))
+	                    	{
+	                    		var controllingField = service.dependentFieltoControllingFieldMap[fieldName];
+	                    		applyDependentLOVSfromConfig_singleField(attributeConfig, PAV, fieldName, controllingField);	
+	                    	}
+	                    	
+							// if other option doesn't exist in the options then add it.
 		                    var selectedvalue = PAV[fieldName];
 		                    if(!_.isUndefined(selectedvalue)
 		                    	&& !_.contains(_.pluck(attributeConfig.picklistValues, 'value'), selectedvalue) )
@@ -88,6 +96,8 @@
 				var cField = dpwrapper.pControllingFieldName;
 				var dField = dpwrapper.pDependentFieldName;
 				
+				service.dependentFieltoControllingFieldMap[dField] = cField;
+
 				var dFieldDefinations = {};
             	if(_.has(service.PAVcFieldtodFieldDefinationMap, cField))
             	{
@@ -98,19 +108,25 @@
             });
 		}
 
-		function loadNormalLOVSfromConfig(attributeGroups, PAV){
-			_.each(attributeGroups, function(attributeGroup){
-                _.each(attributeGroup.productAtributes, function(attributeConfig){
-                    var fieldName = attributeConfig.fieldName;
-                    if(service.fieldNametoDFRMap[fieldName].fieldType == 'picklist')
-                    {
-                    	attributeConfig['picklistValues'] = service.fieldNametoDFRMap[fieldName].picklistValues;
-                	}
-				})
-            })
+		function applyDependentLOVSfromConfig_singleField(attributeConfig, PAV, dependentField, controllingField){
+            var selectedPAVValue = _.has(PAV, dependentField) ? PAV[dependentField] : '';
+            var dFieldDefinations = getStructuredDependentFields(controllingField, dependentField);
+            PAV[dependentField] = null;// set the dependentFile PAV to null.
+            var options = dFieldDefinations[dependentField][selectedPAVValue];
+            options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
+        	attributeConfig.picklistValues = options;
 		}
 
-		function applyDependentLOVSfromConfig_AllFields(attributeGroups, PAV){
+		function getStructuredDependentFields(cField, dField){
+			var res = [];
+			if(_.has(service.PAVcFieldtodFieldDefinationMap, cField))
+			{
+				res = service.PAVcFieldtodFieldDefinationMap[cField][dField];
+			}
+			return res;	
+		}
+
+		/*function applyDependentLOVSfromConfig_AllFields(attributeGroups, PAV){
 			var res = {};
 			var allCFields = [];
 			// get the intersection of fields in attribute groups and controlling fields from PAV object.
@@ -148,7 +164,7 @@
                     }
                 })
             })    
-        }
+        }*/
 
         function getFieldDescribe(fieldDescribe){
 			var res = {};
