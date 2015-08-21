@@ -23,7 +23,7 @@
 					initializefieldNametoDFRMap(response_FieldDescribe);
 					return service.fieldNametoDFRMap;
 				})
-			})
+			});
 		}
 
 		function initializePAVDependentPicklistResult(response){
