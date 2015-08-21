@@ -36,8 +36,8 @@
                     var fieldName = attributeConfig.fieldName;
                     if(service.fieldNametoDFRMap[fieldName].fieldType == 'picklist')
                     {
-                    	var selectedvalue = PAV[fieldName];
-                    	if(_.isUndefined(selectedvalue))// set the PAV to null if undefined. - To avoid extra dropdown.
+                    	
+                    	if(!_.has(PAV, fieldName))// set the PAV to null if undefined. - To avoid extra dropdown.
 	                    {
 	                    	PAV[fieldName] = null;
 	                    }
@@ -47,6 +47,7 @@
                 		applyDependency_AllField(attributeGroups, PAV);
 
                 		// if other option doesn't exist in the options then add it.
+	                    var selectedvalue = PAV[fieldName];
 	                    if(!_.isNull(selectedvalue)
 	                    	&& !_.contains(_.pluck(attributeConfig.picklistValues, 'value'), selectedvalue) )
 	                    {
