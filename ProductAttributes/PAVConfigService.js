@@ -31,32 +31,29 @@
 			//var res = $scope.PAVDPicklistService.applyDependency_AllField(attributeconfigresult, pavresult);
             //res = $scope.PAVDPicklistService.addOtherPicklisttoDropDowns(res.pavConfigGroups, res.PAVObj);
 			var res = {};
+			loadNormalLOVSfromConfig(attributeGroups, PAV);
+			applyDependency_AllField(attributeGroups, PAV);
+
 			_.each(attributeGroups, function(attributeGroup){
                 _.each(attributeGroup.productAtributes, function(attributeConfig){
                     var fieldName = attributeConfig.fieldName;
                     if(service.fieldNametoDFRMap[fieldName].fieldType == 'picklist')
                     {
-                    	
-                    	if(!_.has(PAV, fieldName))// set the PAV to null if undefined. - To avoid extra dropdown.
-	                    {
-	                    	PAV[fieldName] = null;
-	                    }
-
-                    	attributeConfig['picklistValues'] = service.fieldNametoDFRMap[fieldName].picklistValues;
-                		
-                		applyDependency_AllField(attributeGroups, PAV);
-
-                		// if other option doesn't exist in the options then add it.
+                    	// if other option doesn't exist in the options then add it.
 	                    var selectedvalue = PAV[fieldName];
-	                    if(!_.isNull(selectedvalue)
+	                    if(!_.isUndefined(selectedvalue)
 	                    	&& !_.contains(_.pluck(attributeConfig.picklistValues, 'value'), selectedvalue) )
 	                    {
 	                    	attributeConfig.picklistValues.push(selectoptionObject(true, selectedvalue, selectedvalue, false));
 	                    }  		
                     	
                     	// apply default dropdown value from salesforce configuration.
-                    	var defaultLOV = _.findWhere(attributeConfig.picklistValues, {defaultValue:true});
-                    	PAV[fieldName] = !_.isUndefined(defaultLOV) ? defaultLOV.value : PAV[fieldName];
+                    	if(_.isUndefined(selectedvalue))// set the PAV to null if undefined. - To avoid extra dropdown.
+	                    {
+	                    	PAV[fieldName] = null;
+	                    }
+	                    var defaultLOV = _.findWhere(attributeConfig.picklistValues, {defaultValue:true});
+						PAV[fieldName] = !_.isUndefined(defaultLOV) && _.isNull(PAV[fieldName]) ? defaultLOV.value : PAV[fieldName];
                     }
 				})
             })
@@ -97,6 +94,18 @@
             });
 		}
 
+		function loadNormalLOVSfromConfig(attributeGroups, PAV){
+			_.each(attributeGroups, function(attributeGroup){
+                _.each(attributeGroup.productAtributes, function(attributeConfig){
+                    var fieldName = attributeConfig.fieldName;
+                    if(service.fieldNametoDFRMap[fieldName].fieldType == 'picklist')
+                    {
+                    	attributeConfig['picklistValues'] = service.fieldNametoDFRMap[fieldName].picklistValues;
+                	}
+				})
+            })
+		}
+
 		function applyDependency_AllField(attributeGroups, PAV){
 			var res = {};
 			var allCFields = [];
@@ -123,7 +132,7 @@
                     // dependent field existing in the attribute group configuration.
                     // change the selectOptions of depenedent picklist fields.
                     var dField = attributeConfig.fieldName;
-                    if(_.indexOf(dFields, dField) != -1)
+                    if(_.contains(dFields, dField))
                     {
                         // var dPicklistConfig = dFieldDefinations[dField];
                         var options = [];
@@ -131,13 +140,6 @@
                         // options.push({label:'--None--', value:null});
                         options = dFieldDefinations[dField][selectedPAVValue];
                         options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
-                        /*_.map(dPicklistConfig[selectedPAVValue], function(lov){
-                        	return {active:true, label:lov, value:lov, defaultValue: false};
-                        })*/
-
-                        /*_.each(dPicklistConfig[selectedPAVValue], function(lov){
-                            options.push({label:lov, value:lov});
-                        })*/
                         attributeConfig.picklistValues = options;
                     }
                 })
