@@ -46,7 +46,7 @@
 	                    	if(_.has(service.dependentFieltoControllingFieldMap, fieldName))
 	                    	{
 	                    		var controllingField = service.dependentFieltoControllingFieldMap[fieldName];
-	                    		applyDependentLOVSfromConfig_singleField(attributeConfig, PAV, fieldName, controllingField);	
+	                    		// applyDependentLOVSfromConfig(attributeConfig, PAV, fieldName, controllingField);	
 	                    	}
 	                    	
 							// if other option doesn't exist in the options then add it.
@@ -108,7 +108,7 @@
             });
 		}
 
-		function applyDependentLOVSfromConfig_singleField(attributeConfig, PAV, dependentField, controllingField){
+		function applyDependentLOVSfromConfig(attributeConfig, PAV, dependentField, controllingField){
             var selectedPAVValue = _.has(PAV, dependentField) ? PAV[dependentField] : '';
             var dFieldDefinations = getStructuredDependentFields(controllingField, dependentField);
             PAV[dependentField] = null;// set the dependentFile PAV to null.
@@ -126,47 +126,7 @@
 			return res;	
 		}
 
-		/*function applyDependentLOVSfromConfig_AllFields(attributeGroups, PAV){
-			var res = {};
-			var allCFields = [];
-			// get the intersection of fields in attribute groups and controlling fields from PAV object.
-			_.each(attributeGroups, function(attributeGroup){
-                allCFields.push.apply(allCFields, _.intersection(_.keys(service.PAVcFieldtodFieldDefinationMap), _.pluck(attributeGroup.productAtributes, 'fieldName')));
-            })
-
-			// if config field is controlling field then apply dependencies.
-            _.each(allCFields, function(fieldName){
-            	applyDependentLOVSfromConfig_singleField(attributeGroups, PAV, fieldName);
-			})
-            //res = {pavConfigGroups: attributeGroups, PAVObj: PAV};
-			//return res;
-		}
-
-		function applyDependentLOVSfromConfig_singleField(attributeGroups, PAV, fieldName){
-            var selectedPAVValue = _.has(PAV, fieldName) ? PAV[fieldName] : '';
-            var dFieldDefinations = getStructuredDependentFields(fieldName);
-            var dFields = _.keys(dFieldDefinations);
-            // Iterate over all dependent fields and change its dropdown values according to controlling field value selected.
-            _.each(attributeGroups, function(attributeGroup){
-                _.each(attributeGroup.productAtributes, function(attributeConfig){
-                    // dependent field existing in the attribute group configuration.
-                    // change the selectOptions of depenedent picklist fields.
-                    var dField = attributeConfig.fieldName;
-                    if(_.contains(dFields, dField))
-                    {
-                        // var dPicklistConfig = dFieldDefinations[dField];
-                        var options = [];
-                        PAV[dField] = null;
-                        // options.push({label:'--None--', value:null});
-                        options = dFieldDefinations[dField][selectedPAVValue];
-                        options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
-                        attributeConfig.picklistValues = options;
-                    }
-                })
-            })    
-        }*/
-
-        function getFieldDescribe(fieldDescribe){
+		function getFieldDescribe(fieldDescribe){
 			var res = {};
 			res['fieldType'] = getFieldType(fieldDescribe.type);
 			res['fieldLabel'] = fieldDescribe.label;
@@ -224,7 +184,7 @@
 			var res = {};
 			_.each(_.keys(objResult), function(cLOV){
 				res[cLOV] = _.map(objResult[cLOV], function(dlov){
-			                        	return selectoptionObject(true, dlov, dlov, false);
+			                    return selectoptionObject(true, dlov, dlov, false);
 			                });
 			})
 			return res;
