@@ -36,7 +36,7 @@
 		}
 
 		function applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, fieldName){
-			var dFieldDefinations = getStructuredDependentFields(fieldName);
+			var dFieldDefinations = getFullStructuredDependentFields(fieldName);
             var dFields = _.keys(dFieldDefinations);
 			_.each(attributeGroups, function(attributeGroup){
 				_.each(attributeGroup.productAtributes, function(attributeConfig){
@@ -137,7 +137,7 @@
         	attributeConfig.picklistValues = options;
 		}
 		
-		function getStructuredDependentFields(cField){
+		function getFullStructuredDependentFields(cField){
 			var res = [];
 			if(_.has(service.PAVcFieldtodFieldDefinationMap, cField))
 			{
