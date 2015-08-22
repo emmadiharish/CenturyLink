@@ -10,7 +10,7 @@
 
 		service.getPAVFieldMetaData = getPAVFieldMetaData;
 		service.loadPicklistDropDowns = loadPicklistDropDowns;
-		service.getStructuredDependentFields = getStructuredDependentFields;
+		service.applyDependedPicklistsOnChange = applyDependedPicklistsOnChange;
 
 		function getPAVFieldMetaData(){
 			if(service.isvalid == true)
@@ -26,6 +26,36 @@
 				})
 				return service.fieldNametoDFRMap;
 			});
+		}
+
+		function applyDependedPicklistsOnChange(attributeGroups, PAV, fieldName){
+			var res = {};
+			applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, fieldName);
+            res = {pavConfigGroups: attributeGroups, PAVObj: PAV};
+			return res;
+		}
+
+		function applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, fieldName){
+			var dFieldDefinations = $scope.PAVDPicklistService.getStructuredDependentFields(fieldName);
+            var dFields = _.keys(dFieldDefinations);
+			_.each(attributeGroups, function(attributeGroup){
+				_.each(attributeGroup.productAtributes, function(attributeConfig){
+                    // dependent field existing in the attribute group configuration.
+                    // change the selectOptions of depenedent picklist fields.
+                    var dField = attributeConfig.fieldName;
+                    if(_.contains(dFields, dField))
+                    {
+                        var dPicklistConfig = dFieldDefinations[dField];
+                        var options = [];
+                        $scope.productAttributeValues[dField] = null;
+                        var options = dFieldDefinations[selectedPAVValue];
+            			options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
+                        
+                        attributeConfig.picklistValues = options;
+                        applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, fieldName);// more than one level-dependency could exist.
+                    }
+                })
+			})
 		}
 
 		function loadPicklistDropDowns(attributeGroups, PAV){
@@ -46,7 +76,7 @@
 	                    	if(_.has(service.dependentFieltoControllingFieldMap, fieldName))
 	                    	{
 	                    		var controllingField = service.dependentFieltoControllingFieldMap[fieldName];
-	                    		// applyDependentLOVSfromConfig(attributeConfig, PAV, fieldName, controllingField);	
+	                    		applyDependentLOVSConfig(attributeConfig, PAV, fieldName, controllingField);	
 	                    	}
 	                    	
 							// if other option doesn't exist in the options then add it.
@@ -71,15 +101,6 @@
             })
             res = {pavConfigGroups: attributeGroups, PAVObj: PAV};
 			return res;
-		}
-
-		function getStructuredDependentFields(cField){
-			var res = [];
-			if(_.has(service.PAVcFieldtodFieldDefinationMap, cField))
-			{
-				res = service.PAVcFieldtodFieldDefinationMap[cField];
-			}
-			return res;	
 		}
 
 		// ###################### private methods.###############################
@@ -108,13 +129,22 @@
             });
 		}
 
-		function applyDependentLOVSfromConfig(attributeConfig, PAV, dependentField, controllingField){
+		function applyDependentLOVSConfig(attributeConfig, PAV, dependentField, controllingField){
             var selectedPAVValue = _.has(PAV, dependentField) ? PAV[dependentField] : '';
             var dFieldDefinations = getStructuredDependentFields(controllingField, dependentField);
             PAV[dependentField] = null;// set the dependentFile PAV to null.
             var options = dFieldDefinations[selectedPAVValue];
             options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
         	attributeConfig.picklistValues = options;
+		}
+		
+		function getStructuredDependentFields(cField){
+			var res = [];
+			if(_.has(service.PAVcFieldtodFieldDefinationMap, cField))
+			{
+				res = service.PAVcFieldtodFieldDefinationMap[cField];
+			}
+			return res;	
 		}
 
 		function getStructuredDependentFields(cField, dField){

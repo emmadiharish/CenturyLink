@@ -63,29 +63,8 @@
         }
         
         $scope.PAVPicklistChange = function(fieldName){
-            /*var selectedPAVValue = $scope.productAttributeValues[fieldName];
-            var dFieldDefinations = $scope.PAVDPicklistService.getStructuredDependentFields(fieldName);
-            var dFields = _.keys(dFieldDefinations);
-            // Iterate over all dependent fields and change its dropdown values according to controlling field value selected.
-            _.each($scope.AttributeGroups, function(attributeGroup){
-                _.each(attributeGroup.productAtributes, function(attributeConfig){
-                    // dependent field existing in the attribute group configuration.
-                    // change the selectOptions of depenedent picklist fields.
-                    var dField = attributeConfig.fieldName;
-                    if(_.indexOf(dFields, dField) != -1)
-                    {
-                        var dPicklistConfig = dFieldDefinations[dField];
-                        var options = [];
-                        $scope.productAttributeValues[dField] = null;
-                        options.push({key:'--None--', value:null});
-                        _.each(dPicklistConfig[selectedPAVValue], function(lov){
-                            options.push({key:lov, value:lov});
-                        })
-                        attributeConfig.selectOptions = options;
-                        $scope.PAVPicklistChange(dField);// more than one level-dependency could exist.
-                    }
-                })    
-            })*/    
+            var res = $scope.PAVConfigService.applyDependedPicklistsOnChange(AttributeGroups, productAttributeValues, fieldName);    
+            $scope.renderBundleAttributes(res.pavConfigGroups, res.PAVObj);
         }
         $scope.init();
 	};

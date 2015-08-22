@@ -81,7 +81,12 @@
         }
 
         $scope.PAVPicklistChange = function(fieldName){
-            /*var selectedPAVValue = $scope.productAttributeValues[fieldName];
+            var res = $scope.PAVConfigService.applyDependedPicklistsOnChange(AttributeGroups, productAttributeValues, fieldName);    
+            $scope.renderBundleAttributes(res.pavConfigGroups, res.PAVObj);
+        }
+
+        /*$scope.PAVPicklistChange = function(fieldName){
+            var selectedPAVValue = $scope.productAttributeValues[fieldName];
             var dFieldDefinations = $scope.PAVDPicklistService.getStructuredDependentFields(fieldName);
             var dFields = _.keys(dFieldDefinations);
             // Iterate over all dependent fields and change its dropdown values according to controlling field value selected.
@@ -103,8 +108,8 @@
                         $scope.PAVPicklistChange(dField);// more than one level-dependency could exist.
                     }
                 })    
-            })*/    
-        }
+            })    
+        }*/
         
         $scope.init();
     }
