@@ -46,7 +46,7 @@
                     if(_.contains(dFields, dField))
                     {
                         var dPicklistConfig = dFieldDefinations[dField];
-                        $scope.productAttributeValues[dField] = null;
+                        PAV[dField] = null;
                         var options = dFieldDefinations[selectedPAVValue];
             			options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
                         
