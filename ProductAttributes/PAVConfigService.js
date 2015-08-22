@@ -36,7 +36,7 @@
 		}
 
 		function applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, fieldName){
-			var dFieldDefinations = $scope.PAVDPicklistService.getStructuredDependentFields(fieldName);
+			var dFieldDefinations = getStructuredDependentFields(fieldName);
             var dFields = _.keys(dFieldDefinations);
 			_.each(attributeGroups, function(attributeGroup){
 				_.each(attributeGroup.productAtributes, function(attributeConfig){
@@ -46,7 +46,6 @@
                     if(_.contains(dFields, dField))
                     {
                         var dPicklistConfig = dFieldDefinations[dField];
-                        var options = [];
                         $scope.productAttributeValues[dField] = null;
                         var options = dFieldDefinations[selectedPAVValue];
             			options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
