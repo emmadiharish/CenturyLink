@@ -38,6 +38,10 @@
 		function applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, fieldName){
 			var selectedPAVValue = PAV[fieldName];
 			var dFieldDefinations = getFullStructuredDependentFields(fieldName);
+            if(_.isEmpty(dFieldDefinations))
+            {
+            	return;
+            }
             _.each(attributeGroups, function(attributeGroup){
 				_.each(attributeGroup.productAtributes, function(attributeConfig){
                     // dependent field existing in the attribute group configuration.
@@ -55,7 +59,7 @@
                         }
                         
                         attributeConfig.picklistValues = options;
-                        applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, fieldName);// more than one level-dependency could exist.
+                        applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, dField);// more than one level-dependency could exist.
                     }
                 })
 			})
