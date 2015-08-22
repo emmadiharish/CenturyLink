@@ -82,7 +82,7 @@
 
         $scope.PAVPicklistChange = function(fieldName){
             var res = $scope.PAVConfigService.applyDependedPicklistsOnChange($scope.AttributeGroups, $scope.productAttributeValues, fieldName);    
-            $scope.renderBundleAttributes(res.pavConfigGroups, res.PAVObj);
+            $scope.renderOptionAttributes(res.pavConfigGroups, res.PAVObj);
         }
 
         /*$scope.PAVPicklistChange = function(fieldName){
