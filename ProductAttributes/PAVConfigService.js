@@ -36,6 +36,7 @@
 		}
 
 		function applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, fieldName){
+			var selectedPAVValue = PAV[fieldName];
 			var dFieldDefinations = getFullStructuredDependentFields(fieldName);
             var dFields = _.keys(dFieldDefinations);
 			_.each(attributeGroups, function(attributeGroup){
