@@ -43,13 +43,14 @@
             if(!_.isEmpty(newValue))
             {
                 $scope.CascadeBunleAttributestoOptions();
-                //$scope.safeApply();    
+                //$scope.safeApply();
             }
         });
 
         $scope.CascadeBunleAttributestoOptions = function(){
             var bundlePAV = $scope.PAVService.getbundleproductattributevalues()
-            $scope.productAttributeValues = _.clone(bundlePAV);
+            // commenting cascade.....its breaking dependency.
+            // $scope.productAttributeValues = _.clone(bundlePAV);
         }
             
 
