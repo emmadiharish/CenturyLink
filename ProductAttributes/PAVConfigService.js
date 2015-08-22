@@ -38,18 +38,21 @@
 		function applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, fieldName){
 			var selectedPAVValue = PAV[fieldName];
 			var dFieldDefinations = getFullStructuredDependentFields(fieldName);
-            var dFields = _.keys(dFieldDefinations);
-			_.each(attributeGroups, function(attributeGroup){
+            _.each(attributeGroups, function(attributeGroup){
 				_.each(attributeGroup.productAtributes, function(attributeConfig){
                     // dependent field existing in the attribute group configuration.
                     // change the selectOptions of depenedent picklist fields.
                     var dField = attributeConfig.fieldName;
-                    if(_.contains(dFields, dField))
+                    if(_.has(dFieldDefinations, dField))
                     {
                         var dPicklistConfig = dFieldDefinations[dField];
                         PAV[dField] = null;
-                        var options = dFieldDefinations[selectedPAVValue];
-            			options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
+                        var options = []
+                        if(_.has(dPicklistConfig, selectedPAVValue))
+                        {
+                        	options = dPicklistConfig[selectedPAVValue];
+            				options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
+                        }
                         
                         attributeConfig.picklistValues = options;
                         applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, fieldName);// more than one level-dependency could exist.
