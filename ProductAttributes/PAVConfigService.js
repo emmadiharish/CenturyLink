@@ -110,9 +110,17 @@
             var selectedPAVValue = _.has(PAV, dependentField) ? PAV[dependentField] : '';
             var dFieldDefinations = getStructuredDependentFields(controllingField);
             PAV[dependentField] = null;// set the dependentFile PAV to null.
-            var options = dFieldDefinations[dependentField][selectedPAVValue];
+            var options = [];
+            if(_.has(dFieldDefinations, dField))
+            {
+            	var dPicklistConfig = dFieldDefinations[dependentField];
+	            if(_.has(dPicklistConfig, selectedPAVValue))
+	            {
+	            	options = dPicklistConfig[selectedPAVValue].slice();
+				}
+            }
             options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
-        	attributeConfig.picklistValues = options;
+            attributeConfig.picklistValues = options;
 		}
 		
 		function applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, fieldName){
@@ -144,7 +152,7 @@
                 })
 			})
 		}
-		
+
 		function getStructuredDependentFields(cField){
 			var res = [];
 			if(_.has(service.PAVcFieldtodFieldDefinationMap, cField))
