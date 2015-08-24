@@ -104,12 +104,8 @@
 				objResult[''] = [];
 				objResult[null] = [];
 
-				_.each(dpwrapper.dPicklistOptions, function(dPicklistOption){
-					//if valid for is empty, skip
-					if(_.isEmpty(dPicklistOption.validFor))
-					{
-						continue;
-					}
+				//if valid for is empty, skip
+				_.each(_.filter(dpwrapper.dPicklistOptions, function(option){return !_.isEmpty(option.validFor);}), function(dPicklistOption){
 					//iterate through the controlling values
 					_.each(dpwrapper.cPicklistOptions, function(cPicklistOption, cIndex){
 						if(testBit(dPicklistOption.validFor, cIndex))
