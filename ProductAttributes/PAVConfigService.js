@@ -271,7 +271,7 @@
 			return res;
 		}
 
-		function decodeBase64 = function(s) {
+		function decodeBase64(s) {
 		    var e={},i,b=0,c,x,l=0,a,r='',w=String.fromCharCode,L=s.length;
 		    var A="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 		    for(i=0;i<64;i++){e[A.charAt(i)]=i;}
