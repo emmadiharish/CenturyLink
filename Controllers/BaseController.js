@@ -244,9 +244,10 @@
                         }
                     }
                     else{
-                        document.getElementById("remoteactionerrors").innerHTML = 
-                                event.message + "<br/>\n";
-                        deferred.reject(event.message);
+                        MessageService.addMessage('danger', 'Save call is Failing.');
+                        $scope.baseService.completeprogress();// end progress bar.
+                        $scope.safeApply();
+                        deferred.reject('Save Failed.');
                         return deferred.promise;
                     }
                     // resolver the promise after remote call is complete.

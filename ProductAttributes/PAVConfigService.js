@@ -28,6 +28,7 @@
 			});
 		}
 
+		// when drop down value is change on the attributes then apply all dependent dropdowns.
 		function applyDependedPicklistsOnChange(attributeGroups, PAV, fieldName){
 			var res = {};
 			applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, fieldName);
@@ -35,6 +36,7 @@
 			return res;
 		}
 
+		// this is applicable on page load or first time renedeing of attribute groups.
 		function loadPicklistDropDowns(attributeGroups, PAV){
 			var res = {};
 			_.each(attributeGroups, function(attributeGroup){
@@ -56,15 +58,16 @@
 	                    		applyDependentLOVSConfig(attributeConfig, PAV, fieldName, controllingField);	
 	                    	}
 	                    	
-							// if other option doesn't exist in the options then add it.
+							// if 'Other' LOV option exists in the database then add the previously selected value....Applicable only for loading configured quote.
 		                    var selectedvalue = PAV[fieldName];
 		                    if(!_.isUndefined(selectedvalue)
-		                    	&& !_.contains(_.pluck(attributeConfig.picklistValues, 'value'), selectedvalue) )
+		                    	&& !_.contains(_.pluck(attributeConfig.picklistValues, 'value'), selectedvalue) 
+		                    	&& _.contains(_.pluck(attributeConfig.picklistValues, 'value'), 'Other'))
 		                    {
 		                    	attributeConfig.picklistValues.push(selectoptionObject(true, selectedvalue, selectedvalue, false));
 		                    }  		
 	                    	
-	                    	// apply default dropdown value from salesforce configuration.
+	                    	// apply default dropdown value from salesforce configuration. based on custom setting : APTPS_Picklist_Dependencies__c
 	                    	if(_.isUndefined(selectedvalue))// set the PAV to null if undefined. - To avoid extra dropdown.
 		                    {
 		                    	PAV[fieldName] = null;
@@ -106,6 +109,7 @@
             });
 		}
 
+		// load dropdown values of all dependent fields based on controlling field value selected..applicable on initial load of attributes.
 		function applyDependentLOVSConfig(attributeConfig, PAV, dependentField, controllingField){
             var selectedPAVValue = _.has(PAV, dependentField) ? PAV[dependentField] : '';
             var dFieldDefinations = getStructuredDependentFields(controllingField);
@@ -123,6 +127,7 @@
             attributeConfig.picklistValues = options;
 		}
 		
+		// reload all dependent dropdowns on controlling field change.
 		function applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, fieldName){
 			var selectedPAVValue = PAV[fieldName];
 			var dFieldDefinations = getStructuredDependentFields(fieldName);
@@ -153,6 +158,7 @@
 			})
 		}
 
+		// return the complete structre of dependent fields for any controlling Field.
 		function getStructuredDependentFields(cField){
 			var res = [];
 			if(_.has(service.PAVcFieldtodFieldDefinationMap, cField))
@@ -162,17 +168,19 @@
 			return res;	
 		}
 
+		// prepare javascript version  of fieldDescribe based on Schema.DescribeFieldResult
 		function getFieldDescribe(fieldDescribe){
 			var res = {};
 			res['fieldType'] = getFieldType(fieldDescribe.type);
 			res['fieldLabel'] = fieldDescribe.label;
 			res['picklistValues'] = getPicklistValues(fieldDescribe.picklistValues);
-			//res[] = ;
+			res[isDependentPicklist] = fieldDescribe.isDependentPicklist;
 			//res[] = ;
 			//res[] = ;
 			return res;
 		}
 
+		// return HTML matching fieldtype based on Salesforce field Type.
 		function getFieldType(sfdctype){
 			var res = 'text';// default.
 			if(sfdctype == 'picklist'
@@ -208,6 +216,7 @@
 			return res;
 		}
 
+		// add '--None--' Options at index 0 for salesforce default config.
 		function getPicklistValues(ples){
 			var res = [];// defaultValue
 			// add a blank option.{--None--}
@@ -216,16 +225,18 @@
 			return res;
 		}
 
+		// convert list of string to List<Schema.PicklistEntry>.
 		function prepareOptionsMap(objResult){
 			var res = {};
 			_.each(_.keys(objResult), function(cLOV){
 				res[cLOV] = _.map(objResult[cLOV], function(dlov){
-			                    return selectoptionObject(true, dlov, dlov, false);
-			                });
+                    return selectoptionObject(true, dlov, dlov, false);
+                });
 			})
 			return res;
 		}
 
+		// object structure of Schema.PicklistEntry.
 		function selectoptionObject(active, label, value, isdefault){
 			return {active:active, label:label, value:value, defaultValue:isdefault};
 		}
