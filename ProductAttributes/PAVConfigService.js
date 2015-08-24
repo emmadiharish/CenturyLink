@@ -35,36 +35,6 @@
 			return res;
 		}
 
-		function applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, fieldName){
-			var selectedPAVValue = PAV[fieldName];
-			var dFieldDefinations = getStructuredDependentFields(fieldName);
-            if(_.isEmpty(dFieldDefinations))
-            {
-            	return;
-            }
-            _.each(attributeGroups, function(attributeGroup){
-				_.each(attributeGroup.productAtributes, function(attributeConfig){
-                    // dependent field existing in the attribute group configuration.
-                    // change the selectOptions of depenedent picklist fields.
-                    var dField = attributeConfig.fieldName;
-                    if(_.has(dFieldDefinations, dField))
-                    {
-                        var dPicklistConfig = dFieldDefinations[dField];
-                        PAV[dField] = null;
-                        var options = [];
-                        if(_.has(dPicklistConfig, selectedPAVValue))
-                        {
-                        	options = dPicklistConfig[selectedPAVValue].slice();
-            				options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
-                        }
-                        
-                        attributeConfig.picklistValues = options;
-                        applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, dField);// more than one level-dependency could exist.
-                    }
-                })
-			})
-		}
-
 		function loadPicklistDropDowns(attributeGroups, PAV){
 			var res = {};
 			_.each(attributeGroups, function(attributeGroup){
@@ -143,6 +113,36 @@
             var options = dFieldDefinations[dependentField][selectedPAVValue];
             options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
         	attributeConfig.picklistValues = options;
+		}
+		
+		function applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, fieldName){
+			var selectedPAVValue = PAV[fieldName];
+			var dFieldDefinations = getStructuredDependentFields(fieldName);
+            if(_.isEmpty(dFieldDefinations))
+            {
+            	return;
+            }
+            _.each(attributeGroups, function(attributeGroup){
+				_.each(attributeGroup.productAtributes, function(attributeConfig){
+                    // dependent field existing in the attribute group configuration.
+                    // change the selectOptions of depenedent picklist fields.
+                    var dField = attributeConfig.fieldName;
+                    if(_.has(dFieldDefinations, dField))
+                    {
+                        var dPicklistConfig = dFieldDefinations[dField];
+                        PAV[dField] = null;
+                        var options = [];
+                        if(_.has(dPicklistConfig, selectedPAVValue))
+                        {
+                        	options = dPicklistConfig[selectedPAVValue].slice();
+            				options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
+                        }
+                        
+                        attributeConfig.picklistValues = options;
+                        applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, dField);// more than one level-dependency could exist.
+                    }
+                })
+			})
 		}
 		
 		function getStructuredDependentFields(cField){
