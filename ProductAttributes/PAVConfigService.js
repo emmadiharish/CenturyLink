@@ -95,6 +95,7 @@
 			_.each(response, function(dpwrapper){
 				var cField = dpwrapper.pControllingFieldName;
 				var dField = dpwrapper.pDependentFieldName;
+				$log.log('Validfor String: '+dpwrapper.validforString);
 				
 				service.dependentFieltoControllingFieldMap[dField] = cField;
 
