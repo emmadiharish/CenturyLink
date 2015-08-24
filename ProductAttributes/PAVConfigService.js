@@ -174,9 +174,13 @@
 			res['fieldType'] = getFieldType(fieldDescribe.type);
 			res['fieldLabel'] = fieldDescribe.label;
 			res['picklistValues'] = getPicklistValues(fieldDescribe.picklistValues);
-			res[isDependentPicklist] = fieldDescribe.isDependentPicklist;
-			//res[] = ;
-			//res[] = ;
+			res['isDependentPicklist'] = fieldDescribe.dependentPicklist;// Returns true if the picklist is a dependent picklist, false otherwise.
+			res['isUpdateable'] = fieldDescribe.updateable;//Returns true if the field can be edited by the current user, or child records in a master-detail relationship field on a custom object can be reparented to different parent records; false otherwise.
+			res['isCalculated'] = fieldDescribe.calculated;// Returns true if the field is a custom formula field, false otherwise. Note that custom formula fields are always read-only.
+			res['isCreateable'] = fieldDescribe.createable;// Returns true if the field can be created by the current user, false otherwise.
+			res['idLookup'] = fieldDescribe.idLookup;// Returns true if the field can be used to specify a record in an upsert method, false otherwise.
+			res['isNillable'] = fieldDescribe.nillable;// Returns true if the field is nillable, false otherwise. A nillable field can have empty content. A non-nillable field must have a value for the object to be created or saved.
+			res['isUnique'] = fieldDescribe.unique;// Returns true if the value for the field must be unique, false otherwise
 			return res;
 		}
 
