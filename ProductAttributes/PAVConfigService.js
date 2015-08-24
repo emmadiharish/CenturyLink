@@ -7,7 +7,7 @@
 		service.fieldNametoDFRMap = {};
 		service.dependentFieltoControllingFieldMap = {};
 		service.PAVcFieldtodFieldDefinationMap = {};
-		service.PAVcFieldtodFieldDefinationMap_ang = {};
+		service.PAVcFieldtodFieldDefinationMap_ang = [];
 
 		service.getPAVFieldMetaData = getPAVFieldMetaData;
 		service.loadPicklistDropDowns = loadPicklistDropDowns;
@@ -115,7 +115,7 @@
 						}
 					})
 				})
-				service.PAVcFieldtodFieldDefinationMap.push({cField:cField, dField:dField, objResult: objResult});
+				service.PAVcFieldtodFieldDefinationMap_ang.push({cField:cField, dField:dField, objResult: objResult});
 
 				service.dependentFieltoControllingFieldMap[dField] = cField;
 
