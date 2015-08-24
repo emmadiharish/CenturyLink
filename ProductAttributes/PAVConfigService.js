@@ -7,6 +7,7 @@
 		service.fieldNametoDFRMap = {};
 		service.dependentFieltoControllingFieldMap = {};
 		service.PAVcFieldtodFieldDefinationMap = {};
+		service.PAVcFieldtodFieldDefinationMap_ang = {};
 
 		service.getPAVFieldMetaData = getPAVFieldMetaData;
 		service.loadPicklistDropDowns = loadPicklistDropDowns;
@@ -95,11 +96,30 @@
 			_.each(response, function(dpwrapper){
 				var cField = dpwrapper.pControllingFieldName;
 				var dField = dpwrapper.pDependentFieldName;
-				
-				var picklistOptions_obj = angular.fromJson(dpwrapper.picklistOptions_json);
-				_.each(picklistOptions_obj, function(picklistOption){
-					$log.log(picklistOption.validFor);
+				var objResult = {};
+
+				_.each(dpwrapper.cPicklistOptions, function(picklistOption){
+					objResult[picklistOption.label] = [];
 				})
+				objResult[''] = [];
+				objResult[null] = [];
+
+				_.each(dpwrapper.dPicklistOptions, function(dPicklistOption){
+					//if valid for is empty, skip
+					if(_.isEmpty(dPicklistOption.validFor))
+					{
+						continue;
+					}
+					//iterate through the controlling values
+					_.each(dpwrapper.cPicklistOptions, function(cPicklistOption, cIndex){
+						if(testBit(dPicklistOption.validFor, cIndex))
+						{
+							var pControllingLabel = cPicklistOption.label;
+							objResult[pControllingLabel].push(dPicklistOption.label);
+						}
+					})
+				})
+				service.PAVcFieldtodFieldDefinationMap.push({cField:cField, dField:dField, objResult: objResult});
 
 				service.dependentFieltoControllingFieldMap[dField] = cField;
 
@@ -248,5 +268,22 @@
 		function selectoptionObject(active, label, value, isdefault){
 			return {active:active, label:label, value:value, defaultValue:isdefault};
 		}
+
+		function testBit(pValidFor, n){
+			var res = true;
+
+			return res;
+		}
+
+		function decodeBase64 = function(s) {
+		    var e={},i,b=0,c,x,l=0,a,r='',w=String.fromCharCode,L=s.length;
+		    var A="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+		    for(i=0;i<64;i++){e[A.charAt(i)]=i;}
+		    for(x=0;x<L;x++){
+		        c=e[s.charAt(x)];b=(b<<6)+c;l+=6;
+		        while(l>=8){((a=(b>>>(l-=8))&0xff)||(x<(L-2)))&&(r+=w(a));}
+		    }
+		    return r;
+		};
 	}
 })();
