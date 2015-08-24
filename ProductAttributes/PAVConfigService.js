@@ -51,7 +51,7 @@
                     {
                         var dPicklistConfig = dFieldDefinations[dField];
                         PAV[dField] = null;
-                        var options = []
+                        var options = [];
                         if(_.has(dPicklistConfig, selectedPAVValue))
                         {
                         	options = dPicklistConfig[selectedPAVValue];
