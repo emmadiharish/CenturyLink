@@ -37,7 +37,7 @@
 
 		function applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, fieldName){
 			var selectedPAVValue = PAV[fieldName];
-			var dFieldDefinations = getFullStructuredDependentFields(fieldName);
+			var dFieldDefinations = getStructuredDependentFields(fieldName);
             if(_.isEmpty(dFieldDefinations))
             {
             	return;
@@ -54,7 +54,7 @@
                         var options = [];
                         if(_.has(dPicklistConfig, selectedPAVValue))
                         {
-                        	options = dPicklistConfig[selectedPAVValue];
+                        	options = dPicklistConfig[selectedPAVValue].slice();
             				options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
                         }
                         
@@ -138,27 +138,18 @@
 
 		function applyDependentLOVSConfig(attributeConfig, PAV, dependentField, controllingField){
             var selectedPAVValue = _.has(PAV, dependentField) ? PAV[dependentField] : '';
-            var dFieldDefinations = getStructuredDependentFields(controllingField, dependentField);
+            var dFieldDefinations = getStructuredDependentFields(controllingField);
             PAV[dependentField] = null;// set the dependentFile PAV to null.
-            var options = dFieldDefinations[selectedPAVValue];
+            var options = dFieldDefinations[dependentField][selectedPAVValue];
             options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
         	attributeConfig.picklistValues = options;
 		}
 		
-		function getFullStructuredDependentFields(cField){
+		function getStructuredDependentFields(cField){
 			var res = [];
 			if(_.has(service.PAVcFieldtodFieldDefinationMap, cField))
 			{
 				res = service.PAVcFieldtodFieldDefinationMap[cField];
-			}
-			return res;	
-		}
-
-		function getStructuredDependentFields(cField, dField){
-			var res = [];
-			if(_.has(service.PAVcFieldtodFieldDefinationMap, cField))
-			{
-				res = service.PAVcFieldtodFieldDefinationMap[cField][dField];
 			}
 			return res;	
 		}
