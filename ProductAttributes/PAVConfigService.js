@@ -95,8 +95,12 @@
 			_.each(response, function(dpwrapper){
 				var cField = dpwrapper.pControllingFieldName;
 				var dField = dpwrapper.pDependentFieldName;
-				$log.log('Validfor String: '+dpwrapper.validforString);
 				
+				var picklistOptions_obj = angular.fromJSON(dpwrapper.picklistOptions_json);
+				_.each(picklistOptions_obj, function(picklistOption){
+					$log.log(picklistOption.validFor);
+				})
+
 				service.dependentFieltoControllingFieldMap[dField] = cField;
 
 				var dFieldDefinations = {};
