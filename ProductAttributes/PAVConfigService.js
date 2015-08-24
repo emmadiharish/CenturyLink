@@ -96,7 +96,7 @@
 				var cField = dpwrapper.pControllingFieldName;
 				var dField = dpwrapper.pDependentFieldName;
 				
-				var picklistOptions_obj = angular.fromJSON(dpwrapper.picklistOptions_json);
+				var picklistOptions_obj = angular.fromJson(dpwrapper.picklistOptions_json);
 				_.each(picklistOptions_obj, function(picklistOption){
 					$log.log(picklistOption.validFor);
 				})
