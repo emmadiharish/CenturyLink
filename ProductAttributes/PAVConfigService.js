@@ -92,7 +92,6 @@
 		}
 
 		function initializePAVDependentPicklistResult(response){
-			service.isValid = true;
 			_.each(response, function(dpwrapper){
 				var cField = dpwrapper.pControllingFieldName;
 				var dField = dpwrapper.pDependentFieldName;
