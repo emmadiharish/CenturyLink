@@ -6,7 +6,7 @@
 		service.isvalid = false;
 		service.fieldNametoDFRMap = {};
 		service.dependentFieltoControllingFieldMap = {};
-		service.PAVcFieldtodFieldDefinationMap = {};
+		service.PAVcFieldtodFieldDefinationMap = [];
 		// service.PAVcFieldtodFieldDefinationMap_ang = [];
 
 		service.getPAVFieldMetaData = getPAVFieldMetaData;
@@ -120,15 +120,7 @@
 				})
 				objResult = prepareOptionsMap(objResult);
 				service.PAVcFieldtodFieldDefinationMap.push({cField:cField, dField:dField, objResult: objResult});
-
-				/*var dFieldDefinations = {};
-            	if(_.has(service.PAVcFieldtodFieldDefinationMap, cField))
-            	{
-            		dFieldDefinations = service.PAVcFieldtodFieldDefinationMap[cField];
-            	}
-            	dFieldDefinations[dField] = prepareOptionsMap(dpwrapper.objResult);
-            	service.PAVcFieldtodFieldDefinationMap[cField] = dFieldDefinations;*/
-            });
+			});
 		}
 
 		// load dropdown values of all dependent fields based on controlling field value selected..applicable on initial load of attributes.
@@ -145,14 +137,7 @@
 	            	options = dFieldDefination.objResult[selectedPAVValue].slice();
 				}
             }
-            /*if(_.has(dFieldDefinations, dependentField))
-            {
-            	var dPicklistConfig = dFieldDefinations[dependentField];
-	            if(_.has(dPicklistConfig, selectedPAVValue))
-	            {
-	            	options = dPicklistConfig[selectedPAVValue].slice();
-				}
-            }*/
+            
             options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
             attributeConfig.picklistValues = options;
 		}
@@ -186,34 +171,9 @@
                         attributeConfig.picklistValues = options;
                         applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, dField);// more than one level-dependency could exist.
                     }
-                    /*if(_.has(dFieldDefinations, dField))
-                    {
-                        var dPicklistConfig = dFieldDefinations[dField];
-                        PAV[dField] = null;
-                        var options = [];
-                        if(_.has(dPicklistConfig, selectedPAVValue))
-                        {
-                        	options = dPicklistConfig[selectedPAVValue].slice();
-            				options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
-                        }
-                        
-                        attributeConfig.picklistValues = options;
-                        applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, dField);// more than one level-dependency could exist.
-                    }*/
                 })
 			})
 		}
-
-		// return the complete structre of dependent fields for any controlling Field.
-		/*function getStructuredDependentFields(cField){
-			var res = [];
-			if(_.where(service.PAVcFieldtodFieldDefinationMap, cField))
-			{
-				res = service.PAVcFieldtodFieldDefinationMap[cField];
-			}
-			res = _.where(service.PAVcFieldtodFieldDefinationMap, {cField:cField});
-			return res;	
-		}*/
 
 		// prepare javascript version  of fieldDescribe based on Schema.DescribeFieldResult
 		function getFieldDescribe(fieldDescribe){
@@ -318,31 +278,21 @@
 	        //get the base64bytes
 	        _.each(pValidFor.split(""), function(eachchar){
 	        	//get current character value
-                pBytes.push(decodeBase64(eachchar));
+                pBytes.push(Base64Value(eachchar));
 	        })
-	        /*for(var i=0; i<pValidFor.length; i++){
-                //get current character value
-                pBytes.push(decodeBase64(pValidFor.substring(i, i+1)));
-	        }*/
 	        
 	        for(var i=0; i < pBytes.length; i++){
                 var pShiftAmount = (pBytes.length - (i+1)) * 6;
                 pFullValue = pFullValue + (pBytes[i] << (pShiftAmount));
 	        }
 	        
-	        var tBitVal = (Math.Pow(2, shiftBits)) & pFullValue) >> shiftBits;
+	        var tBitVal = ((Math.pow(2, shiftBits)) & pFullValue) >> shiftBits;
 	        return tBitVal == 1;
         }
-
-		function decodeBase64(s) {
-		    var e={},i,b=0,c,x,l=0,a,r='',w=String.fromCharCode,L=s.length;
-		    var A="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-		    for(i=0;i<64;i++){e[A.charAt(i)]=i;}
-		    for(x=0;x<L;x++){
-		        c=e[s.charAt(x)];b=(b<<6)+c;l+=6;
-		        while(l>=8){((a=(b>>>(l-=8))&0xff)||(x<(L-2)))&&(r+=w(a));}
-		    }
-		    return r;
-		};
+		
+		var Base64Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+        function Base64Value(char){
+        	return Base64Chars.indexOf(char);
+        }
 	}
 })();
