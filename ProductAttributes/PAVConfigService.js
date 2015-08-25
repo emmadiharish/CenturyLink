@@ -292,11 +292,47 @@
 			return {active:active, label:label, value:value, defaultValue:isdefault};
 		}
 
-		function testBit(pValidFor, n){
-			var res = true;
-
-			return res;
-		}
+        function testBit(pValidFor, n){
+	        //the list of bytes
+	        var pBytes = [];
+	        
+	        //will be used to hold the full decimal value
+	        var pFullValue = 0;
+	        
+	        //multiply by 6 since base 64 uses 6 bits
+	        var bytesBeingUsed = (pValidFor.length * 6)/8;
+	        
+	        //must be more than 1 byte
+	        if(bytesBeingUsed <= 1)
+                return false;
+	        
+	        //calculate the target bit for comparison
+	        var bit = 7 - (n % 8);
+	        
+	        //calculate the octet that has in the target bit
+	        var targetOctet = (bytesBeingUsed - 1) - (n >> bytesBeingUsed);
+	        
+	        //the number of bits to shift by until we find the bit to compare for true or false
+	        var shiftBits = (targetOctet * 8) + bit;
+	        
+	        //get the base64bytes
+	        _.each(pValidFor.split(""), function(eachchar){
+	        	//get current character value
+                pBytes.push(decodeBase64(eachchar));
+	        })
+	        /*for(var i=0; i<pValidFor.length; i++){
+                //get current character value
+                pBytes.push(decodeBase64(pValidFor.substring(i, i+1)));
+	        }*/
+	        
+	        for(var i=0; i < pBytes.length; i++){
+                var pShiftAmount = (pBytes.length - (i+1)) * 6;
+                pFullValue = pFullValue + (pBytes[i] << (pShiftAmount));
+	        }
+	        
+	        var tBitVal = (Math.Pow(2, shiftBits)) & pFullValue) >> shiftBits;
+	        return tBitVal == 1;
+        }
 
 		function decodeBase64(s) {
 		    var e={},i,b=0,c,x,l=0,a,r='',w=String.fromCharCode,L=s.length;
