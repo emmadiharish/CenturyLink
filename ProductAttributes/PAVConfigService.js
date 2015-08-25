@@ -7,7 +7,7 @@
 		service.fieldNametoDFRMap = {};
 		service.dependentFieltoControllingFieldMap = {};
 		service.PAVcFieldtodFieldDefinationMap = {};
-		service.PAVcFieldtodFieldDefinationMap_ang = [];
+		// service.PAVcFieldtodFieldDefinationMap_ang = [];
 
 		service.getPAVFieldMetaData = getPAVFieldMetaData;
 		service.loadPicklistDropDowns = loadPicklistDropDowns;
@@ -96,6 +96,9 @@
 			_.each(response, function(dpwrapper){
 				var cField = dpwrapper.pControllingFieldName;
 				var dField = dpwrapper.pDependentFieldName;
+				
+				service.dependentFieltoControllingFieldMap[dField] = cField;
+
 				var objResult = {};
 
 				_.each(dpwrapper.cPicklistOptions, function(picklistOption){
@@ -115,34 +118,41 @@
 						}
 					})
 				})
-				service.PAVcFieldtodFieldDefinationMap_ang.push({cField:cField, dField:dField, objResult: objResult});
+				objResult = prepareOptionsMap(objResult);
+				service.PAVcFieldtodFieldDefinationMap.push({cField:cField, dField:dField, objResult: objResult});
 
-				service.dependentFieltoControllingFieldMap[dField] = cField;
-
-				var dFieldDefinations = {};
+				/*var dFieldDefinations = {};
             	if(_.has(service.PAVcFieldtodFieldDefinationMap, cField))
             	{
             		dFieldDefinations = service.PAVcFieldtodFieldDefinationMap[cField];
             	}
             	dFieldDefinations[dField] = prepareOptionsMap(dpwrapper.objResult);
-            	service.PAVcFieldtodFieldDefinationMap[cField] = dFieldDefinations;
+            	service.PAVcFieldtodFieldDefinationMap[cField] = dFieldDefinations;*/
             });
 		}
 
 		// load dropdown values of all dependent fields based on controlling field value selected..applicable on initial load of attributes.
 		function applyDependentLOVSConfig(attributeConfig, PAV, dependentField, controllingField){
             var selectedPAVValue = _.has(PAV, dependentField) ? PAV[dependentField] : '';
-            var dFieldDefinations = getStructuredDependentFields(controllingField);
+            // var dFieldDefinations = getStructuredDependentFields(controllingField);
             PAV[dependentField] = null;// set the dependentFile PAV to null.
             var options = [];
-            if(_.has(dFieldDefinations, dField))
+            var dFieldDefination = _.findWhere(service.PAVcFieldtodFieldDefinationMap, {dField:dependentField, cField:controllingField});
+            if(_.isUndefined(dFieldDefination))
+            {
+            	if(_.has(dFieldDefination.objResult, selectedPAVValue))
+	            {
+	            	options = dFieldDefination.objResult[selectedPAVValue].slice();
+				}
+            }
+            /*if(_.has(dFieldDefinations, dependentField))
             {
             	var dPicklistConfig = dFieldDefinations[dependentField];
 	            if(_.has(dPicklistConfig, selectedPAVValue))
 	            {
 	            	options = dPicklistConfig[selectedPAVValue].slice();
 				}
-            }
+            }*/
             options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
             attributeConfig.picklistValues = options;
 		}
@@ -150,7 +160,8 @@
 		// reload all dependent dropdowns on controlling field change.
 		function applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, fieldName){
 			var selectedPAVValue = PAV[fieldName];
-			var dFieldDefinations = getStructuredDependentFields(fieldName);
+			//var dFieldDefinations = getStructuredDependentFields(fieldName);
+			var dFieldDefinations = _.where(service.PAVcFieldtodFieldDefinationMap, {cField:fieldName});
             if(_.isEmpty(dFieldDefinations))
             {
             	return;
@@ -160,7 +171,22 @@
                     // dependent field existing in the attribute group configuration.
                     // change the selectOptions of depenedent picklist fields.
                     var dField = attributeConfig.fieldName;
-                    if(_.has(dFieldDefinations, dField))
+                    var dFieldDefination = _.findWhere(dFieldDefinations, {dField:dField});
+                    if(!_.isUndefined(dFieldDefination))
+                    {
+                    	var dPicklistConfig = dFieldDefination.objResult;
+                    	PAV[dField] = null;
+                        var options = [];
+                        if(_.has(dPicklistConfig, selectedPAVValue))
+                        {
+                        	options = dPicklistConfig[selectedPAVValue].slice();
+            				options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
+                        }
+                        
+                        attributeConfig.picklistValues = options;
+                        applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, dField);// more than one level-dependency could exist.
+                    }
+                    /*if(_.has(dFieldDefinations, dField))
                     {
                         var dPicklistConfig = dFieldDefinations[dField];
                         PAV[dField] = null;
@@ -173,20 +199,21 @@
                         
                         attributeConfig.picklistValues = options;
                         applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, dField);// more than one level-dependency could exist.
-                    }
+                    }*/
                 })
 			})
 		}
 
 		// return the complete structre of dependent fields for any controlling Field.
-		function getStructuredDependentFields(cField){
+		/*function getStructuredDependentFields(cField){
 			var res = [];
-			if(_.has(service.PAVcFieldtodFieldDefinationMap, cField))
+			if(_.where(service.PAVcFieldtodFieldDefinationMap, cField))
 			{
 				res = service.PAVcFieldtodFieldDefinationMap[cField];
 			}
+			res = _.where(service.PAVcFieldtodFieldDefinationMap, {cField:cField});
 			return res;	
-		}
+		}*/
 
 		// prepare javascript version  of fieldDescribe based on Schema.DescribeFieldResult
 		function getFieldDescribe(fieldDescribe){
