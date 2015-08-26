@@ -44,16 +44,17 @@
                 {
 	                _.each(attributeGroup.productAtributes, function(attributeConfig){
 	                    var fieldName = attributeConfig.fieldName;
-	                    if(service.fieldNametoDFRMap[fieldName].fieldType == 'picklist')
+	                    var fieldDescribe = service.fieldNametoDFRMap[fieldName].fieldDescribe;
+	                    if(fieldDescribe.fieldType == 'picklist')
 	                    {
 	                    	// load Normal picklist LOV's from Salesforce config.
-	                    	attributeConfig['picklistValues'] = service.fieldNametoDFRMap[fieldName].picklistValues;
+	                    	attributeConfig['picklistValues'] = fieldDescribe.picklistValues;
 
 	                    	// load dependent picklists if current field is dependentField.
 	                    	if(_.has(service.dependentFieltoControllingFieldMap, fieldName))
 	                    	{
 	                    		var controllingField = service.dependentFieltoControllingFieldMap[fieldName];
-	                    		applyDependentLOVSConfig(attributeConfig, PAV, fieldName, controllingField);	
+	                    		// applyDependentLOVSConfig(attributeConfig, PAV, fieldName, controllingField);	
 	                    	}
 	                    	
 							// if 'Other' LOV option exists in the database then add the previously selected value....Applicable only for loading configured quote.
@@ -235,14 +236,14 @@
 			for (var i = 0; i < str.length; ++i) {
 			    data.push(str.charCodeAt(i));
 			}
-
-			function testBit(n){
-				return (data[n >> 3] & (0x80 >> n % 8)) != 0;
-			}
-
-			function size(){
-		      return data.length * 8;
-		    }
+			return{
+				testBit : function(n){
+					return (data[n >> 3] & (0x80 >> n % 8)) != 0;
+				},
+				size : function(){
+			      return data.length * 8;
+			    }
+			};
 		}
 
 		// convert list of string to List<Schema.PicklistEntry>.
