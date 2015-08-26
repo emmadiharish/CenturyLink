@@ -95,6 +95,7 @@
 					var controllingpicklistOptions = response[controller].picklistOptions;
 					dPicklistObj = getStructuredDependentFields(fdrWrapper.picklistOptions, controllingpicklistOptions);	
 					
+					
 					service.dependentFieltoControllingFieldMap[fieldName] = controller;
 				}
 
@@ -217,16 +218,29 @@
 		// 
 		function getStructuredDependentFields(dPicklistOptions, cPicklistOptions){
 			var res = {};
+			var objResult = {};
+			//set up the results
+			//create the entry with the controlling label
+			_.each(cPicklistOptions, function(picklistOption){
+				objResult[picklistOption.label] = [];
+			})
+			//cater for null and empty
+			objResult[''] = [];
+			objResult[null] = [];
+
 			_.each(dPicklistOptions, function(picklistOption){
 				var validFor = Bitset(picklistOption.validFor);
 				for (var k = 0; k < validFor.size(); k++) {
 					if (validFor.testBit(k)) {
 					// if bit k is set, this entry is valid for the
 					// for the controlling entry at index k
-
+					var dLabel = picklistOption.label;
+					var cLabel = cPicklistOptions[k].label;
+					objResult[cLabel].push(dLabel);
 					}
 				}
 			})
+			res = prepareOptionsMap(objResult);
 			return res;
 		}
 
