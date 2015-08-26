@@ -229,19 +229,19 @@
 			return res;
 		}
 
-		function Bitset(data){
-			this.data = [];
+		function Bitset(str){
+			var data = [];
 
-			for (var i = 0; i < data.length; ++i) {
-			    this.data.push(data.charCodeAt(i));
+			for (var i = 0; i < str.length; ++i) {
+			    data.push(str.charCodeAt(i));
 			}
 
 			function testBit(n){
-				return (this.data[n >> 3] & (0x80 >> n % 8)) != 0;
+				return (data[n >> 3] & (0x80 >> n % 8)) != 0;
 			}
 
 			function size(){
-		      return this.data.length * 8;
+		      return data.length * 8;
 		    }
 		}
 
