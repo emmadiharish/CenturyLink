@@ -22,9 +22,6 @@
 			var requestPromise = RemoteService.getPAVFieldMetaData();
 			return requestPromise.then(function(response_FieldDescribe){
 				initializefieldNametoDFRMap(response_FieldDescribe);
-				RemoteService.getPAVDependentPickListsConfig().then(function(response_depPicklists){
-					initializePAVDependentPicklistResult(response_depPicklists);
-				})
 				return service.fieldNametoDFRMap;
 			});
 		}
@@ -87,46 +84,26 @@
 		// ###################### private methods.###############################
 		function initializefieldNametoDFRMap(response){
 			service.isvalid = true;
-			_.each(response, function(rawfieldDescribe, fieldName){
-				service.fieldNametoDFRMap[fieldName] = getFieldDescribe(rawfieldDescribe);
+			_.each(response, function(fdrWrapper, fieldName){
+				var fieldDescribe = getFieldDescribe(fdrWrapper.fdr);
+				var dPicklistObj = {};
+				if(fieldDescribe.fieldType == 'picklist'
+					&& fieldDescribe.isDependentPicklist == true)
+				{
+					var controller = fieldDescribe.controllerName;
+					var controllingpicklistOptions = response[controller].picklistOptions;
+					dPicklistObj = getStructuredDependentFields(fdrWrapper.picklistOptions, controllingpicklistOptions);	
+					
+					service.dependentFieltoControllingFieldMap[fieldName] = controller;
+				}
+
+				service.fieldNametoDFRMap[fieldName] = {fieldDescribe:fieldDescribe, dPicklistObj:dPicklistObj};
 			})
-		}
-
-		function initializePAVDependentPicklistResult(response){
-			_.each(response, function(dpwrapper){
-				var cField = dpwrapper.pControllingFieldName;
-				var dField = dpwrapper.pDependentFieldName;
-				
-				service.dependentFieltoControllingFieldMap[dField] = cField;
-
-				var objResult = {};
-
-				_.each(dpwrapper.cPicklistOptions, function(picklistOption){
-					objResult[picklistOption.label] = [];
-				})
-				objResult[''] = [];
-				objResult[null] = [];
-
-				//if valid for is empty, skip
-				_.each(_.filter(dpwrapper.dPicklistOptions, function(option){return !_.isEmpty(option.validFor);}), function(dPicklistOption){
-					//iterate through the controlling values
-					_.each(dpwrapper.cPicklistOptions, function(cPicklistOption, cIndex){
-						if(testBit(dPicklistOption.validFor, cIndex))
-						{
-							var pControllingLabel = cPicklistOption.label;
-							objResult[pControllingLabel].push(dPicklistOption.label);
-						}
-					})
-				})
-				objResult = prepareOptionsMap(objResult);
-				service.PAVcFieldtodFieldDefinationMap.push({cField:cField, dField:dField, objResult: objResult});
-			});
 		}
 
 		// load dropdown values of all dependent fields based on controlling field value selected..applicable on initial load of attributes.
 		function applyDependentLOVSConfig(attributeConfig, PAV, dependentField, controllingField){
             var selectedPAVValue = _.has(PAV, dependentField) ? PAV[dependentField] : '';
-            // var dFieldDefinations = getStructuredDependentFields(controllingField);
             PAV[dependentField] = null;// set the dependentFile PAV to null.
             var options = [];
             var dFieldDefination = _.findWhere(service.PAVcFieldtodFieldDefinationMap, {dField:dependentField, cField:controllingField});
@@ -145,7 +122,6 @@
 		// reload all dependent dropdowns on controlling field change.
 		function applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, fieldName){
 			var selectedPAVValue = PAV[fieldName];
-			//var dFieldDefinations = getStructuredDependentFields(fieldName);
 			var dFieldDefinations = _.where(service.PAVcFieldtodFieldDefinationMap, {cField:fieldName});
             if(_.isEmpty(dFieldDefinations))
             {
@@ -182,6 +158,7 @@
 			res['fieldLabel'] = fieldDescribe.label;
 			res['picklistValues'] = getPicklistValues(fieldDescribe.picklistValues);
 			res['isDependentPicklist'] = fieldDescribe.dependentPicklist;// Returns true if the picklist is a dependent picklist, false otherwise.
+			res['controllerName'] = fieldDescribe.controllerName;// Returns the token of the controlling field.
 			res['isUpdateable'] = fieldDescribe.updateable;//Returns true if the field can be edited by the current user, or child records in a master-detail relationship field on a custom object can be reparented to different parent records; false otherwise.
 			res['isCalculated'] = fieldDescribe.calculated;// Returns true if the field is a custom formula field, false otherwise. Note that custom formula fields are always read-only.
 			res['isCreateable'] = fieldDescribe.createable;// Returns true if the field can be created by the current user, false otherwise.
@@ -236,6 +213,38 @@
 			return res;
 		}
 
+		// 
+		function getStructuredDependentFields(dPicklistOptions, cPicklistOptions){
+			var res = {};
+			_.each(dPicklistOptions, function(picklistOption){
+				var validFor = Bitset(picklistOption.validFor);
+				for (int k = 0; k < validFor.size(); k++) {
+					if (validFor.testBit(k)) {
+					// if bit k is set, this entry is valid for the
+					// for the controlling entry at index k
+
+					}
+				}
+			})
+			return res;
+		}
+
+		function Bitset(data){
+			this.data = [];
+
+			for (var i = 0; i < data.length; ++i) {
+			    this.data.push(data.charCodeAt(i));
+			}
+
+			function testBit(n){
+				return (this.data[n >> 3] & (0x80 >> n % 8)) != 0;
+			}
+
+			function size(){
+		      return this.data.length * 8;
+		    }
+		}
+
 		// convert list of string to List<Schema.PicklistEntry>.
 		function prepareOptionsMap(objResult){
 			var res = {};
@@ -251,48 +260,5 @@
 		function selectoptionObject(active, label, value, isdefault){
 			return {active:active, label:label, value:value, defaultValue:isdefault};
 		}
-
-        function testBit(pValidFor, n){
-	        //the list of bytes
-	        var pBytes = [];
-	        
-	        //will be used to hold the full decimal value
-	        var pFullValue = 0;
-	        
-	        //multiply by 6 since base 64 uses 6 bits
-	        var bytesBeingUsed = (pValidFor.length * 6)/8;
-	        
-	        //must be more than 1 byte
-	        if(bytesBeingUsed <= 1)
-                return false;
-	        
-	        //calculate the target bit for comparison
-	        var bit = 7 - (n % 8);
-	        
-	        //calculate the octet that has in the target bit
-	        var targetOctet = (bytesBeingUsed - 1) - (n >> bytesBeingUsed);
-	        
-	        //the number of bits to shift by until we find the bit to compare for true or false
-	        var shiftBits = (targetOctet * 8) + bit;
-	        
-	        //get the base64bytes
-	        _.each(pValidFor.split(""), function(eachchar){
-	        	//get current character value
-                pBytes.push(Base64Value(eachchar));
-	        })
-	        
-	        for(var i=0; i < pBytes.length; i++){
-                var pShiftAmount = (pBytes.length - (i+1)) * 6;
-                pFullValue = pFullValue + (pBytes[i] << (pShiftAmount));
-	        }
-	        
-	        var tBitVal = ((Math.pow(2, shiftBits)) & pFullValue) >> shiftBits;
-	        return tBitVal == 1;
-        }
-		
-		var Base64Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-        function Base64Value(char){
-        	return Base64Chars.indexOf(char);
-        }
 	}
 })();
