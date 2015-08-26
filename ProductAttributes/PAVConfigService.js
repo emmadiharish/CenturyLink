@@ -218,7 +218,7 @@
 			var res = {};
 			_.each(dPicklistOptions, function(picklistOption){
 				var validFor = Bitset(picklistOption.validFor);
-				for (int k = 0; k < validFor.size(); k++) {
+				for (var k = 0; k < validFor.size(); k++) {
 					if (validFor.testBit(k)) {
 					// if bit k is set, this entry is valid for the
 					// for the controlling entry at index k
