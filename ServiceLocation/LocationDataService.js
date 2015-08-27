@@ -1,7 +1,7 @@
 (function() {
 	angular.module('APTPS_ngCPQ').service('LocationDataService', LocationDataService); 
-	LocationDataService.$inject = ['$q', '$log', 'LocationCache', 'QuoteDataService', 'RemoteService'];
-	function LocationDataService($q, $log, LocationCache, QuoteDataService, RemoteService) {
+	LocationDataService.$inject = ['$q', '$log', 'BaseService', 'LocationCache', 'QuoteDataService', 'RemoteService'];
+	function LocationDataService($q, $log, BaseService, LocationCache, QuoteDataService, RemoteService) {
 		var service = this;
 
 		service.locationIdSet = [];
