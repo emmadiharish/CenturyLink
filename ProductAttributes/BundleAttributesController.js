@@ -1,13 +1,13 @@
 (function() {
     var BundleAttributesController;
 
-    BundleAttributesController = function($scope, $log, QuoteDataService, LocationDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVConfigService) {
+    BundleAttributesController = function($scope, $log, QuoteDataService, LocationDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVObjConfigService) {
 		// all variable intializations.
         $scope.init = function(){
         	$scope.locationService = LocationDataService;
             $scope.PAVService = ProductAttributeValueDataService;
             $scope.PAConfigService = ProductAttributeConfigDataService;
-            $scope.PAVConfigService = PAVConfigService;
+            $scope.PAVConfigService = PAVObjConfigService;
 
             $scope.AttributeGroups = [];// attribute config groups for main bundle.
             $scope.pavfieldDescribeMap = {};

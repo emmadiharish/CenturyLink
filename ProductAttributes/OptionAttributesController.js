@@ -1,14 +1,14 @@
 (function() {
     var OptionAttributesController;
 
-    OptionAttributesController = function($scope, $log, $timeout, LocationDataService, OptionGroupDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVConfigService) {
+    OptionAttributesController = function($scope, $log, $timeout, LocationDataService, OptionGroupDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVObjConfigService) {
         $scope.init = function(){
             // all variable intializations.
             $scope.locationService = LocationDataService;
             $scope.PAVService = ProductAttributeValueDataService;
             $scope.PAConfigService = ProductAttributeConfigDataService;
             $scope.optionGroupService = OptionGroupDataService;
-            $scope.PAVConfigService = PAVConfigService;
+            $scope.PAVConfigService = PAVObjConfigService;
 
             $scope.AttributeGroups = [];
             $scope.pavfieldDescribeMap = {};
