@@ -3,9 +3,40 @@
     BaseService.$inject = ['$log','ngProgress'];
     function BaseService($log, ngProgress) {
     	var service = this;
-    	
+    	service.isLocationLoadComplete = false;
+        service.isPricingMatrixLoadComplete = false;
+        service.isOptionGroupLoadComplete = false;
+        service.isPAVObjConfigLoadComplete = false;
+        service.isPAConfigLoadComplete = false;
+        service.isPAVLoadComplete = false;
+
     	service.startprogress = startprogress;
     	service.completeprogress = completeprogress;
+        
+        service.setLocationLoadComplete = function(){
+            service.isLocationLoadComplete = true;
+            completeprogress();
+        }
+        service.setPricingMatrixLoadComplete = function(){
+            service.isPricingMatrixLoadComplete = true;
+            completeprogress();
+        }
+        service.setOptionGroupLoadComplete = function(){
+            service.isOptionGroupLoadComplete = true;
+            completeprogress();
+        }
+        service.setPAVObjConfigLoadComplete = function(){
+            service.isPAVObjConfigLoadComplete = true;
+            completeprogress();
+        }
+        service.setPAConfigLoadComplete = function(){
+            service.isPAConfigLoadComplete = true;
+            completeprogress();
+        }
+        service.setPAVLoadComplete = function(){
+            service.isPAVLoadComplete = true;
+            completeprogress();
+        }
 
     	function init(){
             // set the color and height for status bar.
@@ -23,7 +54,14 @@
         // complete the page level progress bar.
         function completeprogress(){
             $log.log('inside startprogress');
-            ngProgress.complete();
+            // complete progress only after all loads are complete.
+            if(service.isLocationLoadComplete
+                && service.isPricingMatrixLoadComplete
+                && service.isOptionGroupLoadComplete
+                && service.isBundleAttributesLoadComplete)
+            {
+                ngProgress.complete();
+            }
         }
 
         init();

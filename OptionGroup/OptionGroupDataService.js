@@ -34,7 +34,7 @@
 			BaseService.startprogress();// start progress bar.
 			return requestPromise.then(function(response){
 				OptionGroupCache.initializeOptionGroups(response);
-				BaseService.completeprogress();
+				BaseService.setOptionGroupLoadComplete();
 				// logTransaction(response, categoryRequest);
 				return OptionGroupCache.getOptionGroups();
 			});

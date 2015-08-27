@@ -25,7 +25,7 @@
 			return requestPromise.then(function(response){
 				ProductAttributeConfigCache.initializeProductAttributes(response);
 				// logTransaction(response, categoryRequest);
-				BaseService.completeprogress();
+				BaseService.setPAConfigLoadComplete();
 				return ProductAttributeConfigCache.getProductAttributesConfig();
 			});
 		}

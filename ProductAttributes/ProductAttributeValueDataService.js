@@ -22,11 +22,11 @@
 			}
 
 			var requestPromise = RemoteService.getProductAttributeValueData(productIds_filtered, QuoteDataService.getcartId(), QuoteDataService.getcontextLineNumber());
-			// BaseService.startprogress();// start progress bar.
+			BaseService.startprogress();// start progress bar.
 			return requestPromise.then(function(response){
 				ProductAttributeValueCache.initializeProductAttributeValues(response);
 				// logTransaction(response, categoryRequest);
-				// BaseService.completeprogress();
+				BaseService.setPAVLoadComplete();
 				return ProductAttributeValueCache.getProductAttributeValues();
 			});
 		}

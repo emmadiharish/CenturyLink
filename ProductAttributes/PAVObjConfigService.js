@@ -1,7 +1,7 @@
 (function() {
 	angular.module('APTPS_ngCPQ').service('PAVObjConfigService', PAVObjConfigService); 
-	PAVObjConfigService.$inject = ['$q', '$log', 'BaseService', 'RemoteService'];
-	function PAVObjConfigService($q, $log, BaseService, RemoteService) {
+	PAVObjConfigService.$inject = ['$q', '$log', 'RemoteService'];
+	function PAVObjConfigService($q, $log, RemoteService) {
 		var service = this;
 		service.isvalid = false;
 		service.fieldNametoDFRMap = {};
@@ -18,8 +18,10 @@
 			}
 
 			var requestPromise = RemoteService.getPAVFieldMetaData();
+			BaseService.startprogress();// start progress bar.
 			return requestPromise.then(function(response_FieldDescribe){
 				initializefieldNametoDFRMap(response_FieldDescribe);
+				BaseService.setPAVObjConfigLoadComplete();
 				return service.fieldNametoDFRMap;
 			});
 		}
@@ -64,14 +66,7 @@
 		                    	attributeConfig.picklistValues.push(selectoptionObject(true, selectedvalue, selectedvalue, false));
 		                    }  		
 	                    	
-	                    	/*if(_.isUndefined(selectedvalue))// set the PAV to null if undefined. - To avoid extra dropdown.
-		                    {
-		                    	PAV[fieldName] = null;
-		                    }
-		                    // set pav to default dropdown value from salesforce configuration.
-		                    var defaultLOV = _.findWhere(attributeConfig.picklistValues, {defaultValue:true});
-							PAV[fieldName] = !_.isUndefined(defaultLOV) && _.isNull(PAV[fieldName]) ? defaultLOV.value : PAV[fieldName];*/
-	                    }
+	                   }
 
                     	// set the PAV to null if undefined. - To avoid extra dropdown if it is a picklists.
 	                    PAV[fieldName] = _.isUndefined(PAV[fieldName]) ? null : PAV[fieldName];
@@ -109,15 +104,15 @@
 
 		// load dropdown values of all dependent fields based on controlling field value selected..applicable on initial load of attributes.
 		function applyDependentLOVSConfig(attributeConfig, PAV, dependentField, controllingField){
-            var selectedPAVValue = _.has(PAV, dependentField) ? PAV[dependentField] : '';
+            var selectedPAVValue = _.has(PAV, dependentField) ? PAV[dependentField] : null;
             PAV[dependentField] = null;// set the dependentFile PAV to null.
             var options = [];
             var dPicklistConfig = service.fieldNametoDFRMap[dependentField].dPicklistObj;
             if(_.has(dPicklistConfig, selectedPAVValue))
             {
-            	options = dPicklistConfig[selectedPAVValue].slice();
-			}
-
+            	options = dPicklistConfig[selectedPAVValue].slice();// do a slice to cline the list.
+            }
+			
             options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
             attributeConfig.picklistValues = options;
 		}
@@ -127,10 +122,9 @@
 			// get all dependent fields for given controllingField: cField.
 			var dFields = _.pluck(_.where(service.ctodFieldMap, {cField:cField}), 'dField');
 			// apply dependencies only if cField is a controlling Field else return.
-			if(_.isUndefined(dFields) || _.isEmpty(dFields))
-			{
+			if(_.isUndefined(dFields) 
+				|| _.isEmpty(dFields))
 				return;
-			}
 			var selectedPAVValue = PAV[cField];
 			_.each(attributeGroups, function(attributeGroup){
 				_.each(attributeGroup.productAtributes, function(attributeConfig){
@@ -272,6 +266,8 @@
 		function selectoptionObject(active, label, value, isdefault){
 			return {active:active, label:label, value:value, defaultValue:isdefault};
 		}
+
+		// testBit is implemented based on the algorithm :http://titancronus.com/blog/2014/05/01/salesforce-acquiring-dependent-picklists-in-apex/
 
 		function testBit(pValidFor, n){
 	        //the list of bytes

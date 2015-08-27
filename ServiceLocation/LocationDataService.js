@@ -27,9 +27,11 @@
 
 			// locationRequest = createlocationRequestDO(QuoteDataService.getbundleproductId(), QuoteDataService.getopportunityId());
 			var requestPromise = RemoteService.getServiceLocations(QuoteDataService.getbundleproductId(), QuoteDataService.getopportunityId());
+			BaseService.startprogress();// start progress bar.
 			return requestPromise.then(function(response){
 				LocationCache.initializeLocations(response.locations);
 				service.isRemotecallComplete = true;
+				BaseService.setLocationLoadComplete();
 				if(response.locations.length > 0)
 				{
 					service.hasServicelocations = true;
