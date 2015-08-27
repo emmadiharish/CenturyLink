@@ -5,10 +5,8 @@
 		var service = this;
 		service.isvalid = false;
 		service.fieldNametoDFRMap = {};
-		service.dependentFieltoControllingFieldMap = {};
-		service.PAVcFieldtodFieldDefinationMap = [];
-		// service.PAVcFieldtodFieldDefinationMap_ang = [];
-
+		service.ctodFieldMap = [];
+		
 		service.getPAVFieldMetaData = getPAVFieldMetaData;
 		service.loadPicklistDropDowns = loadPicklistDropDowns;
 		service.applyDependedPicklistsOnChange = applyDependedPicklistsOnChange;
@@ -51,10 +49,10 @@
 	                    	attributeConfig['picklistValues'] = fieldDescribe.picklistValues;
 
 	                    	// load dependent picklists if current field is dependentField.
-	                    	if(_.has(service.dependentFieltoControllingFieldMap, fieldName))
+	                    	if(service.fieldNametoDFRMap[fieldName].fieldDescribe.isDependentPicklist == true)
 	                    	{
-	                    		var controllingField = service.dependentFieltoControllingFieldMap[fieldName];
-	                    		// applyDependentLOVSConfig(attributeConfig, PAV, fieldName, controllingField);	
+	                    		var controllingField = service.fieldNametoDFRMap[fieldName].fieldDescribe.controllerName;
+	                    		applyDependentLOVSConfig(attributeConfig, PAV, fieldName, controllingField);	
 	                    	}
 	                    	
 							// if 'Other' LOV option exists in the database then add the previously selected value....Applicable only for loading configured quote.
@@ -95,8 +93,7 @@
 					var controllingpicklistOptions = response[controller].picklistOptions;
 					dPicklistObj = getStructuredDependentFields(fdrWrapper.picklistOptions, controllingpicklistOptions);	
 					
-					
-					service.dependentFieltoControllingFieldMap[fieldName] = controller;
+					service.ctodFieldMap.push({cField:controller, dField:fieldName});
 				}
 
 				service.fieldNametoDFRMap[fieldName] = {fieldDescribe:fieldDescribe, dPicklistObj:dPicklistObj};
@@ -108,38 +105,30 @@
             var selectedPAVValue = _.has(PAV, dependentField) ? PAV[dependentField] : '';
             PAV[dependentField] = null;// set the dependentFile PAV to null.
             var options = [];
-            var dFieldDefination = _.findWhere(service.PAVcFieldtodFieldDefinationMap, {dField:dependentField, cField:controllingField});
-            if(_.isUndefined(dFieldDefination))
+            var dPicklistConfig = service.fieldNametoDFRMap[dependentField].dPicklistObj;
+            if(_.has(dPicklistConfig, selectedPAVValue))
             {
-            	if(_.has(dFieldDefination.objResult, selectedPAVValue))
-	            {
-	            	options = dFieldDefination.objResult[selectedPAVValue].slice();
-				}
-            }
-            
+            	options = dPicklistConfig[selectedPAVValue].slice();
+			}
+
             options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
             attributeConfig.picklistValues = options;
 		}
 		
 		// reload all dependent dropdowns on controlling field change.
-		function applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, fieldName){
-			var selectedPAVValue = PAV[fieldName];
-			var dFieldDefinations = _.where(service.PAVcFieldtodFieldDefinationMap, {cField:fieldName});
-            if(_.isEmpty(dFieldDefinations))
-            {
-            	return;
-            }
-            _.each(attributeGroups, function(attributeGroup){
+		function applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, cField){
+			var selectedPAVValue = PAV[cField];
+			// get all dependent fields for given controllingField: cField.
+			var dFields = _.pluck(_.where(service.ctodFieldMap, {cField:cField}), 'dField');
+			_.each(attributeGroups, function(attributeGroup){
 				_.each(attributeGroup.productAtributes, function(attributeConfig){
-                    // dependent field existing in the attribute group configuration.
-                    // change the selectOptions of depenedent picklist fields.
-                    var dField = attributeConfig.fieldName;
-                    var dFieldDefination = _.findWhere(dFieldDefinations, {dField:dField});
-                    if(!_.isUndefined(dFieldDefination))
-                    {
-                    	var dPicklistConfig = dFieldDefination.objResult;
-                    	PAV[dField] = null;
-                        var options = [];
+					var currentField = attributeConfig.fieldName;
+					// if attribute field exists in the dependent fields for given controlling field:fieldName then apply dependency.
+					if(_.contains(dFields, currentField))
+					{
+						var dPicklistConfig = service.fieldNametoDFRMap[currentField].dPicklistObj;
+						PAV[currentField] = null;
+						var options = [];
                         if(_.has(dPicklistConfig, selectedPAVValue))
                         {
                         	options = dPicklistConfig[selectedPAVValue].slice();
@@ -147,9 +136,9 @@
                         }
                         
                         attributeConfig.picklistValues = options;
-                        applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, dField);// more than one level-dependency could exist.
-                    }
-                })
+                        applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, currentField);// more than one level-dependency could exist.
+					}
+				})
 			})
 		}
 
@@ -215,8 +204,95 @@
 			return res;
 		}
 
-		// 
 		function getStructuredDependentFields(dPicklistOptions, cPicklistOptions){
+			var res = {};
+			var objResult = {};
+			//set up the results
+			//create the entry with the controlling label
+			_.each(cPicklistOptions, function(picklistOption){
+				objResult[picklistOption.label] = [];
+			})
+			//cater for null and empty
+			objResult[''] = [];
+			objResult[null] = [];
+
+			//if valid for is empty, skip
+			_.each(dPicklistOptions, function(dPicklistOption){
+				//iterate through the controlling values
+				_.each(cPicklistOptions, function(cPicklistOption, cIndex){
+					if(testBit(dPicklistOption.validFor, cIndex))
+					{
+						var cLabel = cPicklistOption.label;
+						objResult[cLabel].push(dPicklistOption.label);
+					}
+				})
+			})
+			res = prepareOptionsMap(objResult);
+			return res;
+		}
+
+		// convert list of string to List<Schema.PicklistEntry>.
+		function prepareOptionsMap(objResult){
+			var res = {};
+			_.each(_.keys(objResult), function(cLOV){
+				res[cLOV] = _.map(objResult[cLOV], function(dlov){
+                    return selectoptionObject(true, dlov, dlov, false);
+                });
+			})
+			return res;
+		}
+
+		// object structure of Schema.PicklistEntry.
+		function selectoptionObject(active, label, value, isdefault){
+			return {active:active, label:label, value:value, defaultValue:isdefault};
+		}
+
+		function testBit(pValidFor, n){
+	        //the list of bytes
+	        var pBytes = [];
+	        
+	        //will be used to hold the full decimal value
+	        var pFullValue = 0;
+	        
+	        //multiply by 6 since base 64 uses 6 bits
+	        var bytesBeingUsed = (pValidFor.length * 6)/8;
+	        
+	        //must be more than 1 byte
+	        if(bytesBeingUsed <= 1)
+                return false;
+	        
+	        //calculate the target bit for comparison
+	        var bit = 7 - (n % 8);
+	        
+	        //calculate the octet that has in the target bit
+	        var targetOctet = (bytesBeingUsed - 1) - (n >> bytesBeingUsed);
+	        
+	        //the number of bits to shift by until we find the bit to compare for true or false
+	        var shiftBits = (targetOctet * 8) + bit;
+	        
+	        //get the base64bytes
+	        _.each(pValidFor.split(""), function(eachchar){
+	        	//get current character value
+                pBytes.push(Base64Value(eachchar));
+	        })
+	        
+	        for(var i=0; i < pBytes.length; i++){
+                var pShiftAmount = (pBytes.length - (i+1)) * 6;
+                pFullValue = pFullValue + (pBytes[i] << (pShiftAmount));
+	        }
+	        
+	        var tBitVal = ((Math.pow(2, shiftBits)) & pFullValue) >> shiftBits;
+	        return tBitVal == 1;
+        }
+		
+		var Base64Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+        function Base64Value(char){
+        	return Base64Chars.indexOf(char);
+        }
+
+        // Salesforce algorithm (Sample Java Code for Dependent Picklists)https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_calls_describesobjects_describesobjectresult.htm#i1427932
+		// not working so commenting.
+		/*function getStructuredDependentFields(dPicklistOptions, cPicklistOptions){
 			var res = {};
 			var objResult = {};
 			//set up the results
@@ -235,8 +311,8 @@
 					// if bit k is set, this entry is valid for the
 					// for the controlling entry at index k
 					var dLabel = picklistOption.label;
-					var cLabel = cPicklistOptions[k].label;
-					objResult[cLabel].push(dLabel);
+					//var cLabel = cPicklistOptions[k].label;
+					//objResult[cLabel].push(dLabel);
 					}
 				}
 			})
@@ -247,7 +323,7 @@
 		function Bitset(str){
 			var data = [];
 
-			for (var i = 0; i < str.length; ++i) {
+			for (var i = 0; i < str.length; i++) {
 			    data.push(str.charCodeAt(i));
 			}
 			return{
@@ -258,22 +334,6 @@
 			      return data.length * 8;
 			    }
 			};
-		}
-
-		// convert list of string to List<Schema.PicklistEntry>.
-		function prepareOptionsMap(objResult){
-			var res = {};
-			_.each(_.keys(objResult), function(cLOV){
-				res[cLOV] = _.map(objResult[cLOV], function(dlov){
-                    return selectoptionObject(true, dlov, dlov, false);
-                });
-			})
-			return res;
-		}
-
-		// object structure of Schema.PicklistEntry.
-		function selectoptionObject(active, label, value, isdefault){
-			return {active:active, label:label, value:value, defaultValue:isdefault};
-		}
+		}*/
 	}
 })();
