@@ -69,6 +69,6 @@
         $scope.init();
 	};
 
-    BundleAttributesController.$inject = ['$scope', '$log', 'QuoteDataService', 'LocationDataService', 'ProductAttributeConfigDataService', 'ProductAttributeValueDataService', 'PAVConfigService'];
+    BundleAttributesController.$inject = ['$scope', '$log', 'QuoteDataService', 'LocationDataService', 'ProductAttributeConfigDataService', 'ProductAttributeValueDataService', 'PAVObjConfigService'];
 	angular.module('APTPS_ngCPQ').controller('BundleAttributesController', BundleAttributesController);
 }).call(this);
