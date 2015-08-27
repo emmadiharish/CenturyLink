@@ -1,7 +1,7 @@
 (function() {
 	angular.module('APTPS_ngCPQ').service('PAVObjConfigService', PAVObjConfigService); 
-	PAVObjConfigService.$inject = ['$q', '$log', 'RemoteService'];
-	function PAVObjConfigService($q, $log, RemoteService) {
+	PAVObjConfigService.$inject = ['$q', '$log', 'BaseService', 'RemoteService'];
+	function PAVObjConfigService($q, $log, BaseService, RemoteService) {
 		var service = this;
 		service.isvalid = false;
 		service.fieldNametoDFRMap = {};
