@@ -1,0 +1,6 @@
+Cleanup task:
+
+1. Delete APTPS_OptionGroupSelector class
+2. Delete APTPS_MiniCartComponent and code from APTPS_MiniCartController
+3. Delete getDependentOptions from APTPS_UtilityFns
+4. 

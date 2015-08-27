@@ -15,36 +15,8 @@
 		the Apex method. 
 		* @return {promise} resolves with the result of the remote action
 		*/
-		service.getLineItem = function getLineItem() {
-			return invokeRemoteAction(RemoteActions.getLineItem, arguments);
-
-		};
-		service.getServiceLocations = function getServiceLocations() {
-			return invokeRemoteAction(RemoteActions.getServiceLocations, arguments);
-
-		};
-		service.getPricingItems = function getPricingItems() {
-			return invokeRemoteAction(RemoteActions.getPricingMatrixData, arguments);
-
-		};
 		service.getMiniCartLines = function getMiniCartLines() {
 			return invokeRemoteAction(RemoteActions.getMiniCartLines, arguments);
-
-		};
-		service.getproductoptiongroupsData = function getproductoptiongroupsData() {
-			return invokeRemoteAction(RemoteActions.getproductoptiongroupsData, arguments);
-
-		};
-		service.getattributeGroupsConfigData = function getattributeGroupsConfigData() {
-			return invokeRemoteAction(RemoteActions.getattributeGroupsConfigData, arguments);
-
-		};
-		service.getProductAttributeValueData = function getProductAttributeValueData(){
-			return invokeRemoteAction(RemoteActions.getProductAttributeValueData, arguments);
-		
-		};
-		service.saveoptionsandattributes = function saveoptionsandattributes() {
-			return invokeRemoteAction(RemoteActions.saveoptionsandattributes, arguments);
 
 		};
 		service.configureLineItem = function configureLineItem() {
@@ -55,10 +27,33 @@
 			return invokeRemoteAction(RemoteActions.deleteLineItemFromCart, arguments);
 
 		};
-		
+		service.getServiceLocations = function getServiceLocations() {
+			return invokeRemoteAction(RemoteActions.getServiceLocations, arguments);
+
+		};
+		service.getPricingMatrixData = function getPricingMatrixData() {
+			return invokeRemoteAction(RemoteActions.getPricingMatrixData, arguments);
+
+		};
+		service.getproductoptiongroupsData = function getproductoptiongroupsData() {
+			return invokeRemoteAction(RemoteActions.getproductoptiongroupsData, arguments);
+
+		};
 		service.getPAVFieldMetaData = function getPAVFieldMetaData() {
 			return invokeRemoteAction(RemoteActions.getPAVFieldMetaData, arguments);
 		
+		};
+		service.getProductAttributeConfigData = function getProductAttributeConfigData() {
+			return invokeRemoteAction(RemoteActions.getProductAttributeConfigData, arguments);
+
+		};
+		service.getProductAttributeValueData = function getProductAttributeValueData(){
+			return invokeRemoteAction(RemoteActions.getProductAttributeValueData, arguments);
+		
+		};
+		service.saveQuoteConfig = function saveQuoteConfig() {
+			return invokeRemoteAction(RemoteActions.saveQuoteConfig, arguments);
+
 		};
 		service.getProducts = function getProducts() {
 			return invokeRemoteAction(RemoteActions.getProducts, arguments);

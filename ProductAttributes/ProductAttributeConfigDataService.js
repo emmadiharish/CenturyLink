@@ -20,7 +20,7 @@
 			}
 
 			// locationRequest = createOptionGroupRequestDO(productIds_filtered, QuoteDataService.getcartId(), QuoteDataService.getcontextLineNumber());
-			var requestPromise = RemoteService.getattributeGroupsConfigData(servicelocationIdSet, QuoteDataService.getbundleproductId(), productIds_filtered, groupIds);
+			var requestPromise = RemoteService.getProductAttributeConfigData(servicelocationIdSet, QuoteDataService.getbundleproductId(), productIds_filtered, groupIds);
 			BaseService.startprogress();// start progress bar.
 			return requestPromise.then(function(response){
 				ProductAttributeConfigCache.initializeProductAttributes(response);

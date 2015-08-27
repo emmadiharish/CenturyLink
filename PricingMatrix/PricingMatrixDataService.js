@@ -8,7 +8,6 @@
 		service.isValid = false;
 		
 		// Pricing Methods.
-		//service.getPricingItems = getPricingItems;
 		service.getPricingMatrix = getPricingMatrix;
 		
 		function getPricingMatrix() {
@@ -17,7 +16,7 @@
 				return $q.when(service.pricingMatrixSearchRes);
 			}
 			
-			var requestPromise = RemoteService.getPricingItems(QuoteDataService.getbundleproductId());
+			var requestPromise = RemoteService.getPricingMatrixData(QuoteDataService.getbundleproductId());
 			return requestPromise.then(function(response){
 				service.isValid = true;
 				service.pricingMatrixSearchRes = response;

@@ -139,7 +139,7 @@
 
                 
 
-                var requestPromise = RemoteService.saveoptionsandattributes(bundleLineItem, productcomponents, productIdtoPAVMap);
+                var requestPromise = RemoteService.saveQuoteConfig(bundleLineItem, productcomponents, productIdtoPAVMap);
                 requestPromise.then(function(result){
                     if(result.isSuccess)// if save call is successfull.
                     {
