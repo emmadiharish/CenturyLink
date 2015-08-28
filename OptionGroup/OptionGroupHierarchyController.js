@@ -6,6 +6,8 @@
         $scope.init = function(){
 			$scope.productGroupList =[];// to load hierarchy
 			$scope.optionGroupService = OptionGroupDataService;
+
+			$scope.renderhierarchy();
 		}
 
 		$scope.$watch('optionGroupService.getrerenderHierarchy()', function(newVal, oldVal) {
