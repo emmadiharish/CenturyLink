@@ -103,12 +103,12 @@
         	service.rerenderHierarchy = val;
         }
 
-        function getrerenderHierarchy(){
-        	return service.rerenderHierarchy;
+        function getslectedOptionGroupProdId(){
+        	return service.slectedOptionGroupProdId;
         }
 
         function setslectedOptionGroupProdId(val){
-        	service.rerenderHierarchy = val;
+        	service.slectedOptionGroupProdId = val;
         }
 	}
 })();
