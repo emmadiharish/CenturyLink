@@ -21,7 +21,7 @@
 			return requestPromise.then(function(response){
 				service.isValid = true;
 				service.pricingMatrixSearchRes = response;
-				BaseService.setLocationLoadComplete();
+				BaseService.setPricingMatrixLoadComplete();
 				// logTransaction(response, categoryRequest);
 				return service.pricingMatrixSearchRes;
 			});
