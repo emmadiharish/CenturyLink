@@ -49,7 +49,8 @@
 			var cachedOptionGroups = OptionGroupCache.getOptionGroups();
 			if (OptionGroupCache.isValid
 				&& _.has(cachedOptionGroups, productId)){
-				return $q.when(cachedOptionGroups[productId]);
+				setcurrentproductoptiongroups(optionGroups[productId]);
+				return $q.when(true);
 			}
 
 			var bundleproductIds = [];
