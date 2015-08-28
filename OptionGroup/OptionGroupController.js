@@ -13,6 +13,15 @@
             $scope.rendercurrentproductoptiongroups(QuoteDataService.getbundleproductId(), null, null);
         }
 
+        $scope.watch('optionGroupService.getslectedOptionGroupProdId', function(newVal, oldVal) {
+            // rerender Hierarchy whenever rerenderHierarchy flag changes on OptionGroupDataService.
+            if(newVal != oldVal
+                && !_.isUndefined(newVal))
+            {
+                $scope.rendercurrentproductoptiongroups(newVal, null, null);
+            }
+        });
+
         $scope.rendercurrentproductoptiongroups = function(bundleproductId, prodcomponent, groupindex){
             // $scope.selectOptionProduct(prodcomponent, groupindex, true);
             var productId = bundleproductId != null ? bundleproductId : prodcomponent.productId;

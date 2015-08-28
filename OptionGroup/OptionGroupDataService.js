@@ -7,6 +7,7 @@
 		service.Selectedoptionproduct = {};
 		service.currentproductoptiongroups = {};
 		service.rerenderHierarchy = false;
+		service.slectedOptionGroupProdId;
 
 		// option group methods.
 		service.getallOptionGroups = getallOptionGroups;
@@ -16,7 +17,8 @@
 		service.getcurrentproductoptiongroups = getcurrentproductoptiongroups;
 		service.getrerenderHierarchy = getrerenderHierarchy;
 		service.setrerenderHierarchy = setrerenderHierarchy;
-		
+		service.getslectedOptionGroupProdId = getslectedOptionGroupProdId;
+		service.setslectedOptionGroupProdId = setslectedOptionGroupProdId;
 		
 		function getallOptionGroups(){
 			return OptionGroupCache.getOptionGroups();
@@ -98,6 +100,14 @@
         }
 
         function setrerenderHierarchy(val){
+        	service.rerenderHierarchy = val;
+        }
+
+        function getrerenderHierarchy(){
+        	return service.rerenderHierarchy;
+        }
+
+        function setslectedOptionGroupProdId(val){
         	service.rerenderHierarchy = val;
         }
 	}
