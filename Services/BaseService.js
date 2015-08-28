@@ -63,7 +63,9 @@
             if(service.isLocationLoadComplete
                 && service.isPricingMatrixLoadComplete
                 && service.isOptionGroupLoadComplete
-                && service.isBundleAttributesLoadComplete)
+                && service.isPAVObjConfigLoadComplete
+                && service.isPAConfigLoadComplete
+                && service.isPAVLoadComplete)
             {
                 ngProgress.complete();
                 service.ProgressBartinprogress = false;
