@@ -75,7 +75,7 @@
 	        }
 	        // set the first pricing matrix record from filtered records which will be saved to bundle line item.
 	        if($scope.pagedItems.length > 0
-	        	$scope.pagedItems[0].length > 0){
+	        	&& $scope.pagedItems[0].length > 0){
 				$scope.pricingMatrixService.setfirstPricingMatrixRecord($scope.pagedItems[0][0].pav.Pricing_Matrix_Id__c);
 			}
 			
