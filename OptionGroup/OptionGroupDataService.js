@@ -6,6 +6,7 @@
 
 		service.Selectedoptionproduct = {};
 		service.currentproductoptiongroups = {};
+		service.rerenderHierarchy = false;
 
 		// option group methods.
 		service.getallOptionGroups = getallOptionGroups;
@@ -13,6 +14,8 @@
 		service.getSelectedoptionproduct = getSelectedoptionproduct;
 		service.setSelectedoptionproduct = setSelectedoptionproduct;
 		service.getcurrentproductoptiongroups = getcurrentproductoptiongroups;
+		service.getrerenderHierarchy = getrerenderHierarchy;
+		service.setrerenderHierarchy = setrerenderHierarchy;
 		
 		
 		function getallOptionGroups(){
@@ -88,6 +91,14 @@
                 }), d));
             });
             return res;
+        }
+
+        function getrerenderHierarchy(){
+        	return service.rerenderHierarchy;
+        }
+
+        function setrerenderHierarchy(val){
+        	service.rerenderHierarchy = val;
         }
 	}
 })();
