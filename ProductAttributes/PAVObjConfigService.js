@@ -104,12 +104,12 @@
 
 		// load dropdown values of all dependent fields based on controlling field value selected..applicable on initial load of attributes.
 		function applyDependentLOVSConfig(attributeConfig, PAV, dependentField, controllingField){
-            var selectedPAVValue = _.has(PAV, dependentField) ? PAV[dependentField] : null;
+            var cSelectedPAVValue = _.has(PAV, controllingField) ? PAV[controllingField] : null;
             var options = [];
             var dPicklistConfig = service.fieldNametoDFRMap[dependentField].dPicklistObj;
-            if(_.has(dPicklistConfig, selectedPAVValue))
+            if(_.has(dPicklistConfig, cSelectedPAVValue))
             {
-            	options = dPicklistConfig[selectedPAVValue].slice();// do a slice to cline the list.
+            	options = dPicklistConfig[cSelectedPAVValue].slice();// do a slice to cline the list.
             }
             // if dependend selected value does not exists in the options then set the PAV to null
 			var dSelectedPAVValue = PAV[dependentField];
