@@ -49,8 +49,7 @@
 
         $scope.CascadeBunleAttributestoOptions = function(){
             var bundlePAV = $scope.PAVService.getbundleproductattributevalues()
-            // commenting cascade.....its breaking dependency.
-            // $scope.productAttributeValues = _.clone(bundlePAV);
+            $scope.productAttributeValues = _.extend($scope.productAttributeValues, bundlePAV);
         }
             
 
