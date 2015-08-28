@@ -47,9 +47,9 @@
         
         // start the page level progress bar.
         function startprogress(){
-            $log.log('inside startprogress');
             if(service.ProgressBartinprogress == false)
             {
+                $log.log('inside startprogress');
                 service.ProgressBartinprogress = true;
                 ngProgress.reset();// reset the progress bar if not completed by previous methids.
                 ngProgress.start(); // start progress.
@@ -58,7 +58,6 @@
         
         // complete the page level progress bar.
         function completeprogress(){
-            $log.log('inside startprogress');
             // complete progress only after all loads are complete.
             if(service.isLocationLoadComplete
                 && service.isPricingMatrixLoadComplete
@@ -67,6 +66,7 @@
                 && service.isPAConfigLoadComplete
                 && service.isPAVLoadComplete)
             {
+                $log.log('inside startprogress');
                 ngProgress.complete();
                 service.ProgressBartinprogress = false;
             }
