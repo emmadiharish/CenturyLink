@@ -112,6 +112,7 @@
 
                 var bundleLine = $scope.quoteService.getlineItem();
                 var bundleLineItem ={Id:bundleLine.Id, Apttus_Config2__ConfigurationId__c:bundleLine.Apttus_Config2__ConfigurationId__c, Service_Location__c:servicelocationId, Apttus_Config2__ProductId__c:bundleLine.Apttus_Config2__ProductId__c, Apttus_Config2__LineNumber__c:bundleLine.Apttus_Config2__LineNumber__c};
+                var bundleProdId = bundleLine.Apttus_Config2__ProductId__c;
 
                 var productcomponents = [];
                 var productIdtoPAVMap = {};
@@ -136,8 +137,9 @@
                         })
                     })
                 })
-
                 
+                // add bundleLine PAV.
+                productIdtoPAVMap[bundleProdId] = allproductIdtoPAVMap[bundleProdId];
 
                 var requestPromise = RemoteService.saveQuoteConfig(bundleLineItem, productcomponents, productIdtoPAVMap);
                 requestPromise.then(function(result){
