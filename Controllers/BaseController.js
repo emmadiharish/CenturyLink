@@ -304,21 +304,21 @@
                 this.$apply(fn);
             }
         };
+        
+        $scope.formatPAVBeforeSave = function(pav){
+            // set the other picklist to original fields.
+            _.each(_.filter(_.keys(pav), function(pavField){
+                            return pavField.endsWith('Other');
+                        }), 
+                function(key){
+                    var keywithnoother = key.slice( 0, key.lastIndexOf( "Other" ) );
+                    pav[keywithnoother] = pav[key];
+                    pav = _.omit(pav, key);
+            })
+            return pav;
+        }
     };
-
-    $scope.formatPAVBeforeSave = function(pav){
-        // set the other picklist to original fields.
-        _.each(_.filter(_.keys(pav), function(pavField){
-                        return pavField.endsWith('Other');
-                    }), 
-            function(key){
-                var keywithnoother = key.slice( 0, key.lastIndexOf( "Other" ) );
-                pav[keywithnoother] = pav[key];
-                pav = _.omit(pav, key);
-        })
-        return pav;
-    }
-
+    
     BaseController.$inject = ['$scope', '$q', '$log', '$dialogs', 'BaseService', 'QuoteDataService', 'MessageService', 'RemoteService', 'LocationDataService', 'PricingMatrixDataService', 'OptionGroupDataService', 'ProductAttributeValueDataService'];
     angular.module('APTPS_ngCPQ').controller('BaseController', BaseController);
 }).call(this);
