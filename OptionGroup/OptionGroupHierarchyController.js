@@ -97,6 +97,6 @@
    		$scope.init();
    	};
 
-   	OptionGroupHierarchyController.$inject = ['$scope', '$log', '$location', 'QuoteDataService', 'OptionGroupDataService'];
+   	OptionGroupHierarchyController.$inject = ['$scope', '$log', 'QuoteDataService', 'OptionGroupDataService'];
 	angular.module('APTPS_ngCPQ').controller('OptionGroupHierarchyController', OptionGroupHierarchyController);
 }).call(this);
