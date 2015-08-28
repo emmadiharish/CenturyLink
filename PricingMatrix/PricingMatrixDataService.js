@@ -6,10 +6,12 @@
 
 		service.pricingMatrixSearchRes = {};
 		service.isValid = false;
+		service.firstPMRecordId = null;
 		
 		// Pricing Methods.
 		service.getPricingMatrix = getPricingMatrix;
-		
+		service.setfirstPricingMatrixRecord = setfirstPricingMatrixRecord;
+
 		function getPricingMatrix() {
 			if (service.isValid) {
 				// logTransaction(cachedLocations);
@@ -25,6 +27,10 @@
 				// logTransaction(response, categoryRequest);
 				return service.pricingMatrixSearchRes;
 			});
+		}
+
+		function setfirstPricingMatrixRecord(pmId){
+			service.firstPMRecordId = pmId;
 		}
 		
 	}

@@ -1,11 +1,12 @@
 (function() {
     var BaseController;
 
-    BaseController = function($scope, $q, $log, $dialogs, BaseService, QuoteDataService, MessageService, RemoteService, LocationDataService, OptionGroupDataService, ProductAttributeValueDataService) {
+    BaseController = function($scope, $q, $log, $dialogs, BaseService, QuoteDataService, MessageService, RemoteService, LocationDataService, PricingMatrixDataService, OptionGroupDataService, ProductAttributeValueDataService) {
         // all variable intializations.
         $scope.quoteService = QuoteDataService;
         $scope.baseService = BaseService;
         $scope.locationService = LocationDataService;
+        $scope.pricingMatrixService = PricingMatrixDataService;
         $scope.optionGroupService = OptionGroupDataService;
         $scope.PAVService = ProductAttributeValueDataService;
 
@@ -110,8 +111,12 @@
                     servicelocationId = servicelocation.Id;    
                 }
 
+                // get the firstPMRecordId from PricingMatrixDataService and set PriceMatrixEntry__c on bundle.
+                var pricingmatrixId = $scope.pricingMatrixService.firstPMRecordId;
+                
+                // prepare the bundleLine item to be passed to Remote actions.
                 var bundleLine = $scope.quoteService.getlineItem();
-                var bundleLineItem ={Id:bundleLine.Id, Apttus_Config2__ConfigurationId__c:bundleLine.Apttus_Config2__ConfigurationId__c, Service_Location__c:servicelocationId, Apttus_Config2__ProductId__c:bundleLine.Apttus_Config2__ProductId__c, Apttus_Config2__LineNumber__c:bundleLine.Apttus_Config2__LineNumber__c};
+                var bundleLineItem ={Id:bundleLine.Id, Apttus_Config2__ConfigurationId__c:bundleLine.Apttus_Config2__ConfigurationId__c, Service_Location__c:servicelocationId, Apttus_Config2__ProductId__c:bundleLine.Apttus_Config2__ProductId__c, Apttus_Config2__LineNumber__c:bundleLine.Apttus_Config2__LineNumber__c, PriceMatrixEntry__c:pricingmatrixId};
                 var bundleProdId = bundleLine.Apttus_Config2__ProductId__c;
 
                 var productcomponents = [];
@@ -127,12 +132,22 @@
                             {
                                 productcomponent.isselected = true;
                                 productcomponent = _.omit(productcomponent, '$$hashKey');
-                                productcomponents.push(productcomponent);
+                                
                                 var productId = productcomponent.productId;
+                                var otherSelected = false;
                                 if(_.has(allproductIdtoPAVMap, productId))
                                 {
-                                   productIdtoPAVMap[productId] = allproductIdtoPAVMap[productId]; 
+                                    var optionPAV = allproductIdtoPAVMap[productId];
+                                    // Other picklist is selected then set OtherSelected to true.
+                                    if(!_.isUndefine(_.findKey(optionPAV, function(pavField){return pavField.endsWith('Other');}))){
+                                        otherSelected = true;
+                                        // clone Other Picklist values to regular Dropdowns and delete Other Field from PAV.
+                                        optionPAV = $scope.formatPAVBeforeSave(optionPAV);
+                                    }
+                                    productIdtoPAVMap[productId] = optionPAV;
                                 }
+                                productcomponent.customFlag = otherSelected;
+                                productcomponents.push(productcomponent);
                             }
                         })
                     })
@@ -140,7 +155,21 @@
                 
                 // add bundleLine PAV.
                 productIdtoPAVMap[bundleProdId] = allproductIdtoPAVMap[bundleProdId];
+                var otherSelected_bundle = false;
+                if(_.has(allproductIdtoPAVMap, bundleProdId))
+                {
+                    var bundlePAV = allproductIdtoPAVMap[bundleProdId];
+                    // Other picklist is selected then set OtherSelected to true.
+                    if(!_.isUndefine(_.findKey(bundlePAV, function(pavField){return pavField.endsWith('Other');}))){
+                        otherSelected_bundle = true;
+                        // clone Other Picklist values to regular Dropdowns and delete Other Field from PAV.
+                        bundlePAV = $scope.formatPAVBeforeSave(bundlePAV);
+                    }
+                    productIdtoPAVMap[bundleProdId] = bundlePAV;
+                }
+                bundleLineItem = _.extend(bundleLineItem, {Custom__c:otherSelected_bundle});
 
+                // remote call to save Quote Config.
                 var requestPromise = RemoteService.saveQuoteConfig(bundleLineItem, productcomponents, productIdtoPAVMap);
                 requestPromise.then(function(result){
                     if(result.isSuccess)// if save call is successfull.
@@ -277,6 +306,19 @@
         };
     };
 
-    BaseController.$inject = ['$scope', '$q', '$log', '$dialogs', 'BaseService', 'QuoteDataService', 'MessageService', 'RemoteService', 'LocationDataService', 'OptionGroupDataService', 'ProductAttributeValueDataService'];
+    $scope.formatPAVBeforeSave = function(pav){
+        // set the other picklist to original fields.
+        _.each(_.filter(_.keys(pav), function(pavField){
+                        return pavField.endsWith('Other');
+                    }), 
+            function(key){
+                var keywithnoother = key.slice( 0, key.lastIndexOf( "Other" ) );
+                pav[keywithnoother] = pav[key];
+                pav = _.omit(pav, key);
+        })
+        return pav;
+    }
+
+    BaseController.$inject = ['$scope', '$q', '$log', '$dialogs', 'BaseService', 'QuoteDataService', 'MessageService', 'RemoteService', 'LocationDataService', 'PricingMatrixDataService', 'OptionGroupDataService', 'ProductAttributeValueDataService'];
     angular.module('APTPS_ngCPQ').controller('BaseController', BaseController);
 }).call(this);
