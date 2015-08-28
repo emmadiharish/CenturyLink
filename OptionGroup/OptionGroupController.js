@@ -13,7 +13,7 @@
             $scope.rendercurrentproductoptiongroups(QuoteDataService.getbundleproductId(), null, null);
         }
 
-        $scope.watch('optionGroupService.getslectedOptionGroupProdId', function(newVal, oldVal) {
+        $scope.$watch('optionGroupService.getslectedOptionGroupProdId', function(newVal, oldVal) {
             // rerender Hierarchy whenever rerenderHierarchy flag changes on OptionGroupDataService.
             if(newVal != oldVal
                 && !_.isUndefined(newVal))
