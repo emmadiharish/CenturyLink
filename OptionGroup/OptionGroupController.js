@@ -41,7 +41,8 @@
         }
 
         $scope.selectOptionProduct = function(prodcomponent, groupindex){
-            if(prodcomponent != null)
+            if(prodcomponent != null
+                && groupindex != null)
             {
                 if($scope.currentproductoptiongroups[groupindex].ischeckbox == false)// radio button
                 {
