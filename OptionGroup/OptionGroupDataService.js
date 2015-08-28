@@ -49,7 +49,7 @@
 			var cachedOptionGroups = OptionGroupCache.getOptionGroups();
 			if (OptionGroupCache.isValid
 				&& _.has(cachedOptionGroups, productId)){
-				setcurrentproductoptiongroups(optionGroups[productId]);
+				setcurrentproductoptiongroups(cachedOptionGroups[productId]);
 				return $q.when(true);
 			}
 
