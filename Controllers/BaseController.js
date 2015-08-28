@@ -139,7 +139,7 @@
                                 {
                                     var optionPAV = allproductIdtoPAVMap[productId];
                                     // Other picklist is selected then set OtherSelected to true.
-                                    if(!_.isUndefine(_.findKey(optionPAV, function(pavField){return pavField.endsWith('Other');}))){
+                                    if(!_.isUndefined(_.findKey(optionPAV, function(pavField){return pavField.endsWith('Other');}))){
                                         otherSelected = true;
                                         // clone Other Picklist values to regular Dropdowns and delete Other Field from PAV.
                                         optionPAV = $scope.formatPAVBeforeSave(optionPAV);
@@ -160,7 +160,7 @@
                 {
                     var bundlePAV = allproductIdtoPAVMap[bundleProdId];
                     // Other picklist is selected then set OtherSelected to true.
-                    if(!_.isUndefine(_.findKey(bundlePAV, function(pavField){return pavField.endsWith('Other');}))){
+                    if(!_.isUndefined(_.findKey(bundlePAV, function(pavField){return pavField.endsWith('Other');}))){
                         otherSelected_bundle = true;
                         // clone Other Picklist values to regular Dropdowns and delete Other Field from PAV.
                         bundlePAV = $scope.formatPAVBeforeSave(bundlePAV);
