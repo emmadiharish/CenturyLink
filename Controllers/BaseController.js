@@ -82,7 +82,7 @@
             $scope.saveinformation().then(function(response){
                 if(response == true)
                 {
-                    // AddMoreProductsAF();
+                    AddMoreProductsAF();
                 }
             })
         }
@@ -91,7 +91,7 @@
             $scope.saveinformation().then(function(response){
                 if(response == true)
                 {
-                    // GoToPricingAF();
+                    GoToPricingAF();
                 }
             })
         }
