@@ -66,7 +66,7 @@
                 && service.isPAConfigLoadComplete
                 && service.isPAVLoadComplete)
             {
-                $log.log('inside startprogress');
+                $log.log('inside completeprogress');
                 ngProgress.complete();
                 service.ProgressBartinprogress = false;
             }
