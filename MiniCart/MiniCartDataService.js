@@ -3,7 +3,8 @@
 	MiniCartDataService.$inject = ['$q', '$log', 'QuoteDataService', 'RemoteService'];
 	function MiniCartDataService($q, $log, QuoteDataService, RemoteService){
 		var service = this;
-
+		$scope.quoteService = QuoteDataService;
+		
 		service.isValid = false;
 		service.miniCartLines = [];
 		service.miniCartLinesCount = 0;
