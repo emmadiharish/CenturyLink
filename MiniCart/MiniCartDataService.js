@@ -3,8 +3,8 @@
 	MiniCartDataService.$inject = ['$q', '$log', 'QuoteDataService', 'RemoteService'];
 	function MiniCartDataService($q, $log, QuoteDataService, RemoteService){
 		var service = this;
-		$scope.quoteService = QuoteDataService;
-		
+		service.quoteService = QuoteDataService;
+
 		service.isValid = false;
 		service.miniCartLines = [];
 		service.miniCartLinesCount = 0;
@@ -32,7 +32,7 @@
 		}
 
 		function configureLineItem(lineItemId){
-			var cartId = $scope.quoteService.getcartId(), configRequestId = $scope.quoteService.getconfigRequestId();
+			var cartId = service.quoteService.getcartId(), configRequestId = service.quoteService.getconfigRequestId();
 			var requestPromise = RemoteService.configureLineItem(cartId, configRequestId, lineItemId);
 			return requestPromise.then(function(response){
 				return response;
@@ -40,7 +40,7 @@
 		}
 
 		function deleteLineItemFromCart(lineNumber_tobedeleted){
-			var cartId = $scope.quoteService.getcartId(), configRequestId = $scope.quoteService.getconfigRequestId(), currentlineNumber = $scope.quoteService.getcontextLineNumber();
+			var cartId = service.quoteService.getcartId(), configRequestId = service.quoteService.getconfigRequestId(), currentlineNumber = service.quoteService.getcontextLineNumber();
             var requestPromise = RemoteService.configureLineItem(cartId, configRequestId, lineNumber_tobedeleted, currentlineNumber);
 			return requestPromise.then(function(response){
 				return response;
