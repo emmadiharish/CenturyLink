@@ -42,6 +42,7 @@
 		function characterRepace(item){
             var changedItem = item;
             changedItem = changedItem.split("&#39;").join("'");
+            //unescape: replaces &amp;, &lt;, &gt;, &quot;, &#96; and &#x27; with their unescaped counterparts.
             changedItem = _.unescape(changedItem);           
             return changedItem;
         }
