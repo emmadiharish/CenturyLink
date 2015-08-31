@@ -72,7 +72,7 @@
         };
 
         $scope.deleteLineItemFromCart = function(lineNumber_tobedeleted){
-            BaseService.startprogress();
+            BaseService.startprogress();// start page level progress bar. 
             $scope.miniCartService.deleteLineItemFromCart(lineNumber_tobedeleted).then(function(result){
                 var retUrl = $scope.parsePagereference(result);
                 if(!_.isNull(retUrl))
@@ -80,7 +80,7 @@
                 // mark minicart as dirty and reload minicart.
                 $scope.miniCartService.setMinicartasDirty();
                 $scope.groupToPages();
-                BaseService.completeprogress();
+                BaseService.completeprogress();// stop page level progress bar.
             })
         };
         
