@@ -65,12 +65,16 @@
         $scope.invokeDoConfigure = function(lineItemId){
             $scope.miniCartService.configureLineItem(lineItemId).then(function(result){
                 // redirect the page to config URL.
-                $window.location.href = result;
+                var configUrl = $scope.parsePagereference(result)
+                $window.location.href = configUrl;
             })
         };
 
         $scope.deleteLineItemFromCart = function(lineNumber_tobedeleted){
             $scope.miniCartService.deleteLineItemFromCart(lineNumber_tobedeleted).then(function(result){
+                var retUrl = $scope.parsePagereference(result);
+                if(retUrl != '')
+                    $window.location.href = retUrl;
                 // mark minicart as dirty and reload minicart.
                 $scope.miniCartService.setMinicartasDirty();
                 $scope.groupToPages();
@@ -91,6 +95,11 @@
                 break;
             }; // end switch
         }; // end launch
+
+        $scope.parsePagereference = function(pgReference){
+            var res = pgReference.replace('&amp;', '&');
+            return res;
+        };
 
         $scope.init();
     };
