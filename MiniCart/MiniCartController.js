@@ -65,8 +65,8 @@
         $scope.invokeDoConfigure = function(lineItemId){
             $scope.miniCartService.configureLineItem(lineItemId).then(function(result){
                 // redirect the page to config URL.
-                var configUrl = $scope.parsePagereference(result)
-                f(!_.isNull(configUrl))
+                var configUrl = $scope.parsePagereference(result);
+                if(!_.isNull(configUrl))
                     $window.location.href = configUrl;
             })
         };
@@ -100,7 +100,7 @@
         $scope.parsePagereference = function(pgReference){
             var res = null;
             if(!_.isNull(pgReference)
-                && _.isEmpty(pgReference))
+                && !_.isEmpty(pgReference))
                 res = pgReference.replace('&amp;', '&');
             return res;
         };
