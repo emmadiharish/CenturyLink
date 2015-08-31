@@ -101,7 +101,7 @@
             var res = null;
             if(!_.isNull(pgReference)
                 && !_.isEmpty(pgReference))
-                res = pgReference.replace('&amp;', '&');
+                res = _.unescape(pgReference);
             return res;
         };
 
