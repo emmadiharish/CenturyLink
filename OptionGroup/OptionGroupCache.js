@@ -31,11 +31,8 @@
 
 		function characterRepace(item){
             var changedItem = item;
-            if(item.indexOf("&#39;") >= 0){
-                changedItem = item.replace("&#39;","'");
-            }if(item.indexOf("&amp;") >= 0){
-                changedItem = item.replace("&amp;","&");
-            }           
+            changedItem = changedItem.split("&#39;").join("'");
+            changedItem = _.unescape(changedItem);          
             return changedItem;
         }
 	}
