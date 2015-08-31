@@ -13,7 +13,7 @@
 
         $scope.imagesbaseURL = $scope.quoteService.getCAPResourcebaseURL()+'/Images';
         
-        $scope.$watch('baseService.getProgressBartinprogress()', (function(newVal, oldVal){
+        $scope.$watch('baseService.getProgressBartinprogress()', function(newVal, oldVal){
             $scope.ProgressBartinprogress = newVal;
         });
 
