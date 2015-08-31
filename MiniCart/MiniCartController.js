@@ -6,6 +6,7 @@
             $scope.miniCartService = MiniCartDataService;
             $scope.quoteService = QuoteDataService;
             $scope.remoteService = QuoteDataService;
+            $scope.baseService = BaseService;
             
             $scope.reverse = false;                
             $scope.itemsPerPage = 5;
@@ -16,10 +17,15 @@
             $scope.paginationLinksTemplateURL = $scope.quoteService.getCAPResourcebaseURL()+'/Templates/PaginationLinksView.html';
             $scope.imagesbaseURL = $scope.quoteService.getCAPResourcebaseURL()+'/Images';
             $scope.lineCount = 0;
+            $scope.ProgressBartinprogress = false;
 
             // Group by pages
             $scope.groupToPages();
         }
+
+        $scope.$watch('baseService.getProgressBartinprogress()', function(newVal, oldVal){
+            $scope.ProgressBartinprogress = newVal;
+        });
 
         // Calculate Total Number of Pages based on Records Queried 
         $scope.groupToPages = function () {
@@ -72,7 +78,7 @@
         };
 
         $scope.deleteLineItemFromCart = function(lineNumber_tobedeleted){
-            BaseService.startprogress();// start page level progress bar. 
+            $scope.baseService.startprogress();// start page level progress bar. 
             $scope.miniCartService.deleteLineItemFromCart(lineNumber_tobedeleted).then(function(result){
                 var retUrl = $scope.parsePagereference(result);
                 if(!_.isNull(retUrl))
@@ -80,7 +86,7 @@
                 // mark minicart as dirty and reload minicart.
                 $scope.miniCartService.setMinicartasDirty();
                 $scope.groupToPages();
-                BaseService.completeprogress();// stop page level progress bar.
+                $scope.baseService.completeprogress();// stop page level progress bar.
             })
         };
         
