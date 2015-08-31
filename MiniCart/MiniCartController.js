@@ -1,5 +1,5 @@
 (function() {
-    var MiniCartController = function($scope, $window, $dialogs, QuoteDataService, MiniCartDataService)
+    var MiniCartController = function($scope, $window, $dialogs, QuoteDataService, BaseService, MiniCartDataService)
     {
         $scope.init = function(){
             // Initialize Scope Variables
@@ -72,6 +72,7 @@
         };
 
         $scope.deleteLineItemFromCart = function(lineNumber_tobedeleted){
+            BaseService.startprogress();
             $scope.miniCartService.deleteLineItemFromCart(lineNumber_tobedeleted).then(function(result){
                 var retUrl = $scope.parsePagereference(result);
                 if(!_.isNull(retUrl))
@@ -79,6 +80,7 @@
                 // mark minicart as dirty and reload minicart.
                 $scope.miniCartService.setMinicartasDirty();
                 $scope.groupToPages();
+                BaseService.completeprogress();
             })
         };
         
@@ -107,6 +109,6 @@
 
         $scope.init();
     };
-    MiniCartController.$inject = ['$scope', '$window', '$dialogs', 'QuoteDataService', 'MiniCartDataService'];
+    MiniCartController.$inject = ['$scope', '$window', '$dialogs', 'QuoteDataService', 'BaseService', 'MiniCartDataService'];
     angular.module('APTPS_ngCPQ').controller('MiniCartController', MiniCartController);
 })();         
