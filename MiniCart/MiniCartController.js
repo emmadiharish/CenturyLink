@@ -64,7 +64,8 @@
         
         $scope.invokeDoConfigure = function(lineItemId){
             $scope.miniCartService.configureLineItem(lineItemId).then(function(result){
-
+                // redirect the page to config URL.
+                $window.location.href = result;
             })
         };
 
