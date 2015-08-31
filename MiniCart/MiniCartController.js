@@ -17,15 +17,10 @@
             $scope.paginationLinksTemplateURL = $scope.quoteService.getCAPResourcebaseURL()+'/Templates/PaginationLinksView.html';
             $scope.imagesbaseURL = $scope.quoteService.getCAPResourcebaseURL()+'/Images';
             $scope.lineCount = 0;
-            $scope.ProgressBartinprogress = false;
-
+            
             // Group by pages
             $scope.groupToPages();
         }
-
-        $scope.$watch('baseService.getProgressBartinprogress()', function(newVal, oldVal){
-            $scope.ProgressBartinprogress = newVal;
-        });
 
         // Calculate Total Number of Pages based on Records Queried 
         $scope.groupToPages = function () {
