@@ -9,3 +9,19 @@ Cleanup task:
 Tasks: 
 1. Custom flag setting might not work on second save attempt. Check.
 2. 
+
+
+Deleted
+
+1. APTPS_CustomAttributePage_ms_ang.page
+2. APTPS_CustomAttributeController_ms_ang.cls
+3. 
+
+To be Deleted
+
+1. 
+2. APTPS_CustomAttributePageController_RA.cls
+3. APTPS_OptionGroupSelector.cls
+4. APTPS_MiniCartComponent
+5. APTPS_MiniCartComponentController.cls
+6. 

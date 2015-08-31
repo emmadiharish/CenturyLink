@@ -27,9 +27,6 @@
                 /* removal of special characters*/
                 _.each(attributeGroups, function(group){
                 	group.groupName = characterRepace(group.groupName);
-                	_.each(group.productAtributes, function(attribute){
-                		attribute.fieldLabel = characterRepace(attribute.fieldLabel);
-                	})
                 })
                 
                 service.prodductIdtoattributegroupsMap[prodId] = attributeGroups;
