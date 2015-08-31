@@ -9,10 +9,14 @@
         $scope.pricingMatrixService = PricingMatrixDataService;
         $scope.optionGroupService = OptionGroupDataService;
         $scope.PAVService = ProductAttributeValueDataService;
-
+        $scope.ProgressBartinprogress = false;
 
         $scope.imagesbaseURL = $scope.quoteService.getCAPResourcebaseURL()+'/Images';
         
+        $scope.$watch('baseService.getProgressBartinprogress()', (function(newVal, oldVal){
+            $scope.ProgressBartinprogress = newVal;
+        });
+
         $scope.validateonsubmit = function(){
             // Validation 1 : Service location has to be selected.
             var servicelocation = $scope.locationService.getselectedlpa();

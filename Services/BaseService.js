@@ -3,6 +3,7 @@
     BaseService.$inject = ['$log','ngProgress'];
     function BaseService($log, ngProgress) {
     	var service = this;
+        service.pageloadComplete = false;
         service.ProgressBartinprogress = false;
     	service.isLocationLoadComplete = false;
         service.isPricingMatrixLoadComplete = false;
@@ -13,7 +14,8 @@
 
     	service.startprogress = startprogress;
     	service.completeprogress = completeprogress;
-        
+        service.getProgressBartinprogress = getProgressBartinprogress;
+
         service.setLocationLoadComplete = function(){
             service.isLocationLoadComplete = true;
             completeprogress();
@@ -70,6 +72,10 @@
                 ngProgress.complete();
                 service.ProgressBartinprogress = false;
             }
+        }
+
+        function getProgressBartinprogress(){
+            return service.ProgressBartinprogress;
         }
 
         init();
