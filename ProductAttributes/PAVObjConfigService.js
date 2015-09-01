@@ -47,16 +47,21 @@
 	                    var fieldDescribe = service.fieldNametoDFRMap[fieldName].fieldDescribe;
 	                    if(fieldDescribe.fieldType == 'picklist')
 	                    {
-	                    	// load Normal picklist LOV's from Salesforce config.
-	                    	attributeConfig['picklistValues'] = fieldDescribe.picklistValues;
+	                    	if(_.isEmpty(attributeConfig.lovs))
+		                    {
+		                    	// load Normal picklist LOV's from Salesforce config.
+		                    	attributeConfig['picklistValues'] = fieldDescribe.picklistValues;
 
-	                    	// load dependent picklists if current field is dependentField.
-	                    	if(fieldDescribe.isDependentPicklist == true)
-	                    	{
-	                    		var controllingField = fieldDescribe.controllerName;
-	                    		applyDependentLOVSConfig(attributeConfig, PAV, fieldName, controllingField);	
+		                    	// load dependent picklists if current field is dependentField.
+		                    	if(fieldDescribe.isDependentPicklist == true)
+		                    	{
+		                    		var controllingField = fieldDescribe.controllerName;
+		                    		applyDependentLOVSConfig(attributeConfig, PAV, fieldName, controllingField);	
+		                    	}
+	                    	}else{
+	                    		// load picklist LOV's within APTPS_CPQ.productAtribute for dynamic attributes and custom attributes from custom settings: APTPS_ProdSpec_DynAttr__c. 
+	                    		attributeConfig['picklistValues'] = prepareOptionsMap(attributeConfig.lovs);
 	                    	}
-	                    	
 							// if 'Other' LOV option exists in the database then add the previously selected value to options....Applicable only for loading configured quote.
 		                    var selectedvalue = PAV[fieldName];
 		                    if(!_.isUndefined(selectedvalue)
