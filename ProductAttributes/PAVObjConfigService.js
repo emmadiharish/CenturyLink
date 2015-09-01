@@ -51,7 +51,7 @@
 	                    		|| attributeConfig.isDynamicAttr == true)
 		                    {
 		                    	// load picklist LOV's within APTPS_CPQ.productAtribute for dynamic attributes and custom attributes from custom settings: APTPS_ProdSpec_DynAttr__c. 
-	                    		attributeConfig['picklistValues'] = prepareOptionsMap(attributeConfig.lovs);
+	                    		attributeConfig['picklistValues'] = prepareOptionsList(attributeConfig.lovs);
 	                    	}else{
 	                    		// load Normal picklist LOV's from Salesforce config.
 		                    	attributeConfig['picklistValues'] = fieldDescribe.picklistValues;
@@ -262,6 +262,15 @@
 		}
 
 		// convert list of string to List<Schema.PicklistEntry>.
+		function prepareOptionsList(lovs){
+			var res = [];
+			res = _.map(lovs, function(lov){
+					return selectoptionObject(true, lov, lov, false);
+				});
+			return res;
+		}
+
+		// convert map<String, list<String>> of string to List<Schema.PicklistEntry>.
 		function prepareOptionsMap(objResult){
 			var res = {};
 			_.each(_.keys(objResult), function(cLOV){
