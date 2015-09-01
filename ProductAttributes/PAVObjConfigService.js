@@ -274,9 +274,7 @@
 		function prepareOptionsMap(objResult){
 			var res = {};
 			_.each(_.keys(objResult), function(cLOV){
-				res[cLOV] = _.map(objResult[cLOV], function(dlov){
-                    return selectoptionObject(true, dlov, dlov, false);
-                });
+				res[cLOV] = prepareOptionsList(objResult[cLOV]);
 			})
 			return res;
 		}
