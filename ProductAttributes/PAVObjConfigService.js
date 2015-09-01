@@ -261,21 +261,21 @@
 			return res;
 		}
 
+		// convert map<String, list<String>> of string to Map<Strin, List<Schema.PicklistEntry>>(JSON).
+		function prepareOptionsMap(objResult){
+			var res = {};
+			_.each(objResult, function(plovs, cLOV){
+				res[cLOV] = prepareOptionsList(plovs);
+			})
+			return res;
+		}
+
 		// convert list of string to List<Schema.PicklistEntry>.
 		function prepareOptionsList(lovs){
 			var res = [];
 			res = _.map(lovs, function(lov){
 					return selectoptionObject(true, lov, lov, false);
 				});
-			return res;
-		}
-
-		// convert map<String, list<String>> of string to List<Schema.PicklistEntry>.
-		function prepareOptionsMap(objResult){
-			var res = {};
-			_.each(_.keys(objResult), function(cLOV){
-				res[cLOV] = prepareOptionsList(objResult[cLOV]);
-			})
 			return res;
 		}
 
