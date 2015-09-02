@@ -1,7 +1,7 @@
 (function() {
     var OptionAttributesController;
 
-    OptionAttributesController = function($scope, $log, $timeout, LocationDataService, OptionGroupDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVObjConfigService) {
+    OptionAttributesController = function($scope, $log, RemoteService, LocationDataService, OptionGroupDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVObjConfigService) {
         $scope.init = function(){
             // all variable intializations.
             $scope.locationService = LocationDataService;
@@ -138,6 +138,6 @@
 
         $scope.init();
     }
-    OptionAttributesController.$inject = ['$scope', '$log', '$timeout', 'LocationDataService', 'OptionGroupDataService', 'ProductAttributeConfigDataService', 'ProductAttributeValueDataService', 'PAVObjConfigService'];
+    OptionAttributesController.$inject = ['$scope', '$log', 'RemoteService', 'LocationDataService', 'OptionGroupDataService', 'ProductAttributeConfigDataService', 'ProductAttributeValueDataService', 'PAVObjConfigService'];
     angular.module('APTPS_ngCPQ').controller('OptionAttributesController', OptionAttributesController);
 }).call(this);
