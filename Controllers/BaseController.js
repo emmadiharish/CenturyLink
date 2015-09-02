@@ -229,7 +229,6 @@
                                 _.each(optiongroup.productOptionComponents, function(productcomponent){
                                     var productId = productcomponent.productId;
                                     if(_.has(productIdtoActionDOMap, productId))
-                                        && $scope.isProdSelected(productcomponent, optiongroup))
                                     {
                                         var ActionDO = productIdtoActionDOMap[productId];
                                         var ActionType = ActionDO.ActionType;
@@ -263,6 +262,11 @@
                                             case 'Disable Selection':
                                                 if(ActionType == 'Exclusion')
                                                 {
+                                                    if($scope.isProdSelected(productcomponent, optiongroup))
+                                                    {
+                                                        MessageService.addMessage(MessageType, Message);
+                                                        numErrors++;
+                                                    }
                                                     // if disabled product is selected as radio then remove it.
                                                     if(optiongroup.ischeckbox == false)
                                                     {
@@ -273,8 +277,6 @@
                                                         productcomponent.isselected = false;
                                                     }
                                                     productcomponent['isDisabled'] = true;
-                                                    MessageService.addMessage(MessageType, Message);
-                                                    numErrors++;
                                                 }
                                                 break;
                                         };
