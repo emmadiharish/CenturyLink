@@ -14,6 +14,7 @@
             $scope.pavfieldDescribeMap = {};
             $scope.productAttributeValues = {};
             $scope.Selectedoptionproduct = {};
+            $scope.dependencyAttributes = {};
         }
         
         // Option Attribute load on location selection.
