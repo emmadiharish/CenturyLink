@@ -323,8 +323,8 @@
                 else{
                     deferred.resolve(true);
                 }
-                return deferred.promise;
             })// end of runConstraintRules remote call.
+            return deferred.promise;
         }
 
         $scope.safeApply = function(fn) {
