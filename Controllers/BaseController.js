@@ -206,7 +206,7 @@
                                                            by exclusion.
                         */
                         var constraintActionDoList = result.appliedActionDOList;
-                        var numErrors = constraintActionDoList.length;
+                        var numErrors = 0; //constraintActionDoList.length;
                         MessageService.clearAll();
                         var productIdtoActionDOMap = {};
                         
@@ -255,6 +255,7 @@
                                                     || ActionType == 'Replacement')
                                                 {
                                                     MessageService.addMessage(MessageType, Message);
+                                                    numErrors++;
                                                 }
                                                 break;
                                             case 'Check on Finalization':
@@ -264,6 +265,7 @@
                                                 {
                                                     productcomponent.isselected = false;
                                                     productcomponent['isDisabled'] = true;
+                                                    numErrors++;
                                                 }
                                                 break;
                                         };
