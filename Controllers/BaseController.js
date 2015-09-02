@@ -135,7 +135,7 @@
                                 || (productcomponent.productId == optiongroup.selectedproduct && !optiongroup.ischeckbox))
                             {
                                 productcomponent.isselected = true;
-                                productcomponent = _.omit(productcomponent, '$$hashKey');
+                                productcomponent = _.omit(productcomponent, ['$$hashKey', 'isDisabled']);
                                 
                                 var productId = productcomponent.productId;
                                 var otherSelected = false;
