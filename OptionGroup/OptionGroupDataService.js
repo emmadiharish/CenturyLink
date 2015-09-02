@@ -41,7 +41,9 @@
 			BaseService.startprogress();// start progress bar.
 			return requestPromise.then(function(response){
 				OptionGroupCache.initializeOptionGroups(response);
-				BaseService.setOptionGroupLoadComplete();
+				runConstraintRules().then(function(constraintsResult){
+                	BaseService.setOptionGroupLoadComplete();    
+                })
 				// logTransaction(response, categoryRequest);
 				return OptionGroupCache.getOptionGroups();
 			});
