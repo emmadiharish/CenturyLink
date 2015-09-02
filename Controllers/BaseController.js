@@ -131,8 +131,7 @@
                 _.each(allOptionGroups, function(optiongroups, bundleprodId){
                     _.each(optiongroups, function(optiongroup){
                         _.each(optiongroup.productOptionComponents, function(productcomponent){
-                            if((productcomponent.isselected && optiongroup.ischeckbox)
-                                || (productcomponent.productId == optiongroup.selectedproduct && !optiongroup.ischeckbox))
+                            if($scope.isProdSelected(productcomponent,optiongroup))
                             {
                                 productcomponent.isselected = true;
                                 productcomponent = _.omit(productcomponent, ['$$hashKey', 'isDisabled']);
@@ -230,6 +229,7 @@
                                 _.each(optiongroup.productOptionComponents, function(productcomponent){
                                     var productId = productcomponent.productId;
                                     if(_.has(productIdtoActionDOMap, productId))
+                                        && $scope.isProdSelected(productcomponent, optiongroup))
                                     {
                                         var ActionDO = productIdtoActionDOMap[productId];
                                         var ActionType = ActionDO.ActionType;
@@ -322,6 +322,13 @@
             }
         };
         
+        $scope.isProdSelected = function(productcomponent, optiongroup){
+            if((productcomponent.isselected && optiongroup.ischeckbox)
+                || (productcomponent.productId == optiongroup.selectedproduct && !optiongroup.ischeckbox))
+            return true;
+            return false;
+        }
+
         $scope.formatPAVBeforeSave = function(pav){
             // set the other picklist to original fields.
             _.each(_.filter(_.keys(pav), function(pavField){
