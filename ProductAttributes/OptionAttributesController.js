@@ -14,7 +14,7 @@
             $scope.pavfieldDescribeMap = {};
             $scope.productAttributeValues = {};
             $scope.Selectedoptionproduct = {};
-            $scope.dependencyAttributes = {};
+            $scope.dependencyAttributes = [];
         }
         
         // Option Attribute load on location selection.
@@ -127,7 +127,6 @@
                                     attributes.picklistValues = CircuitSpeed;
                                     $scope.productAttributeValues['Access_Speed__c'] = CircuitSpeed[0].value;
                                 }
-                                    
                             });
                         });
                         
