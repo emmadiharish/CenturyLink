@@ -9,5 +9,6 @@ angular.module('APTPS_ngCPQ').constant('RemoteActions',{
 	getProductAttributeConfigData: 'APTPS_CAP_RA.getattributeGroupsConfigData',
 	getProductAttributeValueData: 'APTPS_CAP_RA.getProductAttributeValueData',
 	saveQuoteConfig: 'APTPS_CAP_RA.saveQuoteConfig',
+	runConstraintRules: 'APTPS_CAP_RA.runConstraintRules',
 	getProducts: 'APTPS_CAP_RA.getProducts'
 });

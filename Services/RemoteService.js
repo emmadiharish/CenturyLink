@@ -55,6 +55,10 @@
 			return invokeRemoteAction(RemoteActions.saveQuoteConfig, arguments);
 
 		};
+		service.runConstraintRules = function runConstraintRules() {
+			return invokeRemoteAction(RemoteActions.runConstraintRules, arguments);
+
+		};
 		service.getProducts = function getProducts() {
 			return invokeRemoteAction(RemoteActions.getProducts, arguments);
 		
