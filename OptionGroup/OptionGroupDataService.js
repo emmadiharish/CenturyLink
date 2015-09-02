@@ -1,7 +1,7 @@
 (function() {
 	angular.module('APTPS_ngCPQ').service('OptionGroupDataService', OptionGroupDataService); 
-	OptionGroupDataService.$inject = ['$q', '$log', 'BaseService', 'QuoteDataService', 'RemoteService', 'OptionGroupCache'];
-	function OptionGroupDataService($q, $log, BaseService, QuoteDataService, RemoteService, OptionGroupCache) {
+	OptionGroupDataService.$inject = ['$q', '$log', 'BaseService', 'QuoteDataService', 'RemoteService', 'MessageService', 'OptionGroupCache'];
+	function OptionGroupDataService($q, $log, BaseService, QuoteDataService, RemoteService, MessageService, OptionGroupCache) {
 		var service = this;
 
 		service.quoteService = QuoteDataService;
