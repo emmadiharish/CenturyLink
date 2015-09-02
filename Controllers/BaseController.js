@@ -297,8 +297,8 @@
                                 deferred.reject('Constraint rules Error.');
                                 return deferred.promise;
                             }
-                        )}
-                    }
+                        })// end of runConstraintRules remote call.
+                    }// end of saveresult.isSuccess check.
                     else{
                         MessageService.addMessage('danger', 'Save call is Failing.');
                         $scope.baseService.completeprogress();// end progress bar.
@@ -309,8 +309,8 @@
                     // resolver the promise after remote call is complete.
                     $scope.baseService.completeprogress();// end progress bar.
                     deferred.resolve(true);
-                })
-            }
+                })// end of saveQuoteConfig remote call.
+            }// end of validateonsubmit.
             else{
                 $scope.baseService.completeprogress();// end progress bar.
                 deferred.reject('Validations Failed.');
