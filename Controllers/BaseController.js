@@ -297,7 +297,7 @@
                                 deferred.reject('Constraint rules Error.');
                                 return deferred.promise;
                             }
-                        }
+                        )}
                     }
                     else{
                         MessageService.addMessage('danger', 'Save call is Failing.');
