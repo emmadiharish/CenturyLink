@@ -4,6 +4,7 @@
 	function OptionGroupDataService($q, $log, BaseService, QuoteDataService, RemoteService, OptionGroupCache) {
 		var service = this;
 
+		service.quoteService = QuoteDataService;
 		service.Selectedoptionproduct = {};
 		service.currentproductoptiongroups = {};
 		service.rerenderHierarchy = false;
@@ -12,6 +13,7 @@
 		// option group methods.
 		service.getallOptionGroups = getallOptionGroups;
 		service.getOptionGroup = getOptionGroup;
+		service.runConstraintRules = runConstraintRules;
 		service.getSelectedoptionproduct = getSelectedoptionproduct;
 		service.setSelectedoptionproduct = setSelectedoptionproduct;
 		service.getcurrentproductoptiongroups = getcurrentproductoptiongroups;
@@ -110,6 +112,133 @@
 
         function setslectedOptionGroupProdId(val){
         	service.slectedOptionGroupProdId = val;
+        }
+
+        function runConstraintRules(){
+            // remote call to save Quote Config.
+            var deferred = $q.defer();
+            var cartId = service.quoteService.getcartId();
+            var lineNumber = service.quoteService.getcontextLineNumber();
+            requestPromise = RemoteService.runConstraintRules(cartId, lineNumber);
+            requestPromise.then(function(result){
+                /*appliedActionDOList is a List<Apttus_CPQApi.CPQ.AppliedActionDO>.
+                IsPending                       :  Indicates Whether the rule action is pending user action.
+                ########################Message Related##########################
+                TriggeringProductIds (List<Id>) :  The list of triggering product ids that are in the cart.
+
+                MessageType  (String)           :  Indicates whether the message is of warning type or error 
+                                                   type.(Error/Warning/Info)
+                Message     (String)            :  This is the message to be displayed when the rule action is
+                                                   in pending state.
+                IsShowPrompt                    :  This shows the message as a prompt. If the user cancels
+                                                   the prompt instead of taking action, marks the rule as
+                                                   ignored.
+                ########################Auto inclusion/auto exclusion related########################
+                IsAutoExecuted                  :  Indicates whether inclusion was performed by the system.
+                                                   if true, dont worry - Ignore - products will be auto-included.
+                                                   if false, process the rule and include SuggestedProductIds.
+                ActionType  (String)            :  This is the type of rule action.(Inclusion/Exclusion/Validation/Recommendation/Replacement)
+                ActionIntent                    :  Picklist on Constraint rule action. action intent depends on action type and SuggestedProductIds.
+                                                   This is the intent of the rule action whether to auto include or disable selection and so on.(Auto Include/Prompt/Show Message/Check on Finalization/Disable Selection)
+                SuggestedProductIds (List<Id>)  :  The list of product ids suggested by the rule action to be
+                                                   included or excluded.
+                AffectedProductIds (List<Id>)   :  list of products being included/excluded by auto-executed = true;
+                                                   The list of product ids added by auto inclusion or flagged
+                                                   by exclusion.
+                */
+                var constraintActionDoList = result.appliedActionDOList;
+                var numErrors = 0; //constraintActionDoList.length;
+                MessageService.clearAll();
+                var allOptionGroups = getallOptionGroups();
+                var productIdtoActionDOMap = {};
+                
+                _.each(constraintActionDoList, function(ActionDo){
+                    // get all error messages and add to MessageService.
+                    var TriggeringProductIds = ActionDo.TriggeringProductIds;
+                    var Message = ActionDo.Message;
+                    // possible message types : danger, warning, info, success.
+                    var MessageType = ActionDo.MessageType == 'Error' ? 'danger' : ActionDo.MessageType;
+                    var ActionType = ActionDo.ActionType;
+                    var ActionIntent = ActionDo.ActionIntent;
+                    var SuggestedProductIds = ActionDo.SuggestedProductIds;
+                    _.each(SuggestedProductIds, function(productId){
+                        productIdtoActionDOMap[productId] = {'ActionType': ActionType, 'ActionIntent': ActionIntent, 'Message':Message, 'MessageType':MessageType};
+                    })
+                })
+
+                // exclude or include products according to productIdtoActionDOMap.
+                _.each(allOptionGroups, function(optiongroups, bundleprodId){
+                    _.each(optiongroups, function(optiongroup){
+                        _.each(optiongroup.productOptionComponents, function(productcomponent){
+                            var productId = productcomponent.productId;
+                            if(_.has(productIdtoActionDOMap, productId))
+                            {
+                                var ActionDO = productIdtoActionDOMap[productId];
+                                var ActionType = ActionDO.ActionType;
+                                var ActionIntent = ActionDO.ActionIntent;
+                                var Message = ActionDO.Message;
+                                var MessageType = ActionDO.MessageType
+                                // possible values : Auto Include/Prompt/Show Message/Check on Finalization/Disable Selection
+                                switch(ActionIntent)
+                                {
+                                    case 'Auto Include':
+                                        if(ActionType == 'Inclusion')
+                                        {
+                                            productcomponent.isselected = true;
+                                        }
+                                        break;
+                                    case 'Prompt':
+                                        break;
+                                    case 'Show Message':
+                                        if(ActionType == 'Inclusion'
+                                            || ActionType == 'Exclusion'
+                                            || ActionType == 'Validation'
+                                            || ActionType == 'Recommendation'
+                                            || ActionType == 'Replacement')
+                                        {
+                                            MessageService.addMessage(MessageType, Message);
+                                            numErrors++;
+                                        }
+                                        break;
+                                    case 'Check on Finalization':
+                                        break;
+                                    case 'Disable Selection':
+                                        if(ActionType == 'Exclusion')
+                                        {
+                                            if(isProdSelected(productcomponent, optiongroup))
+                                            {
+                                                MessageService.addMessage(MessageType, Message);
+                                                numErrors++;
+                                            }
+                                            // if disabled product is selected as radio then remove it.
+                                            if(optiongroup.ischeckbox == false)
+                                            {
+                                               optiongroup.selectedproduct = null;
+                                            }
+                                            else{
+                                                // if disabled product is selected as checkbox then remove it.
+                                                productcomponent.isselected = false;
+                                            }
+                                            productcomponent['isDisabled'] = true;
+                                        }
+                                        break;
+                                };
+                            }
+                        })
+                    })
+                })
+
+                res = {isSuccess:true, numErrors:numErrors};
+                deferred.resolve(res);
+            })// end of runConstraintRules remote call.
+            return deferred.promise;
+        }
+
+        function isProdSelected(productcomponent, optiongroup){
+            if((productcomponent.isselected && optiongroup.ischeckbox)
+                || (productcomponent.productId == optiongroup.selectedproduct && !optiongroup.ischeckbox))
+            return true;
+            return false;
         }
 	}
 })();
