@@ -63,7 +63,10 @@
 			return invokeRemoteAction(RemoteActions.getProducts, arguments);
 		
 		};
-		
+		service.getDependencyAttributes = function getDependencyAttributes(){
+            return invokeRemoteAction(RemoteActions.getDependencyAttributes, arguments);
+        };
+
 		
 		//Expose general-purpose method
 		service.invokeRemoteAction = invokeRemoteAction;

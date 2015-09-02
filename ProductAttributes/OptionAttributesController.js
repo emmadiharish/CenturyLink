@@ -77,40 +77,65 @@
             $scope.AttributeGroups = attrgroups;
             $scope.productAttributeValues = pav;
             $scope.CascadeBunleAttributestoOptions();
+            $scope.optionLevelAttributeChange();
             $scope.safeApply();   
         }
 
         $scope.PAVPicklistChange = function(fieldName){
+            $scope.renderOptionAttributes($scope.AttributeGroups, $scope.productAttributeValues);
             var res = $scope.PAVConfigService.applyDependedPicklistsOnChange($scope.AttributeGroups, $scope.productAttributeValues, fieldName);    
-            $scope.renderOptionAttributes(res.pavConfigGroups, res.PAVObj);
         }
 
-        /*$scope.PAVPicklistChange = function(fieldName){
-            var selectedPAVValue = $scope.productAttributeValues[fieldName];
-            var dFieldDefinations = $scope.PAVDPicklistService.getStructuredDependentFields(fieldName);
-            var dFields = _.keys(dFieldDefinations);
-            // Iterate over all dependent fields and change its dropdown values according to controlling field value selected.
-            _.each($scope.AttributeGroups, function(attributeGroup){
-                _.each(attributeGroup.productAtributes, function(attributeConfig){
-                    // dependent field existing in the attribute group configuration.
-                    // change the selectOptions of depenedent picklist fields.
-                    var dField = attributeConfig.fieldName;
-                    if(_.indexOf(dFields, dField) != -1)
-                    {
-                        var dPicklistConfig = dFieldDefinations[dField];
-                        var options = [];
-                        $scope.productAttributeValues[dField] = null;
-                        options.push({key:'--None--', value:null});
-                        _.each(dPicklistConfig[selectedPAVValue], function(lov){
-                            options.push({key:lov, value:lov});
-                        })
-                        attributeConfig.selectOptions = options;
-                        $scope.PAVPicklistChange(dField);// more than one level-dependency could exist.
+        $scope.optionLevelAttributeChange = function(){
+            var optionAttributes = $scope.productAttributeValues;
+            if(optionAttributes.hasOwnProperty('Ethernet_Local_Access_Speed__c') && optionAttributes['Ethernet_Local_Access_Speed__c'] != null){
+                $scope.dependencyAttributes['Ethernet_Local_Access_Speed__c'] = optionAttributes['Ethernet_Local_Access_Speed__c'];
+            }
+            
+            if(optionAttributes.hasOwnProperty('Billing_Type__c') && optionAttributes['Billing_Type__c'] != null){
+                $scope.dependencyAttributes['Billing_Type__c'] = optionAttributes['Billing_Type__c'];
+            }
+            
+            if($scope.dependencyAttributes.hasOwnProperty('Ethernet_Local_Access_Speed__c') && $scope.dependencyAttributes.hasOwnProperty('Billing_Type__c')){
+                var requestPromise = RemoteService.getDependencyAttributes($scope.dependencyAttributes['Ethernet_Local_Access_Speed__c'],$scope.dependencyAttributes['Billing_Type__c']);
+                requestPromise.then(function(result){
+                    if(result.hasOwnProperty('Bandwidth__c') && result.hasOwnProperty('Circuit_Speed__c')){
+                        var Bandwidth = [];
+                        var CircuitSpeed = [];
+                        var BandwidthSplitted = [];
+                        var CircuitSpeedSplitted = [];
+                        
+                        BandwidthSplitted = result['Bandwidth__c'].split(', ');
+                        CircuitSpeedSplitted = result['Circuit_Speed__c'].split(', ');                      
+                        
+                        _.each(BandwidthSplitted, function(item){
+                            Bandwidth.push({value:item, label:item, active:true, defaultValue:false});
+                        });
+                        _.each(CircuitSpeedSplitted, function(item){
+                            CircuitSpeed.push({value:item, label:item, active:true, defaultValue:false});
+                        });
+                        
+                        _.each($scope.AttributeGroups, function(groups){
+                            _.each(groups.productAtributes, function(attributes){
+                                if(attributes.fieldName == 'Bandwidth__c'){
+                                    attributes.picklistValues = Bandwidth;
+                                    $scope.productAttributeValues['Bandwidth__c'] = Bandwidth[0].value;
+                                }
+                                
+                                if(attributes.fieldName == 'Access_Speed__c'){
+                                    attributes.picklistValues = CircuitSpeed;
+                                    $scope.productAttributeValues['Access_Speed__c'] = CircuitSpeed[0].value;
+                                }
+                                    
+                            });
+                        });
+                        
                     }
-                })    
-            })    
-        }*/
-        
+                    $scope.safeApply();
+                });
+            }
+        }
+
         $scope.init();
     }
     OptionAttributesController.$inject = ['$scope', '$log', '$timeout', 'LocationDataService', 'OptionGroupDataService', 'ProductAttributeConfigDataService', 'ProductAttributeValueDataService', 'PAVObjConfigService'];
