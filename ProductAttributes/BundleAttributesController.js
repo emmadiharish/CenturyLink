@@ -56,9 +56,8 @@
 
         $scope.renderBundleAttributes = function(attrgroups, pav){
             // clear the previous option attribute groups.
-            cleanupPAV(attrgroups, pav);
             $scope.AttributeGroups = attrgroups;
-            $scope.PAVService.setbundleproductattributevalues(pav);
+            $scope.PAVService.setbundleproductattributevalues(cleanupPAV(attrgroups, pav));
             $scope.productAttributeValues = $scope.PAVService.getbundleproductattributevalues();
             $scope.safeApply();   
         }
@@ -70,6 +69,7 @@
 
         // delete unwanted fields from PAV which are not configured at product attributes.
         function cleanupPAV(attrgroups, pav){
+            var res = {};
             // get all fieldValues from attrgroups
             var allattrGroupFields = [];
             _.each(attrgroups, function(attrgroup){
@@ -77,9 +77,10 @@
             })
             allattrGroupFields = _.flatten(allattrGroupFields);
 
-            pav = _.omit(pav, function(value, key, object) {
+            res = _.omit(pav, function(value, key, object) {
                     return !_.contains(allattrGroupFields, key);
                 });
+            return res;
         }
 
         $scope.init();
