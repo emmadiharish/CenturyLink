@@ -352,7 +352,7 @@
 					// if bit k is set, this entry is valid for the
 					// for the controlling entry at index k
 					var dLabel = picklistOption.label;
-					//var cLabel = cPicklistOptions[k].label;
+					var cLabel = cPicklistOptions[k].label;
 					objResult[cLabel].push(dLabel);
 					}
 				}
