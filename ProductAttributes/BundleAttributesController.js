@@ -70,7 +70,6 @@
 
         // delete unwanted fields from PAV which are not configured at product attributes.
         function cleanupPAV(attrgroups, pav){
-            var res = {};
             // get all fieldValues from attrgroups
             var allattrGroupFields = [];
             _.each(attrgroups, function(attrgroup){
@@ -78,10 +77,9 @@
             })
             allattrGroupFields = _.flatten(allattrGroupFields);
 
-            _.omit(pav, function(value, key, object) {
-                return !_.contains(allattrGroupFields, key);
-            });
-            return res;
+            pav = _.omit(pav, function(value, key, object) {
+                    return !_.contains(allattrGroupFields, key);
+                });
         }
 
         $scope.init();
