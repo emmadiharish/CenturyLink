@@ -101,6 +101,18 @@
             })
         }
 
+        /*@Validate
+            Save Config and run constraint rules.
+        */
+        $scope.Validate = function(){
+            $scope.saveinformation().then(function(response){
+                if(response == true)
+                {
+                    
+                }
+            })
+        }
+
         $scope.saveinformation = function(){
             var deferred = $q.defer();
             $scope.baseService.startprogress();// start progress bar.

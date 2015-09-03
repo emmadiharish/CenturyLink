@@ -4,7 +4,6 @@
 	function PAVObjConfigService($q, $log, BaseService, RemoteService) {
 		var service = this;
 		service.isvalid = false;
-		service.isOptionConstraintsvalid = false;
 		service.fieldNametoDFRMap = {};
 		service.ctodFieldMap = [];
 		
@@ -14,21 +13,6 @@
 		
 		function getPAVFieldMetaData(){
 			if(service.isvalid == true)
-			{
-				return $q.when(service.fieldNametoDFRMap);
-			}
-
-			var requestPromise = RemoteService.getPAVFieldMetaData();
-			BaseService.startprogress();// start progress bar.
-			return requestPromise.then(function(response_FieldDescribe){
-				initializefieldNametoDFRMap(response_FieldDescribe);
-				BaseService.setPAVObjConfigLoadComplete();
-				return service.fieldNametoDFRMap;
-			});
-		}
-
-		function getPAVFieldMetaData(){
-			if(service.isOptionConstraintsvalid == true)
 			{
 				return $q.when(service.fieldNametoDFRMap);
 			}
