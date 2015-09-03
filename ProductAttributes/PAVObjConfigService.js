@@ -233,7 +233,30 @@
 			return res;
 		}
 
-		function getStructuredDependentFields(dPicklistOptions, cPicklistOptions){
+		// convert map<String, list<String>> of string to Map<Strin, List<Schema.PicklistEntry>>(JSON).
+		function prepareOptionsMap(objResult){
+			var res = {};
+			_.each(objResult, function(plovs, cLOV){
+				res[cLOV] = prepareOptionsList(plovs);
+			})
+			return res;
+		}
+
+		// convert list of string to List<Schema.PicklistEntry>.
+		function prepareOptionsList(lovs){
+			var res = [];
+			res = _.map(lovs, function(lov){
+					return selectoptionObject(true, lov, lov, false);
+				});
+			return res;
+		}
+
+		// object structure of Schema.PicklistEntry.
+		function selectoptionObject(active, label, value, isdefault){
+			return {active:active, label:label, value:value, defaultValue:isdefault};
+		}
+
+		/*function getStructuredDependentFields(dPicklistOptions, cPicklistOptions){
 			var res = {};
 			var objResult = {};
 			//set up the results
@@ -261,31 +284,7 @@
 			return res;
 		}
 
-		// convert map<String, list<String>> of string to Map<Strin, List<Schema.PicklistEntry>>(JSON).
-		function prepareOptionsMap(objResult){
-			var res = {};
-			_.each(objResult, function(plovs, cLOV){
-				res[cLOV] = prepareOptionsList(plovs);
-			})
-			return res;
-		}
-
-		// convert list of string to List<Schema.PicklistEntry>.
-		function prepareOptionsList(lovs){
-			var res = [];
-			res = _.map(lovs, function(lov){
-					return selectoptionObject(true, lov, lov, false);
-				});
-			return res;
-		}
-
-		// object structure of Schema.PicklistEntry.
-		function selectoptionObject(active, label, value, isdefault){
-			return {active:active, label:label, value:value, defaultValue:isdefault};
-		}
-
 		// testBit is implemented based on the algorithm :http://titancronus.com/blog/2014/05/01/salesforce-acquiring-dependent-picklists-in-apex/
-
 		function testBit(pValidFor, n){
 	        //the list of bytes
 	        var pBytes = [];
@@ -330,11 +329,11 @@
 		var Base64Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
         function Base64Value(char){
         	return Base64Chars.indexOf(char);
-        }
+        }*/
 
         // Salesforce algorithm (Sample Java Code for Dependent Picklists)https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_calls_describesobjects_describesobjectresult.htm#i1427932
 		// not working so commenting.
-		/*function getStructuredDependentFields(dPicklistOptions, cPicklistOptions){
+		function getStructuredDependentFields(dPicklistOptions, cPicklistOptions){
 			var res = {};
 			var objResult = {};
 			//set up the results
@@ -354,7 +353,7 @@
 					// for the controlling entry at index k
 					var dLabel = picklistOption.label;
 					//var cLabel = cPicklistOptions[k].label;
-					//objResult[cLabel].push(dLabel);
+					objResult[cLabel].push(dLabel);
 					}
 				}
 			})
@@ -376,6 +375,6 @@
 			      return data.length * 8;
 			    }
 			};
-		}*/
+		}
 	}
 })();
