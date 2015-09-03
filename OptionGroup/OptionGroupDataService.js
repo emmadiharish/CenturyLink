@@ -45,9 +45,10 @@
 				// runConstraintRules should be refacotored lated to apply constraint rules only once.
 				runConstraintRules().then(function(constraintsResult){
                 	BaseService.setOptionGroupLoadComplete();    
+                    return OptionGroupCache.getOptionGroups();
                 })
 				// logTransaction(response, categoryRequest);
-				return OptionGroupCache.getOptionGroups();
+				// return OptionGroupCache.getOptionGroups();
 			});
 		}
 
