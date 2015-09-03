@@ -72,11 +72,11 @@
         function cleanupPAV(attrgroups, pav){
             var res = {};
             // get all fieldValues from attrgroups
-            var allattriGroupFields = [];
-            _.each(attributeGroups, function(attributeGroup){
-                allattriGroupFields.push(_.pluck(attributeGroup.productAtributes, 'fieldName'));
+            var allattrGroupFields = [];
+            _.each(attrgroups, function(attrgroup){
+                allattrGroupFields.push(_.pluck(attrgroup.productAtributes, 'fieldName'));
             })
-            allattriGroupFields = _.flatten(allattriGroupFields);
+            allattrGroupFields = _.flatten(allattrGroupFields);
 
             _.omit(pav, function(value, key, object) {
                 return !_.contains(allattriGroupFields, key);
