@@ -214,17 +214,18 @@
                                             {
                                                 MessageService.addMessage(MessageType, Message);
                                                 numErrors++;
+                                                
+                                                // if disabled product is selected as radio then remove it.
+                                                if(optiongroup.ischeckbox == false)
+                                                {
+                                                   optiongroup.selectedproduct = null;
+                                                }
+                                                else{
+                                                    // if disabled product is selected as checkbox then remove it.
+                                                    productcomponent.isselected = false;
+                                                }
+                                                productcomponent['isDisabled'] = true;
                                             }
-                                            // if disabled product is selected as radio then remove it.
-                                            if(optiongroup.ischeckbox == false)
-                                            {
-                                               optiongroup.selectedproduct = null;
-                                            }
-                                            else{
-                                                // if disabled product is selected as checkbox then remove it.
-                                                productcomponent.isselected = false;
-                                            }
-                                            productcomponent['isDisabled'] = true;
                                         }
                                         break;
                                 };
