@@ -215,9 +215,10 @@
                                     case 'Disable Selection':
                                         if(ActionType == 'Exclusion')
                                         {
+                                            // apply rule only if option is selected.
                                             if(isProdSelected(productcomponent, optiongroup))
                                             {
-                                                MessageService.addMessage(MessageType, Message);
+                                                // MessageService.addMessage(MessageType, Message);
                                                 numRulesApplied++;
                                                 
                                                 // if disabled product is selected as radio then remove it.
