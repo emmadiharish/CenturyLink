@@ -175,6 +175,12 @@
                 _.each(allOptionGroups, function(optiongroups, bundleprodId){
                     _.each(optiongroups, function(optiongroup){
                         _.each(optiongroup.productOptionComponents, function(productcomponent){
+                            // Enable all previously disabled options.
+                            if(_.has(productcomponent, 'isDisabled')
+                                && productcomponent['isDisabled'] == true)
+                            {
+                                productcomponent['isDisabled'] = false;
+                            }
                             var productId = productcomponent.productId;
                             if(_.has(productIdtoActionDOMap, productId))
                             {
