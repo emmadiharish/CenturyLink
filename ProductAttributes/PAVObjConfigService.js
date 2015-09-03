@@ -320,7 +320,7 @@
                 pFullValue = pFullValue + (pBytes[i] << (pShiftAmount));
 	        }
 	        
-	        var tBitVal = ((Math.pow(2, shiftBits)) & pFullValue) >> shiftBits;
+	        var tBitVal = (parseInt((Math.pow(2, shiftBits)) & pFullValue)) >> shiftBits;
 	        return tBitVal == 1;
         }
 		
