@@ -256,7 +256,7 @@
 			return {active:active, label:label, value:value, defaultValue:isdefault};
 		}
 
-		/*function getStructuredDependentFields(dPicklistOptions, cPicklistOptions){
+		function getStructuredDependentFields(dPicklistOptions, cPicklistOptions){
 			var res = {};
 			var objResult = {};
 			//set up the results
@@ -324,7 +324,7 @@
 	       	powVal = powVal < -2147483647 ? -2147483647 : powVal;
 	        var tBitVal = (powVal & pFullValue) >> shiftBits;
 	        return tBitVal == 1;
-        }*/
+        }
 		
 		var Base64Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
         function Base64Value(char){
@@ -333,7 +333,7 @@
 
         // Salesforce algorithm (Sample Java Code for Dependent Picklists)https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_calls_describesobjects_describesobjectresult.htm#i1427932
 		// not working so commenting.
-		function getStructuredDependentFields(dPicklistOptions, cPicklistOptions){
+		/*function getStructuredDependentFields(dPicklistOptions, cPicklistOptions){
 			var res = {};
 			var objResult = {};
 			//set up the results
@@ -378,6 +378,6 @@
 			      return data.length * 8;
 			    }
 			};
-		}
+		}*/
 	}
 })();
