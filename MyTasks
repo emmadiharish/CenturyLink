@@ -1,0 +1,7 @@
+1. Refactor Option to Option Cascade
+	RemoteService
+	PAVObjConfigService
+	OptionAttributesController 
+	RemoteActions
+2. Dependent picklist algorithm fix.
+3. Delete APTPS_StringUtils.

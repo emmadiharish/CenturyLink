@@ -65,8 +65,13 @@
 		};
 		service.getDependencyAttributes = function getDependencyAttributes(){
             return invokeRemoteAction(RemoteActions.getDependencyAttributes, arguments);
-        };
 
+        }; 
+		service.getOptiontoOptionAttributes = function getOptiontoOptionAttributes(){
+            return invokeRemoteAction(RemoteActions.getOptiontoOptionAttributes, arguments);
+        
+        };
+        
 		
 		//Expose general-purpose method
 		service.invokeRemoteAction = invokeRemoteAction;

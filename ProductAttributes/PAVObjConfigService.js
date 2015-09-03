@@ -4,13 +4,16 @@
 	function PAVObjConfigService($q, $log, BaseService, RemoteService) {
 		var service = this;
 		service.isvalid = false;
+		service.isOptiontoOptionAttrsvalid = false;
 		service.fieldNametoDFRMap = {};
 		service.ctodFieldMap = [];
+		service.optionOptionAttributes = {};
 		
 		service.getPAVFieldMetaData = getPAVFieldMetaData;
+		service.getPortOptions = getPortOptions;
 		service.loadPicklistDropDowns = loadPicklistDropDowns;
 		service.applyDependedPicklistsOnChange = applyDependedPicklistsOnChange;
-		
+
 		function getPAVFieldMetaData(){
 			if(service.isvalid == true)
 			{
@@ -21,11 +24,17 @@
 			BaseService.startprogress();// start progress bar.
 			return requestPromise.then(function(response_FieldDescribe){
 				initializefieldNametoDFRMap(response_FieldDescribe);
-				BaseService.setPAVObjConfigLoadComplete();
-				return service.fieldNametoDFRMap;
+				return RemoteService.getOptiontoOptionAttributes().then(function(optiontoOptionattrs){
+					initializeportOptions(optiontoOptionattrs);
+					BaseService.setPAVObjConfigLoadComplete();
+					return service.fieldNametoDFRMap;
+			    });
 			});
 		}
-
+		function getPortOptions(){
+			return service.optionOptionAttributes.portOptions;
+		}
+		
 		// when drop down value is change on the attributes then apply all dependent dropdowns.
 		function applyDependedPicklistsOnChange(attributeGroups, PAV, fieldName){
 			var res = {};
@@ -108,6 +117,15 @@
 			})
 		}
 
+		function initializeportOptions(result){
+			service.isOptiontoOptionAttrsvalid = true;
+			var portOptions = [];
+			_.each(result, function(portOption){
+				portOptions.push(portOption);
+			})
+			service.optionOptionAttributes[portOptions] = portOptions;
+		}
+		
 		// load dropdown values of all dependent fields based on controlling field value selected..applicable on initial load of attributes.
 		function applyDependentLOVSConfig(attributeConfig, PAV, dependentField, controllingField){
             var cSelectedPAVValue = _.has(PAV, controllingField) ? PAV[controllingField] : null;

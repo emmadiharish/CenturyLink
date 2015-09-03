@@ -136,6 +136,9 @@
             }
         }
 
+        $scope.optionLevelAttributeChange_New = function(){
+            // var portOptions = $scope.PAVConfigService.getPortOptions();
+        }
         $scope.init();
     }
     OptionAttributesController.$inject = ['$scope', '$log', 'RemoteService', 'LocationDataService', 'OptionGroupDataService', 'ProductAttributeConfigDataService', 'ProductAttributeValueDataService', 'PAVObjConfigService'];
