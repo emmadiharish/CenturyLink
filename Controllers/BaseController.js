@@ -184,8 +184,9 @@
                     if(saveresult.isSuccess)// if save call is successfull.
                     {
                         $scope.optionGroupService.runConstraintRules().then(function(constraintsResult){
-                            if(constraintsResult.numErrors > 0)
+                            if(constraintsResult.numRulesApplied > 0)
                             {
+                                // render Hierarchy Once Constraint rules are run.
                                 $scope.optionGroupService.setrerenderHierarchy(true);
                                 deferred.reject('Constraint rules Error.');    
                             }

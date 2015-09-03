@@ -152,7 +152,7 @@
                                                    by exclusion.
                 */
                 var constraintActionDoList = result.appliedActionDOList;
-                var numErrors = 0; //constraintActionDoList.length;
+                var numRulesApplied = 0; //constraintActionDoList.length;
                 MessageService.clearAll();
                 var allOptionGroups = getallOptionGroups();
                 var productIdtoActionDOMap = {};
@@ -190,7 +190,7 @@
                                         if(ActionType == 'Inclusion')
                                         {
                                             productcomponent.isselected = true;
-                                            numErrors++;
+                                            numRulesApplied++;
                                         }
                                         break;
                                     case 'Prompt':
@@ -203,7 +203,7 @@
                                             || ActionType == 'Replacement')
                                         {
                                             MessageService.addMessage(MessageType, Message);
-                                            numErrors++;
+                                            numRulesApplied++;
                                         }
                                         break;
                                     case 'Check on Finalization':
@@ -214,7 +214,7 @@
                                             if(isProdSelected(productcomponent, optiongroup))
                                             {
                                                 MessageService.addMessage(MessageType, Message);
-                                                numErrors++;
+                                                numRulesApplied++;
                                                 
                                                 // if disabled product is selected as radio then remove it.
                                                 if(optiongroup.ischeckbox == false)
@@ -234,8 +234,8 @@
                         })
                     })
                 })
-
-                res = {isSuccess:true, numErrors:numErrors};
+                
+                res = {isSuccess:true, numRulesApplied:numRulesApplied};
                 deferred.resolve(res);
             })// end of runConstraintRules remote call.
             return deferred.promise;
