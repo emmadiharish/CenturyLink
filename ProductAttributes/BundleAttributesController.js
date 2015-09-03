@@ -74,10 +74,10 @@
             // get all fieldValues from attrgroups
             var allattriGroupFields = [];
             _.each(attributeGroups, function(attributeGroup){
-                _.each(attributeGroup.productAtributes, function(attributeConfig){
-                    allattriGroupFields.push(attributeConfig.fieldName);
-                })
+                allattriGroupFields.push(_.pluck(attributeGroup.productAtributes, 'fieldName'));
             })
+            allattriGroupFields = _.flatten(allattriGroupFields);
+
             _.omit(pav, function(value, key, object) {
                 return !_.contains(allattriGroupFields, key);
             });
