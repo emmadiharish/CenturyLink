@@ -324,12 +324,12 @@
 	       	powVal = powVal < -2147483647 ? -2147483647 : powVal;
 	        var tBitVal = (powVal & pFullValue) >> shiftBits;
 	        return tBitVal == 1;
-        }
+        }*/
 		
 		var Base64Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
         function Base64Value(char){
         	return Base64Chars.indexOf(char);
-        }*/
+        }
 
         // Salesforce algorithm (Sample Java Code for Dependent Picklists)https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_calls_describesobjects_describesobjectresult.htm#i1427932
 		// not working so commenting.
@@ -364,9 +364,12 @@
 		function Bitset(str){
 			var data = [];
 
-			for (var i = 0; i < str.length; i++) {
+			/*for (var i = 0; i < str.length; i++) {
 			    data.push(str.charCodeAt(i));
-			}
+			}*/
+			_.each(str.split(""), function(eachchar){
+				data.push(Base64Value(eachchar));
+			})
 			return{
 				testBit : function(n){
 					return (data[n >> 3] & (0x80 >> n % 8)) != 0;
