@@ -189,6 +189,7 @@
                                         if(ActionType == 'Inclusion')
                                         {
                                             productcomponent.isselected = true;
+                                            numErrors++;
                                         }
                                         break;
                                     case 'Prompt':
