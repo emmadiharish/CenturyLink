@@ -43,7 +43,7 @@
 				OptionGroupCache.initializeOptionGroups(response);
 				// run constraint rules on each load of OptionGroups.
 				// runConstraintRules should be refacotored lated to apply constraint rules only once.
-				runConstraintRules().then(function(constraintsResult){
+				return runConstraintRules().then(function(constraintsResult){
                 	BaseService.setOptionGroupLoadComplete();    
                     return OptionGroupCache.getOptionGroups();
                 })
