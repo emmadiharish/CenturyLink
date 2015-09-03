@@ -189,8 +189,12 @@
                                     case 'Auto Include':
                                         if(ActionType == 'Inclusion')
                                         {
-                                            productcomponent.isselected = true;
-                                            numRulesApplied++;
+                                            // apply only if option is not selected.
+                                            if(!isProdSelected(productcomponent, optiongroup))
+                                            {    
+                                                productcomponent.isselected = true;
+                                                numRulesApplied++;
+                                            }
                                         }
                                         break;
                                     case 'Prompt':
