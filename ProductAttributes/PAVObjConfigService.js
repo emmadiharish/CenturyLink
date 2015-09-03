@@ -36,7 +36,7 @@
 
 		// this is applicable on page load or first time renedeing of attribute groups.
 		function loadPicklistDropDowns(attributeGroups, PAV){
-			var res = {};
+			// cleanup PAV before loading picklist Drop Downs.
 			_.each(attributeGroups, function(attributeGroup){
 				// configure only on page load or first time...use custom property called 'isPicklistConfigComplete'.
                 if(!_.has(attributeGroup, 'isPicklistConfigComplete')
