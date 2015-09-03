@@ -364,9 +364,6 @@
 		function Bitset(str){
 			var data = [];
 
-			/*for (var i = 0; i < str.length; i++) {
-			    data.push(str.charCodeAt(i));
-			}*/
 			_.each(str.split(""), function(eachchar){
 				data.push(Base64Value(eachchar));
 			})
