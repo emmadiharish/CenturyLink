@@ -72,16 +72,15 @@
         $scope.cleanupPAV function(attrgroups, pav){
             var res = {};
             // get all fieldValues from attrgroups
-            var allattriGroupFields = _.allKeys(attributeGroups);
+            var allattriGroupFields = [];
+            _.each(attributeGroups, function(attributeGroup){
+                _.each(attributeGroup.productAtributes, function(attributeConfig){
+                    allattriGroupFields.push(attributeConfig.fieldName);
+                })
+            })
             _.omit(pav, function(value, key, object) {
                 return !_.contains(allattriGroupFields, key);
             });
-            _.each(attributeGroups, function(attributeGroup){
-                _.each(attributeGroup.productAtributes, function(attributeConfig){
-                
-                })
-            })
-
             return res;
         }
 
