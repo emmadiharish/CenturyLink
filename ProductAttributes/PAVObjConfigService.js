@@ -320,7 +320,7 @@
                 pFullValue = pFullValue + (pBytes[i] << (pShiftAmount));
 	        }
 	        
-	        var powVal = (Math.pow(2, shiftBits);
+	        var powVal = Math.pow(2, shiftBits);
 	       	powVal = powVal > 2147483647 ? 2147483647 : powVal;
 	       	powVal = powVal < -2147483647 ? -2147483647 : powVal;
 	        var tBitVal = (powVal & pFullValue)) >> shiftBits;
