@@ -224,8 +224,8 @@
                                                     // if disabled product is selected as checkbox then remove it.
                                                     productcomponent.isselected = false;
                                                 }
-                                                productcomponent['isDisabled'] = true;
                                             }
+                                            productcomponent['isDisabled'] = true;
                                         }
                                         break;
                                 };
