@@ -79,7 +79,7 @@
             allattrGroupFields = _.flatten(allattrGroupFields);
 
             _.omit(pav, function(value, key, object) {
-                return !_.contains(allattriGroupFields, key);
+                return !_.contains(allattrGroupFields, key);
             });
             return res;
         }
