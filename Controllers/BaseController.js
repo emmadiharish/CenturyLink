@@ -186,6 +186,7 @@
                         $scope.optionGroupService.runConstraintRules().then(function(constraintsResult){
                             if(constraintsResult.numErrors > 0)
                             {
+                                $scope.optionGroupService.setrerenderHierarchy(true);
                                 deferred.reject('Constraint rules Error.');    
                             }
                             else{
