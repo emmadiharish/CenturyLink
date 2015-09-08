@@ -2,9 +2,10 @@
     var OptionAttributesController;
 
     OptionAttributesController = function($scope, $log, RemoteService, LocationDataService, OptionGroupDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVObjConfigService) {
+        var depattributes = {};
+        
         $scope.init = function(){
             // all variable intializations.
-            var depattributes = {};
             $scope.locationService = LocationDataService;
             $scope.PAVService = ProductAttributeValueDataService;
             $scope.PAConfigService = ProductAttributeConfigDataService;
