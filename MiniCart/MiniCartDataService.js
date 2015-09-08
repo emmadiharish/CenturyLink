@@ -32,8 +32,8 @@
 		}
 
 		function configureLineItem(lineItemId){
-			var cartId = service.quoteService.getcartId(), configRequestId = service.quoteService.getconfigRequestId();
-			var requestPromise = RemoteService.configureLineItem(cartId, configRequestId, lineItemId);
+			var cartId = service.quoteService.getcartId(), configRequestId = service.quoteService.getconfigRequestId(), flowValue = service.quoteService.getflowValue();
+			var requestPromise = RemoteService.configureLineItem(cartId, configRequestId, flowValue, lineItemId);
 			return requestPromise.then(function(response){
 				return response;
 			});
