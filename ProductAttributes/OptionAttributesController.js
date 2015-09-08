@@ -4,6 +4,7 @@
     OptionAttributesController = function($scope, $log, RemoteService, LocationDataService, OptionGroupDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVObjConfigService) {
         $scope.init = function(){
             // all variable intializations.
+            var depattributes = {};
             $scope.locationService = LocationDataService;
             $scope.PAVService = ProductAttributeValueDataService;
             $scope.PAConfigService = ProductAttributeConfigDataService;
@@ -79,66 +80,62 @@
             $scope.productAttributeValues = pav;
             $scope.CascadeBunleAttributestoOptions();
             $scope.optionLevelAttributeChange();
-            $scope.safeApply();   
+            $scope.safeApply();
         }
 
         $scope.PAVPicklistChange = function(fieldName){
-            $scope.renderOptionAttributes($scope.AttributeGroups, $scope.productAttributeValues);
             var res = $scope.PAVConfigService.applyDependedPicklistsOnChange($scope.AttributeGroups, $scope.productAttributeValues, fieldName);    
+            res = $scope.optionLevelAttributeChange();
+            $scope.renderOptionAttributes(res.attributeGroups, res.PAVObj);
         }
 
         $scope.optionLevelAttributeChange = function(){
             var optionAttributes = $scope.productAttributeValues;
-            if(optionAttributes.hasOwnProperty('Ethernet_Local_Access_Speed__c') && optionAttributes['Ethernet_Local_Access_Speed__c'] != null){
-                $scope.dependencyAttributes['Ethernet_Local_Access_Speed__c'] = optionAttributes['Ethernet_Local_Access_Speed__c'];
+            if(_.has(optionAttributes, 'Ethernet_Local_Access_Speed__c')
+                && !_.isNull(optionAttributes['Ethernet_Local_Access_Speed__c'])){
+                depattributes['AccessSpeed'] = optionAttributes['Ethernet_Local_Access_Speed__c'];
             }
             
-            if(optionAttributes.hasOwnProperty('Billing_Type__c') && optionAttributes['Billing_Type__c'] != null){
-                $scope.dependencyAttributes['Billing_Type__c'] = optionAttributes['Billing_Type__c'];
+            if(_.has(optionAttributes, 'Billing_Type__c') 
+                && !_.isNull(optionAttributes['Billing_Type__c'])){
+                depattributes['BillingType'] = optionAttributes['Billing_Type__c'];
             }
             
-            if($scope.dependencyAttributes.hasOwnProperty('Ethernet_Local_Access_Speed__c') && $scope.dependencyAttributes.hasOwnProperty('Billing_Type__c')){
-                var requestPromise = RemoteService.getDependencyAttributes($scope.dependencyAttributes['Ethernet_Local_Access_Speed__c'],$scope.dependencyAttributes['Billing_Type__c']);
-                requestPromise.then(function(result){
-                    if(result.hasOwnProperty('Bandwidth__c') && result.hasOwnProperty('Circuit_Speed__c')){
-                        var Bandwidth = [];
-                        var CircuitSpeed = [];
-                        var BandwidthSplitted = [];
-                        var CircuitSpeedSplitted = [];
-                        
-                        BandwidthSplitted = result['Bandwidth__c'].split(', ');
-                        CircuitSpeedSplitted = result['Circuit_Speed__c'].split(', ');                      
-                        
-                        _.each(BandwidthSplitted, function(item){
-                            Bandwidth.push({value:item, label:item, active:true, defaultValue:false});
+            if(_.has(depattributes, 'AccessSpeed') 
+                && _.has(depattributes, 'BillingType')){
+                var portOptions = $scope.PAVConfigService.getPortOptions();
+                var filteredPortOption = _.findWhere(portOptions, {'Local_Access_Speed__c': depattributes.AccessSpeed, 'Billing_Type__c': depattributes.BillingType});
+                if(_.has(filteredPortOption, 'Bandwidth__c') 
+                    && _.has(filteredPortOption, 'Circuit_Speed__c')){
+                    
+                    var Bandwidth = [];
+                    var CircuitSpeed = [];
+                    var BandwidthSplitted = [];
+                    var CircuitSpeedSplitted = [];
+
+                    BandwidthSplitted = filteredPortOption['Bandwidth__c'].split(', ');
+                    CircuitSpeedSplitted = filteredPortOption['Circuit_Speed__c'].split(', ');                      
+                    
+                    Bandwidth = $scope.PAVConfigService.getPicklistValues($scope.PAVConfigService.prepareOptionsList(BandwidthSplitted));
+                    CircuitSpeed = $scope.PAVConfigService.getPicklistValues($scope.PAVConfigService.prepareOptionsList(CircuitSpeedSplitted));
+                    
+                    _.each($scope.AttributeGroups, function(eachgroup){
+                        _.each(eachgroup.productAtributes, function(eachattribute){
+                            if(eachattribute.fieldName == 'Bandwidth__c'){
+                                eachattribute.picklistValues = Bandwidth;
+                                $scope.productAttributeValues['Bandwidth__c'] = null;
+                            }
+                            
+                            if(eachattribute.fieldName == 'Access_Speed__c'){
+                                eachattribute.picklistValues = CircuitSpeed;
+                                $scope.productAttributeValues['Access_Speed__c'] = null;
+                            }
                         });
-                        _.each(CircuitSpeedSplitted, function(item){
-                            CircuitSpeed.push({value:item, label:item, active:true, defaultValue:false});
-                        });
-                        
-                        _.each($scope.AttributeGroups, function(groups){
-                            _.each(groups.productAtributes, function(attributes){
-                                if(attributes.fieldName == 'Bandwidth__c'){
-                                    attributes.picklistValues = Bandwidth;
-                                    $scope.productAttributeValues['Bandwidth__c'] = Bandwidth[0].value;
-                                }
-                                
-                                if(attributes.fieldName == 'Access_Speed__c'){
-                                    attributes.picklistValues = CircuitSpeed;
-                                    $scope.productAttributeValues['Access_Speed__c'] = CircuitSpeed[0].value;
-                                }
-                            });
-                        });
-                        
-                    }
-                    $scope.safeApply();
-                });
+                    });
+                }
             }
         }
 
-        $scope.optionLevelAttributeChange_New = function(){
-            // var portOptions = $scope.PAVConfigService.getPortOptions();
-        }
         $scope.init();
     }
     OptionAttributesController.$inject = ['$scope', '$log', 'RemoteService', 'LocationDataService', 'OptionGroupDataService', 'ProductAttributeConfigDataService', 'ProductAttributeValueDataService', 'PAVObjConfigService'];

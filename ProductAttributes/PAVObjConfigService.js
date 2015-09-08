@@ -10,9 +10,14 @@
 		service.optionOptionAttributes = {};
 		
 		service.getPAVFieldMetaData = getPAVFieldMetaData;
-		service.getPortOptions = getPortOptions;
 		service.loadPicklistDropDowns = loadPicklistDropDowns;
 		service.applyDependedPicklistsOnChange = applyDependedPicklistsOnChange;
+		//service.applyOptiontoOptionConstraints = applyOptiontoOptionConstraints;
+		service.getPortOptions = getPortOptions;
+
+		// helper methods;
+		service.prepareOptionsList = prepareOptionsList;
+		service.getPicklistValues = getPicklistValues;
 
 		function getPAVFieldMetaData(){
 			if(service.isvalid == true)
@@ -32,7 +37,11 @@
 			});
 		}
 		function getPortOptions(){
-			return service.optionOptionAttributes.portOptions;
+			if(service.isOptiontoOptionAttrsvalid == true)
+			{
+				return service.optionOptionAttributes.portOptions;	
+			}
+			return [];
 		}
 		
 		// when drop down value is change on the attributes then apply all dependent dropdowns.
@@ -42,6 +51,14 @@
 			res = {pavConfigGroups: attributeGroups, PAVObj: PAV};
 			return res;
 		}
+
+		/* TBD
+		function applyOptiontoOptionConstraints(attributeGroups, PAV, depattributes){
+			var res = {};
+			
+			res = {pavConfigGroups: attributeGroups, PAVObj: PAV};
+			return res;
+		}*/
 
 		// this is applicable on page load or first time renedeing of attribute groups.
 		function loadPicklistDropDowns(attributeGroups, PAV){
