@@ -79,7 +79,7 @@
 				isProp = QuoteDataService.RemoteActions.hasOwnProperty(actionKey);
 				isStr = typeof actionKey === 'string';
 				if (isProp && isStr) {
-					actionName = RemoteActions[actionKey];
+					actionName = QuoteDataService.RemoteActions[actionKey];
 					service[actionKey] = createRemoteActionFunction(actionName);
 				}
 			}
