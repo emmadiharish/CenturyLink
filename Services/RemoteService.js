@@ -3,7 +3,8 @@
 	RemoteService.$inject = ['$q', '$log', 'RemoteActions'];
 	function RemoteService($q, $log, RemoteActions) {
 		var service = this;
-		var lastTransaction = {};
+		var actionsMap = {};
+		initRemoteActionFunctions();
 
 		/**
 		* Each method passes its fully-qualified name and its
@@ -15,7 +16,7 @@
 		the Apex method. 
 		* @return {promise} resolves with the result of the remote action
 		*/
-		service.getMiniCartLines = function getMiniCartLines() {
+		/*service.getMiniCartLines = function getMiniCartLines() {
 			return invokeRemoteAction(RemoteActions.getMiniCartLines, arguments);
 
 		};
@@ -70,31 +71,53 @@
 		service.getOptiontoOptionAttributes = function getOptiontoOptionAttributes(){
             return invokeRemoteAction(RemoteActions.getOptiontoOptionAttributes, arguments);
         
-        };
+        };*/
         
+        function initRemoteActionFunctions() {
+			var actionKey, actionName, isProp, isStr;
+			for (actionKey in RemoteActions) {
+				isProp = RemoteActions.hasOwnProperty(actionKey);
+				isStr = typeof actionKey === 'string';
+				if (isProp && isStr) {
+					actionName = RemoteActions[actionKey];
+					service[actionKey] = createRemoteActionFunction(actionName);
+				}
+			}
+		}
+
+        /**
+		* Used for generating methods that can be called on the service by the name
+		* 	declared in the RemoteActions object.
+		* Each method passes its fully-qualified name and its
+		* 	arguments to invokeRemoteAction. The arguments passed
+		* 	to this function should just match the signature of 
+		* 	the Apex method. 
+		* @return {promise} resolves with the result of the remote action
+		*/
+		function createRemoteActionFunction(actionName) {
+		var actionFunction = function() {
+			return invokeRemoteAction(actionName, arguments);
+
+		};
+		return actionFunction;
+
+		}
 		
-		//Expose general-purpose method
-		service.invokeRemoteAction = invokeRemoteAction;
 		/**
-		* Helper for calling visualforce remoting. May want to pull this out into another service,
-		* or a method on the RemoteActions constant object.
+		* Helper for calling visualforce remoting. 
 		*  
-		* @param 
-		{string} actionName the remote action to invoke
-		* @param 
-		{array} actionParams
-		any number of parameters to pass to remote
-		*          
-		action before callback 
+		* @param 	{string}	actionName 	the remote action to invoke
+		* @param 	{array}		actionParams	any number of parameters to pass to remote
+		*          												action before callback 
 		* @return {promise} a $q promise that resolves with result of remote action
 		*
 		* Example: 
-		* 
-		<code>
-		* 
-		var thenable = invokeRemoteAction(RemoteActions.getCartLineItems, [cartRequest]);
-		* 
-		</code>
+		* 		<code>
+		* 		var thenable = invokeRemoteAction(RemoteActions.getCartLineItems, [cartRequest]);
+		* 		thenable.then(function (result) {
+		* 			useResult(result);
+		* 		});
+		* 		</code>
 		* Here, thenable will be a promise that gets resolved with the result of the remote action 
 		*/
 		function invokeRemoteAction(actionName, actionParams) {
@@ -129,9 +152,9 @@
 				if (event.status) {
 					deferred.resolve(result);
 				} else {
-					$log.error(event.message);
+					errorMessage = 'Error - Could not invoke remote action: ' + actionName; 
+					$log.error(errorMessage, actionParams, event.message);
 					deferred.reject(event.message);
-
 				}
 			};
 			remoteActionWithParams.push(resolver);
