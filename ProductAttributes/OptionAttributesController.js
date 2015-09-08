@@ -3,7 +3,7 @@
 
     OptionAttributesController = function($scope, $log, RemoteService, LocationDataService, OptionGroupDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVObjConfigService) {
         var depattributes = {};
-        
+
         $scope.init = function(){
             // all variable intializations.
             $scope.locationService = LocationDataService;
@@ -86,7 +86,6 @@
 
         $scope.PAVPicklistChange = function(fieldName){
             var res = $scope.PAVConfigService.applyDependedPicklistsOnChange($scope.AttributeGroups, $scope.productAttributeValues, fieldName);    
-            res = $scope.optionLevelAttributeChange();
             $scope.renderOptionAttributes(res.attributeGroups, res.PAVObj);
         }
 
