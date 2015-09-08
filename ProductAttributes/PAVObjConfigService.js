@@ -140,7 +140,7 @@
 			_.each(result, function(portOption){
 				portOptions.push(portOption);
 			})
-			service.optionOptionAttributes[portOptions] = portOptions;
+			service.optionOptionAttributes ={ portOptions: portOptions };
 		}
 		
 		// load dropdown values of all dependent fields based on controlling field value selected..applicable on initial load of attributes.
