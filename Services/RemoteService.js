@@ -95,12 +95,11 @@
 		* @return {promise} resolves with the result of the remote action
 		*/
 		function createRemoteActionFunction(actionName) {
-		var actionFunction = function() {
-			return invokeRemoteAction(actionName, arguments);
+			var actionFunction = function() {
+				return invokeRemoteAction(actionName, arguments);
 
-		};
-		return actionFunction;
-
+			};
+			return actionFunction;
 		}
 		
 		/**
