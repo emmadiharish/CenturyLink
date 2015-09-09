@@ -6,9 +6,9 @@
 
 	angular.module('APTPS_ngCPQ').directive('pageMessages', PageMessages);
 
-	PageMessageCtrl.$inject = ['$log', 'MessageService'];
+	PageMessageCtrl.$inject = ['$scope', '$log', 'MessageService'];
 	
-	function PageMessageCtrl($log, MessageService){
+	function PageMessageCtrl($scope, $log, MessageService){
 		var messageCtrl = this;
 		messageCtrl.messages = [];
 		
@@ -18,7 +18,7 @@
 	        $scope.messages[index].remove();
 	    };
 
-	    messageCtrl.$watch('messageCtrl.msgService.getMessages()', function(newVal) {
+	    $scope.$watch('messageCtrl.msgService.getMessages()', function(newVal) {
             if(newVal)
             {
                 messageCtrl.messages = newVal;
