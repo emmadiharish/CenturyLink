@@ -1,79 +1,13 @@
-(function() {
+;(function() {
 	angular.module('APTPS_ngCPQ').service('RemoteService', RemoteService); 
 	RemoteService.$inject = ['$q', '$log', 'QuoteDataService'];
 	function RemoteService($q, $log, QuoteDataService) {
 		var service = this;
 		var actionsMap = {};
+		var redirectOnFail = '/';
 		initRemoteActionFunctions();
 
-		/**
-		* Each method passes its fully-qualified name and its
-		* 
-		arguments to invokeRemoteAction. The arguments passed
-		* 
-		to this function should just match the signature of 
-		* 
-		the Apex method. 
-		* @return {promise} resolves with the result of the remote action
-		*/
-		/*service.getMiniCartLines = function getMiniCartLines() {
-			return invokeRemoteAction(RemoteActions.getMiniCartLines, arguments);
-
-		};
-		service.configureLineItem = function configureLineItem() {
-			return invokeRemoteAction(RemoteActions.configureLineItem, arguments);
-
-		};
-		service.deleteLineItemFromCart = function deleteLineItemFromCart() {
-			return invokeRemoteAction(RemoteActions.deleteLineItemFromCart, arguments);
-
-		};
-		service.getServiceLocations = function getServiceLocations() {
-			return invokeRemoteAction(RemoteActions.getServiceLocations, arguments);
-
-		};
-		service.getPricingMatrixData = function getPricingMatrixData() {
-			return invokeRemoteAction(RemoteActions.getPricingMatrixData, arguments);
-
-		};
-		service.getproductoptiongroupsData = function getproductoptiongroupsData() {
-			return invokeRemoteAction(RemoteActions.getproductoptiongroupsData, arguments);
-
-		};
-		service.getPAVFieldMetaData = function getPAVFieldMetaData() {
-			return invokeRemoteAction(RemoteActions.getPAVFieldMetaData, arguments);
-		
-		};
-		service.getProductAttributeConfigData = function getProductAttributeConfigData() {
-			return invokeRemoteAction(RemoteActions.getProductAttributeConfigData, arguments);
-
-		};
-		service.getProductAttributeValueData = function getProductAttributeValueData(){
-			return invokeRemoteAction(RemoteActions.getProductAttributeValueData, arguments);
-		
-		};
-		service.saveQuoteConfig = function saveQuoteConfig() {
-			return invokeRemoteAction(RemoteActions.saveQuoteConfig, arguments);
-
-		};
-		service.runConstraintRules = function runConstraintRules() {
-			return invokeRemoteAction(RemoteActions.runConstraintRules, arguments);
-
-		};
-		service.getProducts = function getProducts() {
-			return invokeRemoteAction(RemoteActions.getProducts, arguments);
-		
-		};
-		service.getDependencyAttributes = function getDependencyAttributes(){
-            return invokeRemoteAction(RemoteActions.getDependencyAttributes, arguments);
-
-        }; 
-		service.getOptiontoOptionAttributes = function getOptiontoOptionAttributes(){
-            return invokeRemoteAction(RemoteActions.getOptiontoOptionAttributes, arguments);
-        
-        };*/
-        
-        function initRemoteActionFunctions() {
+		function initRemoteActionFunctions() {
 			var actionKey, actionName, isProp, isStr;
 			for (actionKey in QuoteDataService.RemoteActions) {
 				isProp = QuoteDataService.RemoteActions.hasOwnProperty(actionKey);
@@ -153,7 +87,14 @@
 				} else {
 					errorMessage = 'Error - Could not invoke remote action: ' + actionName; 
 					$log.error(errorMessage, actionParams, event.message);
-					deferred.reject(event.message);
+					//Currently the only way to check whether request failed due to user logout
+					var isLoggedOut = event.message.toLowerCase().indexOf('logged') >= 0;
+					if (isLoggedOut && redirectOnFail) {
+						$window.location.href = redirectOnFail;
+
+					}
+					deferred.reject(event);
+					// deferred.reject(event.message);
 				}
 			};
 			remoteActionWithParams.push(resolver);
