@@ -12,10 +12,10 @@
 		var headerCtrl = this;
 
 		var lineItem = QuoteDataService.getlineItem();
-		PageHeader.QuoteId = lineItem.Apttus_Config2__ConfigurationId__r.Apttus_QPConfig__Proposald__c;
-		PageHeader.QuoteName = lineItem.Apttus_Config2__ConfigurationId__r.Apttus_QPConfig__Proposald__r.Apttus_Proposal__Proposal_Name__c;
-    	PageHeader.QuoteNumber = lineItem.Apttus_Config2__ConfigurationId__r.Apttus_QPConfig__Proposald__r.Name;
-    	PageHeader.ApprovalStatus = lineItem.Apttus_Config2__ConfigurationId__r.Apttus_QPConfig__Proposald__r.Apttus_QPApprov__Approval_Status__c;
+		headerCtrl.QuoteId = lineItem.Apttus_Config2__ConfigurationId__r.Apttus_QPConfig__Proposald__c;
+		headerCtrl.QuoteName = lineItem.Apttus_Config2__ConfigurationId__r.Apttus_QPConfig__Proposald__r.Apttus_Proposal__Proposal_Name__c;
+    	headerCtrl.QuoteNumber = lineItem.Apttus_Config2__ConfigurationId__r.Apttus_QPConfig__Proposald__r.Name;
+    	headerCtrl.ApprovalStatus = lineItem.Apttus_Config2__ConfigurationId__r.Apttus_QPConfig__Proposald__r.Apttus_QPApprov__Approval_Status__c;
 
 		$scope.init = function(){
     		
