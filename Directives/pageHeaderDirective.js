@@ -1,4 +1,9 @@
+/**
+ * Directive: PageHeaderDirective 
+ */
 ;(function() {
+	'use strict';
+
 	angular.module('APTPS_ngCPQ').directive('PageHeader', PageHeader);
 
 	PageHeaderCtrl.$inject = ['$scope', 'QuoteDataService'];
