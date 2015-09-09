@@ -14,7 +14,7 @@
 			// priority: 1,
 			// terminal: true,
 			// scope: {}, // {} = isolate, true = child, false/undefined = no change
-			controller: MessageController,
+			controller: 'MessageController',
 			// controllerAs: 'PageMessages',
 			// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
 			restrict: 'AE', // E = Element, A = Attribute, C = Class, M = Comment
