@@ -6,8 +6,8 @@
 
 	angular.module('APTPS_ngCPQ').directive('miniCart', MiniCart);
 
-	MiniCart.$inject = ['SystemConstants', 'MiniCartController'];
-	function MiniCart(SystemConstants, MiniCartController){
+	MiniCart.$inject = ['SystemConstants'];
+	function MiniCart(SystemConstants){
 		// Runs during compile
 		return {
 			// name: '',

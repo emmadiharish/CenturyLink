@@ -6,8 +6,8 @@
 
 	angular.module('APTPS_ngCPQ').directive('pageMessages', PageMessages);
 
-	PageMessages.$inject = ['SystemConstants', 'MessageController'];
-	function PageMessages(SystemConstants, MessageController){
+	PageMessages.$inject = ['SystemConstants'];
+	function PageMessages(SystemConstants){
 		// Runs during compile
 		return {
 			// name: '',
