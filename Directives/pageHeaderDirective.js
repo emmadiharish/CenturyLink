@@ -1,13 +1,12 @@
 ;(function() {
 	angular.module('APTPS_ngCPQ').directive('PageHeader', PageHeader);
 
-	PageHeaderCtrl.$inject = ['$scope', 'QuoteDataService', 'MiniCartDataService'];
+	PageHeaderCtrl.$inject = ['$scope', 'QuoteDataService'];
 	
-	function PageHeaderCtrl($scope, QuoteDataService, MiniCartDataService){
+	function PageHeaderCtrl($scope, QuoteDataService){
 		$scope.init = function(){
     		$scope.quoteService = QuoteDataService;
-            $scope.miniCartService = MiniCartDataService;
-
+            
             $scope.lineItem = $scope.quoteService.getlineItem();
     		$scope.QuoteId = $scope.lineItem.Apttus_Config2__ConfigurationId__r.Apttus_QPConfig__Proposald__c;
     		$scope.QuoteName = $scope.lineItem.Apttus_Config2__ConfigurationId__r.Apttus_QPConfig__Proposald__r.Apttus_Proposal__Proposal_Name__c;
