@@ -13,9 +13,9 @@
             $scope.pagedItems = [];
             $scope.currentPage = 0;
             
-            cartCtrl.miniCartTemplateURL = SystemConstants.baseUrl+'/Templates/MiniCartView.html';
-            cartCtrl.paginationLinksTemplateURL = SystemConstants.baseUrl+'/Templates/PaginationLinksView.html';
-            cartCtrl.imagesbaseURL = SystemConstants.baseUrl+'/Images';
+            $scope.miniCartTemplateURL = SystemConstants.baseUrl+'/Templates/MiniCartView.html';
+            $scope.paginationLinksTemplateURL = SystemConstants.baseUrl+'/Templates/PaginationLinksView.html';
+            $scope.imagesbaseURL = SystemConstants.baseUrl+'/Images';
             $scope.lineCount = 0;
             
             // Group by pages
