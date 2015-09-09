@@ -1,7 +1,7 @@
 ;(function() {
 	angular.module('APTPS_ngCPQ').service('RemoteService', RemoteService); 
-	RemoteService.$inject = ['$q', '$log', 'QuoteDataService'];
-	function RemoteService($q, $log, QuoteDataService) {
+	RemoteService.$inject = ['$q', '$log', 'BaseConfigService'];
+	function RemoteService($q, $log, BaseConfigService) {
 		var service = this;
 		var actionsMap = {};
 		var redirectOnFail = '/';
@@ -9,11 +9,11 @@
 
 		function initRemoteActionFunctions() {
 			var actionKey, actionName, isProp, isStr;
-			for (actionKey in QuoteDataService.RemoteActions) {
-				isProp = QuoteDataService.RemoteActions.hasOwnProperty(actionKey);
+			for (actionKey in BaseConfigService.RemoteActions) {
+				isProp = BaseConfigService.RemoteActions.hasOwnProperty(actionKey);
 				isStr = typeof actionKey === 'string';
 				if (isProp && isStr) {
-					actionName = QuoteDataService.RemoteActions[actionKey];
+					actionName = BaseConfigService.RemoteActions[actionKey];
 					service[actionKey] = createRemoteActionFunction(actionName);
 				}
 			}
