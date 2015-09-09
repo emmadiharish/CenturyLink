@@ -38,7 +38,7 @@
 			controllerAs: 'PageHeader',
 			// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
 			restrict: 'AE', // E = Element, A = Attribute, C = Class, M = Comment
-			//template: '<div>header</div>',
+			//template: '<div>pageHeader</div>',
 			templateUrl: SystemConstants.baseUrl + "/Templates/PageHeaderView.html",
 			// replace: true,
 			// transclude: true,
