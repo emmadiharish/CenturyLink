@@ -30,7 +30,7 @@
 	        
 	        var selectedAttrValues = $scope.PAVService.getbundleproductattributevalues();
 	        var fieldapis_nonbalnk = [];
-	        j$.each($scope.fieldapis, function(index, field) {
+	        _.each($scope.fieldapis, function(index, field) {
 	            if(selectedAttrValues[field] != undefined
 	                && selectedAttrValues[field] != null
 	                && selectedAttrValues[field] != '')
