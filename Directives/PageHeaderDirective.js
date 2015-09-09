@@ -4,7 +4,7 @@
 ;(function() {
 	'use strict';
 
-	angular.module('APTPS_ngCPQ').directive('pageHeader', pageHeader);
+	angular.module('APTPS_ngCPQ').directive('pageHeader', PageHeader);
 
 	PageHeaderCtrl.$inject = ['QuoteDataService'];
 	
@@ -26,8 +26,8 @@
         return headerCtrl;
 	}
 
-	pageHeader.$inject = ['SystemConstants'];
-	function pageHeader(SystemConstants){
+	PageHeader.$inject = ['SystemConstants'];
+	function PageHeader(SystemConstants){
 		// Runs during compile
 		return {
 			// name: '',
