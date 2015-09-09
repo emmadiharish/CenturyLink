@@ -20,7 +20,6 @@
             // Initialize Scope Variables
             miniCartCtrl.miniCartService = MiniCartDataService;
             miniCartCtrl.quoteService = QuoteDataService;
-            miniCartCtrl.remoteService = QuoteDataService;
             miniCartCtrl.baseService = BaseService;
             
             miniCartCtrl.miniCartTemplateURL = SystemConstants.baseUrl+'/Templates/MiniCartView.html';
@@ -81,7 +80,7 @@
             })
         };
 
-        miniCartCtrl.deleteLineItemFromCart = function(lineNumber_tobedeleted){
+        function deleteLineItemFromCart(lineNumber_tobedeleted){
             miniCartCtrl.baseService.startprogress();// start page level progress bar. 
             miniCartCtrl.miniCartService.deleteLineItemFromCart(lineNumber_tobedeleted).then(function(result){
                 var retUrl = parsePagereference(result);
@@ -101,7 +100,7 @@
                 case 'confirmRemoveLine':
                     dlg = $dialogs.confirm('Please Confirm','Are you sure you want to Delete "'+productName+ '" from cart ?');
                     dlg.result.then(function(btn){
-                        miniCartCtrl.deleteLineItemFromCart(lineNumber);
+                        deleteLineItemFromCart(lineNumber);
                     },function(btn){
                         
                 });
