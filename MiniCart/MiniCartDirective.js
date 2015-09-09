@@ -10,8 +10,7 @@
 	
 	function MiniCartCtrl($window, $dialogs, SystemConstants, QuoteDataService, BaseService, MiniCartDataService){
 		var miniCartCtrl = this;
-		miniCartCtrl.reverse = false;                
-        miniCartCtrl.itemsPerPage = 5;
+		miniCartCtrl.itemsPerPage = 5;
         miniCartCtrl.pagedItems = [];
         miniCartCtrl.currentPage = 0;
         miniCartCtrl.lineCount = 0;
@@ -100,7 +99,7 @@
                 case 'confirmRemoveLine':
                     dlg = $dialogs.confirm('Please Confirm','Are you sure you want to Delete "'+productName+ '" from cart ?');
                     dlg.result.then(function(btn){
-                        deleteLineItemFromCart(lineNumber);
+                        miniCartCtrl.deleteLineItemFromCart(lineNumber);
                     },function(btn){
                         
                 });
