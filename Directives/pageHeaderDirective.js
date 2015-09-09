@@ -9,17 +9,21 @@
 	PageHeaderCtrl.$inject = ['$scope', 'QuoteDataService'];
 	
 	function PageHeaderCtrl($scope, QuoteDataService){
-		$scope.init = function(){
-    		var headerCtrl = this;
+		var headerCtrl = this;
 
-    		PageHeader.lineItem = QuoteDataService.getlineItem();
-    		PageHeader.QuoteId = PageHeader.lineItem.Apttus_Config2__ConfigurationId__r.Apttus_QPConfig__Proposald__c;
-    		PageHeader.QuoteName = PageHeader.lineItem.Apttus_Config2__ConfigurationId__r.Apttus_QPConfig__Proposald__r.Apttus_Proposal__Proposal_Name__c;
-        	PageHeader.QuoteNumber = PageHeader.lineItem.Apttus_Config2__ConfigurationId__r.Apttus_QPConfig__Proposald__r.Name;
-        	PageHeader.ApprovalStatus = PageHeader.lineItem.Apttus_Config2__ConfigurationId__r.Apttus_QPConfig__Proposald__r.Apttus_QPApprov__Approval_Status__c;
+		var lineItem = QuoteDataService.getlineItem();
+		PageHeader.QuoteId = lineItem.Apttus_Config2__ConfigurationId__r.Apttus_QPConfig__Proposald__c;
+		PageHeader.QuoteName = lineItem.Apttus_Config2__ConfigurationId__r.Apttus_QPConfig__Proposald__r.Apttus_Proposal__Proposal_Name__c;
+    	PageHeader.QuoteNumber = lineItem.Apttus_Config2__ConfigurationId__r.Apttus_QPConfig__Proposald__r.Name;
+    	PageHeader.ApprovalStatus = lineItem.Apttus_Config2__ConfigurationId__r.Apttus_QPConfig__Proposald__r.Apttus_QPApprov__Approval_Status__c;
+
+		$scope.init = function(){
+    		
         }
     	
         $scope.init();
+
+        return headerCtrl;
 	}
 
 	PageHeader.$inject = ['SystemConstants'];
