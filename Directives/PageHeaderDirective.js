@@ -17,11 +17,11 @@
     	headerCtrl.QuoteNumber = lineItem.Apttus_Config2__ConfigurationId__r.Apttus_QPConfig__Proposald__r.Name;
     	headerCtrl.ApprovalStatus = lineItem.Apttus_Config2__ConfigurationId__r.Apttus_QPConfig__Proposald__r.Apttus_QPApprov__Approval_Status__c;
 
-		$scope.init = function(){
+		function init(){
     		
         }
     	
-        $scope.init();
+        init();
 
         return headerCtrl;
 	}
@@ -38,8 +38,8 @@
 			controllerAs: 'PageHeader',
 			// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
 			restrict: 'AE', // E = Element, A = Attribute, C = Class, M = Comment
-			template: '<div>header</div>',
-			//templateUrl: SystemConstants.baseUrl + "/Templates/PageHeaderView.html",
+			//template: '<div>header</div>',
+			templateUrl: SystemConstants.baseUrl + "/Templates/PageHeaderView.html",
 			// replace: true,
 			// transclude: true,
 			// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
