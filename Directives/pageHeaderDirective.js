@@ -38,4 +38,4 @@
 			//}
 			bindToController: true
 		};
-})call(this);
+}).call(this);
