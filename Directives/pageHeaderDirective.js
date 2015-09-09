@@ -18,7 +18,7 @@
 	}
 
 	PageHeader.$inject = ['SystemConstants'];
-	function PageHeader(){
+	function PageHeader(SystemConstants){
 		// Runs during compile
 		return {
 			// name: '',
