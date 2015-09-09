@@ -6,9 +6,9 @@
 
 	angular.module('APTPS_ngCPQ').directive('PageHeader', PageHeader);
 
-	PageHeaderCtrl.$inject = ['$scope', 'QuoteDataService'];
+	PageHeaderCtrl.$inject = ['QuoteDataService'];
 	
-	function PageHeaderCtrl($scope, QuoteDataService){
+	function PageHeaderCtrl(QuoteDataService){
 		var headerCtrl = this;
 
 		var lineItem = QuoteDataService.getlineItem();
