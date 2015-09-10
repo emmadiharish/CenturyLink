@@ -189,19 +189,15 @@
                 })
                 
                 // add bundleLine PAV.
-                productIdtoPAVMap[bundleProdId] = allproductIdtoPAVMap[bundleProdId];
                 var otherSelected_bundle = false;
-                if(_.has(allproductIdtoPAVMap, bundleProdId))
-                {
-                    var bundlePAV = allproductIdtoPAVMap[bundleProdId];
-                    // Other picklist is selected then set OtherSelected to true.
-                    if(!_.isUndefined(_.findKey(bundlePAV, function(value, pavField){return pavField.endsWith('Other');}))){
-                        otherSelected_bundle = true;
-                        // clone Other Picklist values to regular Dropdowns and delete Other Field from PAV.
-                        bundlePAV = $scope.formatPAVBeforeSave(bundlePAV);
-                    }
-                    productIdtoPAVMap[bundleProdId] = bundlePAV;
+                var bundlePAV = $scope.PAVService.getbundleproductattributevalues();
+                // Other picklist is selected then set OtherSelected to true.
+                if(!_.isUndefined(_.findKey(bundlePAV, function(value, pavField){return pavField.endsWith('Other');}))){
+                    otherSelected_bundle = true;
+                    // clone Other Picklist values to regular Dropdowns and delete Other Field from PAV.
+                    bundlePAV = $scope.formatPAVBeforeSave(bundlePAV);
                 }
+                productIdtoPAVMap[bundleProdId] = bundlePAV;
                 bundleLineItem = _.extend(bundleLineItem, {Custom__c:otherSelected_bundle});
 
                 // remote call to save Quote Config.
