@@ -123,8 +123,8 @@
             // remote call to save Quote Config.
             var deferred = $q.defer();
             var cartId = service.quoteService.getcartId();
-            var bundleLineId = service.quoteService.getbundleLineId();
-            requestPromise = RemoteService.runConstraintRules(cartId, bundleLineId);
+            var lineNumber = service.quoteService.getcontextLineNumber();
+            requestPromise = RemoteService.runConstraintRules(cartId, lineNumber);
             requestPromise.then(function(result){
                 /*appliedActionDOList is a List<Apttus_CPQApi.CPQ.AppliedActionDO>.
                 IsPending                       :  Indicates Whether the rule action is pending user action.
