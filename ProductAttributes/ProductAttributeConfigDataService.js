@@ -4,7 +4,7 @@
 	function ProductAttributeConfigDataService($q, $log, BaseService, QuoteDataService, RemoteService, OptionGroupDataService, ProductAttributeConfigCache) {
 		var service = this;
 		
-		service.bundleAttribueFields = [];
+		var bundleAttribueFields = [];
 
 		// product attribute methods.
 		service.getProductAttributesConfig = getProductAttributesConfig;
