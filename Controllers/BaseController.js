@@ -267,7 +267,7 @@
                         })
                     }// end of saveresult.isSuccess check.
                     else{
-                        MessageService.addMessage('danger', 'Save call is Failing.');
+                        MessageService.addMessage('danger', 'Save call is Failing: '+saveresult.errorMessage);
                         $scope.baseService.completeprogress();// end progress bar.
                         $scope.safeApply();
                         deferred.reject('Save Failed.');
