@@ -3,9 +3,10 @@
 	ProductAttributeValueCache.$inject = ['$log'];
 	function ProductAttributeValueCache($log) {
 		var service = this;
-		var isValid = false;
 		var productIdtoPAVMap = {};
 
+		service.isValid = false;
+		
 		service.getProductAttributeValues = getProductAttributeValues;
 		service.initializeProductAttributeValues = initializeProductAttributeValues;
 
@@ -14,7 +15,7 @@
 		}
 
 		function initializeProductAttributeValues(response){
-			isValid = true;
+			service.isValid = true;
 			_.each(response, function(pavwrapper){
 				productIdtoPAVMap[pavwrapper.productId] = pavwrapper.pav;
 			})
