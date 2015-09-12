@@ -1,7 +1,7 @@
 (function() {
 	angular.module('APTPS_ngCPQ').service('MiniCartDataService', MiniCartDataService); 
 	MiniCartDataService.$inject = ['$q', '$log', 'QuoteDataService', 'RemoteService'];
-	function MiniCartDataService($q, $log, QuoteDataService, RemoteService){
+	function MiniCartDataService($q, $log, BaseConfigService, QuoteDataService, RemoteService){
 		var service = this;
 		service.quoteService = QuoteDataService;
 
@@ -32,7 +32,7 @@
 		}
 
 		function configureLineItem(lineItemId){
-			var cartId = service.quoteService.getcartId(), configRequestId = service.quoteService.getconfigRequestId(), flowValue = service.quoteService.getflowValue();
+			var cartId = BaseConfigService.cartId, configRequestId = BaseConfigService.configRequestId, flowName = BaseConfigService.flowName;
 			var requestPromise = RemoteService.configureLineItem(cartId, configRequestId, flowValue, lineItemId);
 			return requestPromise.then(function(response){
 				return response;
@@ -40,7 +40,7 @@
 		}
 
 		function deleteLineItemFromCart(lineNumber_tobedeleted){
-			var cartId = service.quoteService.getcartId(), configRequestId = service.quoteService.getconfigRequestId(), currentlineNumber = service.quoteService.getcontextLineNumber();
+			var cartId = BaseConfigService.cartId, configRequestId = BaseConfigService.configRequestId, flowName = BaseConfigService.flowName, currentlineNumber = BaseConfigService.bundleLineNumber;
             var requestPromise = RemoteService.deleteLineItemFromCart(cartId, configRequestId, lineNumber_tobedeleted, currentlineNumber);
 			return requestPromise.then(function(response){
 				return response;
