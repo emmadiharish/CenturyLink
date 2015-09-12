@@ -53,7 +53,7 @@
         $scope.CascadeBunleAttributestoOptions = function(){
             // get attribute config fields for bundle product and clone them.
             var bundlePAV = $scope.PAVService.getbundleproductattributevalues();
-            var bunleAttributeFields = $scope.PAConfigService.getProductAttributesConfig().getBundleAttributeFields();
+            var bunleAttributeFields = $scope.PAConfigService.getBundleAttributeFields();
             _.each(bunleAttributeFields, function(field){
                 $scope.productAttributeValues[field] = bundlePAV[field];
             });
