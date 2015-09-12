@@ -109,7 +109,7 @@
             var cartId = BaseConfigService.cartId, quoteId = BaseConfigService.quoteId;
             var requestPromise = RemoteService.doAbandonCart(cartId, quoteId);
             return requestPromise.then(function(response){
-                var URL = $scope.parsePagereference(response);
+                var URL = parsePagereference(response);
                 if(!_.isNull(URL))
                     $window.location.href = URL;
             });
@@ -119,7 +119,7 @@
             var cartId = BaseConfigService.cartId, configRequestId = BaseConfigService.configRequestId, flowName = BaseConfigService.flowName, primaryLineNumber = BaseConfigService.bundleLineNumber, bundleProdId = BaseConfigService.bundleProdId;
             var requestPromise = RemoteService.removeBundleLineItem(cartId, configRequestId, flowName, primaryLineNumber, bundleProdId);
             return requestPromise.then(function(response){
-                var URL = $scope.parsePagereference(response);
+                var URL = parsePagereference(response);
                 if(!_.isNull(URL))
                     $window.location.href = URL;
             });
@@ -132,7 +132,7 @@
                     var cartId = BaseConfigService.cartId, configRequestId = BaseConfigService.configRequestId, flowName = BaseConfigService.flowName;
                     var requestPromise = RemoteService.addMoreProducts(cartId, configRequestId, flowName);
                     return requestPromise.then(function(response){
-                        var URL = $scope.parsePagereference(response);
+                        var URL = parsePagereference(response);
                         if(!_.isNull(URL))
                             $window.location.href = URL;
                     });
@@ -147,7 +147,7 @@
                     var cartId = BaseConfigService.cartId, configRequestId = BaseConfigService.configRequestId, flowName = BaseConfigService.flowName;
                     var requestPromise = RemoteService.goToPricing(cartId, configRequestId, flowName);
                     return requestPromise.then(function(response){
-                        var URL = $scope.parsePagereference(response);
+                        var URL = parsePagereference(response);
                         if(!_.isNull(URL))
                             $window.location.href = URL;
                     });
@@ -294,6 +294,14 @@
             })
             return pav;
         }
+
+        function parsePagereference(pgReference){
+            var res = null;
+            if(!_.isNull(pgReference)
+                && !_.isEmpty(pgReference))
+                res = _.unescape(pgReference);
+            return res;
+        };
     };
     
     BaseController.$inject = ['$scope', '$q', '$log', '$dialogs', 'BaseService', 'BaseConfigService', 'QuoteDataService', 'MessageService', 'RemoteService', 'LocationDataService', 'PricingMatrixDataService', 'OptionGroupDataService', 'ProductAttributeValueDataService'];

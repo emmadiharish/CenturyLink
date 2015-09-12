@@ -66,7 +66,7 @@
         $scope.invokeDoConfigure = function(lineItemId){
             $scope.miniCartService.configureLineItem(lineItemId).then(function(result){
                 // redirect the page to config URL.
-                var configUrl = $scope.parsePagereference(result);
+                var configUrl = parsePagereference(result);
                 if(!_.isNull(configUrl))
                     $window.location.href = configUrl;
             })
@@ -75,7 +75,7 @@
         $scope.deleteLineItemFromCart = function(lineNumber_tobedeleted){
             $scope.baseService.startprogress();// start page level progress bar. 
             $scope.miniCartService.deleteLineItemFromCart(lineNumber_tobedeleted).then(function(result){
-                var retUrl = $scope.parsePagereference(result);
+                var retUrl = parsePagereference(result);
                 if(!_.isNull(retUrl))
                     $window.location.href = retUrl;
                 // mark minicart as dirty and reload minicart.
@@ -100,7 +100,7 @@
             }; // end switch
         }; // end launch
 
-        $scope.parsePagereference = function(pgReference){
+        function parsePagereference(pgReference){
             var res = null;
             if(!_.isNull(pgReference)
                 && !_.isEmpty(pgReference))
