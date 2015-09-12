@@ -48,10 +48,10 @@
             _.each(allOptionGroups, function(optiongroups, bundleprodId){
                 _.each(optiongroups, function(optiongroup){
                     var parentId = optiongroup.parentId;
-                    //if parent is bundle product or selected then validate min max.
+                    //if parent is bundle productId or selected then validate min max.
                     if(parentId == bundleProdId
                         || (_.has(productIdtoComponentMap, parentId)
-                            && isProdSelected(productIdtoComponentMap[parentId])))
+                            && isProdSelected(productIdtoComponentMap[parentId], optiongroup)))
                     {
                         var minOptions = optiongroup.minOptions;
                         var maxOptions = optiongroup.maxOptions;
