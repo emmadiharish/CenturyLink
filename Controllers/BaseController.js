@@ -178,7 +178,7 @@
                                     if(!_.isUndefined(_.findKey(optionPAV, function(value, pavField){return pavField.endsWith('Other');}))){
                                         otherSelected = true;
                                         // clone Other Picklist values to regular Dropdowns and delete Other Field from PAV.
-                                        optionPAV = $scope.formatPAVBeforeSave(optionPAV);
+                                        optionPAV = formatPAVBeforeSave(optionPAV);
                                     }
                                     productIdtoPAVMap[productId] = optionPAV;
                                 }
@@ -196,7 +196,7 @@
                 if(!_.isUndefined(_.findKey(bundlePAV, function(value, pavField){return pavField.endsWith('Other');}))){
                     otherSelected_bundle = true;
                     // clone Other Picklist values to regular Dropdowns and delete Other Field from PAV.
-                    bundlePAV = $scope.formatPAVBeforeSave(bundlePAV);
+                    bundlePAV = formatPAVBeforeSave(bundlePAV);
                 }
                 productIdtoPAVMap[bundleProdId] = bundlePAV;
                 bundleLineItem = _.extend(bundleLineItem, {Custom__c:otherSelected_bundle});
@@ -255,7 +255,7 @@
             return false;
         }
 
-        $scope.formatPAVBeforeSave = function(pav){
+        function formatPAVBeforeSave(pav){
             // set the other picklist to original fields.
             _.each(_.filter(_.keys(pav), function(pavField){
                             return pavField.endsWith('Other');

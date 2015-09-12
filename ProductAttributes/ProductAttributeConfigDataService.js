@@ -4,9 +4,13 @@
 	function ProductAttributeConfigDataService($q, $log, BaseService, QuoteDataService, RemoteService, OptionGroupDataService, ProductAttributeConfigCache) {
 		var service = this;
 		
+		service.bundleAttribueFields = [];
+
 		// product attribute methods.
 		service.getProductAttributesConfig = getProductAttributesConfig;
 		service.getDynamicGroups = getDynamicGroups;
+		service.getBundleAttributeFields = getBundleAttributeFields;
+		service.setBundleAttributeFields = setBundleAttributeFields;
 		
 		function getProductAttributesConfig_bulk(servicelocationIdSet, productIds, groupIds) {
 			// check if cachedProductAttributes has products requested for else make a remote call.
@@ -93,6 +97,17 @@
             });
             res = _.flatten(res);// Flattens a nested array.
             return res;
+        }
+
+        function setBundleAttributeFields(attrgroups){
+        	_.each(attrgroups, function(attrgroup){
+                bundleAttribueFields.push(_.pluck(attrgroup.productAtributes, 'fieldName'));
+            })
+            bundleAttribueFields = _.flatten(bundleAttribueFields);
+        }
+
+        function getBundleAttributeFields(){
+        	return bundleAttribueFields;
         }
     }
 })();

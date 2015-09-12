@@ -51,8 +51,13 @@
         });
 
         $scope.CascadeBunleAttributestoOptions = function(){
-            var bundlePAV = $scope.PAVService.getbundleproductattributevalues()
-            $scope.productAttributeValues = _.extend($scope.productAttributeValues, bundlePAV);
+            // get attribute config fields for bundle product and clone them.
+            var bundlePAV = $scope.PAVService.getbundleproductattributevalues();
+            var bunleAttributeFields = $scope.PAConfigService.getProductAttributesConfig().getBundleAttributeFields();
+            _.each(bunleAttributeFields, function(field){
+                $scope.productAttributeValues[field] = bundlePAV[field];
+            });
+            //$scope.productAttributeValues = _.extend($scope.productAttributeValues, bundlePAV);
         }
             
 

@@ -46,6 +46,7 @@
                 $scope.PAConfigService.getProductAttributesConfig(bundleProductId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
                     $scope.PAVService.getProductAttributeValues(bundleProductId).then(function(pavresult)
                     {
+                        $scope.PAConfigService.setBundleAttributeFields(attributeconfigresult);
                         var res = $scope.PAVConfigService.loadPicklistDropDowns(attributeconfigresult, pavresult);
                         $scope.renderBundleAttributes(res.pavConfigGroups, res.PAVObj);
                         $scope.remotecallinitiated = false;
@@ -57,7 +58,8 @@
         $scope.renderBundleAttributes = function(attrgroups, pav){
             // clear the previous option attribute groups.
             $scope.AttributeGroups = attrgroups;
-            $scope.PAVService.setbundleproductattributevalues(cleanupPAV(attrgroups, pav));
+            //$scope.PAVService.setbundleproductattributevalues(cleanupPAV(attrgroups, pav));
+            $scope.PAVService.setbundleproductattributevalues(attrgroups, pav);
             $scope.productAttributeValues = $scope.PAVService.getbundleproductattributevalues();
             $scope.safeApply();   
         }
@@ -69,7 +71,7 @@
 
         // delete unwanted fields from PAV which are not configured at product attributes.
         function cleanupPAV(attrgroups, pav){
-            var res = {};
+            /*var res = {};
             // get all fieldValues from attrgroups
             var allattrGroupFields = [];
             _.each(attrgroups, function(attrgroup){
@@ -80,7 +82,7 @@
             res = _.omit(pav, function(value, key, object) {
                     return !_.contains(allattrGroupFields, key);
                 });
-            return res;
+            return res;*/
         }
 
         $scope.init();

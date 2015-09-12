@@ -8,3 +8,9 @@
 
 1. Fix goback to pricing by passing flow value.
 2. 
+
+
+Save changes:
+
+1. removeOptions(cartId, bunleLineNumber, optionComponentIds)
+2. applyContraintsOnDelete(cartId, deletedProductIds)
