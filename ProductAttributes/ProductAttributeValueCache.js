@@ -3,21 +3,20 @@
 	ProductAttributeValueCache.$inject = ['$log'];
 	function ProductAttributeValueCache($log) {
 		var service = this;
-
-		service.isValid = false;
-		service.productIdtoPAVMap = {};
+		var isValid = false;
+		var productIdtoPAVMap = {};
 
 		service.getProductAttributeValues = getProductAttributeValues;
 		service.initializeProductAttributeValues = initializeProductAttributeValues;
 
 		function getProductAttributeValues(){
-			return service.productIdtoPAVMap;
+			return productIdtoPAVMap;
 		}
 
 		function initializeProductAttributeValues(response){
-			service.isValid = true;
+			isValid = true;
 			_.each(response, function(pavwrapper){
-				service.productIdtoPAVMap[pavwrapper.productId] = pavwrapper.pav;
+				productIdtoPAVMap[pavwrapper.productId] = pavwrapper.pav;
 			})
 		}
 	}

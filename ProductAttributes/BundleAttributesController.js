@@ -48,14 +48,14 @@
                     {
                         $scope.PAConfigService.setBundleAttributeFields(attributeconfigresult);
                         var res = $scope.PAVConfigService.loadPicklistDropDowns(attributeconfigresult, pavresult);
-                        $scope.renderBundleAttributes(res.pavConfigGroups, res.PAVObj);
+                        renderBundleAttributes(res.pavConfigGroups, res.PAVObj);
                         $scope.remotecallinitiated = false;
                     })
                 })
             })
         }
 
-        $scope.renderBundleAttributes = function(attrgroups, pav){
+        function renderBundleAttributes(attrgroups, pav){
             // clear the previous option attribute groups.
             $scope.AttributeGroups = attrgroups;
             //$scope.PAVService.setbundleproductattributevalues(cleanupPAV(attrgroups, pav));
@@ -66,7 +66,7 @@
         
         $scope.PAVPicklistChange = function(fieldName){
             var res = $scope.PAVConfigService.applyDependedPicklistsOnChange($scope.AttributeGroups, $scope.productAttributeValues, fieldName);    
-            $scope.renderBundleAttributes(res.pavConfigGroups, res.PAVObj);
+            renderBundleAttributes(res.pavConfigGroups, res.PAVObj);
         }
 
         // delete unwanted fields from PAV which are not configured at product attributes.
