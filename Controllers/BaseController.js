@@ -18,6 +18,7 @@
         });
 
         $scope.validateonsubmit = function(){
+            MessageService.clearAll();
             // Validation 1 : Service location has to be selected.
             var res = true;
             var servicelocation = $scope.locationService.getselectedlpa();

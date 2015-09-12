@@ -153,7 +153,6 @@
                 */
                 var constraintActionDoList = result.appliedActionDOList;
                 var numRulesApplied = 0; //constraintActionDoList.length;
-                MessageService.clearAll();
                 var allOptionGroups = getallOptionGroups();
                 var productIdtoActionDOMap = {};
                 
