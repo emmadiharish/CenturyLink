@@ -34,6 +34,7 @@
             // Validation 2 : validate Min/Max options on option groups.
             var allOptionGroups = $scope.optionGroupService.getallOptionGroups();
             var productIdtoComponentMap = {};
+            var bundleProdId = BaseConfigService.bundleProdId;
             _.each(allOptionGroups, function(optiongroups, bundleprodId){
                 _.each(optiongroups, function(optiongroup){
                     _.each(optiongroup.productOptionComponents, function(productcomponent){
@@ -47,32 +48,32 @@
             _.each(allOptionGroups, function(optiongroups, bundleprodId){
                 _.each(optiongroups, function(optiongroup){
                     var parentId = optiongroup.parentId;
-                    //if parent not selected then do not validate min max.
-                    if(_.has(productIdtoComponentMap, parentId))
+                    //if parent is bundle product or selected then validate min max.
+                    if(parentId == bundleProdId
+                        || (_.has(productIdtoComponentMap, parentId)
+                            && isProdSelected(productIdtoComponentMap[parentId])))
                     {
-                        if(!isProdSelected(productIdtoComponentMap[parentId]))
-                            continue;
-                    }
-                    var minOptions = optiongroup.minOptions;
-                    var maxOptions = optiongroup.maxOptions;
-                    var selectedOptionsCount = 0;
-                    _.each(optiongroup.productOptionComponents, function(productcomponent){
-                        if(isProdSelected(productcomponent,optiongroup))
+                        var minOptions = optiongroup.minOptions;
+                        var maxOptions = optiongroup.maxOptions;
+                        var selectedOptionsCount = 0;
+                        _.each(optiongroup.productOptionComponents, function(productcomponent){
+                            if(isProdSelected(productcomponent,optiongroup))
+                            {
+                                selectedOptionsCount++;
+                            }
+                        })
+                        if(minOptions > 0
+                            && selectedOptionsCount < minOptions)
                         {
-                            selectedOptionsCount++;
+                            MessageService.addMessage('danger', 'Minimum of '+minOptions+' options have to be selected in '+optiongroup.groupName);
+                            res = false;
                         }
-                    })
-                    if(minOptions > 0
-                        && selectedOptionsCount < minOptions)
-                    {
-                        MessageService.addMessage('danger', 'Minimum of '+minOptions+' options have to be selected in '+optiongroup.groupName);
-                        res = false;
-                    }
-                    if(maxOptions > 0
-                        && selectedOptionsCount > maxOptions)
-                    {
-                        MessageService.addMessage('danger', 'Maximum of '+maxOptions+' options can to be selected from '+optiongroup.groupName);
-                        res = false;
+                        if(maxOptions > 0
+                            && selectedOptionsCount > maxOptions)
+                        {
+                            MessageService.addMessage('danger', 'Maximum of '+maxOptions+' options can to be selected from '+optiongroup.groupName);
+                            res = false;
+                        }
                     }
                 })
             })
