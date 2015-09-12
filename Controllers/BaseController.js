@@ -1,7 +1,7 @@
 (function() {
     var BaseController;
 
-    BaseController = function($scope, $q, $log, $dialogs, BaseService, BaseConfigService, QuoteDataService, MessageService, RemoteService, LocationDataService, PricingMatrixDataService, OptionGroupDataService, ProductAttributeValueDataService) {
+    BaseController = function($scope, $q, $log, $window, $dialogs, BaseService, BaseConfigService, QuoteDataService, MessageService, RemoteService, LocationDataService, PricingMatrixDataService, OptionGroupDataService, ProductAttributeValueDataService) {
         // all variable intializations.
         $scope.quoteService = QuoteDataService;
         $scope.baseService = BaseService;
@@ -304,6 +304,6 @@
         };
     };
     
-    BaseController.$inject = ['$scope', '$q', '$log', '$dialogs', 'BaseService', 'BaseConfigService', 'QuoteDataService', 'MessageService', 'RemoteService', 'LocationDataService', 'PricingMatrixDataService', 'OptionGroupDataService', 'ProductAttributeValueDataService'];
+    BaseController.$inject = ['$scope', '$q', '$log', '$window', '$dialogs', 'BaseService', 'BaseConfigService', 'QuoteDataService', 'MessageService', 'RemoteService', 'LocationDataService', 'PricingMatrixDataService', 'OptionGroupDataService', 'ProductAttributeValueDataService'];
     angular.module('APTPS_ngCPQ').controller('BaseController', BaseController);
 }).call(this);
