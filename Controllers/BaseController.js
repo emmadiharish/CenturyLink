@@ -30,8 +30,9 @@
                 MessageService.addMessage('danger', 'Please select location to Proceed.');
                 res = false;
             }
+            
             // Validation 2 : validate Min/Max options on option groups.
-            /*var allOptionGroups = $scope.optionGroupService.getallOptionGroups();
+            var allOptionGroups = $scope.optionGroupService.getallOptionGroups();
             _.each(allOptionGroups, function(optiongroups, bundleprodId){
                 _.each(optiongroups, function(optiongroup){
                     var minOptions = optiongroup.minOptions;
@@ -54,7 +55,7 @@
                         res = false;
                     }
                 })
-            })*/
+            })
             return res;
         }
 
