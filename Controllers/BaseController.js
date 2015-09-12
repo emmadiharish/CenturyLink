@@ -44,14 +44,16 @@
                             selectedOptionsCount++;
                         }
                     })
-                    if(selectedOptionsCount < minOptions)
+                    if(minOptions > 0
+                        && selectedOptionsCount < minOptions)
                     {
                         MessageService.addMessage('danger', 'Minimum of '+minOptions+' options have to be selected in '+optiongroup.groupName);
                         res = false;
                     }
-                    if(selectedOptionsCount > maxOptions)
+                    if(maxOptions > 0
+                        && selectedOptionsCount > maxOptions)
                     {
-                        MessageService.addMessage('danger', 'Maximum of '+maxOptions+' options can to be selected in '+optiongroup.groupName);
+                        MessageService.addMessage('danger', 'Maximum of '+maxOptions+' options can to be selected from '+optiongroup.groupName);
                         res = false;
                     }
                 })
