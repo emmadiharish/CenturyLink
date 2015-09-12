@@ -1,6 +1,6 @@
 (function() {
 	angular.module('APTPS_ngCPQ').service('MiniCartDataService', MiniCartDataService); 
-	MiniCartDataService.$inject = ['$q', '$log', 'QuoteDataService', 'RemoteService'];
+	MiniCartDataService.$inject = ['$q', '$log', 'BaseConfigService', 'QuoteDataService', 'RemoteService'];
 	function MiniCartDataService($q, $log, BaseConfigService, QuoteDataService, RemoteService){
 		var service = this;
 		service.quoteService = QuoteDataService;
