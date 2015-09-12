@@ -59,7 +59,7 @@
             // clear the previous option attribute groups.
             $scope.AttributeGroups = attrgroups;
             //$scope.PAVService.setbundleproductattributevalues(cleanupPAV(attrgroups, pav));
-            $scope.PAVService.setbundleproductattributevalues(attrgroups, pav);
+            $scope.PAVService.setbundleproductattributevalues(pav);
             $scope.productAttributeValues = $scope.PAVService.getbundleproductattributevalues();
             $scope.safeApply();   
         }

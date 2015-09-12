@@ -4,7 +4,7 @@
 	function ProductAttributeValueDataService($q, $log, BaseService, QuoteDataService, RemoteService, OptionGroupDataService, ProductAttributeValueCache) {
 		var service = this;
 
-		service.bundleproductattributevalues = {};
+		var bundleproductattributevalues = {};
 
 		service.getAllProductAttributeValues = ProductAttributeValueCache.getProductAttributeValues;
 		service.getProductAttributeValues = getProductAttributeValues;
@@ -61,14 +61,14 @@
         }
 
         function setbundleproductattributevalues(pav){
-        	if(_.isEmpty(service.bundleproductattributevalues))
+        	if(_.isEmpty(bundleproductattributevalues))
         	{
-        		service.bundleproductattributevalues = pav;
+        		bundleproductattributevalues = pav;
         	}
         }
 
         function getbundleproductattributevalues(){
-        	return service.bundleproductattributevalues;
+        	return bundleproductattributevalues;
         }
 	}
 })();
