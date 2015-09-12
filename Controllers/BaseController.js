@@ -33,8 +33,26 @@
             
             // Validation 2 : validate Min/Max options on option groups.
             var allOptionGroups = $scope.optionGroupService.getallOptionGroups();
+            var productIdtoComponentMap = {};
             _.each(allOptionGroups, function(optiongroups, bundleprodId){
                 _.each(optiongroups, function(optiongroup){
+                    _.each(optiongroup.productOptionComponents, function(productcomponent){
+                        var productId = productcomponent.productId;
+                        if(!_.isNull(productId))
+                            productIdtoComponentMap[productId] = productcomponent;
+                    })
+                })
+            })
+
+            _.each(allOptionGroups, function(optiongroups, bundleprodId){
+                _.each(optiongroups, function(optiongroup){
+                    var parentId = optiongroup.parentId;
+                    //if parent not selected then do not validate min max.
+                    if(_.has(productIdtoComponentMap, parentId))
+                    {
+                        if(!isProdSelected(productIdtoComponentMap[parentId]))
+                            continue;
+                    }
                     var minOptions = optiongroup.minOptions;
                     var maxOptions = optiongroup.maxOptions;
                     var selectedOptionsCount = 0;
