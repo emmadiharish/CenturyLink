@@ -3,14 +3,15 @@
 	OptionGroupDataService.$inject = ['$q', '$log', 'BaseService', 'QuoteDataService', 'RemoteService', 'MessageService', 'OptionGroupCache'];
 	function OptionGroupDataService($q, $log, BaseService, QuoteDataService, RemoteService, MessageService, OptionGroupCache) {
 		var service = this;
+        
+        var Selectedoptionproduct = {};
+        var currentproductoptiongroups = {};
+		var rerenderHierarchy = false;
+        var slectedOptionGroupProdId;
 
-		service.quoteService = QuoteDataService;
-		service.Selectedoptionproduct = {};
-		service.currentproductoptiongroups = {};
-		service.rerenderHierarchy = false;
-		service.slectedOptionGroupProdId;
-
-		// option group methods.
+        service.quoteService = QuoteDataService;
+		
+        // option group methods.
 		service.getallOptionGroups = getallOptionGroups;
 		service.getOptionGroup = getOptionGroup;
 		service.runConstraintRules = runConstraintRules;
@@ -61,9 +62,9 @@
 			}
 
 			var bundleproductIds = [];
-            if(!_.isEmpty(service.currentproductoptiongroups))
+            if(!_.isEmpty(currentproductoptiongroups))
             {
-                bundleproductIds = getAllBundleProductsinCurrentOptiongroups(service.currentproductoptiongroups, 'productOptionComponents', 'hasOptions', 'productId');
+                bundleproductIds = getAllBundleProductsinCurrentOptiongroups(currentproductoptiongroups, 'productOptionComponents', 'hasOptions', 'productId');
             }else{
                 bundleproductIds.push(productId);
             }
@@ -76,19 +77,19 @@
 		}
 
 		function getSelectedoptionproduct() {
-			return service.Selectedoptionproduct;
+			return Selectedoptionproduct;
 		}
 
 		function setSelectedoptionproduct(optionComponent) {
-			service.Selectedoptionproduct = {'productId':optionComponent.productId, 'productName': optionComponent.productName};
+			Selectedoptionproduct = {'productId':optionComponent.productId, 'productName': optionComponent.productName};
 		}
 
         function getcurrentproductoptiongroups(){
-        	return service.currentproductoptiongroups;
+        	return currentproductoptiongroups;
         }
 
         function setcurrentproductoptiongroups(result){
-        	service.currentproductoptiongroups = result;
+        	currentproductoptiongroups = result;
         }
 
         // util method. a: option groups, b: field name to access product components, c:field to identify if product is bundle or not, d: field name to access product Id within product component.
@@ -104,19 +105,19 @@
         }
 
         function getrerenderHierarchy(){
-        	return service.rerenderHierarchy;
+        	return rerenderHierarchy;
         }
 
         function setrerenderHierarchy(val){
-        	service.rerenderHierarchy = val;
+        	rerenderHierarchy = val;
         }
 
         function getslectedOptionGroupProdId(){
-        	return service.slectedOptionGroupProdId;
+        	return slectedOptionGroupProdId;
         }
 
         function setslectedOptionGroupProdId(val){
-        	service.slectedOptionGroupProdId = val;
+        	slectedOptionGroupProdId = val;
         }
 
         function runConstraintRules(){
@@ -174,7 +175,7 @@
                 _.each(allOptionGroups, function(optiongroups, bundleprodId){
                     _.each(optiongroups, function(optiongroup){
                         _.each(optiongroup.productOptionComponents, function(productcomponent){
-                            // Enable all previously disabled options.
+                            // Enable all previously disabled options. and exclude/include based on constraint rule action info's.
                             if(_.has(productcomponent, 'isDisabled')
                                 && productcomponent['isDisabled'] == true)
                             {
