@@ -46,6 +46,7 @@
                 $scope.PAConfigService.getProductAttributesConfig(bundleProductId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
                     $scope.PAVService.getProductAttributeValues(bundleProductId).then(function(result)
                     {
+                        $scope.PAConfigService.setBundleAttributeFields(attributeconfigresult);
                         var bundlePAV = $scope.PAVService.getbundleproductattributevalues();
                         var res = $scope.PAVConfigService.loadPicklistDropDowns(attributeconfigresult, bundlePAV);
                         renderBundleAttributes(res.pavConfigGroups, res.PAVObj);
