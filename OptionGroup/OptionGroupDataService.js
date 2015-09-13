@@ -81,7 +81,7 @@
 		}
 
 		function setSelectedoptionproduct(optionComponent) {
-			Selectedoptionproduct = {'productId':optionComponent.productId, 'productName': optionComponent.productName};
+			Selectedoptionproduct = {'productId':optionComponent.productId, 'productName': optionComponent.productName, 'componentId':optionComponent.componentId};
 		}
 
         function getcurrentproductoptiongroups(){

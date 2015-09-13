@@ -26,7 +26,8 @@
                 && !_.isEmpty($scope.Selectedoptionproduct))
             {   
                 var optionProductId = $scope.Selectedoptionproduct.productId;
-                $scope.retrieveproductattributeGroupData(optionProductId);
+                var componentId = $scope.Selectedoptionproduct.componentId;
+                $scope.retrieveproductattributeGroupData(optionProductId, componentId);
             }    
         });
 
@@ -37,7 +38,8 @@
             {
                 $scope.Selectedoptionproduct = newVal;
                 var optionProductId = newVal.productId;
-                $scope.retrieveproductattributeGroupData(optionProductId);
+                var componentId = newVal.componentId;
+                $scope.retrieveproductattributeGroupData(optionProductId, componentId);
             }
         });
 
@@ -61,7 +63,7 @@
         }
             
 
-        $scope.retrieveproductattributeGroupData = function(productId){
+        $scope.retrieveproductattributeGroupData = function(productId, componentId){
             // collect all products at this level and make a remote call for attributes.
             var alllocationIdSet = LocationDataService.getalllocationIdSet();
             var selectedlocationId = LocationDataService.getselectedlpaId();
@@ -71,7 +73,7 @@
                     $scope.pavfieldDescribeMap = fieldDescribeMap;
                 }
                 $scope.PAConfigService.getProductAttributesConfig(productId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
-                    $scope.PAVService.getProductAttributeValues(productId).then(function(pavresult)
+                    $scope.PAVService.getProductAttributeValues(componentId).then(function(pavresult)
                     {
                         var res = $scope.PAVConfigService.loadPicklistDropDowns(attributeconfigresult, pavresult);
                         $scope.renderOptionAttributes(res.pavConfigGroups, res.PAVObj);
