@@ -29,7 +29,7 @@
 			{
 				if(!_.has(componentIdtoPAVMap, componentId))
 					componentIdtoPAVMap[componentId] = {};
-				return $q.when((componentIdtoPAVMap[componentId]);
+				return $q.when(componentIdtoPAVMap[componentId]);
 			}
 
 			return getProductAttributeValues_bulk().then(function(result){
