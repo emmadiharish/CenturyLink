@@ -34,26 +34,30 @@
         });
         
         $scope.retrieveproductattributeGroupData = function(){
-            $scope.remotecallinitiated = true;
-            var alllocationIdSet = $scope.locationService.getalllocationIdSet();
-            var selectedlocationId = $scope.locationService.getselectedlpaId();
-            var bundleProductId = QuoteDataService.getbundleproductId();
-            $scope.PAVConfigService.getPAVFieldMetaData().then(function(fieldDescribeMap){
-                if(_.isEmpty($scope.pavfieldDescribeMap))
-                {
-                    $scope.pavfieldDescribeMap = fieldDescribeMap;
-                }
-                $scope.PAConfigService.getProductAttributesConfig(bundleProductId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
-                    $scope.PAVService.getProductAttributeValues(bundleProductId).then(function(result)
+            // run only if location remote call is complete.
+            if($scope.locationService.getisRemotecallComplete() == true)
+            {
+                $scope.remotecallinitiated = true;
+                var alllocationIdSet = $scope.locationService.getalllocationIdSet();
+                var selectedlocationId = $scope.locationService.getselectedlpaId();
+                var bundleProductId = QuoteDataService.getbundleproductId();
+                $scope.PAVConfigService.getPAVFieldMetaData().then(function(fieldDescribeMap){
+                    if(_.isEmpty($scope.pavfieldDescribeMap))
                     {
-                        $scope.PAConfigService.setBundleAttributeFields(attributeconfigresult);
-                        var bundlePAV = $scope.PAVService.getbundleproductattributevalues();
-                        var res = $scope.PAVConfigService.loadPicklistDropDowns(attributeconfigresult, bundlePAV);
-                        renderBundleAttributes(res.pavConfigGroups, res.PAVObj);
-                        $scope.remotecallinitiated = false;
+                        $scope.pavfieldDescribeMap = fieldDescribeMap;
+                    }
+                    $scope.PAConfigService.getProductAttributesConfig(bundleProductId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
+                        $scope.PAVService.getProductAttributeValues(bundleProductId).then(function(result)
+                        {
+                            $scope.PAConfigService.setBundleAttributeFields(attributeconfigresult);
+                            var bundlePAV = $scope.PAVService.getbundleproductattributevalues();
+                            var res = $scope.PAVConfigService.loadPicklistDropDowns(attributeconfigresult, bundlePAV);
+                            renderBundleAttributes(res.pavConfigGroups, res.PAVObj);
+                            $scope.remotecallinitiated = false;
+                        })
                     })
                 })
-            })
+            }
         }
 
         function renderBundleAttributes(attrgroups, pav){
