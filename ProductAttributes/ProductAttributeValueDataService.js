@@ -20,22 +20,22 @@
 				initializeProductAttributeValues(response);
 				// logTransaction(response, categoryRequest);
 				BaseService.setPAVLoadComplete();
-				return componentIdtoPAVMap;
+				return componentIdtoOptionPAVMap;
 			});
 		}
 
 		function getProductAttributeValues(componentId){
 			if(service.isValid == true)
 			{
-				if(!_.has(componentIdtoPAVMap, componentId))
-					componentIdtoPAVMap[componentId] = {};
-				return $q.when(componentIdtoPAVMap[componentId]);
+				if(!_.has(componentIdtoOptionPAVMap, componentId))
+					componentIdtoOptionPAVMap[componentId] = {};
+				return $q.when(componentIdtoOptionPAVMap[componentId]);
 			}
 
 			return getProductAttributeValues_bulk().then(function(result){
-				if(!_.has(componentIdtoPAVMap, componentId))
-					componentIdtoPAVMap[componentId] = {};
-				return componentIdtoPAVMap[componentId];
+				if(!_.has(componentIdtoOptionPAVMap, componentId))
+					componentIdtoOptionPAVMap[componentId] = {};
+				return componentIdtoOptionPAVMap[componentId];
 			})
 		}
 
