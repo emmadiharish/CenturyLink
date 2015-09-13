@@ -58,7 +58,8 @@
 			service.isValid = true;
 			_.each(response, function(pavwrapper){
 				// bundle pav if Apttus_Config2__OptionId__c is null.
-				if(_.isNull(pavwrapper.lineItem.Apttus_Config2__OptionId__c))
+				if(!_.has(pavwrapper.lineItem, 'Apttus_Config2__OptionId__c')
+					|| _.isNull(pavwrapper.lineItem.Apttus_Config2__OptionId__c))
 				{
 					setbundleproductattributevalues(pavwrapper.pav);
 				}// option line
