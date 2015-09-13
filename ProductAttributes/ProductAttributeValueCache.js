@@ -4,6 +4,7 @@
 	function ProductAttributeValueCache($log) {
 		var service = this;
 		var productIdtoPAVMap = {};
+		var componentIdtoPAVMap = {};
 
 		service.isValid = false;
 		
@@ -17,7 +18,13 @@
 		function initializeProductAttributeValues(response){
 			service.isValid = true;
 			_.each(response, function(pavwrapper){
-				productIdtoPAVMap[pavwrapper.productId] = pavwrapper.pav;
+				if(!_.isNull(pavwrapper.componentId))
+				{
+					componentIdtoPAVMap[pavwrapper.componentId] = pavwrapper.pav; 	
+				}
+				else{
+					productIdtoPAVMap[pavwrapper.productId] = pavwrapper.pav;
+				}
 			})
 		}
 	}

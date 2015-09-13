@@ -203,9 +203,9 @@
                 var bundleProdId = bundleLine.Apttus_Config2__ProductId__c;
 
                 var productcomponents = [];
-                var productIdtoPAVMap = {};
+                var componentIdtoPAVMap = {};
                 var allOptionGroups = $scope.optionGroupService.getallOptionGroups();
-                var allproductIdtoPAVMap = $scope.PAVService.getAllProductAttributeValues();
+                var allcomponentIdToOptionPAVMap = $scope.PAVService.getoptionproductattributevalues();
                 
                 _.each(allOptionGroups, function(optiongroups, bundleprodId){
                     _.each(optiongroups, function(optiongroup){
@@ -215,18 +215,18 @@
                                 productcomponent.isselected = true;
                                 productcomponent = _.omit(productcomponent, ['$$hashKey', 'isDisabled']);
                                 
-                                var productId = productcomponent.productId;
+                                var componentId = productcomponent.componentId;
                                 var otherSelected = false;
-                                if(_.has(allproductIdtoPAVMap, productId))
+                                if(_.has(allcomponentIdToOptionPAVMap, componentId))
                                 {
-                                    var optionPAV = allproductIdtoPAVMap[productId];
+                                    var optionPAV = allcomponentIdToOptionPAVMap[componentId];
                                     // Other picklist is selected then set OtherSelected to true.
                                     if(!_.isUndefined(_.findKey(optionPAV, function(value, pavField){return pavField.endsWith('Other');}))){
                                         otherSelected = true;
                                         // clone Other Picklist values to regular Dropdowns and delete Other Field from PAV.
                                         optionPAV = formatPAVBeforeSave(optionPAV);
                                     }
-                                    productIdtoPAVMap[productId] = optionPAV;
+                                    componentIdtoPAVMap[componentId] = optionPAV;
                                 }
                                 productcomponent.customFlag = otherSelected;
                                 productcomponents.push(productcomponent);
@@ -244,11 +244,11 @@
                     // clone Other Picklist values to regular Dropdowns and delete Other Field from PAV.
                     bundlePAV = formatPAVBeforeSave(bundlePAV);
                 }
-                productIdtoPAVMap[bundleProdId] = bundlePAV;
+                componentIdtoPAVMap[bundleProdId] = bundlePAV;
                 bundleLineItem = _.extend(bundleLineItem, {Custom__c:otherSelected_bundle});
 
                 // remote call to save Quote Config.
-                var requestPromise = RemoteService.saveQuoteConfig(bundleLineItem, productcomponents, productIdtoPAVMap);
+                var requestPromise = RemoteService.saveQuoteConfig(bundleLineItem, productcomponents, componentIdtoPAVMap);
                 requestPromise.then(function(saveresult){
                     if(saveresult.isSuccess)// if save call is successfull.
                     {

@@ -44,10 +44,10 @@
                     $scope.pavfieldDescribeMap = fieldDescribeMap;
                 }
                 $scope.PAConfigService.getProductAttributesConfig(bundleProductId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
-                    $scope.PAVService.getProductAttributeValues(bundleProductId).then(function(pavresult)
+                    $scope.PAVService.getProductAttributeValues(bundleProductId).then(function(result)
                     {
-                        $scope.PAConfigService.setBundleAttributeFields(attributeconfigresult);
-                        var res = $scope.PAVConfigService.loadPicklistDropDowns(attributeconfigresult, pavresult);
+                        var bundlePAV = $scope.PAVService.getbundleproductattributevalues();
+                        var res = $scope.PAVConfigService.loadPicklistDropDowns(attributeconfigresult, bundlePAV);
                         renderBundleAttributes(res.pavConfigGroups, res.PAVObj);
                         $scope.remotecallinitiated = false;
                     })
@@ -58,7 +58,6 @@
         function renderBundleAttributes(attrgroups, pav){
             // clear the previous option attribute groups.
             $scope.AttributeGroups = attrgroups;
-            //$scope.PAVService.setbundleproductattributevalues(cleanupPAV(attrgroups, pav));
             $scope.PAVService.setbundleproductattributevalues(pav);
             $scope.productAttributeValues = $scope.PAVService.getbundleproductattributevalues();
             $scope.safeApply();   
