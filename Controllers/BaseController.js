@@ -225,8 +225,7 @@
                                         otherSelected = true;
                                     }
                                     // clone Other Picklist values to regular Dropdowns and delete Other Field from PAV.
-                                    optionPAV = formatPAVBeforeSave(optionPAV);
-                                    componentIdtoPAVMap[componentId] = optionPAV;
+                                    componentIdtoPAVMap[componentId] = formatPAVBeforeSave(optionPAV);
                                 }
                                 productcomponent.customFlag = otherSelected;
                                 productcomponents.push(productcomponent);
@@ -244,8 +243,7 @@
                 }
 
                 // clone Other Picklist values to regular Dropdowns and delete Other Field from PAV.
-                bundlePAV = formatPAVBeforeSave(bundlePAV);
-                componentIdtoPAVMap[bundleProdId] = bundlePAV;
+                componentIdtoPAVMap[bundleProdId] = formatPAVBeforeSave(bundlePAV);
                 bundleLineItem = _.extend(bundleLineItem, {Custom__c:otherSelected_bundle});
 
                 // remote call to save Quote Config.
