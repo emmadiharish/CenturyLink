@@ -65,7 +65,7 @@
                 //{
 	                _.each(attributeGroup.productAtributes, function(attributeConfig){
 	                    var fieldName = attributeConfig.fieldName;
-	                    var fieldDescribe = fieldNametoDFRMap[fieldName].fieldDescribe;
+	                    var fieldDescribe = service.fieldNametoDFRMap[fieldName].fieldDescribe;
 	                    if(fieldDescribe.fieldType == 'picklist')
 	                    {
 	                    	if(!_.isEmpty(attributeConfig.lovs)
@@ -137,7 +137,7 @@
 					ctodFieldMap.push({cField:controller, dField:fieldName});
 				}
 
-				fieldNametoDFRMap[fieldName] = {fieldDescribe:fieldDescribe, dPicklistObj:dPicklistObj};
+				service.fieldNametoDFRMap[fieldName] = {fieldDescribe:fieldDescribe, dPicklistObj:dPicklistObj};
 			})
 		}
 
@@ -154,7 +154,7 @@
 		function applyDependentLOVSConfig(attributeConfig, PAV, dependentField, controllingField){
             var cSelectedPAVValue = _.has(PAV, controllingField) ? PAV[controllingField] : null;
             var options = [];
-            var dPicklistConfig = fieldNametoDFRMap[dependentField].dPicklistObj;
+            var dPicklistConfig = service.fieldNametoDFRMap[dependentField].dPicklistObj;
             if(_.has(dPicklistConfig, cSelectedPAVValue))
             {
             	options = dPicklistConfig[cSelectedPAVValue].slice();// do a slice to cline the list.
@@ -184,7 +184,7 @@
 					// if attribute field exists in the dependent fields for given controlling field:fieldName then apply dependency.
 					if(_.contains(dFields, currentField))
 					{
-						var dPicklistConfig = fieldNametoDFRMap[currentField].dPicklistObj;
+						var dPicklistConfig = service.fieldNametoDFRMap[currentField].dPicklistObj;
 						PAV[currentField] = null;
 						var options = [];
                         if(_.has(dPicklistConfig, selectedPAVValue))
