@@ -368,7 +368,7 @@
 
         var base64 = new sforce.Base64Binary("");
         function testBit (validFor, pos) {
-			validFor = base64.decode(thisOption.validFor);
+			validFor = base64.decode(validFor);
 			var byteToCheck = Math.floor(pos/8);
 			var bit = 7 - (pos % 8);
 			return ((Math.pow(2, bit) & validFor.charCodeAt(byteToCheck)) >> bit) == 1;
