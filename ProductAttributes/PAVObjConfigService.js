@@ -320,7 +320,7 @@
 		}
 
 		// testBit is implemented based on the algorithm :http://titancronus.com/blog/2014/05/01/salesforce-acquiring-dependent-picklists-in-apex/
-		function testBit(pValidFor, n){
+		/*function testBit(pValidFor, n){
 	        //the list of bytes
 	        var pBytes = [];
 	        
@@ -364,7 +364,15 @@
 		var Base64Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
         function Base64Value(char){
         	return Base64Chars.indexOf(char);
-        }
+        }*/
+
+        var base64 = new sforce.Base64Binary("");
+        function testBit (validFor, pos) {
+			validFor = base64.decode(thisOption.validFor);
+			var byteToCheck = Math.floor(pos/8);
+			var bit = 7 - (pos % 8);
+			return ((Math.pow(2, bit) & validFor.charCodeAt(byteToCheck)) >> bit) == 1;
+		}
 
         // Salesforce algorithm (Sample Java Code for Dependent Picklists)https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_calls_describesobjects_describesobjectresult.htm#i1427932
 		// not working so commenting.
