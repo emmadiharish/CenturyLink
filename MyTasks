@@ -25,7 +25,6 @@ P0 issues:
 4. E- Line - Bundle within bundle Min max - Fire rules only when top level bundle is selected.
 
 BaseController
-BundleAttribute
-OptionAttribute
-PAVDataService
-OptionGroupDataService
+BundleAttributeController
+OptionAttributeController
+PAVObjConfigService

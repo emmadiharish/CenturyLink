@@ -223,9 +223,9 @@
                                     // Other picklist is selected then set OtherSelected to true.
                                     if(!_.isUndefined(_.findKey(optionPAV, function(value, pavField){return pavField.endsWith('Other');}))){
                                         otherSelected = true;
-                                        // clone Other Picklist values to regular Dropdowns and delete Other Field from PAV.
-                                        optionPAV = formatPAVBeforeSave(optionPAV);
                                     }
+                                    // clone Other Picklist values to regular Dropdowns and delete Other Field from PAV.
+                                    optionPAV = formatPAVBeforeSave(optionPAV);
                                     componentIdtoPAVMap[componentId] = optionPAV;
                                 }
                                 productcomponent.customFlag = otherSelected;
@@ -241,9 +241,10 @@
                 // Other picklist is selected then set OtherSelected to true.
                 if(!_.isUndefined(_.findKey(bundlePAV, function(value, pavField){return pavField.endsWith('Other');}))){
                     otherSelected_bundle = true;
-                    // clone Other Picklist values to regular Dropdowns and delete Other Field from PAV.
-                    bundlePAV = formatPAVBeforeSave(bundlePAV);
                 }
+
+                // clone Other Picklist values to regular Dropdowns and delete Other Field from PAV.
+                bundlePAV = formatPAVBeforeSave(bundlePAV);
                 componentIdtoPAVMap[bundleProdId] = bundlePAV;
                 bundleLineItem = _.extend(bundleLineItem, {Custom__c:otherSelected_bundle});
 
