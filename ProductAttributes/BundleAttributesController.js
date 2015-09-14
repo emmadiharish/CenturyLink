@@ -51,7 +51,7 @@
                         {
                             $scope.PAConfigService.setBundleAttributeFields(attributeconfigresult);
                             var bundlePAV = $scope.PAVService.getbundleproductattributevalues();
-                            var res = $scope.PAVConfigService.loadPicklistDropDowns(attributeconfigresult, bundlePAV);
+                            var res = $scope.PAVConfigService.configurePAVFields(attributeconfigresult, bundlePAV);
                             renderBundleAttributes(res.pavConfigGroups, res.PAVObj);
                             $scope.remotecallinitiated = false;
                         })

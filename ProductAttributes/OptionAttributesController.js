@@ -16,7 +16,6 @@
             $scope.pavfieldDescribeMap = {};
             $scope.productAttributeValues = {};
             $scope.Selectedoptionproduct = {};
-            $scope.dependencyAttributes = [];
         }
         
         // Option Attribute load on location selection.
@@ -48,7 +47,6 @@
             if(!_.isEmpty(newValue))
             {
                 $scope.CascadeBunleAttributestoOptions();
-                //$scope.safeApply();
             }
         });
 
@@ -56,10 +54,12 @@
             // get attribute config fields for bundle product and clone them.
             var bundlePAV = $scope.PAVService.getbundleproductattributevalues();
             var bunleAttributeFields = $scope.PAConfigService.getBundleAttributeFields();
+            var optionPAV = $scope.productAttributeValues;
             _.each(bunleAttributeFields, function(field){
-                $scope.productAttributeValues[field] = bundlePAV[field];
+                optionPAV[field] = bundlePAV[field];
             });
-            //$scope.productAttributeValues = _.extend($scope.productAttributeValues, bundlePAV);
+            var res = $scope.PAVConfigService.configurePAVFields($scope.AttributeGroups, optionPAV);
+            optionPAV = res.PAVObj;
         }
             
 
@@ -67,17 +67,12 @@
             // collect all products at this level and make a remote call for attributes.
             var alllocationIdSet = LocationDataService.getalllocationIdSet();
             var selectedlocationId = LocationDataService.getselectedlpaId();
-            $scope.PAVConfigService.getPAVFieldMetaData().then(function(fieldDescribeMap){
-                if(_.isEmpty($scope.pavfieldDescribeMap))
+            $scope.pavfieldDescribeMap = $scope.PAVConfigService.fieldNametoDFRMap;
+            $scope.PAConfigService.getProductAttributesConfig(productId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
+                $scope.PAVService.getProductAttributeValues(componentId).then(function(pavresult)
                 {
-                    $scope.pavfieldDescribeMap = fieldDescribeMap;
-                }
-                $scope.PAConfigService.getProductAttributesConfig(productId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
-                    $scope.PAVService.getProductAttributeValues(componentId).then(function(pavresult)
-                    {
-                        var res = $scope.PAVConfigService.loadPicklistDropDowns(attributeconfigresult, pavresult);
-                        $scope.renderOptionAttributes(res.pavConfigGroups, res.PAVObj);
-                    })
+                    var res = $scope.PAVConfigService.configurePAVFields(attributeconfigresult, pavresult);
+                    $scope.renderOptionAttributes(res.pavConfigGroups, res.PAVObj);
                 })
             })
         }

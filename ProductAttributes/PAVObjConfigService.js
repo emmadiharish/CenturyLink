@@ -5,13 +5,13 @@
 		var service = this;
 		var optionOptionAttributes = {};
 		var isOptiontoOptionAttrsvalid = false;
-		var fieldNametoDFRMap = {};
 		var ctodFieldMap = [];
 
 		service.isvalid = false;
-		
+
+		service.fieldNametoDFRMap = {};
 		service.getPAVFieldMetaData = getPAVFieldMetaData;
-		service.loadPicklistDropDowns = loadPicklistDropDowns;
+		service.configurePAVFields = configurePAVFields;
 		service.applyDependedPicklistsOnChange = applyDependedPicklistsOnChange;
 		service.getPortOptions = getPortOptions;
 
@@ -22,7 +22,7 @@
 		function getPAVFieldMetaData(){
 			if(service.isvalid == true)
 			{
-				return $q.when(fieldNametoDFRMap);
+				return $q.when(service.fieldNametoDFRMap);
 			}
 
 			var requestPromise = RemoteService.getPAVFieldMetaData();
@@ -32,7 +32,7 @@
 				return RemoteService.getOptiontoOptionAttributes().then(function(optiontoOptionattrs){
 					initializeportOptions(optiontoOptionattrs);
 					BaseService.setPAVObjConfigLoadComplete();
-					return fieldNametoDFRMap;
+					return service.fieldNametoDFRMap;
 			    });
 			});
 		}
@@ -53,13 +53,16 @@
 		}
 
 		// this is applicable on page load or first time renedeing of attribute groups.
-		function loadPicklistDropDowns(attributeGroups, PAV){
+		// load picklist options from database.
+		// apply dependent picklists.
+		// apply default values from salesforce on first load.
+		function configurePAVFields(attributeGroups, PAV){
 			// cleanup PAV before loading picklist Drop Downs.
 			_.each(attributeGroups, function(attributeGroup){
 				// configure only on page load or first time...use custom property called 'isPicklistConfigComplete'.
-                if(!_.has(attributeGroup, 'isPicklistConfigComplete')
-                	|| attributeGroup.isPicklistConfigComplete == false)
-                {
+                //if(!_.has(attributeGroup, 'isPicklistConfigComplete')
+                //	|| attributeGroup.isPicklistConfigComplete == false)
+                //{
 	                _.each(attributeGroup.productAtributes, function(attributeConfig){
 	                    var fieldName = attributeConfig.fieldName;
 	                    var fieldDescribe = fieldNametoDFRMap[fieldName].fieldDescribe;
@@ -81,27 +84,39 @@
 		                    		applyDependentLOVSConfig(attributeConfig, PAV, fieldName, controllingField);	
 		                    	}
 	                    	}
+							
 							// if 'Other' LOV option exists in the database then add the previously selected value to options....Applicable only for loading configured quote.
-		                    var selectedvalue = PAV[fieldName];
+		                    /* var selectedvalue = PAV[fieldName];
 		                    if(!_.isUndefined(selectedvalue)
 		                    	&& !_.contains(_.pluck(attributeConfig.picklistValues, 'value'), selectedvalue) 
 		                    	&& _.contains(_.pluck(attributeConfig.picklistValues, 'value'), 'Other'))
 		                    {
 		                    	attributeConfig.picklistValues.push(selectoptionObject(true, selectedvalue, selectedvalue, false));
-		                    }  		
-	                    	
-	                   }
+		                    }*/                    	
+	                    }
 
-                    	// set the PAV to null if undefined. - To avoid extra dropdown if it is a picklists.
-	                    PAV[fieldName] = _.isUndefined(PAV[fieldName]) ? null : PAV[fieldName];
-                    	
-                    	// set pav to default value from salesforce configuration.
-                    	var defaultValue = fieldDescribe.defaultValue;
-                    	PAV[fieldName] = !_.isUndefined(defaultValue) && _.isNull(PAV[fieldName]) ? defaultValue : PAV[fieldName];
+	                    // if dependend selected value does not exists in the options then set the PAV to null
+						var selectedPAVValue = PAV[fieldName];
+						if(!_.contains(_.pluck(attributeConfig.picklistValues,  'value'), selectedPAVValue))
+						{
+							PAV[fieldName] = null;// set the PAV of field to null.
+						}
+
+	                    if(pAV.isDefaultLoadComplete == false)
+	                    {
+	              			// set the PAV to null if undefined. - To avoid extra dropdown if it is a picklists.
+		                    PAV[fieldName] = _.isUndefined(PAV[fieldName]) ? null : PAV[fieldName];
+		                	
+		                	// set pav to default value from salesforce configuration.
+		                	var defaultValue = fieldDescribe.defaultValue;
+		                	PAV[fieldName] = !_.isUndefined(defaultValue) && _.isNull(PAV[fieldName]) ? defaultValue : PAV[fieldName];      	
+	                    }
 	                })
-					attributeGroup['isPicklistConfigComplete'] = true;
-				}
+					//attributeGroup['isPicklistConfigComplete'] = true;
+				//}
             })
+
+			PAV['isDefaultLoadComplete'] = true;
             res = {pavConfigGroups: attributeGroups, PAVObj: PAV};
 			return res;
 		}
@@ -144,12 +159,12 @@
             {
             	options = dPicklistConfig[cSelectedPAVValue].slice();// do a slice to cline the list.
             }
-            // if dependend selected value does not exists in the options then set the PAV to null
+            /*// if dependend selected value does not exists in the options then set the PAV to null
 			var dSelectedPAVValue = PAV[dependentField];
 			if(!_.contains(_.pluck(options,  'value'), dSelectedPAVValue))
 			{
 				PAV[dependentField] = null;// set the dependentFile PAV to null.
-			}
+			}*/
             options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
             attributeConfig.picklistValues = options;
 		}
