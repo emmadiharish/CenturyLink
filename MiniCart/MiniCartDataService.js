@@ -41,7 +41,7 @@
 
 		function deleteLineItemFromCart(lineNumber_tobedeleted){
 			var cartId = BaseConfigService.cartId, configRequestId = BaseConfigService.configRequestId, flowName = BaseConfigService.flowName, currentlineNumber = BaseConfigService.bundleLineNumber;
-            var requestPromise = RemoteService.deleteLineItemFromCart(cartId, configRequestId, lineNumber_tobedeleted, currentlineNumber);
+            var requestPromise = RemoteService.deleteLineItemFromCart(cartId, configRequestId, flowName, lineNumber_tobedeleted, currentlineNumber);
 			return requestPromise.then(function(response){
 				return response;
 			});
