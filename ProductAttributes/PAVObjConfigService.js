@@ -3,16 +3,16 @@
 	PAVObjConfigService.$inject = ['$q', '$log', 'BaseService', 'RemoteService'];
 	function PAVObjConfigService($q, $log, BaseService, RemoteService) {
 		var service = this;
+		var optionOptionAttributes = {};
+		var isOptiontoOptionAttrsvalid = false;
+		var fieldNametoDFRMap = {};
+		var ctodFieldMap = [];
+
 		service.isvalid = false;
-		service.isOptiontoOptionAttrsvalid = false;
-		service.fieldNametoDFRMap = {};
-		service.ctodFieldMap = [];
-		service.optionOptionAttributes = {};
 		
 		service.getPAVFieldMetaData = getPAVFieldMetaData;
 		service.loadPicklistDropDowns = loadPicklistDropDowns;
 		service.applyDependedPicklistsOnChange = applyDependedPicklistsOnChange;
-		//service.applyOptiontoOptionConstraints = applyOptiontoOptionConstraints;
 		service.getPortOptions = getPortOptions;
 
 		// helper methods;
@@ -22,7 +22,7 @@
 		function getPAVFieldMetaData(){
 			if(service.isvalid == true)
 			{
-				return $q.when(service.fieldNametoDFRMap);
+				return $q.when(fieldNametoDFRMap);
 			}
 
 			var requestPromise = RemoteService.getPAVFieldMetaData();
@@ -32,14 +32,14 @@
 				return RemoteService.getOptiontoOptionAttributes().then(function(optiontoOptionattrs){
 					initializeportOptions(optiontoOptionattrs);
 					BaseService.setPAVObjConfigLoadComplete();
-					return service.fieldNametoDFRMap;
+					return fieldNametoDFRMap;
 			    });
 			});
 		}
 		function getPortOptions(){
-			if(service.isOptiontoOptionAttrsvalid == true)
+			if(isOptiontoOptionAttrsvalid == true)
 			{
-				return service.optionOptionAttributes.portOptions;	
+				return optionOptionAttributes.portOptions;	
 			}
 			return [];
 		}
@@ -52,14 +52,6 @@
 			return res;
 		}
 
-		/* TBD
-		function applyOptiontoOptionConstraints(attributeGroups, PAV, depattributes){
-			var res = {};
-			
-			res = {pavConfigGroups: attributeGroups, PAVObj: PAV};
-			return res;
-		}*/
-
 		// this is applicable on page load or first time renedeing of attribute groups.
 		function loadPicklistDropDowns(attributeGroups, PAV){
 			// cleanup PAV before loading picklist Drop Downs.
@@ -70,7 +62,7 @@
                 {
 	                _.each(attributeGroup.productAtributes, function(attributeConfig){
 	                    var fieldName = attributeConfig.fieldName;
-	                    var fieldDescribe = service.fieldNametoDFRMap[fieldName].fieldDescribe;
+	                    var fieldDescribe = fieldNametoDFRMap[fieldName].fieldDescribe;
 	                    if(fieldDescribe.fieldType == 'picklist')
 	                    {
 	                    	if(!_.isEmpty(attributeConfig.lovs)
@@ -127,27 +119,27 @@
 					var controllingpicklistOptions = response[controller].picklistOptions;
 					dPicklistObj = getStructuredDependentFields(fdrWrapper.picklistOptions, controllingpicklistOptions);	
 					
-					service.ctodFieldMap.push({cField:controller, dField:fieldName});
+					ctodFieldMap.push({cField:controller, dField:fieldName});
 				}
 
-				service.fieldNametoDFRMap[fieldName] = {fieldDescribe:fieldDescribe, dPicklistObj:dPicklistObj};
+				fieldNametoDFRMap[fieldName] = {fieldDescribe:fieldDescribe, dPicklistObj:dPicklistObj};
 			})
 		}
 
 		function initializeportOptions(result){
-			service.isOptiontoOptionAttrsvalid = true;
+			isOptiontoOptionAttrsvalid = true;
 			var portOptions = [];
 			_.each(result, function(portOption){
 				portOptions.push(portOption);
 			})
-			service.optionOptionAttributes ={ portOptions: portOptions };
+			optionOptionAttributes ={ portOptions: portOptions };
 		}
 		
 		// load dropdown values of all dependent fields based on controlling field value selected..applicable on initial load of attributes.
 		function applyDependentLOVSConfig(attributeConfig, PAV, dependentField, controllingField){
             var cSelectedPAVValue = _.has(PAV, controllingField) ? PAV[controllingField] : null;
             var options = [];
-            var dPicklistConfig = service.fieldNametoDFRMap[dependentField].dPicklistObj;
+            var dPicklistConfig = fieldNametoDFRMap[dependentField].dPicklistObj;
             if(_.has(dPicklistConfig, cSelectedPAVValue))
             {
             	options = dPicklistConfig[cSelectedPAVValue].slice();// do a slice to cline the list.
@@ -165,7 +157,7 @@
 		// reload all dependent dropdowns on controlling field change.
 		function applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, cField){
 			// get all dependent fields for given controllingField: cField.
-			var dFields = _.pluck(_.where(service.ctodFieldMap, {cField:cField}), 'dField');
+			var dFields = _.pluck(_.where(ctodFieldMap, {cField:cField}), 'dField');
 			// apply dependencies only if cField is a controlling Field else return.
 			if(_.isUndefined(dFields) 
 				|| _.isEmpty(dFields))
@@ -177,7 +169,7 @@
 					// if attribute field exists in the dependent fields for given controlling field:fieldName then apply dependency.
 					if(_.contains(dFields, currentField))
 					{
-						var dPicklistConfig = service.fieldNametoDFRMap[currentField].dPicklistObj;
+						var dPicklistConfig = fieldNametoDFRMap[currentField].dPicklistObj;
 						PAV[currentField] = null;
 						var options = [];
                         if(_.has(dPicklistConfig, selectedPAVValue))
@@ -319,105 +311,12 @@
 			return res;
 		}
 
-		// testBit is implemented based on the algorithm :http://titancronus.com/blog/2014/05/01/salesforce-acquiring-dependent-picklists-in-apex/
-		/*function testBit(pValidFor, n){
-	        //the list of bytes
-	        var pBytes = [];
-	        
-	        //will be used to hold the full decimal value
-	        var pFullValue = 0;
-	        
-	        //multiply by 6 since base 64 uses 6 bits
-	        var bytesBeingUsed = (pValidFor.length * 6)/8;
-	        
-	        //must be more than 1 byte
-	        if(bytesBeingUsed <= 1)
-                return false;
-	        
-	        //calculate the target bit for comparison
-	        var bit = 7 - (n % 8);
-	        
-	        //calculate the octet that has in the target bit
-	        var targetOctet = (bytesBeingUsed - 1) - (n >> bytesBeingUsed);
-	        
-	        //the number of bits to shift by until we find the bit to compare for true or false
-	        var shiftBits = (targetOctet * 8) + bit;
-	        
-	        //get the base64bytes
-	        _.each(pValidFor.split(""), function(eachchar){
-	        	//get current character value
-                pBytes.push(Base64Value(eachchar));
-	        })
-	        
-	        for(var i=0; i < pBytes.length; i++){
-                var pShiftAmount = (pBytes.length - (i+1)) * 6;
-                pFullValue = pFullValue + (pBytes[i] << (pShiftAmount));
-	        }
-	        
-	        var powVal = Math.pow(2, shiftBits);
-	       	powVal = powVal > 2147483647 ? 2147483647 : powVal;
-	       	powVal = powVal < -2147483647 ? -2147483647 : powVal;
-	        var tBitVal = (powVal & pFullValue) >> shiftBits;
-	        return tBitVal == 1;
-        }
-		
-		var Base64Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-        function Base64Value(char){
-        	return Base64Chars.indexOf(char);
-        }*/
-
-        var base64 = new sforce.Base64Binary("");
+		var base64 = new sforce.Base64Binary("");
         function testBit (validFor, pos) {
 			validFor = base64.decode(validFor);
 			var byteToCheck = Math.floor(pos/8);
 			var bit = 7 - (pos % 8);
 			return ((Math.pow(2, bit) & validFor.charCodeAt(byteToCheck)) >> bit) == 1;
 		}
-
-        // Salesforce algorithm (Sample Java Code for Dependent Picklists)https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_calls_describesobjects_describesobjectresult.htm#i1427932
-		// not working so commenting.
-		/*function getStructuredDependentFields(dPicklistOptions, cPicklistOptions){
-			var res = {};
-			var objResult = {};
-			//set up the results
-			//create the entry with the controlling label
-			_.each(cPicklistOptions, function(picklistOption){
-				objResult[picklistOption.label] = [];
-			})
-			//cater for null and empty
-			objResult[''] = [];
-			objResult[null] = [];
-
-			_.each(dPicklistOptions, function(picklistOption){
-				var validFor = Bitset(picklistOption.validFor);
-				for (var k = 0; k < validFor.size(); k++) {
-					if (validFor.testBit(k)) {
-					// if bit k is set, this entry is valid for the
-					// for the controlling entry at index k
-					var dLabel = picklistOption.label;
-					var cLabel = cPicklistOptions[k].label;
-					objResult[cLabel].push(dLabel);
-					}
-				}
-			})
-			res = prepareOptionsMap(objResult);
-			return res;
-		}
-
-		function Bitset(str){
-			var data = [];
-
-			_.each(str.split(""), function(eachchar){
-				data.push(Base64Value(eachchar));
-			})
-			return{
-				testBit : function(n){
-					return (data[n >> 3] & (0x80 >> n % 8)) != 0;
-				},
-				size : function(){
-			      return data.length * 8;
-			    }
-			};
-		}*/
 	}
 })();
