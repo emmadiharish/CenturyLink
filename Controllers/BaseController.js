@@ -1,3 +1,7 @@
+/*
+    Save of the option groups should be changed later because this was build under assumotion that one product can only belong to one option group.
+    componentId should be used instead of productId for parentId to create hierarchy or rendering sub option groups.
+*/
 (function() {
     var BaseController;
 
