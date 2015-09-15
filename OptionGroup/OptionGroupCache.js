@@ -1,6 +1,8 @@
 /*
 	This Service should be changed later because this was build under assumotion that one product can only belong to one option group.
     componentId should be used instead of productId for parentId to create hierarchy or rendering sub option groups.
+	new variable should be introduced to prepare a componentId to optionGroups Map along with optionId to optionGroups Map
+	or there is chance to save wrong configuration(sub bundle config of one productA option group 1 will be saved to productA in option group 2) and Hierarchial tree will be effected.
 */
 (function() {
 	angular.module('APTPS_ngCPQ').service('OptionGroupCache', OptionGroupCache); 
