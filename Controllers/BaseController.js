@@ -34,13 +34,17 @@
             // Validation 2 : validate Min/Max options on option groups.
             var allOptionGroups = $scope.optionGroupService.getallOptionGroups();
             var productIdtoComponentMap = {};
+            var productIdtoGroupMap = {};
             var bundleProdId = BaseConfigService.bundleProdId;
             _.each(allOptionGroups, function(optiongroups, bundleprodId){
                 _.each(optiongroups, function(optiongroup){
                     _.each(optiongroup.productOptionComponents, function(productcomponent){
                         var productId = productcomponent.productId;
                         if(!_.isNull(productId))
+                        {
+                            productIdtoGroupMap[productId] = optiongroup;
                             productIdtoComponentMap[productId] = productcomponent;
+                        }
                     })
                 })
             })
@@ -51,7 +55,8 @@
                     //if parent is bundle productId or selected then validate min max.
                     if(parentId == bundleProdId
                         || (_.has(productIdtoComponentMap, parentId)
-                            && isProdSelected(productIdtoComponentMap[parentId], optiongroup)))
+                            && _.has(productIdtoGroupMap, parentId)
+                            && isProdSelected(productIdtoComponentMap[parentId], productIdtoGroupMap[parentId])))
                     {
                         var minOptions = optiongroup.minOptions;
                         var maxOptions = optiongroup.maxOptions;
@@ -294,8 +299,10 @@
         };
         
         function isProdSelected(productcomponent, optiongroup){
-            if((productcomponent.isselected && optiongroup.ischeckbox)
-                || (productcomponent.productId == optiongroup.selectedproduct && !optiongroup.ischeckbox))
+            if((productcomponent.isselected 
+                 && optiongroup.ischeckbox)
+                    || (productcomponent.productId == optiongroup.selectedproduct 
+                        && !optiongroup.ischeckbox))
             return true;
             return false;
         }
