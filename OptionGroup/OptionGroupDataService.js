@@ -54,33 +54,7 @@
             });
         }
 
-        /*function getOptionGroups(productIds) {
-			// check if cachedOptionGroups has products requested for else make a remote call.
-			var cachedOptionGroups = OptionGroupCache.getOptionGroups();
-			var prodIds_filtered = _.filter(productIds, function(Id){ return !cachedOptionGroups.hasOwnProperty(Id); });
-			if (OptionGroupCache.isValid
-				&& prodIds_filtered.length < 1) {
-				// logTransaction(cachedOptionGroups);
-				return $q.when(cachedOptionGroups);
-			}
-
-			// locationRequest = createOptionGroupRequestDO(prodIds_filtered, QuoteDataService.getcartId(), QuoteDataService.getcontextLineNumber());
-			var requestPromise = RemoteService.getproductoptiongroupsData(prodIds_filtered, QuoteDataService.getcartId(), QuoteDataService.getcontextLineNumber());
-			BaseService.startprogress();// start progress bar.
-			return requestPromise.then(function(response){
-				OptionGroupCache.initializeOptionGroups(response);
-				// run constraint rules on each load of OptionGroups.
-				// runConstraintRules should be refacotored lated to apply constraint rules only once.
-				return runConstraintRules().then(function(constraintsResult){
-                	BaseService.setOptionGroupLoadComplete();
-                    return OptionGroupCache.getOptionGroups();
-                })
-				// logTransaction(response, categoryRequest);
-				// return OptionGroupCache.getOptionGroups();
-			});
-		}*/
-
-		function getOptionGroup(productId) {
+        function getOptionGroup(productId) {
 			var cachedOptionGroups = OptionGroupCache.getOptionGroups();
 			if (OptionGroupCache.isValid
 				&& _.has(cachedOptionGroups, productId)){
@@ -89,24 +63,12 @@
 			}
 
 			var bundleproductIds = [];
-            /*if(!_.isEmpty(currentproductoptiongroups))
-            {
-                bundleproductIds = getAllBundleProductsinCurrentOptiongroups(currentproductoptiongroups, 'productOptionComponents', 'hasOptions', 'productId');
-            }else{
-                bundleproductIds.push(productId);
-            }*/
-			
             bundleproductIds.push(productId);
             return getOptionGroups_test(bundleproductIds).then(function(response){
                 var optionGroups = response;
                 setcurrentproductoptiongroups(optionGroups[productId]);
                 return true;
             })
-			/*return getOptionGroups(bundleproductIds).then(function(response){
-				var optionGroups = response;
-				setcurrentproductoptiongroups(optionGroups[productId]);
-				return true;
-			});*/
 		}
 
 		function getSelectedoptionproduct() {
@@ -231,8 +193,17 @@
                                             // apply only if option is not selected.
                                             if(!isProdSelected(productcomponent, optiongroup))
                                             {    
-                                                productcomponent.isselected = true;
+                                                
                                                 numRulesApplied++;
+                                                // if product is radio then include using group by setting selectedproduct.
+                                                if(optiongroup.ischeckbox == false)
+                                                {
+                                                   optiongroup.selectedproduct = productcomponent.productId;
+                                                }
+                                                else{
+                                                    // if product is checkbox then include it.
+                                                    productcomponent.isselected = true;
+                                                }
                                             }
                                         }
                                         break;

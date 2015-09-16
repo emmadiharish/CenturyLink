@@ -1,11 +1,9 @@
 ;(function() {
-    var MiniCartController = function($scope, $window, $dialogs, SystemConstants, QuoteDataService, BaseService, MiniCartDataService)
+    var MiniCartController = function($scope, $window, $dialogs, SystemConstants, BaseService, MiniCartDataService)
     {
         $scope.init = function(){
             // Initialize Scope Variables
             $scope.miniCartService = MiniCartDataService;
-            $scope.quoteService = QuoteDataService;
-            $scope.remoteService = QuoteDataService;
             $scope.baseService = BaseService;
             
             $scope.reverse = false;                
@@ -110,6 +108,6 @@
 
         $scope.init();
     };
-    MiniCartController.$inject = ['$scope', '$window', '$dialogs', 'SystemConstants', 'QuoteDataService', 'BaseService', 'MiniCartDataService'];
+    MiniCartController.$inject = ['$scope', '$window', '$dialogs', 'SystemConstants', 'BaseService', 'MiniCartDataService'];
     angular.module('APTPS_ngCPQ').controller('MiniCartController', MiniCartController);
 })();

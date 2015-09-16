@@ -1,30 +1,17 @@
-1. Refactor Option to Option Cascade - Done
-	RemoteService
-	PAVObjConfigService
-	OptionAttributesController 
-	RemoteActions
-2. Dependent picklist algorithm fix.
-3. Delete APTPS_StringUtils.
-
 Product Issues:
 1. No flow variable from ngCPQ page.
-
-Save changes:
-1. removeOptions(cartId, bunleLineNumber, optionComponentIds) - Done
-2. applyContraintsOnDelete(cartId, deletedProductIds) - Done
 
 TBD later :
 1. fix GoToPricing, Remove Item and Add more products
 2. fix config status and pricing status updated in RA.
 
 
-P0 issues:
-1. Remove Item and Add more products - hardcode to angular Catalog for now. - Done
-2. Set the bundle line pricing status to - Pending on save. - DOne
-3. set the config status of bundle line to NA after constraints apply. - Done
-4. E- Line - Bundle within bundle Min max - Fire rules only when top level bundle is selected.
+1. Option Groups Load - Fixed in APTPS_CAP_MS
+Components:
+	OptionGroupDataService
+	OptionGroupCache
 
-BaseController
-BundleAttributeController
-OptionAttributeController
-PAVObjConfigService
+2. Constraint rules firing across all products.
+
+3. render groups based on componentId but not productId.
+	apex and angular has to be changed.

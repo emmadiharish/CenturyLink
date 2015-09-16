@@ -1,15 +1,13 @@
 (function() {
 	angular.module('APTPS_ngCPQ').service('MiniCartDataService', MiniCartDataService); 
-	MiniCartDataService.$inject = ['$q', '$log', 'BaseConfigService', 'QuoteDataService', 'RemoteService'];
-	function MiniCartDataService($q, $log, BaseConfigService, QuoteDataService, RemoteService){
+	MiniCartDataService.$inject = ['$q', '$log', 'BaseConfigService', 'RemoteService'];
+	function MiniCartDataService($q, $log, BaseConfigService, RemoteService){
 		var service = this;
-		service.quoteService = QuoteDataService;
+		var miniCartLines = [];
+		var miniCartLinesCount = 0;
 
 		service.isValid = false;
-		service.miniCartLines = [];
-		service.miniCartLinesCount = 0;
-				
-		// Pricing Methods.
+		
 		service.getMiniCartLines = getMiniCartLines;
 		service.getminiCartLinesCount = getminiCartLinesCount;
 		service.setMinicartasDirty = setMinicartasDirty;
@@ -19,15 +17,15 @@
 		
 		function getMiniCartLines() {
 			if (service.isValid) {
-				return $q.when(service.miniCartLines);
+				return $q.when(miniCartLines);
 			}
 			
-			var requestPromise = RemoteService.getMiniCartLines(QuoteDataService.getcartId());
+			var requestPromise = RemoteService.getMiniCartLines(BaseConfigService.cartId);
 			return requestPromise.then(function(response){
 				service.isValid = true;
-				service.miniCartLines = response;
-				service.miniCartLinesCount = response.length;
-				return service.miniCartLines;
+				miniCartLines = response;
+				miniCartLinesCount = response.length;
+				return miniCartLines;
 			});
 		}
 
@@ -52,7 +50,7 @@
 		}
 
 		function getminiCartLinesCount(){
-			return service.miniCartLinesCount;
+			return miniCartLinesCount;
 		}
 	}
 })();
