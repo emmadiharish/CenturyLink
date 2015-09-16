@@ -40,8 +40,8 @@
             return requestPromise.then(function(response){
                 OptionGroupCache.initializeOptionGroups(response);
                 var cachedOptionGroups = OptionGroupCache.getOptionGroups();
-                var alloptionProductIds_hasOptions = OptionGroupCache.getProductIds_hasOptions;
-                var prodIds_filtered = _.difference(alloptionProductIds_hasOptions, _keys(cachedOptionGroups)); 
+                var alloptionProductIds_hasOptions = OptionGroupCache.getProductIdsofBundles;
+                var prodIds_filtered = _.difference(alloptionProductIds_hasOptions, _.keys(cachedOptionGroups)); 
                 if (prodIds_filtered.length > 0
                     && currentSubBundleLevel < maxSubBundleLevel) {
                     getOptionGroups_API(prodIds_filtered);    

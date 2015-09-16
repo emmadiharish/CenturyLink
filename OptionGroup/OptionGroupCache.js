@@ -10,12 +10,12 @@
 	function OptionGroupCache($log) {
 		var service = this;
 		var prodIdtoOptionGroupsMap = {};
-		var ProductIds_hasOptions;
+		var productIdsofBundles;
 
 		service.isValid = false;
 
 		// Option Group Cache methods.
-		service.getProductIds_hasOptions = getProductIds_hasOptions;
+		service.getProductIdsofBundles = getProductIdsofBundles;
 		service.getOptionGroups = getOptionGroups;
 		service.initializeOptionGroups = initializeOptionGroups;
 
@@ -32,7 +32,7 @@
                 		component.productName = characterRepace(component.productName);
                 		if(component.hasOptions == true)
                 		{
-                			ProductIds_hasOptions.push(component.productId);
+                			productIdsofBundles.push(component.productId);
                 		}
                 	})
                 })
@@ -49,8 +49,8 @@
             return changedItem;
         }
 
-        function getProductIds_hasOptions(){
-        	return ProductIds_hasOptions	
+        function getProductIdsofBundles(){
+        	return productIdsofBundles	
         };
 	}
 })();
