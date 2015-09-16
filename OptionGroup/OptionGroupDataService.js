@@ -48,7 +48,7 @@
                 }
                 else{
                     BaseService.setOptionGroupLoadComplete();
-                    return response;
+                    return OptionGroupCache.getOptionGroups();
                 }
                 // return response;
             });
@@ -96,7 +96,7 @@
                 bundleproductIds.push(productId);
             }*/
 			
-            return getOptionGroups_test(bundleproductIds).then(function(){
+            return getOptionGroups_test(bundleproductIds).then(function(response){
                 var optionGroups = response;
                 setcurrentproductoptiongroups(optionGroups[productId]);
                 return true;
