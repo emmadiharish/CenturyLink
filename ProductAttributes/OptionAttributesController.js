@@ -72,12 +72,12 @@
                 $scope.PAVService.getProductAttributeValues(componentId).then(function(pavresult)
                 {
                     var res = $scope.PAVConfigService.configurePAVFields(attributeconfigresult, pavresult);
-                    $scope.renderOptionAttributes(res.pavConfigGroups, res.PAVObj);
+                    renderOptionAttributes(res.pavConfigGroups, res.PAVObj);
                 })
             })
         }
 
-        $scope.renderOptionAttributes = function(attrgroups, pav){
+        function renderOptionAttributes(attrgroups, pav){
             // clear the previous option attribute groups.
             $scope.AttributeGroups = attrgroups;
             $scope.productAttributeValues = pav;
@@ -88,7 +88,7 @@
 
         $scope.PAVPicklistChange = function(fieldName){
             var res = $scope.PAVConfigService.applyDependedPicklistsOnChange($scope.AttributeGroups, $scope.productAttributeValues, fieldName);    
-            $scope.renderOptionAttributes(res.pavConfigGroups, res.PAVObj);
+            renderOptionAttributes(res.pavConfigGroups, res.PAVObj);
         }
 
         $scope.optionLevelAttributeChange = function(){

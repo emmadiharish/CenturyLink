@@ -60,49 +60,45 @@
 			// cleanup PAV before loading picklist Drop Downs.
 			_.each(attributeGroups, function(attributeGroup){
 				// configure only on page load or first time...use custom property called 'isPicklistConfigComplete'.
-                //if(!_.has(attributeGroup, 'isPicklistConfigComplete')
-                //	|| attributeGroup.isPicklistConfigComplete == false)
-                //{
-	                _.each(attributeGroup.productAtributes, function(attributeConfig){
-	                    var fieldName = attributeConfig.fieldName;
-	                    var fieldDescribe = service.fieldNametoDFRMap[fieldName].fieldDescribe;
-	                    if(fieldDescribe.fieldType == 'picklist')
+                _.each(attributeGroup.productAtributes, function(attributeConfig){
+                    var fieldName = attributeConfig.fieldName;
+                    var fieldDescribe = service.fieldNametoDFRMap[fieldName].fieldDescribe;
+                    if(fieldDescribe.fieldType == 'picklist')
+                    {
+                    	if(!_.isEmpty(attributeConfig.lovs)
+                    		|| attributeConfig.isDynamicAttr == true)
 	                    {
-	                    	if(!_.isEmpty(attributeConfig.lovs)
-	                    		|| attributeConfig.isDynamicAttr == true)
-		                    {
-		                    	// load picklist LOV's within APTPS_CPQ.productAtribute for dynamic attributes and custom attributes from custom settings: APTPS_ProdSpec_DynAttr__c. 
-	                    		attributeConfig['picklistValues'] = getPicklistValues(prepareOptionsList(attributeConfig.lovs));
-	                    	}else{
-	                    		// load Normal picklist LOV's from Salesforce config.
-		                    	attributeConfig['picklistValues'] = fieldDescribe.picklistValues;
+	                    	// load picklist LOV's within APTPS_CPQ.productAtribute for dynamic attributes and custom attributes from custom settings: APTPS_ProdSpec_DynAttr__c. 
+                    		attributeConfig['picklistValues'] = getPicklistValues(prepareOptionsList(attributeConfig.lovs));
+                    	}else{
+                    		// load Normal picklist LOV's from Salesforce config.
+	                    	attributeConfig['picklistValues'] = fieldDescribe.picklistValues;
 
-		                    	// load dependent picklists if current field is dependentField.
-		                    	if(fieldDescribe.isDependentPicklist == true)
-		                    	{
-		                    		var controllingField = fieldDescribe.controllerName;
-		                    		applyDependentLOVSConfig(attributeConfig, PAV, fieldName, controllingField);	
-		                    	}
+	                    	// load dependent picklists if current field is dependentField.
+	                    	if(fieldDescribe.isDependentPicklist == true)
+	                    	{
+	                    		var controllingField = fieldDescribe.controllerName;
+	                    		applyDependentLOVSConfig(attributeConfig, PAV, fieldName, controllingField);	
 	                    	}
-							
-							// if 'Other' LOV option exists in the database then add the previously selected value to options....Applicable only for loading configured quote.
-		                    /* var selectedvalue = PAV[fieldName];
-		                    if(!_.isUndefined(selectedvalue)
-		                    	&& !_.contains(_.pluck(attributeConfig.picklistValues, 'value'), selectedvalue) 
-		                    	&& _.contains(_.pluck(attributeConfig.picklistValues, 'value'), 'Other'))
-		                    {
-		                    	attributeConfig.picklistValues.push(selectoptionObject(true, selectedvalue, selectedvalue, false));
-		                    }*/                    	
-	                    }
-
-	                    // if dependend selected value does not exists in the options then set the PAV to null
+                    	}
+						
+						// if 'Other' LOV option exists in the database then add the previously selected value to options....Applicable only for loading configured quote.
+	                    /* var selectedvalue = PAV[fieldName];
+	                    if(!_.isUndefined(selectedvalue)
+	                    	&& !_.contains(_.pluck(attributeConfig.picklistValues, 'value'), selectedvalue) 
+	                    	&& _.contains(_.pluck(attributeConfig.picklistValues, 'value'), 'Other'))
+	                    {
+	                    	attributeConfig.picklistValues.push(selectoptionObject(true, selectedvalue, selectedvalue, false));
+	                    }*/                    	
+                    	
+                    	// if dependend selected value does not exists in the options then set the PAV to null
 						var selectedPAVValue = PAV[fieldName];
 						if(!_.contains(_.pluck(attributeConfig.picklistValues,  'value'), selectedPAVValue))
 						{
 							PAV[fieldName] = null;// set the PAV of field to null.
 						}
 
-	                    if(PAV.isDefaultLoadComplete == false)
+						if(PAV.isDefaultLoadComplete == false)
 	                    {
 	              			// set the PAV to null if undefined. - To avoid extra dropdown if it is a picklists.
 		                    PAV[fieldName] = _.isUndefined(PAV[fieldName]) ? null : PAV[fieldName];
@@ -111,9 +107,12 @@
 		                	var defaultValue = fieldDescribe.defaultValue;
 		                	PAV[fieldName] = !_.isUndefined(defaultValue) && _.isNull(PAV[fieldName]) ? defaultValue : PAV[fieldName];      	
 	                    }
-	                })
-					//attributeGroup['isPicklistConfigComplete'] = true;
-				//}
+                    }
+					else{
+						
+					}
+				})
+					
             })
 
 			PAV['isDefaultLoadComplete'] = true;
