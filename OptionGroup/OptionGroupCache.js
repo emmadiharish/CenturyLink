@@ -10,7 +10,7 @@
 	function OptionGroupCache($log) {
 		var service = this;
 		var prodIdtoOptionGroupsMap = {};
-		var productIdsofBundles = [];
+		var productIds_hasOptions = [];
 
 		service.isValid = false;
 
@@ -32,7 +32,7 @@
                 		component.productName = characterRepace(component.productName);
                 		if(component.hasOptions == true)
                 		{
-                			productIdsofBundles.push(component.productId);
+                			productIds_hasOptions.push(component.productId);
                 		}
                 	})
                 })
@@ -50,7 +50,7 @@
         }
 
         function getProductIdsofBundles(){
-        	return productIdsofBundles	
+        	return productIds_hasOptions	
         };
 	}
 })();
