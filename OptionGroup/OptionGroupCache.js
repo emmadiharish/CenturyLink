@@ -9,28 +9,34 @@
 	OptionGroupCache.$inject = ['$log'];
 	function OptionGroupCache($log) {
 		var service = this;
-		service.prodIdtoOptionGroupsMap = {};
+		var prodIdtoOptionGroupsMap = {};
+		var ProductIds_hasOptions;
+
 		service.isValid = false;
 
 		// Option Group Cache methods.
+		service.getProductIds_hasOptions = getProductIds_hasOptions;
 		service.getOptionGroups = getOptionGroups;
-		
 		service.initializeOptionGroups = initializeOptionGroups;
 
 		function getOptionGroups() {
-			return service.prodIdtoOptionGroupsMap;
+			return prodIdtoOptionGroupsMap;
 		}
 
-		function initializeOptionGroups(prodIdtoOptionGroupsMap) {
-			_.map(prodIdtoOptionGroupsMap, (function(optionGroups, prodId){
+		function initializeOptionGroups(results) {
+			_.map(results, (function(optionGroups, prodId){
                  /* removal of special characters*/
                 _.each(optionGroups, function(group){
                 	group.groupName = characterRepace(group.groupName);
                 	_.each(group.productOptionComponents, function(component){
                 		component.productName = characterRepace(component.productName);
+                		if(component.hasOptions == true)
+                		{
+                			ProductIds_hasOptions.push(component.productId);
+                		}
                 	})
                 })
-                service.prodIdtoOptionGroupsMap[prodId] = optionGroups;
+                prodIdtoOptionGroupsMap[prodId] = optionGroups;
             }));
 			service.isValid = true;
 		}
@@ -42,5 +48,9 @@
             changedItem = _.unescape(changedItem);          
             return changedItem;
         }
+
+        function getProductIds_hasOptions(){
+        	return ProductIds_hasOptions	
+        };
 	}
 })();
