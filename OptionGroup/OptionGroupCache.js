@@ -10,7 +10,7 @@
 	function OptionGroupCache($log) {
 		var service = this;
 		var prodIdtoOptionGroupsMap = {};
-		var productIdsofBundles;
+		var productIdsofBundles = [];
 
 		service.isValid = false;
 
