@@ -48,9 +48,9 @@
                 }
                 else{
                     BaseService.setOptionGroupLoadComplete();
-                    return OptionGroupCache.getOptionGroups();
+                    // return OptionGroupCache.getOptionGroups();
                 }
-                // return response;
+                return OptionGroupCache.getOptionGroups();
             });
         }
 
