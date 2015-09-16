@@ -96,6 +96,7 @@
                 bundleproductIds.push(productId);
             }*/
 			
+            bundleproductIds.push(productId);
             return getOptionGroups_test(bundleproductIds).then(function(response){
                 var optionGroups = response;
                 setcurrentproductoptiongroups(optionGroups[productId]);
