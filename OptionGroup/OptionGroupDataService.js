@@ -156,8 +156,8 @@
         function runConstraintRules(){
             // remote call to save Quote Config.
             var deferred = $q.defer();
-            var cartId = service.quoteService.getcartId();
-            var lineNumber = service.quoteService.getcontextLineNumber();
+            var cartId = BaseConfigService.cartId;
+            var lineNumber = BaseConfigService.bundleLineNumber;
             requestPromise = RemoteService.runConstraintRules(cartId, lineNumber);
             requestPromise.then(function(result){
                 /*appliedActionDOList is a List<Apttus_CPQApi.CPQ.AppliedActionDO>.
