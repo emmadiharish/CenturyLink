@@ -208,8 +208,9 @@
                 
                 // prepare the bundleLine item to be passed to Remote actions.
                 var bundleLine = $scope.quoteService.getlineItem();
-                var bundleLineItem ={Id:bundleLine.Id, Apttus_Config2__ConfigurationId__c:bundleLine.Apttus_Config2__ConfigurationId__c, Service_Location__c:servicelocationId, Apttus_Config2__ProductId__c:bundleLine.Apttus_Config2__ProductId__c, Apttus_Config2__LineNumber__c:bundleLine.Apttus_Config2__LineNumber__c, PriceMatrixEntry__c:pricingmatrixId};
                 var bundleProdId = bundleLine.Apttus_Config2__ProductId__c;
+                var bundlePrimaryNumber = bundleLine.Apttus_Config2__PrimaryLineNumber__c
+                var bundleLineItem ={Id:bundleLine.Id, Apttus_Config2__ConfigurationId__c:bundleLine.Apttus_Config2__ConfigurationId__c, Service_Location__c:servicelocationId, Apttus_Config2__ProductId__c:bundleProdId, Apttus_Config2__LineNumber__c:bundleLine.Apttus_Config2__LineNumber__c, PriceMatrixEntry__c:pricingmatrixId, Apttus_Config2__PrimaryLineNumber__c:bundlePrimaryNumber};
 
                 var productcomponents = [];
                 var componentIdtoPAVMap = {};
