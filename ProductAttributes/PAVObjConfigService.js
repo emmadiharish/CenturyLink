@@ -98,7 +98,8 @@
 							PAV[fieldName] = null;// set the PAV of field to null.
 						}
 
-						if(PAV.isDefaultLoadComplete == false)
+						if(!_.has(PAV, 'isDefaultLoadComplete')
+							|| PAV.isDefaultLoadComplete == false)
 	                    {
 	              			// set the PAV to null if undefined. - To avoid extra dropdown if it is a picklists.
 		                    PAV[fieldName] = _.isUndefined(PAV[fieldName]) ? null : PAV[fieldName];
