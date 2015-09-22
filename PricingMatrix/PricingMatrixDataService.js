@@ -29,12 +29,13 @@
 		function initializePricingMatrix(response){
 			var PAVlines = [];
 			var fieldNametofieldLabelMap = {};
-			if(_.size(response) > 0)
+			var pricingMatrixMap = response.pricingMatrixMap;
+			if(_.size(pricingMatrixMap) > 0)
 			{
-				var attributeFieldLabels = _.keys(getattributefieldlabeltoPMlabelMap(_.first(response)));
-				response.splice(0, 1);// remove the first row....Assumption: first row would always be fields.	
+				var attributeFieldLabels = _.keys(getattributefieldlabeltoPMlabelMap(_.first(pricingMatrixMap)));
+				pricingMatrixMap.splice(0, 1);// remove the first row....Assumption: first row would always be fields.	
 				fieldNametofieldLabelMap = PAVObjConfigService.getFieldMap_ForLabels(attributeFieldLabels);
-				_.each(response, function(singlePricingMatrix){
+				_.each(pricingMatrixMap, function(singlePricingMatrix){
 					var PAVLine = {};
 					_.each(fieldLabeltoFDMap, function(fieldLabel, FieldName){
 						PAVLine[FieldName] = singlePricingMatrix[fieldLabel];
