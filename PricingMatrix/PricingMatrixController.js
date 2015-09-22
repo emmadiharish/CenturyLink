@@ -15,15 +15,19 @@
 	    $scope.paginationLinksTemplateURL = SystemConstants.baseUrl+'/Templates/PaginationLinksView.html';
 	    
 		$scope.$watch('BaseService.getPAVObjConfigLoadComplete()', function(newVal, oldVal) {
-            $scope.pricingMatrixService.getPricingMatrix().then(function(result) {
-		        $scope.items = result.lines;		
-				$scope.fieldapis = _.keys(result.pricingFieldsMap);
-				$scope.fieldsmap = result.pricingFieldsMap;
-				$scope.currentPage = 0;   
-		    	
-		    	// functions have been describe process the data for display
-			    $scope.search();
-			})  
+	        if(newVal != oldVal
+                && newVal == true)
+            {
+	            $scope.pricingMatrixService.getPricingMatrix().then(function(result) {
+			        $scope.items = result.lines;		
+					$scope.fieldapis = _.keys(result.pricingFieldsMap);
+					$scope.fieldsmap = result.pricingFieldsMap;
+					$scope.currentPage = 0;   
+			    	
+			    	// functions have been describe process the data for display
+				    $scope.search();
+				})  
+        	}
         });
 
 	    //Initialize the Search Filters 
