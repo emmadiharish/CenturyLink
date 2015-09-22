@@ -1,29 +1,30 @@
 (function() {
     var PricingMatrixController;
 
-    PricingMatrixController = function($scope, $filter, $log, QuoteDataService, ProductAttributeValueDataService, PricingMatrixDataService) {
+    PricingMatrixController = function($scope, $filter, $log, SystemConstants, BaseService, ProductAttributeValueDataService, PricingMatrixDataService) {
         /*Initialize Scope Variables*/
         $scope.pricingMatrixService = PricingMatrixDataService;
 	    $scope.PAVService = ProductAttributeValueDataService;
-	    $scope.quoteService = QuoteDataService;
-
+	    
 	    $scope.reverse = false;                
 	    $scope.filteredItems = [];
 	    $scope.itemsPerPage = 21;
 	    $scope.pagedItems = [];
 	    $scope.currentPage = 0;
+	    $scope.imagesbaseURL = SystemConstants.baseUrl+'/Images';
+	    $scope.paginationLinksTemplateURL = SystemConstants.baseUrl+'/Templates/PaginationLinksView.html';
 	    
-	    $scope.imagesbaseURL = $scope.quoteService.getCAPResourcebaseURL()+'/Images';
-	    $scope.paginationLinksTemplateURL = $scope.quoteService.getCAPResourcebaseURL()+'/Templates/PaginationLinksView.html';
-	    $scope.pricingMatrixService.getPricingMatrix().then(function(result) {
-	        $scope.items = result.lines;		
-			$scope.fieldapis = _.keys(result.pricingFieldsMap);
-			$scope.fieldsmap = result.pricingFieldsMap;
-			$scope.currentPage = 0;   
-	    	
-	    	// functions have been describe process the data for display
-		    $scope.search();
-		})
+		$scope.$watch('BaseService.getPAVObjConfigLoadComplete()', function(newVal, oldVal) {
+            $scope.pricingMatrixService.getPricingMatrix().then(function(result) {
+		        $scope.items = result.lines;		
+				$scope.fieldapis = _.keys(result.pricingFieldsMap);
+				$scope.fieldsmap = result.pricingFieldsMap;
+				$scope.currentPage = 0;   
+		    	
+		    	// functions have been describe process the data for display
+			    $scope.search();
+			})  
+        });
 
 	    //Initialize the Search Filters 
 	    $scope.search = function () {
@@ -116,6 +117,6 @@
 	    };
     };
 
-    PricingMatrixController.$inject = ['$scope', '$filter', '$log', 'QuoteDataService', 'ProductAttributeValueDataService', 'PricingMatrixDataService'];
+    PricingMatrixController.$inject = ['$scope', '$filter', '$log', 'SystemConstants', 'BaseService', 'ProductAttributeValueDataService', 'PricingMatrixDataService'];
     angular.module('APTPS_ngCPQ').controller('PricingMatrixController', PricingMatrixController);
 }).call(this);

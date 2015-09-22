@@ -204,7 +204,7 @@
                 var servicelocationId = $scope.locationService.getselectedlpaId();
                 
                 // get the firstPMRecordId from PricingMatrixDataService and set PriceMatrixEntry__c on bundle.
-                var pricingmatrixId = $scope.pricingMatrixService.firstPMRecordId;
+                var pricingmatrixId = $scope.pricingMatrixService.getfirstPMRecordId();
                 
                 // prepare the bundleLine item to be passed to Remote actions.
                 var bundleLine = $scope.quoteService.getlineItem();

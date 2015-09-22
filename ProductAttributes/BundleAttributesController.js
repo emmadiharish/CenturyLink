@@ -33,6 +33,7 @@
             }    
         });
         
+        // Note : this method should be invoked only when remotecallinitiated flag is false;
         $scope.retrieveproductattributeGroupData = function(){
             // run only if location remote call is complete.
             if($scope.locationService.getisRemotecallComplete() == true)

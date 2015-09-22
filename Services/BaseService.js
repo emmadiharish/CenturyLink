@@ -3,14 +3,14 @@
     BaseService.$inject = ['$log','ngProgress'];
     function BaseService($log, ngProgress) {
     	var service = this;
-        service.pageloadComplete = false;
-        service.ProgressBartinprogress = false;
-    	service.isLocationLoadComplete = false;
-        service.isPricingMatrixLoadComplete = false;
-        service.isOptionGroupLoadComplete = false;
-        service.isPAVObjConfigLoadComplete = false;
-        service.isPAConfigLoadComplete = false;
-        service.isPAVLoadComplete = false;
+        var pageloadComplete = false;
+        var ProgressBartinprogress = false;
+    	var isLocationLoadComplete = false;
+        var isPricingMatrixLoadComplete = false;
+        var isOptionGroupLoadComplete = false;
+        var isPAVObjConfigLoadComplete = false;
+        var isPAConfigLoadComplete = false;
+        var isPAVLoadComplete = false;
 
     	service.startprogress = startprogress;
     	service.completeprogress = completeprogress;
@@ -39,6 +39,25 @@
         service.setPAVLoadComplete = function(){
             service.isPAVLoadComplete = true;
             completeprogress();
+        }
+
+        service.getLocationLoadComplete = function(){
+            return isLocationLoadComplete;
+        }
+        service.getPricingMatrixLoadComplete = function(){
+            return isPricingMatrixLoadComplete;
+        }
+        service.getOptionGroupLoadComplete = function(){
+            return isOptionGroupLoadComplete;
+        }
+        service.getPAVObjConfigLoadComplete = function(){
+            return isPAVObjConfigLoadComplete;
+        }
+        service.getPAConfigLoadComplete = function(){
+            return isPAConfigLoadComplete;
+        }
+        service.getPAVLoadComplete = function(){
+            return isPAVLoadComplete;
         }
 
     	function init(){

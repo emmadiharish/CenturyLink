@@ -1,37 +1,68 @@
 (function() {
 	angular.module('APTPS_ngCPQ').service('PricingMatrixDataService', PricingMatrixDataService); 
-	PricingMatrixDataService.$inject = ['$q', '$log', 'BaseService', 'QuoteDataService', 'RemoteService'];
-	function PricingMatrixDataService($q, $log, BaseService, QuoteDataService, RemoteService) {
+	PricingMatrixDataService.$inject = ['$q', '$log', 'BaseService', 'BaseConfigService', 'PAVObjConfigService', 'RemoteService'];
+	function PricingMatrixDataService($q, $log, BaseService, BaseConfigService, PAVObjConfigService, RemoteService) {
 		var service = this;
 
-		service.pricingMatrixSearchRes = {};
-		service.isValid = false;
-		service.firstPMRecordId = null;
+		pricingMatrixSearchResult = {};
+		isValid = false;
+		firstPMRecordId = null;
 		
 		// Pricing Methods.
 		service.getPricingMatrix = getPricingMatrix;
 		service.setfirstPricingMatrixRecord = setfirstPricingMatrixRecord;
 
 		function getPricingMatrix() {
-			if (service.isValid) {
-				// logTransaction(cachedLocations);
-				return $q.when(service.pricingMatrixSearchRes);
+			if (isValid) {
+				return $q.when(pricingMatrixSearchResult);
 			}
 			
-			var requestPromise = RemoteService.getPricingMatrixData(QuoteDataService.getbundleproductId());
+			var requestPromise = RemoteService.getPricingMatrixData(BaseConfigService.bundleProdId);
 			BaseService.startprogress();// start progress bar.
 			return requestPromise.then(function(response){
-				service.isValid = true;
-				service.pricingMatrixSearchRes = response;
+				initializePricingMatrix(response);
 				BaseService.setPricingMatrixLoadComplete();
-				// logTransaction(response, categoryRequest);
-				return service.pricingMatrixSearchRes;
+				return pricingMatrixSearchResult;
 			});
 		}
 
+		function initializePricingMatrix(response){
+			var PAVlines = [];
+			var fieldNametofieldLabelMap = {};
+			if(_.size(response) > 0)
+			{
+				var attributeFieldLabels = _.keys(getattributefieldlabeltoPMlabelMap(_.first(response)));
+				response.splice(0, 1);// remove the first row....Assumption: first row would always be fields.	
+				fieldNametofieldLabelMap = PAVObjConfigService.getFieldMap_ForLabels(attributeFieldLabels);
+				_.each(response, function(singlePricingMatrix){
+					var PAVLine = {};
+					_.each(fieldLabeltoFDMap, function(fieldLabel, FieldName){
+						PAVLine[FieldName] = singlePricingMatrix[fieldLabel];
+					})
+					PAVlines.push(PAVLine);
+				})
+			}
+			pricingMatrixSearchResult = {lines:PAVlines, fieldapis:_.keys(fieldNametofieldLabelMap), fieldsmap: fieldNametofieldLabelMap};
+			isValid = true;
+		}
+
 		function setfirstPricingMatrixRecord(pmId){
-			service.firstPMRecordId = pmId;
+			firstPMRecordId = pmId;
+		}
+
+		function getfirstPMRecordId(){
+			return firstPMRecordId;
 		}
 		
+		function getattributefieldlabeltoPMlabelMap(priceMatrixrawheaders){
+	        var res = {};
+	        for(var i = 1; i< 7;i++){
+	            var key = 'Dimension'+String.valueOf(i);
+	            if(_.has(priceMatrixrawheaders, key)){
+	                res[priceMatrixrawheaders[key]] = key;
+	            }
+	        }
+	        return res;
+	    }
 	}
 })();
