@@ -17,27 +17,27 @@
         service.getProgressBartinprogress = getProgressBartinprogress;
 
         service.setLocationLoadComplete = function(){
-            service.isLocationLoadComplete = true;
+            isLocationLoadComplete = true;
             completeprogress();
         }
         service.setPricingMatrixLoadComplete = function(){
-            service.isPricingMatrixLoadComplete = true;
+            isPricingMatrixLoadComplete = true;
             completeprogress();
         }
         service.setOptionGroupLoadComplete = function(){
-            service.isOptionGroupLoadComplete = true;
+            isOptionGroupLoadComplete = true;
             completeprogress();
         }
         service.setPAVObjConfigLoadComplete = function(){
-            service.isPAVObjConfigLoadComplete = true;
+            isPAVObjConfigLoadComplete = true;
             completeprogress();
         }
         service.setPAConfigLoadComplete = function(){
-            service.isPAConfigLoadComplete = true;
+            isPAConfigLoadComplete = true;
             completeprogress();
         }
         service.setPAVLoadComplete = function(){
-            service.isPAVLoadComplete = true;
+            isPAVLoadComplete = true;
             completeprogress();
         }
 
