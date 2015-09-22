@@ -37,7 +37,7 @@
 				fieldNametofieldLabelMap = PAVObjConfigService.getFieldMap_ForLabels(attributeFieldLabels);
 				_.each(pricingMatrixMap, function(singlePricingMatrix){
 					var PAVLine = {};
-					_.each(fieldLabeltoFDMap, function(fieldLabel, FieldName){
+					_.each(fieldNametofieldLabelMap, function(fieldLabel, FieldName){
 						PAVLine[FieldName] = singlePricingMatrix[fieldLabel];
 					})
 					
