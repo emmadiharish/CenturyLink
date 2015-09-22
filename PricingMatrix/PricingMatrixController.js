@@ -5,7 +5,8 @@
         /*Initialize Scope Variables*/
         $scope.pricingMatrixService = PricingMatrixDataService;
 	    $scope.PAVService = ProductAttributeValueDataService;
-	    
+	    $scope.baseService = BaseService;
+
 	    $scope.reverse = false;                
 	    $scope.filteredItems = [];
 	    $scope.itemsPerPage = 21;
@@ -15,7 +16,7 @@
 	    $scope.paginationLinksTemplateURL = SystemConstants.baseUrl+'/Templates/PaginationLinksView.html';
 	    $scope.items = [];
 
-		$scope.$watch('BaseService.getPAVObjConfigLoadComplete()', function(newVal, oldVal) {
+		$scope.$watch('baseService.getPAVObjConfigLoadComplete()', function(newVal, oldVal) {
 	        if(newVal != oldVal
                 && newVal == true)
             {
