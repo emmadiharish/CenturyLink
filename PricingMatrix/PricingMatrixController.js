@@ -63,7 +63,7 @@
 	    };
 	    
 	    $scope.$watchCollection('PAVService.getbundleproductattributevalues()', function(newValue){
-    		if(!_.isundefines($scope.items)
+    		if(!_.isundefined($scope.items)
     			&& _.size($scope.items) > 0)
     		{
     			$scope.search();// perform search when bundle PAV is changed.
