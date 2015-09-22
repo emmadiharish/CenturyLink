@@ -13,7 +13,8 @@
 	    $scope.currentPage = 0;
 	    $scope.imagesbaseURL = SystemConstants.baseUrl+'/Images';
 	    $scope.paginationLinksTemplateURL = SystemConstants.baseUrl+'/Templates/PaginationLinksView.html';
-	    
+	    $scope.items = [];
+
 		$scope.$watch('BaseService.getPAVObjConfigLoadComplete()', function(newVal, oldVal) {
 	        if(newVal != oldVal
                 && newVal == true)
@@ -61,8 +62,8 @@
 	    };
 	    
 	    $scope.$watchCollection('PAVService.getbundleproductattributevalues()', function(newValue){
-    		if($scope.items != undefined
-    			&& $scope.items.length > 0)
+    		if(!_.isundefines($scope.items)
+    			&& _.size($scope.items) > 0)
     		{
     			$scope.search();// perform search when bundle PAV is changed.
     		}
