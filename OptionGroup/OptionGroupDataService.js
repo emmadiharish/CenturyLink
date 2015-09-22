@@ -31,7 +31,7 @@
 			return OptionGroupCache.getOptionGroups();
 		}
 
-		function getOptionGroups_test(productIds) {
+		function getOptionGroups(productIds) {
             var cartId = BaseConfigService.cartId;
             var lineNumber = BaseConfigService.bundleLineNumber;
             var requestPromise = RemoteService.getproductoptiongroupsData(productIds, cartId, lineNumber);
@@ -44,7 +44,7 @@
                 var prodIds_filtered = _.difference(alloptionProductIds_hasOptions, _.keys(cachedOptionGroups)); 
                 if (prodIds_filtered.length > 0
                     && currentSubBundleLevel < maxSubBundleLevel) {
-                    getOptionGroups_test(prodIds_filtered);    
+                    getOptionGroups(prodIds_filtered);    
                 }
                 else{
                     BaseService.setOptionGroupLoadComplete();
@@ -64,7 +64,7 @@
 
 			var bundleproductIds = [];
             bundleproductIds.push(productId);
-            return getOptionGroups_test(bundleproductIds).then(function(response){
+            return getOptionGroups(bundleproductIds).then(function(response){
                 var optionGroups = response;
                 setcurrentproductoptiongroups(optionGroups[productId]);
                 return true;

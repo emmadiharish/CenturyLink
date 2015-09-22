@@ -10,7 +10,7 @@
 	function OptionGroupCache($log) {
 		var service = this;
 		var prodIdtoOptionGroupsMap = {};
-		var productIds_hasOptions = [];
+		var productIdtoComponentId_hasOptions = {};
 
 		service.isValid = false;
 
@@ -30,9 +30,13 @@
                 	group.groupName = characterRepace(group.groupName);
                 	_.each(group.productOptionComponents, function(component){
                 		component.productName = characterRepace(component.productName);
+                		if(_.has(productIdtoComponentId_hasOptions, prodId))
+                		{
+                			component['parentComponentId'] = productIdtoComponentId_hasOptions[prodId];
+                		}
                 		if(component.hasOptions == true)
                 		{
-                			productIds_hasOptions.push(component.productId);
+                			productIdtoComponentId_hasOptions[component.productId] = component.componentId;
                 		}
                 	})
                 })
@@ -50,7 +54,7 @@
         }
 
         function getProductIdsofBundles(){
-        	return productIds_hasOptions	
+        	return _.keys(productIdtoComponentId_hasOptions);	
         };
 	}
 })();
