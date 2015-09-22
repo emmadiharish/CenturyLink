@@ -72,7 +72,7 @@
 		function getattributefieldlabeltoPMlabelMap(priceMatrixrawheaders){
 	        var res = {};
 	        for(var i = 1; i< 7;i++){
-	            var key = 'Dimension'+String.valueOf(i);
+	            var key = 'Dimension'+i;
 	            if(_.has(priceMatrixrawheaders, key)){
 	                res[priceMatrixrawheaders[key]] = key;
 	            }
