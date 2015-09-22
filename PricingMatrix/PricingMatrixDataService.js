@@ -39,11 +39,15 @@
 					_.each(fieldLabeltoFDMap, function(fieldLabel, FieldName){
 						PAVLine[FieldName] = singlePricingMatrix[fieldLabel];
 					})
+					
+					// Add Price.
 					if(_.has(singlePricingMatrix, 'Price')){
 		                PAVLine['Price__c'] = singlePricingMatrix.Price;
 		            }else{
 		                PAVLine['Price__c'] = 0; 
-		            } 
+		            }
+
+		            // add Pricing matrix Id.
 		            if(_.has(singlePricingMatrix, 'Id')){
 		                PAVLine['Pricing_Matrix_Id__c'] = singlePricingMatrix.Id;
 		            }else{
