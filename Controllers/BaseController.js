@@ -217,30 +217,54 @@
                 var allOptionGroups = $scope.optionGroupService.getallOptionGroups();
                 var allcomponentIdToOptionPAVMap = $scope.PAVService.getoptionproductattributevalues();
                 
+                var productIdtoComponentMap = {};
+                var productIdtoGroupMap = {};
+                var bundleProdId = BaseConfigService.bundleProdId;
                 _.each(allOptionGroups, function(optiongroups, bundleprodId){
                     _.each(optiongroups, function(optiongroup){
                         _.each(optiongroup.productOptionComponents, function(productcomponent){
-                            if(isProdSelected(productcomponent,optiongroup))
+                            var productId = productcomponent.productId;
+                            if(!_.isNull(productId))
                             {
-                                productcomponent.isselected = true;
-                                productcomponent = _.omit(productcomponent, ['$$hashKey', 'isDisabled']);
-                                
-                                var componentId = productcomponent.componentId;
-                                var otherSelected = false;
-                                if(_.has(allcomponentIdToOptionPAVMap, componentId))
-                                {
-                                    var optionPAV = allcomponentIdToOptionPAVMap[componentId];
-                                    // Other picklist is selected then set OtherSelected to true.
-                                    if(!_.isUndefined(_.findKey(optionPAV, function(value, pavField){return pavField.endsWith('Other');}))){
-                                        otherSelected = true;
-                                    }
-                                    // clone Other Picklist values to regular Dropdowns and delete Other Field from PAV.
-                                    componentIdtoPAVMap[componentId] = formatPAVBeforeSave(optionPAV);
-                                }
-                                productcomponent.customFlag = otherSelected;
-                                productcomponents.push(productcomponent);
+                                productIdtoGroupMap[productId] = optiongroup;
+                                productIdtoComponentMap[productId] = productcomponent;
                             }
                         })
+                    })
+                })
+
+                _.each(allOptionGroups, function(optiongroups, bundleprodId){
+                    _.each(optiongroups, function(optiongroup){
+                        var parentId = optiongroup.parentId;
+                        //if parent is bundle productId or selected then proceed.
+                        if(parentId == bundleProdId
+                            || (_.has(productIdtoComponentMap, parentId)
+                                && _.has(productIdtoGroupMap, parentId)
+                                && isProdSelected(productIdtoComponentMap[parentId], productIdtoGroupMap[parentId])))
+                        {
+                            _.each(optiongroup.productOptionComponents, function(productcomponent){
+                                if(isProdSelected(productcomponent,optiongroup))
+                                {
+                                    productcomponent.isselected = true;
+                                    productcomponent = _.omit(productcomponent, ['$$hashKey', 'isDisabled']);
+                                    
+                                    var componentId = productcomponent.componentId;
+                                    var otherSelected = false;
+                                    if(_.has(allcomponentIdToOptionPAVMap, componentId))
+                                    {
+                                        var optionPAV = allcomponentIdToOptionPAVMap[componentId];
+                                        // Other picklist is selected then set OtherSelected to true.
+                                        if(!_.isUndefined(_.findKey(optionPAV, function(value, pavField){return pavField.endsWith('Other');}))){
+                                            otherSelected = true;
+                                        }
+                                        // clone Other Picklist values to regular Dropdowns and delete Other Field from PAV.
+                                        componentIdtoPAVMap[componentId] = formatPAVBeforeSave(optionPAV);
+                                    }
+                                    productcomponent.customFlag = otherSelected;
+                                    productcomponents.push(productcomponent);
+                                }
+                            })
+                        }// end of if - only if parent component is selected.
                     })
                 })
                 
