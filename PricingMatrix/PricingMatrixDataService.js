@@ -57,6 +57,7 @@
 					PAVlines.push(PAVLine);
 				})
 			}
+			fieldNametofieldLabelMap['Price__c'] = 'Price';
 			pricingMatrixSearchResult = {lines:PAVlines, fieldsmap: fieldNametofieldLabelMap};
 			isValid = true;
 		}
