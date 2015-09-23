@@ -22,7 +22,7 @@
 	            $scope.pricingMatrixService.getPricingMatrix().then(function(result) {
 			        $scope.items = result.lines;		
 					$scope.dimentions = result.dimentions;
-					$scope.pavfieldDescribeMap = PAVConfigService.fieldNametoDFRMap;
+					$scope.pavfieldDescribeMap = PAVObjConfigService.fieldNametoDFRMap;
 					$scope.currentPage = 0;   
 			    	
 			    	// functions have been describe process the data for display
