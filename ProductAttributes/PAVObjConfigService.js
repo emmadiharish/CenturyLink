@@ -29,9 +29,10 @@
 			BaseService.startprogress();// start progress bar.
 			return requestPromise.then(function(response_FieldDescribe){
 				initializefieldNametoDFRMap(response_FieldDescribe);
+				BaseService.setPAVObjConfigLoadComplete();
 				return RemoteService.getOptiontoOptionAttributes().then(function(optiontoOptionattrs){
 					initializeportOptions(optiontoOptionattrs);
-					BaseService.setPAVObjConfigLoadComplete();
+					BaseService.setOptiontoOptionAttributeLoadComplete();
 					return service.fieldNametoDFRMap;
 			    });
 			});

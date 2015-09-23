@@ -11,6 +11,7 @@
         var isOptionGroupLoadComplete = false;
         var isPAVObjConfigLoadComplete = false;
         var isPAConfigLoadComplete = false;
+        var isOptiontoOptionAttributeLoadComplete = false;
         var isPAVLoadComplete = false;
 
     	service.startprogress = startprogress;
@@ -37,10 +38,15 @@
             isPAConfigLoadComplete = true;
             completeprogress();
         }
+        service.setOptiontoOptionAttributeLoadComplete = function(){
+            isOptiontoOptionAttributeLoadComplete = true;
+            completeprogress();
+        }
         service.setPAVLoadComplete = function(){
             isPAVLoadComplete = true;
             completeprogress();
         }
+        
 
         service.getLocationLoadComplete = function(){
             return isLocationLoadComplete;
@@ -56,6 +62,9 @@
         }
         service.getPAConfigLoadComplete = function(){
             return isPAConfigLoadComplete;
+        }
+        service.getOptiontoOptionAttributeLoadComplete = function(){
+            return isOptiontoOptionAttributeLoadComplete;
         }
         service.getPAVLoadComplete = function(){
             return isPAVLoadComplete;
@@ -86,6 +95,7 @@
                 && isOptionGroupLoadComplete
                 && isPAVObjConfigLoadComplete
                 && isPAConfigLoadComplete
+                && isOptiontoOptionAttributeLoadComplete
                 && isPAVLoadComplete)
             {
                 $log.log('inside completeprogress');
