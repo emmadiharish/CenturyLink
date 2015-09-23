@@ -43,7 +43,7 @@
 	    $scope.search = function () {
 	        var selectedAttrValues = $scope.PAVService.getbundleproductattributevalues();
 	        var dimentions_nonblank = [];
-	        _.each($scope.dimentions, function(index, field) {
+	        _.each($scope.dimentions, function(field) {
 	            if(!_.isUndefined(selectedAttrValues[field])
 	                && !_.isNull(selectedAttrValues[field])
 	                && selectedAttrValues[field] != '')
