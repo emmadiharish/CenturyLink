@@ -121,27 +121,7 @@
 			return res;
 		}
 
-		service.getFieldMap_ForLabels = function(pavFieldLabels){
-			var res = {};
-			_.each(pavFieldLabels, function(fieldLabel){
-				var fieldDescribe = getFieldDescribeforLabel(fieldLabel);
-				res[fieldDescribe.fieldName] = fieldDescribe.fieldLabel;
-			})
-			return res;
-		}
 		// ###################### private methods.###############################
-		function getFieldDescribeforLabel(fieldLabel){
-			var res = {};
-			_.each(service.fieldNametoDFRMap, function(value, fieldName){
-				if(value.fieldDescribe.fieldLabel == fieldLabel)
-				{
-					res = value.fieldDescribe;
-					return res;
-				}	
-			})
-			return res;
-		}
-
 		function initializefieldNametoDFRMap(response){
 			service.isvalid = true;
 			_.each(response, function(fdrWrapper, fieldName){

@@ -30,31 +30,42 @@
 			var PAVlines = [];
 			var fieldNametofieldLabelMap = {};
 			var pricingMatrixMap = response.pricingMatrixMap;
+			var pavfieldDescribeMap = PAVObjConfigService.fieldNametoDFRMap;
 			if(_.size(pricingMatrixMap) > 0)
 			{
-				var attributeFieldLabels = _.keys(getattributefieldlabeltoPMlabelMap(_.first(pricingMatrixMap)));
-				pricingMatrixMap.splice(0, 1);// remove the first row....Assumption: first row would always be fields.	
-				fieldNametofieldLabelMap = PAVObjConfigService.getFieldMap_ForLabels(attributeFieldLabels);
-				_.each(pricingMatrixMap, function(singlePricingMatrix){
-					var PAVLine = {};
+				// Assumption: first row would always be fields.	
+				var attributeFieldNames = _.keys(getattributefieldlabeltoPMlabelMap(_.first(pricingMatrixMap)));
+				pricingMatrixMap.splice(0, 1);// remove the first row....
+				
+				// if dimention names doesn't match with PAV fields then columns will be hidden from pricing matrix on UI.
+				_.each(attributeFieldNames, function(fieldName){
+					if(_.has(pavfieldDescribeMap, fieldName))
+					{
+						fieldNametofieldLabelMap[fieldName] = pavfieldDescribeMap[fieldName].fieldDescribe.fieldLabel;	
+					}
+				})
+
+				_.each(pricingMatrixMap, function(priceMatrixEntry){
+					var PMEntry = {};
 					_.each(fieldNametofieldLabelMap, function(fieldLabel, FieldName){
-						PAVLine[FieldName] = singlePricingMatrix[fieldLabel];
+						PMEntry[FieldName] = priceMatrixEntry[fieldLabel];
 					})
 					
 					// Add Price.
-					if(_.has(singlePricingMatrix, 'Price')){
-		                PAVLine['Price__c'] = singlePricingMatrix.Price;
+					if(_.has(priceMatrixEntry, 'Price')){
+		                PMEntry['Price__c'] = priceMatrixEntry.Price;
 		            }else{
-		                PAVLine['Price__c'] = 0; 
+		                PMEntry['Price__c'] = 0; 
 		            }
 
 		            // add Pricing matrix Id.
-		            if(_.has(singlePricingMatrix, 'Id')){
-		                PAVLine['Pricing_Matrix_Id__c'] = singlePricingMatrix.Id;
+		            if(_.has(priceMatrixEntry, 'Id')){
+		                PMEntry['Pricing_Matrix_Id__c'] = priceMatrixEntry.Id;
 		            }else{
-		                PAVLine['Pricing_Matrix_Id__c'] =  null; 
-		            }   
-					PAVlines.push(PAVLine);
+		                PMEntry['Pricing_Matrix_Id__c'] =  null; 
+		            }
+
+					PAVlines.push(PMEntry);
 				})
 			}
 			fieldNametofieldLabelMap['Price__c'] = 'Price';
