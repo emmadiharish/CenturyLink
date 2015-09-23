@@ -41,21 +41,20 @@
 
 	    //Initialize the Search Filters 
 	    $scope.search = function () {
-	        
 	        var selectedAttrValues = $scope.PAVService.getbundleproductattributevalues();
-	        var fieldapis_nonbalnk = [];
-	        _.each($scope.fieldapis, function(index, field) {
-	            if(selectedAttrValues[field] != undefined
-	                && selectedAttrValues[field] != null
+	        var dimentions_nonblank = [];
+	        _.each($scope.dimentions, function(index, field) {
+	            if(!_.isUndefined(selectedAttrValues[field])
+	                && !_.isNull(selectedAttrValues[field])
 	                && selectedAttrValues[field] != '')
 	            {
-	                fieldapis_nonbalnk.push(field);
+	                dimentions_nonblank.push(field);
 	            }
 	        });
 	        filteredItems = $filter('filter')($scope.items, function (item) {
-	            for (var i = 0; i < fieldapis_nonbalnk.length;  i++) {
-	            var prodattvalue = selectedAttrValues[fieldapis_nonbalnk[i]];
-	                var pricingmatrixvalue = item.pav[fieldapis_nonbalnk[i]];
+	            for (var i = 0; i < dimentions_nonblank.length;  i++) {
+	            var prodattvalue = selectedAttrValues[dimentions_nonblank[i]];
+	                var pricingmatrixvalue = item.pav[dimentions_nonblank[i]];
 	                if(prodattvalue != pricingmatrixvalue)
 	                {
 	                   return false;
