@@ -7,22 +7,20 @@
 	    $scope.PAVService = ProductAttributeValueDataService;
 	    $scope.baseService = BaseService;
 
-	    $scope.reverse = false;                
-	    $scope.filteredItems = [];
-	    $scope.itemsPerPage = 21;
+	    var filteredItems = [];
+	    $scope.itemsPerPage = 20;
 	    $scope.pagedItems = [];
 	    $scope.currentPage = 0;
 	    $scope.imagesbaseURL = SystemConstants.baseUrl+'/Images';
 	    $scope.paginationLinksTemplateURL = SystemConstants.baseUrl+'/Templates/PaginationLinksView.html';
-	    $scope.items = [];
-
+	    
 		$scope.$watch('baseService.getPAVObjConfigLoadComplete()', function(newVal, oldVal) {
 	        if(newVal != oldVal
                 && newVal == true)
             {
 	            $scope.pricingMatrixService.getPricingMatrix().then(function(result) {
 			        $scope.items = result.lines;		
-					$scope.fieldapis = _.keys(result.fieldsmap);
+					$scope.fieldapis = result.fieldNames;
 					$scope.fieldsmap = result.fieldsmap;
 					$scope.currentPage = 0;   
 			    	
@@ -31,6 +29,14 @@
 				})  
         	}
         });
+
+		$scope.$watchCollection('PAVService.getbundleproductattributevalues()', function(newValue){
+    		if(!_.isUndefined($scope.items)
+    			&& _.size($scope.items) > 0)
+    		{
+    			$scope.search();// perform search when bundle PAV is changed.
+    		}
+	    });
 
 	    //Initialize the Search Filters 
 	    $scope.search = function () {
@@ -45,7 +51,7 @@
 	                fieldapis_nonbalnk.push(field);
 	            }
 	        });
-	        $scope.filteredItems = $filter('filter')($scope.items, function (item) {
+	        filteredItems = $filter('filter')($scope.items, function (item) {
 	            for (var i = 0; i < fieldapis_nonbalnk.length;  i++) {
 	            var prodattvalue = selectedAttrValues[fieldapis_nonbalnk[i]];
 	                var pricingmatrixvalue = item.pav[fieldapis_nonbalnk[i]];
@@ -62,22 +68,14 @@
 	        $scope.groupToPages();
 	    };
 	    
-	    $scope.$watchCollection('PAVService.getbundleproductattributevalues()', function(newValue){
-    		if(!_.isUndefined($scope.items)
-    			&& _.size($scope.items) > 0)
-    		{
-    			$scope.search();// perform search when bundle PAV is changed.
-    		}
-	    });
-
 	    // Calculate Total Number of Pages based on Records Queried 
 	    $scope.groupToPages = function () {
 	        $scope.pagedItems = [];
-	        for (var i = 0; i < $scope.filteredItems.length; i++) {
+	        for (var i = 0; i < filteredItems.length; i++) {
 	            if (i % $scope.itemsPerPage === 0) {
-	                $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)] = [$scope.filteredItems[i]];
+	                $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)] = [filteredItems[i]];
 	            } else {
-	                $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)].push($scope.filteredItems[i]);
+	                $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)].push(filteredItems[i]);
 	            }
 	        }
 	        // set the first pricing matrix record from filtered records which will be saved to bundle line item.

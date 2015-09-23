@@ -68,8 +68,10 @@
 					PAVlines.push(PMEntry);
 				})
 			}
+			var fieldList_ordered = _.keys(fieldNametofieldLabelMap);
+			fieldList_ordered.push('Price__c');
 			fieldNametofieldLabelMap['Price__c'] = 'Price';
-			pricingMatrixSearchResult = {lines:PAVlines, fieldsmap: fieldNametofieldLabelMap};
+			pricingMatrixSearchResult = {lines:PAVlines, fieldNames:fieldList_ordered, fieldsmap:fieldNametofieldLabelMap};
 			isValid = true;
 		}
 
