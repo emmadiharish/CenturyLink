@@ -4,13 +4,14 @@
 	function PricingMatrixDataService($q, $log, BaseService, BaseConfigService, PAVObjConfigService, RemoteService) {
 		var service = this;
 
-		pricingMatrixSearchResult = {};
-		isValid = false;
-		firstPMRecordId = null;
+		var pricingMatrixSearchResult = {};
+		var isValid = false;
+		var firstPMRecordId = null;
 		
 		// Pricing Methods.
 		service.getPricingMatrix = getPricingMatrix;
 		service.setfirstPricingMatrixRecord = setfirstPricingMatrixRecord;
+		service.getfirstPMRecordId  = getfirstPMRecordId;
 
 		function getPricingMatrix() {
 			if (isValid) {
