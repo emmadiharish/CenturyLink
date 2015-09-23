@@ -22,8 +22,8 @@
             {
 	            $scope.pricingMatrixService.getPricingMatrix().then(function(result) {
 			        $scope.items = result.lines;		
-					$scope.fieldapis = _.keys(result.pricingFieldsMap);
-					$scope.fieldsmap = result.pricingFieldsMap;
+					$scope.fieldapis = _.keys(result.fieldsmap);
+					$scope.fieldsmap = result.fieldsmap;
 					$scope.currentPage = 0;   
 			    	
 			    	// functions have been describe process the data for display

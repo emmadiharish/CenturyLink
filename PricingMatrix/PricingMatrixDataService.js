@@ -57,7 +57,7 @@
 					PAVlines.push(PAVLine);
 				})
 			}
-			pricingMatrixSearchResult = {lines:PAVlines, fieldapis:_.keys(fieldNametofieldLabelMap), fieldsmap: fieldNametofieldLabelMap};
+			pricingMatrixSearchResult = {lines:PAVlines, fieldsmap: fieldNametofieldLabelMap};
 			isValid = true;
 		}
 
