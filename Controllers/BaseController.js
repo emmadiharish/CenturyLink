@@ -14,11 +14,18 @@
         $scope.optionGroupService = OptionGroupDataService;
         $scope.PAVService = ProductAttributeValueDataService;
         $scope.ProgressBartinprogress = false;
+        $scope.showOptionsTab = true;
 
         $scope.imagesbaseURL = $scope.quoteService.getCAPResourcebaseURL()+'/Images';
         
         $scope.$watch('baseService.getProgressBartinprogress()', function(newVal, oldVal){
             $scope.ProgressBartinprogress = newVal;
+        });
+
+        $scope.$watch('optionGroupService.showOptions', function(newVal, oldVal){
+            if($scope.optionGroupService.showOptions == false){
+                $scope.showOptionsTab= false;
+            }
         });
 
         $scope.validateonsubmit = function(){

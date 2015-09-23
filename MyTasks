@@ -18,3 +18,8 @@ Components:
 
 	BaseController
 	PricingMatrixDataService
+	PricingMatrixController
+	BaseService - Done
+	PAVObjConfigService - Done
+
+	Pricing matrix template
