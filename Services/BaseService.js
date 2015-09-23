@@ -3,6 +3,7 @@
     BaseService.$inject = ['$log','ngProgress'];
     function BaseService($log, ngProgress) {
     	var service = this;
+        
         var pageloadComplete = false;
         var ProgressBartinprogress = false;
     	var isLocationLoadComplete = false;
@@ -68,10 +69,10 @@
         
         // start the page level progress bar.
         function startprogress(){
-            if(service.ProgressBartinprogress == false)
+            if(ProgressBartinprogress == false)
             {
                 $log.log('inside startprogress');
-                service.ProgressBartinprogress = true;
+                ProgressBartinprogress = true;
                 ngProgress.reset();// reset the progress bar if not completed by previous methids.
                 ngProgress.start(); // start progress.
             }
@@ -80,21 +81,21 @@
         // complete the page level progress bar.
         function completeprogress(){
             // complete progress only after all loads are complete.
-            if(service.isLocationLoadComplete
-                && service.isPricingMatrixLoadComplete
-                && service.isOptionGroupLoadComplete
-                && service.isPAVObjConfigLoadComplete
-                && service.isPAConfigLoadComplete
-                && service.isPAVLoadComplete)
+            if(isLocationLoadComplete
+                && isPricingMatrixLoadComplete
+                && isOptionGroupLoadComplete
+                && isPAVObjConfigLoadComplete
+                && isPAConfigLoadComplete
+                && isPAVLoadComplete)
             {
                 $log.log('inside completeprogress');
                 ngProgress.complete();
-                service.ProgressBartinprogress = false;
+                ProgressBartinprogress = false;
             }
         }
 
         function getProgressBartinprogress(){
-            return service.ProgressBartinprogress;
+            return ProgressBartinprogress;
         }
 
         init();
