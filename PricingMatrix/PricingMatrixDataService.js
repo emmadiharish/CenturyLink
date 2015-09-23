@@ -48,7 +48,7 @@
 				_.each(pricingMatrixMap, function(priceMatrixEntry){
 					var PMEntry = {};
 					_.each(fieldNametofieldLabelMap, function(fieldLabel, FieldName){
-						PMEntry[FieldName] = priceMatrixEntry[fieldLabel];
+						PMEntry[FieldName] = priceMatrixEntry[FieldName];
 					})
 					
 					// Add Price.
