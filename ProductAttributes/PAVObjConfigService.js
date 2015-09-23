@@ -64,7 +64,8 @@
                 _.each(attributeGroup.productAtributes, function(attributeConfig){
                     var fieldName = attributeConfig.fieldName;
                     var fieldDescribe = service.fieldNametoDFRMap[fieldName].fieldDescribe;
-                    if(fieldDescribe.fieldType == 'picklist')
+                    if(attributeConfig.isHidden == false
+                    	&& fieldDescribe.fieldType == 'picklist')
                     {
                     	if(!_.isEmpty(attributeConfig.lovs)
                     		|| attributeConfig.isDynamicAttr == true)
