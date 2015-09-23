@@ -54,7 +54,7 @@
 	        filteredItems = $filter('filter')($scope.items, function (item) {
 	            for (var i = 0; i < dimentions_nonblank.length;  i++) {
 	            var prodattvalue = selectedAttrValues[dimentions_nonblank[i]];
-	                var pricingmatrixvalue = item.pav[dimentions_nonblank[i]];
+	                var pricingmatrixvalue = item[dimentions_nonblank[i]];
 	                if(prodattvalue != pricingmatrixvalue)
 	                {
 	                   return false;
@@ -81,7 +81,7 @@
 	        // set the first pricing matrix record from filtered records which will be saved to bundle line item.
 	        if($scope.pagedItems.length > 0
 	        	&& $scope.pagedItems[0].length > 0){
-				$scope.pricingMatrixService.setfirstPricingMatrixRecord($scope.pagedItems[0][0].pav.Pricing_Matrix_Id__c);
+				$scope.pricingMatrixService.setfirstPricingMatrixRecord($scope.pagedItems[0][0].Pricing_Matrix_Id__c);
 			}
 			
 			$scope.safeApply();
