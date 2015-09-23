@@ -11,6 +11,7 @@
 	    $scope.itemsPerPage = 20;
 	    $scope.pagedItems = [];
 	    $scope.currentPage = 0;
+	    $scope.pavfieldDescribeMap = {};
 	    $scope.imagesbaseURL = SystemConstants.baseUrl+'/Images';
 	    $scope.paginationLinksTemplateURL = SystemConstants.baseUrl+'/Templates/PaginationLinksView.html';
 	    
@@ -20,8 +21,8 @@
             {
 	            $scope.pricingMatrixService.getPricingMatrix().then(function(result) {
 			        $scope.items = result.lines;		
-					$scope.fieldapis = result.fieldNames;
-					$scope.fieldsmap = result.fieldsmap;
+					$scope.dimentions = result.dimentions;
+					$scope.pavfieldDescribeMap = $scope.PAVConfigService.fieldNametoDFRMap;
 					$scope.currentPage = 0;   
 			    	
 			    	// functions have been describe process the data for display

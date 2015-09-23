@@ -28,7 +28,7 @@
 
 		function initializePricingMatrix(response){
 			var PAVlines = [];
-			var fieldNametofieldLabelMap = {};
+			var dimentions = [];// PAV field Names.
 			var pricingMatrixMap = response.pricingMatrixMap;
 			var pavfieldDescribeMap = PAVObjConfigService.fieldNametoDFRMap;
 			if(_.size(pricingMatrixMap) > 0)
@@ -41,14 +41,14 @@
 				_.each(attributeFieldNames, function(fieldName){
 					if(_.has(pavfieldDescribeMap, fieldName))
 					{
-						fieldNametofieldLabelMap[fieldName] = pavfieldDescribeMap[fieldName].fieldDescribe.fieldLabel;	
+						dimentions.push(fieldName);	
 					}
 				})
 
 				_.each(pricingMatrixMap, function(priceMatrixEntry){
 					var PMEntry = {};
-					_.each(fieldNametofieldLabelMap, function(fieldLabel, FieldName){
-						PMEntry[FieldName] = priceMatrixEntry[FieldName];
+					_.each(dimentions, function(dimention){
+						PMEntry[dimention] = priceMatrixEntry[dimention];
 					})
 					
 					// Add Price.
@@ -68,10 +68,8 @@
 					PAVlines.push(PMEntry);
 				})
 			}
-			var fieldList_ordered = _.keys(fieldNametofieldLabelMap);
-			fieldList_ordered.push('Price__c');
-			fieldNametofieldLabelMap['Price__c'] = 'Price';
-			pricingMatrixSearchResult = {lines:PAVlines, fieldNames:fieldList_ordered, fieldsmap:fieldNametofieldLabelMap};
+			dimentions.push('Price__c');
+			pricingMatrixSearchResult = {lines:PAVlines, dimentions:dimentions};
 			isValid = true;
 		}
 
