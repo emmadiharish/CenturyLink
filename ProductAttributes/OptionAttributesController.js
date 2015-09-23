@@ -3,7 +3,6 @@
 
     OptionAttributesController = function($scope, $log, RemoteService, LocationDataService, OptionGroupDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVObjConfigService) {
         var depattributes = {};
-
         $scope.init = function(){
             // all variable intializations.
             $scope.locationService = LocationDataService;
@@ -32,9 +31,7 @@
 
         // Option Attribute load on option selection.
         $scope.$watch('optionGroupService.getSelectedoptionproduct()', function(newVal, oldVal) {
-            if(!_.isEmpty(newVal)
-                && !_.isEqual(newVal, oldVal))
-            {
+            if(!_.isEmpty(newVal)){
                 $scope.Selectedoptionproduct = newVal;
                 var optionProductId = newVal.productId;
                 var componentId = newVal.componentId;
@@ -72,10 +69,27 @@
                 $scope.PAVService.getProductAttributeValues(componentId).then(function(pavresult)
                 {
                     var res = $scope.PAVConfigService.configurePAVFields(attributeconfigresult, pavresult);
+                    // $scope.optionDynamicAttributeValidation(res.pavConfigGroups);
                     renderOptionAttributes(res.pavConfigGroups, res.PAVObj);
                 })
             })
         }
+
+        //Removing Dynamic Attributes Group if it has no values
+        /*$scope.optionDynamicAttributeValidation = function(AttrGroups){
+            _.each(AttrGroups,function(group){
+                if(group.groupName == 'Dynamic attributes'){
+                    _.each(group.productAtributes, function(attrItems){
+                        if(attrItems.picklistValues.length == 1 && attrItems.picklistValues[0].label == '--None--'){
+                            group.productAtributes.remove(attrItems);
+                        }
+                    });
+                }
+                if(group.groupName == 'Dynamic attributes' && group.productAtributes.length == 0){
+                    AttrGroups.remove(group);
+                }
+            });
+        }*/
 
         function renderOptionAttributes(attrgroups, pav){
             // clear the previous option attribute groups.
@@ -83,6 +97,7 @@
             $scope.productAttributeValues = pav;
             $scope.CascadeBunleAttributestoOptions();
             $scope.optionLevelAttributeChange();
+            $scope.seatTypeExpressions(attrgroups, pav);
             $scope.safeApply();
         }
 
@@ -138,6 +153,18 @@
             }
         }
 
+        $scope.seatTypeExpressions = function(attributes){
+            var count = $scope.optionGroupService.seatTypeCount;
+            _.each($scope.AttributeGroups, function(attrGroups){
+                _.each(attrGroups.productAtributes, function(item){
+                    if(item.fieldName == 'Total_Seats__c'){
+                        item.isReadOnly = true;
+                        $scope.productAttributeValues['Total_Seats__c'] = count;
+                    }
+                });
+            });
+        }
+        
         $scope.init();
     }
     OptionAttributesController.$inject = ['$scope', '$log', 'RemoteService', 'LocationDataService', 'OptionGroupDataService', 'ProductAttributeConfigDataService', 'ProductAttributeValueDataService', 'PAVObjConfigService'];

@@ -15,11 +15,3 @@ Components:
 
 3. render groups based on componentId but not productId.
 	apex and angular has to be changed.
-
-	BaseController
-	PricingMatrixDataService
-	PricingMatrixController
-	BaseService - Done
-	PAVObjConfigService - Done
-
-	Pricing matrix template
