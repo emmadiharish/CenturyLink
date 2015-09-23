@@ -1,7 +1,7 @@
 (function() {
     var PricingMatrixController;
 
-    PricingMatrixController = function($scope, $filter, $log, SystemConstants, BaseService, ProductAttributeValueDataService, PricingMatrixDataService) {
+    PricingMatrixController = function($scope, $filter, $log, SystemConstants, BaseService, PAVObjConfigService, ProductAttributeValueDataService, PricingMatrixDataService) {
         /*Initialize Scope Variables*/
         $scope.pricingMatrixService = PricingMatrixDataService;
 	    $scope.PAVService = ProductAttributeValueDataService;
@@ -22,7 +22,7 @@
 	            $scope.pricingMatrixService.getPricingMatrix().then(function(result) {
 			        $scope.items = result.lines;		
 					$scope.dimentions = result.dimentions;
-					$scope.pavfieldDescribeMap = $scope.PAVConfigService.fieldNametoDFRMap;
+					$scope.pavfieldDescribeMap = PAVConfigService.fieldNametoDFRMap;
 					$scope.currentPage = 0;   
 			    	
 			    	// functions have been describe process the data for display
@@ -122,6 +122,6 @@
 	    };
     };
 
-    PricingMatrixController.$inject = ['$scope', '$filter', '$log', 'SystemConstants', 'BaseService', 'ProductAttributeValueDataService', 'PricingMatrixDataService'];
+    PricingMatrixController.$inject = ['$scope', '$filter', '$log', 'SystemConstants', 'BaseService', 'PAVObjConfigService', 'ProductAttributeValueDataService', 'PricingMatrixDataService'];
     angular.module('APTPS_ngCPQ').controller('PricingMatrixController', PricingMatrixController);
 }).call(this);
