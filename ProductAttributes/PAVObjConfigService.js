@@ -298,7 +298,8 @@
 			var res = [];// defaultValue
 			// add a blank option.{--None--}
 			res = ples;
-			res.splice(0, 0, selectoptionObject(true, '--None--', null, false));
+			if(_.size(res) > 0)
+				res.splice(0, 0, selectoptionObject(true, '--None--', null, false));
 			return res;
 		}
 
