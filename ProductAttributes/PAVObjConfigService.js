@@ -27,8 +27,9 @@
 
 			var requestPromise = RemoteService.getPAVFieldMetaData();
 			BaseService.startprogress();// start progress bar.
+			initializefieldNametoDFRMap(sforce.connection.describeSObject('Apttus_Config2__ProductAttributeValue__c'))
 			return requestPromise.then(function(response_FieldDescribe){
-				initializefieldNametoDFRMap(response_FieldDescribe);
+				// initializefieldNametoDFRMap(response_FieldDescribe);
 				BaseService.setPAVObjConfigLoadComplete();
 				return RemoteService.getOptiontoOptionAttributes().then(function(optiontoOptionattrs){
 					initializeportOptions(optiontoOptionattrs);
@@ -123,7 +124,27 @@
 		}
 
 		// ###################### private methods.###############################
-		function initializefieldNametoDFRMap(response){
+		function initializefieldNametoDFRMap(objDescribe){
+			service.isvalid = true;
+			_.each(objDescribe.fields, function(fieldDescribe){
+				var fieldName = fieldDescribe.name;
+				var fieldDescribe_ang = getAngularFieldDescribe(fieldDescribe);
+				var dPicklistObj = {};
+				if(fieldDescribe_ang.fieldType == 'picklist'
+					&& fieldDescribe_ang.isDependentPicklist == true)
+				{
+					var controller = fieldDescribe_ang.controllerName;
+					var controllingpicklistOptions = response[controller].picklistOptions;
+					dPicklistObj = getStructuredDependentFields(fdrWrapper.picklistOptions, controllingpicklistOptions);	
+					
+					ctodFieldMap.push({cField:controller, dField:fieldName});
+				}
+
+				service.fieldNametoDFRMap[fieldName] = {fieldDescribe:fieldDescribe_ang, dPicklistObj:dPicklistObj};
+			})
+		}
+
+		/*function initializefieldNametoDFRMap(response){
 			service.isvalid = true;
 			_.each(response, function(fdrWrapper, fieldName){
 				var fieldDescribe = getFieldDescribe(fdrWrapper);
@@ -140,7 +161,7 @@
 
 				service.fieldNametoDFRMap[fieldName] = {fieldDescribe:fieldDescribe, dPicklistObj:dPicklistObj};
 			})
-		}
+		}*/
 
 		function initializeportOptions(result){
 			isOptiontoOptionAttrsvalid = true;
@@ -204,10 +225,10 @@
 		}
 
 		// prepare javascript version  of fieldDescribe based on Schema.DescribeFieldResult
-		function getFieldDescribe(fdrWrapper){
+		function getFieldDescribe(fieldDescribe){
 			var res = {};
-			var fieldDescribe = fdrWrapper.fdr;
-			var fieldDescribe_addl = fdrWrapper.fdr_additional;
+			// var fieldDescribe = fdrWrapper.fdr;
+			//var fieldDescribe_addl = fdrWrapper.fdr_additional;
 
 			res['fieldType'] = getFieldType(fieldDescribe.type);
 			res['fieldName'] = fieldDescribe.name;
@@ -223,7 +244,8 @@
 			res['isUnique'] = fieldDescribe.unique;// Returns true if the value for the field must be unique, false otherwise
 			
 			// additional map result.
-			res['defaultValue'] = fieldDescribe_addl.defaultValue;
+			//res['defaultValue'] = fieldDescribe_addl.defaultValue;
+			res['defaultValue'] = _.has(fieldDescribe, 'defaultValueFormula') ? fieldDescribe.defaultValueFormula : null;
 			if(res.fieldType== 'picklist')
 			{
 				var defaultLOV = _.findWhere(res.picklistValues, {defaultValue:true});
