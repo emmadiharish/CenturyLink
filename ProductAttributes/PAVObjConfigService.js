@@ -138,7 +138,7 @@
 				{
 					var controllingFieldName = fieldDescribe_ang.controllerName;
 					var controllingpicklistOptions = fieldNametoFieldDescribeMap[controllingFieldName].picklistOptions;
-					dPicklistObj = getStructuredDependentFields(fdrWrapper.picklistOptions, controllingpicklistOptions);	
+					dPicklistObj = getStructuredDependentFields(fieldDescribe.picklistOptions, controllingpicklistOptions);	
 					
 					ctodFieldMap.push({cField:controllingFieldName, dField:fieldName});
 				}
