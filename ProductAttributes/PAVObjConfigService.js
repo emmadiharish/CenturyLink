@@ -28,15 +28,15 @@
 			var requestPromise = RemoteService.getPAVFieldMetaData();
 			BaseService.startprogress();// start progress bar.
 			initializefieldNametoDFRMap(sforce.connection.describeSObject('Apttus_Config2__ProductAttributeValue__c'))
-			return requestPromise.then(function(response_FieldDescribe){
+			BaseService.setPAVObjConfigLoadComplete();
+			//return requestPromise.then(function(response_FieldDescribe){
 				// initializefieldNametoDFRMap(response_FieldDescribe);
-				BaseService.setPAVObjConfigLoadComplete();
 				return RemoteService.getOptiontoOptionAttributes().then(function(optiontoOptionattrs){
 					initializeportOptions(optiontoOptionattrs);
 					BaseService.setOptiontoOptionAttributeLoadComplete();
 					return service.fieldNametoDFRMap;
 			    });
-			});
+			//});
 		}
 		function getPortOptions(){
 			if(isOptiontoOptionAttrsvalid == true)
@@ -126,20 +126,23 @@
 		// ###################### private methods.###############################
 		function initializefieldNametoDFRMap(objDescribe){
 			service.isvalid = true;
+			var fieldNametoFieldDescribeMap = {};
 			_.each(objDescribe.fields, function(fieldDescribe){
-				var fieldName = fieldDescribe.name;
+				fieldNametoFieldDescribeMap[fieldDescribe.name] = fieldDescribe;
+			})
+			_.each(fieldNametoFieldDescribeMap, function(fieldDescribe, fieldName){
 				var fieldDescribe_ang = getAngularFieldDescribe(fieldDescribe);
 				var dPicklistObj = {};
 				if(fieldDescribe_ang.fieldType == 'picklist'
 					&& fieldDescribe_ang.isDependentPicklist == true)
 				{
-					var controller = fieldDescribe_ang.controllerName;
-					var controllingpicklistOptions = response[controller].picklistOptions;
+					var controllingFieldName = fieldDescribe_ang.controllerName;
+					var controllingpicklistOptions = fieldNametoFieldDescribeMap[controllingFieldName].picklistOptions;
 					dPicklistObj = getStructuredDependentFields(fdrWrapper.picklistOptions, controllingpicklistOptions);	
 					
-					ctodFieldMap.push({cField:controller, dField:fieldName});
+					ctodFieldMap.push({cField:controllingFieldName, dField:fieldName});
 				}
-
+				
 				service.fieldNametoDFRMap[fieldName] = {fieldDescribe:fieldDescribe_ang, dPicklistObj:dPicklistObj};
 			})
 		}
@@ -225,7 +228,7 @@
 		}
 
 		// prepare javascript version  of fieldDescribe based on Schema.DescribeFieldResult
-		function getFieldDescribe(fieldDescribe){
+		function getAngularFieldDescribe(fieldDescribe){
 			var res = {};
 			// var fieldDescribe = fdrWrapper.fdr;
 			//var fieldDescribe_addl = fdrWrapper.fdr_additional;
