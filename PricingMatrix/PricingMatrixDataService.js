@@ -69,7 +69,8 @@
 					PAVlines.push(PMEntry);
 				})
 			}
-			dimentions.push('Price__c');
+			if(_.size(dimentions) > 0)
+				dimentions.push('Price__c');
 			pricingMatrixSearchResult = {lines:PAVlines, dimentions:dimentions};
 			isValid = true;
 		}
