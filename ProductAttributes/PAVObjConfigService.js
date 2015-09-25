@@ -297,7 +297,9 @@
 		function getPicklistValues(ples){
 			var res = [];// defaultValue
 			// add a blank option.{--None--}
-			res = ples;
+			_.each(ples, function(ple){
+				res.push(ple);
+			})
 			if(_.size(res) > 0)
 				res.splice(0, 0, selectoptionObject(true, '--None--', null, false));
 			return res;
