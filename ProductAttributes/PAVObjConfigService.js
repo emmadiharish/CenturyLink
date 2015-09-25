@@ -298,7 +298,7 @@
 			var res = [];// defaultValue
 			// add a blank option.{--None--}
 			_.each(ples, function(ple){
-				res.push(ple);
+				res.push(selectoptionObject(ple.active, ple.label, ple.value, ple.defaultValue));
 			})
 			if(_.size(res) > 0)
 				res.splice(0, 0, selectoptionObject(true, '--None--', null, false));
@@ -324,8 +324,8 @@
 		}
 
 		// object structure of Schema.PicklistEntry.
-		function selectoptionObject(active, label, value, isdefault){
-			return {active:active, label:label, value:value, defaultValue:isdefault};
+		function selectoptionObject(active, label, value, defaultValue){
+			return {active:active, label:label, value:value, defaultValue:defaultValue};
 		}
 
 		function getStructuredDependentFields(dPicklistOptions, cPicklistOptions){
