@@ -6,7 +6,6 @@
         $scope.init = function(){
         	$scope.locationService = LocationDataService;
             $scope.constants = SystemConstants;
-            $scope.attributeUrl = SystemConstants.baseUrl+'/Templates/ProductAttributesView.html';
             $scope.PAVService = ProductAttributeValueDataService;
             $scope.PAConfigService = ProductAttributeConfigDataService;
             $scope.PAVConfigService = PAVObjConfigService;
