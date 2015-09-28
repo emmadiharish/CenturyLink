@@ -1,10 +1,11 @@
 (function() {
     var BundleAttributesController;
 
-    BundleAttributesController = function($scope, $log, QuoteDataService, LocationDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVObjConfigService) {
+    BundleAttributesController = function($scope, $log, SystemConstants, BaseConfigService, LocationDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVObjConfigService) {
 		// all variable intializations.
         $scope.init = function(){
         	$scope.locationService = LocationDataService;
+            $scope.constants = SystemConstants;
             $scope.PAVService = ProductAttributeValueDataService;
             $scope.PAConfigService = ProductAttributeConfigDataService;
             $scope.PAVConfigService = PAVObjConfigService;
@@ -41,7 +42,7 @@
                 $scope.remotecallinitiated = true;
                 var alllocationIdSet = $scope.locationService.getalllocationIdSet();
                 var selectedlocationId = $scope.locationService.getselectedlpaId();
-                var bundleProductId = QuoteDataService.getbundleproductId();
+                var bundleProductId = BaseConfigService.bundleProdId;
                 $scope.PAVConfigService.getPAVFieldMetaData().then(function(fieldDescribeMap){
                     if(_.isEmpty($scope.pavfieldDescribeMap))
                     {
@@ -93,6 +94,6 @@
         $scope.init();
 	};
 
-    BundleAttributesController.$inject = ['$scope', '$log', 'QuoteDataService', 'LocationDataService', 'ProductAttributeConfigDataService', 'ProductAttributeValueDataService', 'PAVObjConfigService'];
+    BundleAttributesController.$inject = ['$scope', '$log', 'SystemConstants', 'BaseConfigService', 'LocationDataService', 'ProductAttributeConfigDataService', 'ProductAttributeValueDataService', 'PAVObjConfigService'];
 	angular.module('APTPS_ngCPQ').controller('BundleAttributesController', BundleAttributesController);
 }).call(this);
