@@ -1,11 +1,12 @@
 (function() {
     var BundleAttributesController;
 
-    BundleAttributesController = function($scope, $log, SystemConstants, BaseConfigService, LocationDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVObjConfigService) {
+    BundleAttributesController = function($scope, $log, SystemConstants, P, LocationDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVObjConfigService) {
 		// all variable intializations.
         $scope.init = function(){
         	$scope.locationService = LocationDataService;
             $scope.constants = SystemConstants;
+            $scope.attributeUrl = SystemConstants.baseUrl+'/Templates/ProductAttributesView.html';
             $scope.PAVService = ProductAttributeValueDataService;
             $scope.PAConfigService = ProductAttributeConfigDataService;
             $scope.PAVConfigService = PAVObjConfigService;
