@@ -83,13 +83,13 @@
 	                    		applyDependentLOVSConfig(attributeConfig, PAV, fieldName, controllingField);	
 	                    	}
 	                    	// if 'Other' LOV option exists in the database then add the previously selected value to options....Applicable only for loading configured quote.
-		                    /* var selectedvalue = PAV[fieldName];
+		                    var selectedvalue = PAV[fieldName];
 		                    if(!_.isUndefined(selectedvalue)
 		                    	&& !_.contains(_.pluck(attributeConfig.picklistValues, 'value'), selectedvalue) 
 		                    	&& _.contains(_.pluck(attributeConfig.picklistValues, 'value'), 'Other'))
 		                    {
 		                    	attributeConfig.picklistValues.push(selectoptionObject(true, selectedvalue, selectedvalue, false));
-		                    }*/                    	
+		                    }                   	
 	                    	
 	                    	// if dependend selected value does not exists in the options then set the PAV to null
 							var selectedPAVValue = PAV[fieldName];
