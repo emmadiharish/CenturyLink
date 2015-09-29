@@ -207,13 +207,13 @@
                         	options = dPicklistConfig[selectedPAVValue].slice();
             				options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
                         }
-                        // if 'Other' LOV option exists in the database then add the previously selected value to options....Applicable only for loading configured quote.
+                        // if 'Other' LOV option exists in the database then add the previously selected value to options.
 	                    var selectedOtherValue = PAV[currentField+'Other'];
 	                    if(!_.isUndefined(selectedOtherValue)
 	                    	&& !_.contains(_.pluck(options, 'value'), selectedOtherValue) 
 	                    	&& _.contains(_.pluck(options, 'value'), 'Other'))
 	                    {
-	                    	options.push(selectoptionObject(true, selectedvalue, selectedvalue, false));
+	                    	options.push(selectoptionObject(true, selectedOtherValue, selectedOtherValue, false));
 	                    } 
 
                         attributeConfig.picklistValues = options;
