@@ -77,7 +77,9 @@
 	                    	attributeConfig['picklistValues'] = fieldDescribe.picklistValues;
 
 	                    	// load Other field value to Other field.
-	                    	if(_.contains(_.pluck(attributeConfig.picklistValues, 'value'), 'Other'))
+	                    	if((!_.has(PAV, 'isDefaultLoadComplete')
+								|| PAV.isDefaultLoadComplete == false)
+								&& _.contains(_.pluck(attributeConfig.picklistValues, 'value'), 'Other'))
 		                    {
 		                    	PAV[fieldName+'Other'] = PAV[fieldName];
 		                    }
