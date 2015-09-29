@@ -135,9 +135,7 @@
 					&& fieldDescribe_ang.isDependentPicklist == true)
 				{
 					var controllingFieldName = fieldDescribe_ang.controllerName;
-					var controllingpicklistValues = [];
-					controllingpicklistValues.push(fieldNametoFieldDescribeMap[controllingFieldName].picklistValues);
-					controllingpicklistValues = _.flatten(controllingpicklistValues);
+					var controllingpicklistValues = fieldNametoFieldDescribeMap[controllingFieldName].picklistValues;
 					dPicklistObj = getStructuredDependentFields(fieldDescribe.picklistValues, controllingpicklistValues);	
 					
 					ctodFieldMap.push({cField:controllingFieldName, dField:fieldName});
@@ -303,10 +301,14 @@
 		function getStructuredDependentFields(dPicklistOptions, cPicklistOptions){
 			var res = {};
 			var objResult = {};
-			//cPicklistOptions = _.isArray(cPicklistOptions) ? cPicklistOptions : [_.object(cPicklistOptions)];
+			var cPicklistOptions_array = [];
+			if(_.isObject(cPicklistOptions))
+				cPicklistOptions_array.push(cPicklistOptions);
+			else
+				cPicklistOptions_array = cPicklistOptions;
 			//set up the results
 			//create the entry with the controlling label
-			_.each(cPicklistOptions, function(picklistOption){
+			_.each(cPicklistOptions_array, function(picklistOption){
 				objResult[picklistOption.label] = [];
 			})
 			//cater for null and empty
@@ -316,7 +318,7 @@
 			//if valid for is empty, skip
 			_.each(dPicklistOptions, function(dPicklistOption){
 				//iterate through the controlling values
-				_.each(cPicklistOptions, function(cPicklistOption, cIndex){
+				_.each(cPicklistOptions_array, function(cPicklistOption, cIndex){
 					if(testBit(dPicklistOption.validFor, cIndex))
 					{
 						var cLabel = cPicklistOption.label;
