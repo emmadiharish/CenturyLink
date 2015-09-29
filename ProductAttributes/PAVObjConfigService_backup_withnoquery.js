@@ -27,15 +27,13 @@
 
 			var requestPromise = RemoteService.getPAVFieldMetaData();
 			BaseService.startprogress();// start progress bar.
-			return requestPromise.then(function(response_FieldDescribe){
-				initializefieldNametoDFRMap(response_FieldDescribe);
-				BaseService.setPAVObjConfigLoadComplete();
-				return RemoteService.getOptiontoOptionAttributes().then(function(optiontoOptionattrs){
-					initializeportOptions(optiontoOptionattrs);
-					BaseService.setOptiontoOptionAttributeLoadComplete();
-					return service.fieldNametoDFRMap;
-			    });
-			});
+			initializefieldNametoDFRMap(sforce.connection.describeSObject('Apttus_Config2__ProductAttributeValue__c'))
+			BaseService.setPAVObjConfigLoadComplete();
+			return RemoteService.getOptiontoOptionAttributes().then(function(optiontoOptionattrs){
+				initializeportOptions(optiontoOptionattrs);
+				BaseService.setOptiontoOptionAttributeLoadComplete();
+				return service.fieldNametoDFRMap;
+		    });
 		}
 		function getPortOptions(){
 			if(isOptiontoOptionAttrsvalid == true)
@@ -82,14 +80,15 @@
 	                    		var controllingField = fieldDescribe.controllerName;
 	                    		applyDependentLOVSConfig(attributeConfig, PAV, fieldName, controllingField);	
 	                    	}
+	                    	
 	                    	// if 'Other' LOV option exists in the database then add the previously selected value to options....Applicable only for loading configured quote.
-		                    /* var selectedvalue = PAV[fieldName];
+		                    var selectedvalue = PAV[fieldName];
 		                    if(!_.isUndefined(selectedvalue)
 		                    	&& !_.contains(_.pluck(attributeConfig.picklistValues, 'value'), selectedvalue) 
 		                    	&& _.contains(_.pluck(attributeConfig.picklistValues, 'value'), 'Other'))
 		                    {
 		                    	attributeConfig.picklistValues.push(selectoptionObject(true, selectedvalue, selectedvalue, false));
-		                    }*/                    	
+		                    }                    	
 	                    	
 	                    	// if dependend selected value does not exists in the options then set the PAV to null
 							var selectedPAVValue = PAV[fieldName];
@@ -115,30 +114,34 @@
 					}
 				})
 					
-            });
-				
+            })
+
 			PAV['isDefaultLoadComplete'] = true;
             res = {pavConfigGroups: attributeGroups, PAVObj: PAV};
 			return res;
 		}
 
 		// ###################### private methods.###############################
-		function initializefieldNametoDFRMap(response){
+		function initializefieldNametoDFRMap(objDescribe){
 			service.isvalid = true;
-			_.each(response, function(fdrWrapper, fieldName){
-				var fieldDescribe = getFieldDescribe(fdrWrapper);
+			var fieldNametoFieldDescribeMap = {};
+			_.each(objDescribe.fields, function(fieldDescribe){
+				fieldNametoFieldDescribeMap[fieldDescribe.name] = fieldDescribe;
+			})
+			_.each(fieldNametoFieldDescribeMap, function(fieldDescribe, fieldName){
+				var fieldDescribe_ang = getAngularFieldDescribe(fieldDescribe);
 				var dPicklistObj = {};
-				if(fieldDescribe.fieldType == 'picklist'
-					&& fieldDescribe.isDependentPicklist == true)
+				if(fieldDescribe_ang.fieldType == 'picklist'
+					&& fieldDescribe_ang.isDependentPicklist == true)
 				{
-					var controller = fieldDescribe.controllerName;
-					var controllingpicklistOptions = response[controller].picklistOptions;
-					dPicklistObj = getStructuredDependentFields(fdrWrapper.picklistOptions, controllingpicklistOptions);	
+					var controllingFieldName = fieldDescribe_ang.controllerName;
+					var controllingpicklistValues = fieldNametoFieldDescribeMap[controllingFieldName].picklistValues;
+					dPicklistObj = getStructuredDependentFields(fieldDescribe.picklistValues, controllingpicklistValues);	
 					
-					ctodFieldMap.push({cField:controller, dField:fieldName});
+					ctodFieldMap.push({cField:controllingFieldName, dField:fieldName});
 				}
-
-				service.fieldNametoDFRMap[fieldName] = {fieldDescribe:fieldDescribe, dPicklistObj:dPicklistObj};
+				
+				service.fieldNametoDFRMap[fieldName] = {fieldDescribe:fieldDescribe_ang, dPicklistObj:dPicklistObj};
 			})
 		}
 
@@ -160,12 +163,6 @@
             {
             	options = dPicklistConfig[cSelectedPAVValue].slice();// do a slice to cline the list.
             }
-            /*// if dependend selected value does not exists in the options then set the PAV to null
-			var dSelectedPAVValue = PAV[dependentField];
-			if(!_.contains(_.pluck(options,  'value'), dSelectedPAVValue))
-			{
-				PAV[dependentField] = null;// set the dependentFile PAV to null.
-			}*/
             options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
             attributeConfig.picklistValues = options;
 		}
@@ -204,17 +201,14 @@
 		}
 
 		// prepare javascript version  of fieldDescribe based on Schema.DescribeFieldResult
-		function getFieldDescribe(fdrWrapper){
+		function getAngularFieldDescribe(fieldDescribe){
 			var res = {};
-			var fieldDescribe = fdrWrapper.fdr;
-			var fieldDescribe_addl = fdrWrapper.fdr_additional;
-
 			res['fieldType'] = getFieldType(fieldDescribe.type);
 			res['fieldName'] = fieldDescribe.name;
 			res['fieldLabel'] = fieldDescribe.label;
-			res['picklistValues'] = getPicklistValues(fieldDescribe.picklistValues);
-			res['isDependentPicklist'] = fieldDescribe.dependentPicklist;// Returns true if the picklist is a dependent picklist, false otherwise.
-			res['controllerName'] = fieldDescribe.controllerName;// Returns the token of the controlling field.
+			res['picklistValues'] = _.has(fieldDescribe, 'picklistValues') ? getPicklistValues(fieldDescribe.picklistValues) : [];
+			res['isDependentPicklist'] = _.has(fieldDescribe, 'dependentPicklist') ? true : false;// Returns true if the picklist is a dependent picklist, false otherwise.
+			res['controllerName'] = _.has(fieldDescribe, 'controllerName') ? fieldDescribe.controllerName : '';// Returns the token of the controlling field.
 			res['isUpdateable'] = fieldDescribe.updateable;//Returns true if the field can be edited by the current user, or child records in a master-detail relationship field on a custom object can be reparented to different parent records; false otherwise.
 			res['isCalculated'] = fieldDescribe.calculated;// Returns true if the field is a custom formula field, false otherwise. Note that custom formula fields are always read-only.
 			res['isCreateable'] = fieldDescribe.createable;// Returns true if the field can be created by the current user, false otherwise.
@@ -223,7 +217,7 @@
 			res['isUnique'] = fieldDescribe.unique;// Returns true if the value for the field must be unique, false otherwise
 			
 			// additional map result.
-			res['defaultValue'] = fieldDescribe_addl.defaultValue;
+			res['defaultValue'] = _.has(fieldDescribe, 'defaultValueFormula') ? fieldDescribe.defaultValueFormula : null;
 			if(res.fieldType== 'picklist')
 			{
 				var defaultLOV = _.findWhere(res.picklistValues, {defaultValue:true});
@@ -272,8 +266,12 @@
 		function getPicklistValues(ples){
 			var res = [];// defaultValue
 			// add a blank option.{--None--}
-			res = ples;
-			res.splice(0, 0, selectoptionObject(true, '--None--', null, false));
+			ples = _.isArray(ples) ? ples : [_.object(ples)];
+			_.each(ples, function(ple){
+				res.push(selectoptionObject(ple.active, ple.label, ple.value, ple.defaultValue));
+			})
+			if(_.size(res) > 0)
+				res.splice(0, 0, selectoptionObject(true, '--None--', null, false));
 			return res;
 		}
 
@@ -296,16 +294,21 @@
 		}
 
 		// object structure of Schema.PicklistEntry.
-		function selectoptionObject(active, label, value, isdefault){
-			return {active:active, label:label, value:value, defaultValue:isdefault};
+		function selectoptionObject(active, label, value, defaultValue){
+			return {active:active, label:label, value:value, defaultValue:defaultValue};
 		}
 
 		function getStructuredDependentFields(dPicklistOptions, cPicklistOptions){
 			var res = {};
 			var objResult = {};
+			var cPicklistOptions_array = [];
+			if(_.isObject(cPicklistOptions))
+				cPicklistOptions_array.push(cPicklistOptions);
+			else
+				cPicklistOptions_array = cPicklistOptions;
 			//set up the results
 			//create the entry with the controlling label
-			_.each(cPicklistOptions, function(picklistOption){
+			_.each(cPicklistOptions_array, function(picklistOption){
 				objResult[picklistOption.label] = [];
 			})
 			//cater for null and empty
@@ -315,7 +318,7 @@
 			//if valid for is empty, skip
 			_.each(dPicklistOptions, function(dPicklistOption){
 				//iterate through the controlling values
-				_.each(cPicklistOptions, function(cPicklistOption, cIndex){
+				_.each(cPicklistOptions_array, function(cPicklistOption, cIndex){
 					if(testBit(dPicklistOption.validFor, cIndex))
 					{
 						var cLabel = cPicklistOption.label;
