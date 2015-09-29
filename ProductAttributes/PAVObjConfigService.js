@@ -12,7 +12,7 @@
 		service.fieldNametoDFRMap = {};
 		service.getPAVFieldMetaData = getPAVFieldMetaData;
 		service.configurePAVFields = configurePAVFields;
-		service.applyDependedPicklistsOnChange = applyDependedPicklistsOnChange;
+		// service.applyDependedPicklistsOnChange = applyDependedPicklistsOnChange;
 		service.getPortOptions = getPortOptions;
 
 		// helper methods;
@@ -46,12 +46,12 @@
 		}
 		
 		// when drop down value is change on the attributes then apply all dependent dropdowns.
-		function applyDependedPicklistsOnChange(attributeGroups, PAV, fieldName){
+		/*function applyDependedPicklistsOnChange(attributeGroups, PAV, fieldName){
 			var res = {};
 			applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, fieldName);
 			res = {pavConfigGroups: attributeGroups, PAVObj: PAV};
 			return res;
-		}
+		}*/
 
 		// this is applicable on page load or first time renedeing of attribute groups.
 		// load picklist options from database.
@@ -184,7 +184,7 @@
 		}
 		
 		// reload all dependent dropdowns on controlling field change.
-		function applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, cField){
+		/*function applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, cField){
 			// get all dependent fields for given controllingField: cField.
 			var dFields = _.pluck(_.where(ctodFieldMap, {cField:cField}), 'dField');
 			// apply dependencies only if cField is a controlling Field else return.
@@ -222,7 +222,7 @@
 					}
 				})
 			})
-		}
+		}*/
 
 		// prepare javascript version  of fieldDescribe based on Schema.DescribeFieldResult
 		function getFieldDescribe(fdrWrapper){

@@ -44,6 +44,7 @@
             if(!_.isEmpty(newValue))
             {
                 $scope.CascadeBunleAttributestoOptions();
+                $scope.PAVConfigService.configurePAVFields($scope.AttributeGroups, optionPAV);
             }
         });
 
@@ -55,8 +56,8 @@
             _.each(bunleAttributeFields, function(field){
                 optionPAV[field] = bundlePAV[field];
             });
-            var res = $scope.PAVConfigService.configurePAVFields($scope.AttributeGroups, optionPAV);
-            optionPAV = res.PAVObj;
+            // var res = $scope.PAVConfigService.configurePAVFields($scope.AttributeGroups, optionPAV);
+            // optionPAV = res.PAVObj;
         }
             
 
@@ -96,13 +97,14 @@
             $scope.AttributeGroups = attrgroups;
             $scope.productAttributeValues = pav;
             $scope.CascadeBunleAttributestoOptions();
+            $scope.PAVConfigService.configurePAVFields($scope.AttributeGroups, optionPAV);
             $scope.optionLevelAttributeChange();
             $scope.seatTypeExpressions(attrgroups, pav);
             $scope.safeApply();
         }
 
         $scope.PAVPicklistChange = function(fieldName){
-            var res = $scope.PAVConfigService.applyDependedPicklistsOnChange($scope.AttributeGroups, $scope.productAttributeValues, fieldName);    
+            // var res = $scope.PAVConfigService.applyDependedPicklistsOnChange($scope.AttributeGroups, $scope.productAttributeValues, fieldName);    
             renderOptionAttributes(res.pavConfigGroups, res.PAVObj);
         }
 
