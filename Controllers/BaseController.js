@@ -261,7 +261,7 @@
                                     {
                                         var optionPAV = allcomponentIdToOptionPAVMap[componentId];
                                         // Other picklist is selected then set OtherSelected to true.
-                                        if(!_.isUndefined(_.findKey(optionPAV, function(value, pavField){return pavField.endsWith('Other');}))){
+                                        if(!_.isUndefined(_.findKey(optionPAV, function(value, pavField){return value == 'Other' && pavField.endsWith('Other');}))){
                                             otherSelected = true;
                                         }
                                         // clone Other Picklist values to regular Dropdowns and delete Other Field from PAV.
@@ -351,7 +351,8 @@
                         }), 
                 function(key){
                     var keywithnoother = key.slice( 0, key.lastIndexOf( "Other" ) );
-                    pav[keywithnoother] = pav[key];
+                    if(pav[keywithnoother] == 'Other')    
+                        pav[keywithnoother] = pav[key];
                     pav = _.omit(pav, key);
             })
             return pav;
