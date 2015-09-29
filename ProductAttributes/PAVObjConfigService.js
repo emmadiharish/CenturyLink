@@ -179,12 +179,6 @@
             {
             	options = dPicklistConfig[cSelectedPAVValue].slice();// do a slice to cline the list.
             }
-            /*// if dependend selected value does not exists in the options then set the PAV to null
-			var dSelectedPAVValue = PAV[dependentField];
-			if(!_.contains(_.pluck(options,  'value'), dSelectedPAVValue))
-			{
-				PAV[dependentField] = null;// set the dependentFile PAV to null.
-			}*/
             options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
             attributeConfig.picklistValues = options;
 		}
@@ -213,7 +207,15 @@
                         	options = dPicklistConfig[selectedPAVValue].slice();
             				options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
                         }
-                        
+                        // if 'Other' LOV option exists in the database then add the previously selected value to options....Applicable only for loading configured quote.
+	                    var selectedOtherValue = PAV[currentField+'Other'];
+	                    if(!_.isUndefined(selectedOtherValue)
+	                    	&& !_.contains(_.pluck(options, 'value'), selectedOtherValue) 
+	                    	&& _.contains(_.pluck(options, 'value'), 'Other'))
+	                    {
+	                    	options.push(selectoptionObject(true, selectedvalue, selectedvalue, false));
+	                    } 
+
                         attributeConfig.picklistValues = options;
                         // more than one level-dependency could exist..so recursive call.
                         applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, currentField);
