@@ -354,6 +354,7 @@
                     if(pav[keywithnoother] == 'Other')    
                         pav[keywithnoother] = pav[key];
                     pav = _.omit(pav, key);
+                    pav = _.omit(pav, key+'db');// remove Otherdb field.
             })
             return pav;
         }

@@ -79,7 +79,7 @@
 								&& _.contains(_.pluck(attributeConfig.picklistValues, 'value'), 'Other')
 								&& PAV[fieldName] != 'Other')
 		                    {
-		                    	PAV[fieldName+'Other'] = PAV[fieldName];
+		                    	PAV[fieldName+'Otherdb'] = PAV[fieldName];
 		                    }
 
                     	}else{
@@ -92,7 +92,7 @@
 								&& _.contains(_.pluck(attributeConfig.picklistValues, 'value'), 'Other')
 								&& PAV[fieldName] != 'Other')
 		                    {
-		                    	PAV[fieldName+'Other'] = PAV[fieldName];
+		                    	PAV[fieldName+'Otherdb'] = PAV[fieldName];
 		                    }
 		                    	
 	                    	// load dependent picklists if current field is dependentField.
@@ -103,7 +103,7 @@
 	                    	}
 	                    	
 	                    	// if 'Other' LOV option exists in the database then add the previously selected value to options.
-		                    var selectedOtherValue = PAV[currentField+'Other'];
+		                    var selectedOtherValue = PAV[currentField+'Otherdb'];
 		                    if(!_.isUndefined(selectedOtherValue)
 		                    	&& !_.contains(_.pluck(options, 'value'), selectedOtherValue) 
 		                    	&& _.contains(_.pluck(options, 'value'), 'Other'))
