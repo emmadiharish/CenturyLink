@@ -105,10 +105,10 @@
 	                    	// if 'Other' LOV option exists in the database then add the previously selected value to options.
 		                    var selectedOtherValue = PAV[fieldName+'Otherdb'];
 		                    if(!_.isUndefined(selectedOtherValue)
-		                    	&& !_.contains(_.pluck(options, 'value'), selectedOtherValue) 
-		                    	&& _.contains(_.pluck(options, 'value'), 'Other'))
+		                    	&& !_.contains(_.pluck(attributeConfig.picklistValues, 'value'), selectedOtherValue) 
+		                    	&& _.contains(_.pluck(attributeConfig.picklistValues, 'value'), 'Other'))
 		                    {
-		                    	options.push(selectoptionObject(true, selectedOtherValue, selectedOtherValue, false));
+		                    	attributeConfig.picklistValues.push(selectoptionObject(true, selectedOtherValue, selectedOtherValue, false));
 		                    } 
 		                    
 	                    	// if dependend selected value does not exists in the options then set the PAV to null
