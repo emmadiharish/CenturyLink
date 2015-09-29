@@ -135,7 +135,9 @@
 					&& fieldDescribe_ang.isDependentPicklist == true)
 				{
 					var controllingFieldName = fieldDescribe_ang.controllerName;
-					var controllingpicklistValues = fieldNametoFieldDescribeMap[controllingFieldName].picklistValues;
+					var controllingpicklistValues = [];
+					controllingpicklistValues.push(fieldNametoFieldDescribeMap[controllingFieldName].picklistValues);
+					controllingpicklistValues = _.flatten(controllingpicklistValues);
 					dPicklistObj = getStructuredDependentFields(fieldDescribe.picklistValues, controllingpicklistValues);	
 					
 					ctodFieldMap.push({cField:controllingFieldName, dField:fieldName});
@@ -301,7 +303,7 @@
 		function getStructuredDependentFields(dPicklistOptions, cPicklistOptions){
 			var res = {};
 			var objResult = {};
-			cPicklistOptions = _.isArray(cPicklistOptions) ? cPicklistOptions : [_.object(cPicklistOptions)];
+			//cPicklistOptions = _.isArray(cPicklistOptions) ? cPicklistOptions : [_.object(cPicklistOptions)];
 			//set up the results
 			//create the entry with the controlling label
 			_.each(cPicklistOptions, function(picklistOption){
