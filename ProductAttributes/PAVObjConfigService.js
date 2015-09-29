@@ -81,6 +81,7 @@
 		                    {
 		                    	PAV[fieldName+'Other'] = PAV[fieldName];
 		                    }
+
                     	}else{
                     		// load Normal picklist LOV's from Salesforce config.
 	                    	attributeConfig['picklistValues'] = fieldDescribe.picklistValues;
@@ -101,15 +102,15 @@
 	                    		applyDependentLOVSConfig(attributeConfig, PAV, fieldName, controllingField);	
 	                    	}
 	                    	
-	                    	// if 'Other' LOV option exists in the database then add the previously selected value to options....Applicable only for loading configured quote.
-		                    var selectedvalue = PAV[fieldName];
-		                    if(!_.isUndefined(selectedvalue)
-		                    	&& !_.contains(_.pluck(attributeConfig.picklistValues, 'value'), selectedvalue) 
-		                    	&& _.contains(_.pluck(attributeConfig.picklistValues, 'value'), 'Other'))
+	                    	// if 'Other' LOV option exists in the database then add the previously selected value to options.
+		                    var selectedOtherValue = PAV[currentField+'Other'];
+		                    if(!_.isUndefined(selectedOtherValue)
+		                    	&& !_.contains(_.pluck(options, 'value'), selectedOtherValue) 
+		                    	&& _.contains(_.pluck(options, 'value'), 'Other'))
 		                    {
-		                    	attributeConfig.picklistValues.push(selectoptionObject(true, selectedvalue, selectedvalue, false));
-		                    }                   	
-	                    	
+		                    	options.push(selectoptionObject(true, selectedOtherValue, selectedOtherValue, false));
+		                    } 
+		                    
 	                    	// if dependend selected value does not exists in the options then set the PAV to null
 							var selectedPAVValue = PAV[fieldName];
 							if(!_.contains(_.pluck(attributeConfig.picklistValues,  'value'), selectedPAVValue))
@@ -207,6 +208,7 @@
                         	options = dPicklistConfig[selectedPAVValue].slice();
             				options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
                         }
+
                         // if 'Other' LOV option exists in the database then add the previously selected value to options.
 	                    var selectedOtherValue = PAV[currentField+'Other'];
 	                    if(!_.isUndefined(selectedOtherValue)
@@ -214,7 +216,7 @@
 	                    	&& _.contains(_.pluck(options, 'value'), 'Other'))
 	                    {
 	                    	options.push(selectoptionObject(true, selectedOtherValue, selectedOtherValue, false));
-	                    } 
+	                    }
 
                         attributeConfig.picklistValues = options;
                         // more than one level-dependency could exist..so recursive call.
