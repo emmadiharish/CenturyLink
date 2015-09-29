@@ -72,6 +72,14 @@
 	                    {
 	                    	// load picklist LOV's within APTPS_CPQ.productAtribute for dynamic attributes and custom attributes from custom settings: APTPS_ProdSpec_DynAttr__c. 
                     		attributeConfig['picklistValues'] = getPicklistValues(prepareOptionsList(attributeConfig.lovs));
+                    		
+                    		// load Other field value to Other field.
+	                    	if((!_.has(PAV, 'isDefaultLoadComplete')
+								|| PAV.isDefaultLoadComplete == false)
+								&& _.contains(_.pluck(attributeConfig.picklistValues, 'value'), 'Other'))
+		                    {
+		                    	PAV[fieldName+'Other'] = PAV[fieldName];
+		                    }
                     	}else{
                     		// load Normal picklist LOV's from Salesforce config.
 	                    	attributeConfig['picklistValues'] = fieldDescribe.picklistValues;
