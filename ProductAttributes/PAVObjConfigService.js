@@ -207,8 +207,8 @@
 			res['fieldName'] = fieldDescribe.name;
 			res['fieldLabel'] = fieldDescribe.label;
 			res['picklistValues'] = _.has(fieldDescribe, 'picklistValues') ? getPicklistValues(fieldDescribe.picklistValues) : [];
-			res['isDependentPicklist'] = fieldDescribe.dependentPicklist;// Returns true if the picklist is a dependent picklist, false otherwise.
-			res['controllerName'] = fieldDescribe.controllerName;// Returns the token of the controlling field.
+			res['isDependentPicklist'] = _.has(fieldDescribe, 'dependentPicklist') ? true : false;// Returns true if the picklist is a dependent picklist, false otherwise.
+			res['controllerName'] = _.has(fieldDescribe, 'controllerName') ? fieldDescribe.controllerName : '';// Returns the token of the controlling field.
 			res['isUpdateable'] = fieldDescribe.updateable;//Returns true if the field can be edited by the current user, or child records in a master-detail relationship field on a custom object can be reparented to different parent records; false otherwise.
 			res['isCalculated'] = fieldDescribe.calculated;// Returns true if the field is a custom formula field, false otherwise. Note that custom formula fields are always read-only.
 			res['isCreateable'] = fieldDescribe.createable;// Returns true if the field can be created by the current user, false otherwise.
