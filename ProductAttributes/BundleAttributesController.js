@@ -6,9 +6,7 @@
         $scope.init = function(){
         	$scope.locationService = LocationDataService;
             $scope.constants = SystemConstants;
-            $scope.PAVService = ProductAttributeValueDataService;
-            $scope.PAConfigService = ProductAttributeConfigDataService;
-            $scope.PAVConfigService = PAVObjConfigService;
+            $scope.BaseConfig = BaseConfigService;
 
             $scope.AttributeGroups = [];// attribute config groups for main bundle.
             $scope.pavfieldDescribeMap = {};
@@ -43,17 +41,17 @@
                 var alllocationIdSet = $scope.locationService.getalllocationIdSet();
                 var selectedlocationId = $scope.locationService.getselectedlpaId();
                 var bundleProductId = BaseConfigService.bundleProdId;
-                $scope.PAVConfigService.getPAVFieldMetaData().then(function(fieldDescribeMap){
+                PAVObjConfigService.getPAVFieldMetaData().then(function(fieldDescribeMap){
                     if(_.isEmpty($scope.pavfieldDescribeMap))
                     {
                         $scope.pavfieldDescribeMap = fieldDescribeMap;
                     }
-                    $scope.PAConfigService.getProductAttributesConfig(bundleProductId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
-                        $scope.PAVService.getProductAttributeValues(bundleProductId).then(function(result)
+                    ProductAttributeConfigDataService.getProductAttributesConfig(bundleProductId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
+                        ProductAttributeValueDataService.getProductAttributeValues(bundleProductId).then(function(result)
                         {
-                            $scope.PAConfigService.setBundleAttributeFields(attributeconfigresult);
-                            var bundlePAV = $scope.PAVService.getbundleproductattributevalues();
-                            var res = $scope.PAVConfigService.configurePAVFields(attributeconfigresult, bundlePAV);
+                            ProductAttributeConfigDataService.setBundleAttributeFields(attributeconfigresult);
+                            var bundlePAV = ProductAttributeValueDataService.getbundleproductattributevalues();
+                            var res = PAVObjConfigService.configurePAVFields(attributeconfigresult, bundlePAV);
                             renderBundleAttributes(res.pavConfigGroups, res.PAVObj);
                             $scope.remotecallinitiated = false;
                         })
@@ -65,13 +63,13 @@
         function renderBundleAttributes(attrgroups, pav){
             // clear the previous option attribute groups.
             $scope.AttributeGroups = attrgroups;
-            $scope.PAVService.setbundleproductattributevalues(pav);
-            $scope.productAttributeValues = $scope.PAVService.getbundleproductattributevalues();
+            ProductAttributeValueDataService.setbundleproductattributevalues(pav);
+            $scope.productAttributeValues = ProductAttributeValueDataService.getbundleproductattributevalues();
             $scope.safeApply();   
         }
         
         $scope.PAVPicklistChange = function(fieldName){
-            var res = $scope.PAVConfigService.applyDependedPicklistsOnChange($scope.AttributeGroups, $scope.productAttributeValues, fieldName);    
+            var res = PAVObjConfigService.applyDependedPicklistsOnChange($scope.AttributeGroups, $scope.productAttributeValues, fieldName);    
             renderBundleAttributes(res.pavConfigGroups, res.PAVObj);
         }
 
