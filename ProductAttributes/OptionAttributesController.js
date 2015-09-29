@@ -44,7 +44,7 @@
             if(!_.isEmpty(newValue))
             {
                 $scope.CascadeBunleAttributestoOptions();
-                $scope.PAVConfigService.configurePAVFields($scope.AttributeGroups, optionPAV);
+                $scope.PAVConfigService.configurePAVFields($scope.AttributeGroups, $scope.productAttributeValues);
             }
         });
 
@@ -97,7 +97,7 @@
             $scope.AttributeGroups = attrgroups;
             $scope.productAttributeValues = pav;
             $scope.CascadeBunleAttributestoOptions();
-            $scope.PAVConfigService.configurePAVFields($scope.AttributeGroups, optionPAV);
+            $scope.PAVConfigService.configurePAVFields($scope.AttributeGroups, $scope.productAttributeValues);
             $scope.optionLevelAttributeChange();
             $scope.seatTypeExpressions(attrgroups, pav);
             $scope.safeApply();
