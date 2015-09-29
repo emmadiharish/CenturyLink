@@ -76,12 +76,19 @@
                     		// load Normal picklist LOV's from Salesforce config.
 	                    	attributeConfig['picklistValues'] = fieldDescribe.picklistValues;
 
+	                    	// load Other field value to Other field.
+	                    	if(_.contains(_.pluck(attributeConfig.picklistValues, 'value'), 'Other'))
+		                    {
+		                    	PAV[fieldName+'Other'] = PAV[fieldName];
+		                    }
+		                    	
 	                    	// load dependent picklists if current field is dependentField.
 	                    	if(fieldDescribe.isDependentPicklist == true)
 	                    	{
 	                    		var controllingField = fieldDescribe.controllerName;
 	                    		applyDependentLOVSConfig(attributeConfig, PAV, fieldName, controllingField);	
 	                    	}
+	                    	
 	                    	// if 'Other' LOV option exists in the database then add the previously selected value to options....Applicable only for loading configured quote.
 		                    var selectedvalue = PAV[fieldName];
 		                    if(!_.isUndefined(selectedvalue)
