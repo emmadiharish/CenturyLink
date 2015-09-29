@@ -29,14 +29,11 @@
 			BaseService.startprogress();// start progress bar.
 			initializefieldNametoDFRMap(sforce.connection.describeSObject('Apttus_Config2__ProductAttributeValue__c'))
 			BaseService.setPAVObjConfigLoadComplete();
-			//return requestPromise.then(function(response_FieldDescribe){
-				// initializefieldNametoDFRMap(response_FieldDescribe);
-				return RemoteService.getOptiontoOptionAttributes().then(function(optiontoOptionattrs){
-					initializeportOptions(optiontoOptionattrs);
-					BaseService.setOptiontoOptionAttributeLoadComplete();
-					return service.fieldNametoDFRMap;
-			    });
-			//});
+			return RemoteService.getOptiontoOptionAttributes().then(function(optiontoOptionattrs){
+				initializeportOptions(optiontoOptionattrs);
+				BaseService.setOptiontoOptionAttributeLoadComplete();
+				return service.fieldNametoDFRMap;
+		    });
 		}
 		function getPortOptions(){
 			if(isOptiontoOptionAttrsvalid == true)
@@ -83,14 +80,15 @@
 	                    		var controllingField = fieldDescribe.controllerName;
 	                    		applyDependentLOVSConfig(attributeConfig, PAV, fieldName, controllingField);	
 	                    	}
+	                    	
 	                    	// if 'Other' LOV option exists in the database then add the previously selected value to options....Applicable only for loading configured quote.
-		                    /* var selectedvalue = PAV[fieldName];
+		                    var selectedvalue = PAV[fieldName];
 		                    if(!_.isUndefined(selectedvalue)
 		                    	&& !_.contains(_.pluck(attributeConfig.picklistValues, 'value'), selectedvalue) 
 		                    	&& _.contains(_.pluck(attributeConfig.picklistValues, 'value'), 'Other'))
 		                    {
 		                    	attributeConfig.picklistValues.push(selectoptionObject(true, selectedvalue, selectedvalue, false));
-		                    }*/                    	
+		                    }                    	
 	                    	
 	                    	// if dependend selected value does not exists in the options then set the PAV to null
 							var selectedPAVValue = PAV[fieldName];
@@ -147,25 +145,6 @@
 			})
 		}
 
-		/*function initializefieldNametoDFRMap(response){
-			service.isvalid = true;
-			_.each(response, function(fdrWrapper, fieldName){
-				var fieldDescribe = getFieldDescribe(fdrWrapper);
-				var dPicklistObj = {};
-				if(fieldDescribe.fieldType == 'picklist'
-					&& fieldDescribe.isDependentPicklist == true)
-				{
-					var controller = fieldDescribe.controllerName;
-					var controllingpicklistOptions = response[controller].picklistOptions;
-					dPicklistObj = getStructuredDependentFields(fdrWrapper.picklistOptions, controllingpicklistOptions);	
-					
-					ctodFieldMap.push({cField:controller, dField:fieldName});
-				}
-
-				service.fieldNametoDFRMap[fieldName] = {fieldDescribe:fieldDescribe, dPicklistObj:dPicklistObj};
-			})
-		}*/
-
 		function initializeportOptions(result){
 			isOptiontoOptionAttrsvalid = true;
 			var portOptions = [];
@@ -184,12 +163,6 @@
             {
             	options = dPicklistConfig[cSelectedPAVValue].slice();// do a slice to cline the list.
             }
-            /*// if dependend selected value does not exists in the options then set the PAV to null
-			var dSelectedPAVValue = PAV[dependentField];
-			if(!_.contains(_.pluck(options,  'value'), dSelectedPAVValue))
-			{
-				PAV[dependentField] = null;// set the dependentFile PAV to null.
-			}*/
             options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
             attributeConfig.picklistValues = options;
 		}
@@ -230,9 +203,6 @@
 		// prepare javascript version  of fieldDescribe based on Schema.DescribeFieldResult
 		function getAngularFieldDescribe(fieldDescribe){
 			var res = {};
-			// var fieldDescribe = fdrWrapper.fdr;
-			//var fieldDescribe_addl = fdrWrapper.fdr_additional;
-
 			res['fieldType'] = getFieldType(fieldDescribe.type);
 			res['fieldName'] = fieldDescribe.name;
 			res['fieldLabel'] = fieldDescribe.label;
@@ -247,7 +217,6 @@
 			res['isUnique'] = fieldDescribe.unique;// Returns true if the value for the field must be unique, false otherwise
 			
 			// additional map result.
-			//res['defaultValue'] = fieldDescribe_addl.defaultValue;
 			res['defaultValue'] = _.has(fieldDescribe, 'defaultValueFormula') ? fieldDescribe.defaultValueFormula : null;
 			if(res.fieldType== 'picklist')
 			{
