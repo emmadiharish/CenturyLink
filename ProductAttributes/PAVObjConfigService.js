@@ -266,6 +266,7 @@
 		function getPicklistValues(ples){
 			var res = [];// defaultValue
 			// add a blank option.{--None--}
+			ples = _.isArray(ples) ? _toarray(ples) : ples;
 			_.each(ples, function(ple){
 				res.push(selectoptionObject(ple.active, ple.label, ple.value, ple.defaultValue));
 			})
