@@ -73,10 +73,11 @@
 	                    	// load picklist LOV's within APTPS_CPQ.productAtribute for dynamic attributes and custom attributes from custom settings: APTPS_ProdSpec_DynAttr__c. 
                     		attributeConfig['picklistValues'] = getPicklistValues(prepareOptionsList(attributeConfig.lovs));
                     		
-                    		// load Other field value to Other field.
+                    		// load Other field values to Other field.
 	                    	if((!_.has(PAV, 'isDefaultLoadComplete')
 								|| PAV.isDefaultLoadComplete == false)
-								&& _.contains(_.pluck(attributeConfig.picklistValues, 'value'), 'Other'))
+								&& _.contains(_.pluck(attributeConfig.picklistValues, 'value'), 'Other')
+								&& PAV[fieldName] != 'Other')
 		                    {
 		                    	PAV[fieldName+'Other'] = PAV[fieldName];
 		                    }
@@ -87,7 +88,8 @@
 	                    	// load Other field value to Other field.
 	                    	if((!_.has(PAV, 'isDefaultLoadComplete')
 								|| PAV.isDefaultLoadComplete == false)
-								&& _.contains(_.pluck(attributeConfig.picklistValues, 'value'), 'Other'))
+								&& _.contains(_.pluck(attributeConfig.picklistValues, 'value'), 'Other')
+								&& PAV[fieldName] != 'Other')
 		                    {
 		                    	PAV[fieldName+'Other'] = PAV[fieldName];
 		                    }
