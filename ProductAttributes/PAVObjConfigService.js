@@ -103,7 +103,7 @@
 	                    	}
 	                    	
 	                    	// if 'Other' LOV option exists in the database then add the previously selected value to options.
-		                    var selectedOtherValue = PAV[currentField+'Otherdb'];
+		                    var selectedOtherValue = PAV[fieldName+'Otherdb'];
 		                    if(!_.isUndefined(selectedOtherValue)
 		                    	&& !_.contains(_.pluck(options, 'value'), selectedOtherValue) 
 		                    	&& _.contains(_.pluck(options, 'value'), 'Other'))
