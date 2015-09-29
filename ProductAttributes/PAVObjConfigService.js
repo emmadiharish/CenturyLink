@@ -266,7 +266,7 @@
 		function getPicklistValues(ples){
 			var res = [];// defaultValue
 			// add a blank option.{--None--}
-			ples = _.isArray(ples) ? ples : _.toArray(ples);
+			ples = _.isArray(ples) ? ples : [ples];
 			_.each(ples, function(ple){
 				res.push(selectoptionObject(ple.active, ple.label, ple.value, ple.defaultValue));
 			})
@@ -301,7 +301,7 @@
 		function getStructuredDependentFields(dPicklistOptions, cPicklistOptions){
 			var res = {};
 			var objResult = {};
-			cPicklistOptions = _.isArray(cPicklistOptions) ? cPicklistOptions : _.toArray(cPicklistOptions);
+			cPicklistOptions = _.isArray(cPicklistOptions) ? cPicklistOptions : [cPicklistOptions];
 			//set up the results
 			//create the entry with the controlling label
 			_.each(cPicklistOptions, function(picklistOption){
