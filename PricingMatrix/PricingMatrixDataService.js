@@ -103,7 +103,6 @@
 						PMEntry['PMEntryName'] = pme.Name;
 
 						PAVlines.push(PMEntry);
-					}
 				})
 			})
 
