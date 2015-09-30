@@ -52,7 +52,7 @@
                             ProductAttributeConfigDataService.setBundleAttributeFields(attributeconfigresult);
                             var bundlePAV = ProductAttributeValueDataService.getbundleproductattributevalues();
                             // var res = PAVObjConfigService.configurePAVFields(attributeconfigresult, bundlePAV);
-                            renderBundleAttributes(res.pavConfigGroups, res.PAVObj);
+                            renderBundleAttributes(attributeconfigresult, bundlePAV);
                             $scope.remotecallinitiated = false;
                         })
                     })
@@ -74,22 +74,6 @@
             // var res = PAVObjConfigService.applyDependedPicklistsOnChange($scope.AttributeGroups, $scope.productAttributeValues, fieldName);    
             renderBundleAttributes($scope.AttributeGroups, $scope.productAttributeValues);
         }
-
-        // delete unwanted fields from PAV which are not configured at product attributes.
-        /*function cleanupPAV(attrgroups, pav){
-            var res = {};
-            // get all fieldValues from attrgroups
-            var allattrGroupFields = [];
-            _.each(attrgroups, function(attrgroup){
-                allattrGroupFields.push(_.pluck(attrgroup.productAtributes, 'fieldName'));
-            })
-            allattrGroupFields = _.flatten(allattrGroupFields);
-
-            res = _.omit(pav, function(value, key, object) {
-                    return !_.contains(allattrGroupFields, key);
-                });
-            return res;
-        }*/
 
         $scope.init();
 	};
