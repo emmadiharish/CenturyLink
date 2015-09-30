@@ -43,42 +43,42 @@
 					var dimension5 = pm.Apttus_Config2__Dimension5Id__r.Apttus_Config2__Datasource__c;
 					var dimension6 = pm.Apttus_Config2__Dimension6Id__r.Apttus_Config2__Datasource__c;
 					if(!_.isUndefined(dimension1) 
-						&& _.isNull(dimension1) 
+						&& !_.isNull(dimension1) 
 						&& !_.contains(dimensions, dimension1)
 						&& _.has(pavfieldDescribeMap, dimension1))
 							dimensions.push(dimension1);
 					else
 						dimension1 = null;
 					if(!_.isUndefined(dimension2) 
-						&& _.isNull(dimension2) 
+						&& !_.isNull(dimension2) 
 						&& !_.contains(dimensions, dimension2)
 						&& _.has(pavfieldDescribeMap, dimension2))
 							dimensions.push(dimension2);
 					else
 						dimension2 = null;
 					if(!_.isUndefined(dimension3) 
-						&& _.isNull(dimension3) 
+						&& !_.isNull(dimension3) 
 						&& !_.contains(dimensions, dimension3)
 						&& _.has(pavfieldDescribeMap, dimension3))
 							dimensions.push(dimension3);
 					else
 						dimension3 = null;
 					if(!_.isUndefined(dimension4) 
-						&& _.isNull(dimension4) 
+						&& !_.isNull(dimension4) 
 						&& !_.contains(dimensions, dimension4)
 						&& _.has(pavfieldDescribeMap, dimension4))
 							dimensions.push(dimension4);
 					else
 						dimension4 = null;
 					if(!_.isUndefined(dimension5) 
-						&& _.isNull(dimension5) 
+						&& !_.isNull(dimension5) 
 						&& !_.contains(dimensions, dimension5)
 						&& _.has(pavfieldDescribeMap, dimension5))
 							dimensions.push(dimension5);
 					else
 						dimension5 = null;
 					if(!_.isUndefined(dimension6) 
-						&& _.isNull(dimension6) 
+						&& !_.isNull(dimension6) 
 						&& !_.contains(dimensions, dimension6)
 						&& _.has(pavfieldDescribeMap, dimension6))
 							dimensions.push(dimension6);
