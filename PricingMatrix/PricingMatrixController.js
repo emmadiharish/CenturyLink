@@ -21,7 +21,7 @@
             {
 	            $scope.pricingMatrixService.getPricingMatrix().then(function(result) {
 			        $scope.items = result.lines;		
-					$scope.dimentions = result.dimentions;
+					$scope.dimensions = result.dimensions;
 					$scope.pavfieldDescribeMap = PAVObjConfigService.fieldNametoDFRMap;
 					$scope.currentPage = 0;   
 			    	
@@ -42,19 +42,19 @@
 	    //Initialize the Search Filters 
 	    $scope.search = function () {
 	        var selectedAttrValues = $scope.PAVService.getbundleproductattributevalues();
-	        var dimentions_nonblank = [];
-	        _.each($scope.dimentions, function(field) {
+	        var dimensions_nonblank = [];
+	        _.each($scope.dimensions, function(field) {
 	            if(!_.isUndefined(selectedAttrValues[field])
 	                && !_.isNull(selectedAttrValues[field])
 	                && selectedAttrValues[field] != '')
 	            {
-	                dimentions_nonblank.push(field);
+	                dimensions_nonblank.push(field);
 	            }
 	        });
 	        filteredItems = $filter('filter')($scope.items, function (item) {
-	            for (var i = 0; i < dimentions_nonblank.length;  i++) {
-	            var prodattvalue = selectedAttrValues[dimentions_nonblank[i]];
-	                var pricingmatrixvalue = item[dimentions_nonblank[i]];
+	            for (var i = 0; i < dimensions_nonblank.length;  i++) {
+	            var prodattvalue = selectedAttrValues[dimensions_nonblank[i]];
+	                var pricingmatrixvalue = item[dimensions_nonblank[i]];
 	                if(prodattvalue != pricingmatrixvalue)
 	                {
 	                   return false;
