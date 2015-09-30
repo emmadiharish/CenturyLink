@@ -4,18 +4,18 @@
     SelectLocationController = function($scope, $log, LocationDataService) {
         // all variable intializations.
         $scope.init = function(){
-            $scope.selectedlpa = {};
+            $scope.selectedlpa = LocationDataService.getselectedlpa();
             $scope.locationService = LocationDataService;
             $scope.displaylocations = false;
         }
         $scope.init();
 
-        $scope.$watch('locationService.getselectedlpa()', function(newVal) {
+        /*$scope.$watch('locationService.getselectedlpa()', function(newVal) {
             if(newVal)
             {
                 $scope.selectedlpa = newVal;
             }    
-        });
+        });*/
 
         $scope.$watch('locationService.gethasServicelocations()', function(newVal, oldVal) {
             if(newVal != oldVal
