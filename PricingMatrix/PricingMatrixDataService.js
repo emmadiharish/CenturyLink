@@ -32,7 +32,7 @@
 			var PAVlines = [];
 			var pavfieldDescribeMap = PAVObjConfigService.fieldNametoDFRMap;
 
-			var priceListItems = response.priceListItems;
+			// var priceListItems = response.priceListItems;
 			var priceMatrices = response.priceMatrices;
 			// _.each(priceListItems, function(pli){
 				_.each(priceMatrices, function(pm){
