@@ -34,7 +34,7 @@
 
 			var priceListItems = response.priceListItems;
 			var priceMatrices = response.priceMatrices;
-			_.each(priceListItems, function(pli){
+			// _.each(priceListItems, function(pli){
 				_.each(priceMatrices, function(pm){
 					var dimension1 = pm.Apttus_Config2__Dimension1Id__r.Apttus_Config2__Datasource__c;
 					var dimension2 = pm.Apttus_Config2__Dimension2Id__r.Apttus_Config2__Datasource__c;
@@ -106,7 +106,7 @@
 						PAVlines.push(PMEntry);
 					})
 				})
-			})
+			//})
 
 			if(_.size(dimensions) > 0)
 				dimensions.push('Price__c');
