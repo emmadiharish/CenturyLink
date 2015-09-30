@@ -76,22 +76,6 @@
             })
         }
 
-        //Removing Dynamic Attributes Group if it has no values
-        /*$scope.optionDynamicAttributeValidation = function(AttrGroups){
-            _.each(AttrGroups,function(group){
-                if(group.groupName == 'Dynamic attributes'){
-                    _.each(group.productAtributes, function(attrItems){
-                        if(attrItems.picklistValues.length == 1 && attrItems.picklistValues[0].label == '--None--'){
-                            group.productAtributes.remove(attrItems);
-                        }
-                    });
-                }
-                if(group.groupName == 'Dynamic attributes' && group.productAtributes.length == 0){
-                    AttrGroups.remove(group);
-                }
-            });
-        }*/
-
         function renderOptionAttributes(attrgroups, pav){
             // clear the previous option attribute groups.
             $scope.AttributeGroups = attrgroups;

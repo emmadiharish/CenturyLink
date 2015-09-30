@@ -355,6 +355,7 @@
                         pav[keywithnoother] = pav[key];
                     pav = _.omit(pav, key);
             })
+            
             // remove Otherdb field.
              _.each(_.filter(_.keys(pav), function(pavField){
                             return pavField.endsWith('Otherdb');
