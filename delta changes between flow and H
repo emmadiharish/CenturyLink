@@ -1,0 +1,8 @@
+1. Seat type expression
+	- BundleController
+	- OptionController
+	- OptionGroupDataService
+
+2. special characters in attributes.
+	- BundleController
+	- OptionController
