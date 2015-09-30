@@ -64,7 +64,7 @@
             // clear the previous option attribute groups.
             $scope.AttributeGroups = attrgroups;
             $scope.productAttributeValues = pav;
-            $scope.PAVConfigService.configurePAVFields($scope.AttributeGroups, $scope.productAttributeValues);
+            PAVObjConfigService.configurePAVFields($scope.AttributeGroups, $scope.productAttributeValues);
             ProductAttributeValueDataService.setbundleproductattributevalues($scope.productAttributeValues);
             // $scope.productAttributeValues = ProductAttributeValueDataService.getbundleproductattributevalues();
             $scope.safeApply();   
