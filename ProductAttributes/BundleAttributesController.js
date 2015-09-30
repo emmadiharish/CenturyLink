@@ -51,7 +51,7 @@
                         {
                             ProductAttributeConfigDataService.setBundleAttributeFields(attributeconfigresult);
                             var bundlePAV = ProductAttributeValueDataService.getbundleproductattributevalues();
-                            var res = PAVObjConfigService.configurePAVFields(attributeconfigresult, bundlePAV);
+                            // var res = PAVObjConfigService.configurePAVFields(attributeconfigresult, bundlePAV);
                             renderBundleAttributes(res.pavConfigGroups, res.PAVObj);
                             $scope.remotecallinitiated = false;
                         })
@@ -63,14 +63,16 @@
         function renderBundleAttributes(attrgroups, pav){
             // clear the previous option attribute groups.
             $scope.AttributeGroups = attrgroups;
-            ProductAttributeValueDataService.setbundleproductattributevalues(pav);
-            $scope.productAttributeValues = ProductAttributeValueDataService.getbundleproductattributevalues();
+            $scope.productAttributeValues = pav;
+            $scope.PAVConfigService.configurePAVFields($scope.AttributeGroups, $scope.productAttributeValues);
+            ProductAttributeValueDataService.setbundleproductattributevalues($scope.productAttributeValues);
+            // $scope.productAttributeValues = ProductAttributeValueDataService.getbundleproductattributevalues();
             $scope.safeApply();   
         }
         
         $scope.PAVPicklistChange = function(fieldName){
-            var res = PAVObjConfigService.applyDependedPicklistsOnChange($scope.AttributeGroups, $scope.productAttributeValues, fieldName);    
-            renderBundleAttributes(res.pavConfigGroups, res.PAVObj);
+            // var res = PAVObjConfigService.applyDependedPicklistsOnChange($scope.AttributeGroups, $scope.productAttributeValues, fieldName);    
+            renderBundleAttributes($scope.AttributeGroups, $scope.productAttributeValues);
         }
 
         // delete unwanted fields from PAV which are not configured at product attributes.

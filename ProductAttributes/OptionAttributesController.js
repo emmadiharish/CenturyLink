@@ -69,9 +69,9 @@
             $scope.PAConfigService.getProductAttributesConfig(productId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
                 $scope.PAVService.getProductAttributeValues(componentId).then(function(pavresult)
                 {
-                    var res = $scope.PAVConfigService.configurePAVFields(attributeconfigresult, pavresult);
+                    // var res = $scope.PAVConfigService.configurePAVFields(attributeconfigresult, pavresult);
                     // $scope.optionDynamicAttributeValidation(res.pavConfigGroups);
-                    renderOptionAttributes(res.pavConfigGroups, res.PAVObj);
+                    renderOptionAttributes(attributeconfigresult, pavresult);
                 })
             })
         }
