@@ -47,57 +47,45 @@
 						&& !_.contains(dimensions, dimension1)
 						&& _.has(pavfieldDescribeMap, dimension1))
 							dimensions.push(dimension1);
-					else
-						dimension1 = null;
 					if(!_.isUndefined(dimension2) 
 						&& !_.isNull(dimension2) 
 						&& !_.contains(dimensions, dimension2)
 						&& _.has(pavfieldDescribeMap, dimension2))
 							dimensions.push(dimension2);
-					else
-						dimension2 = null;
 					if(!_.isUndefined(dimension3) 
 						&& !_.isNull(dimension3) 
 						&& !_.contains(dimensions, dimension3)
 						&& _.has(pavfieldDescribeMap, dimension3))
 							dimensions.push(dimension3);
-					else
-						dimension3 = null;
 					if(!_.isUndefined(dimension4) 
 						&& !_.isNull(dimension4) 
 						&& !_.contains(dimensions, dimension4)
 						&& _.has(pavfieldDescribeMap, dimension4))
 							dimensions.push(dimension4);
-					else
-						dimension4 = null;
 					if(!_.isUndefined(dimension5) 
 						&& !_.isNull(dimension5) 
 						&& !_.contains(dimensions, dimension5)
 						&& _.has(pavfieldDescribeMap, dimension5))
 							dimensions.push(dimension5);
-					else
-						dimension5 = null;
 					if(!_.isUndefined(dimension6) 
 						&& !_.isNull(dimension6) 
 						&& !_.contains(dimensions, dimension6)
 						&& _.has(pavfieldDescribeMap, dimension6))
 							dimensions.push(dimension6);
-					else
-						dimension6 = null;
 					var pmEntries = pm.Apttus_Config2__MatrixEntries__r;
 					_.each(pmEntries, function(pme){
 						var PMEntry = {};
-						if(!_.isNull(dimension1))
+						if(_.contains(dimensions, dimension1))
 							PMEntry[dimension1] = pme.Apttus_Config2__Dimension1Value__c;
-						if(!_.isNull(dimension2))
+						if(_.contains(dimensions, dimension2))
 							PMEntry[dimension2] = pme.Apttus_Config2__Dimension2Value__c;
-						if(!_.isNull(dimension3))
+						if(_.contains(dimensions, dimension3))
 							PMEntry[dimension3] = pme.Apttus_Config2__Dimension3Value__c;
-						if(!_.isNull(dimension4))
+						if(_.contains(dimensions, dimension4))
 							PMEntry[dimension4] = pme.Apttus_Config2__Dimension4Value__c;
-						if(!_.isNull(dimension5))
+						if(_.contains(dimensions, dimension5))
 							PMEntry[dimension5] = pme.Apttus_Config2__Dimension5Value__c;
-						if(!_.isNull(dimension6))
+						if(_.contains(dimensions, dimension6))
 							PMEntry[dimension6] = pme.Apttus_Config2__Dimension6Value__c;
 						PMEntry['Price__c'] = pme.Apttus_Config2__AdjustmentAmount__c;
 						PMEntry['Pricing_Matrix_Id__c'] = pme.Id;
