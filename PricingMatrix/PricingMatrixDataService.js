@@ -86,6 +86,7 @@
 						dimension6 = null;
 					var pmEntries = pm.Apttus_Config2__MatrixEntries__r;
 					_.each(pmEntries, function(pme){
+						var PMEntry = {};
 						if(!_.isNull(dimension1))
 							PMEntry[dimension1] = pme.Apttus_Config2__Dimension1Value__c;
 						if(!_.isNull(dimension2))
