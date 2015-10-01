@@ -6,8 +6,8 @@
     var OptionGroupController;
 
     OptionGroupController = function($scope, $log, $location, $sce, QuoteDataService, OptionGroupDataService) {
-		var groupCtrl = this;
-        groupCtrl.renderHTML = renderHTML;
+		var groupsCtrl = this;
+        groupsCtrl.renderHTML = renderHTML;
 
         // all variable intializations.
         $scope.init = function(){
