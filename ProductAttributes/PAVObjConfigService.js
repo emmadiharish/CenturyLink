@@ -165,16 +165,17 @@
             {
             	options = dPicklistConfig[cSelectedPAVValue].slice();// do a slice to cline the list.
             }
-            options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
             
             // if dependent fields are loaded from Custom settings then apply dependencies on top of custom settings. else just apply normal dependencies.
             if(!_.isEmpty(attributeConfig.lovs))
             {
-            	attributeConfig.picklistValues = _.filter(options , function(option){return _.contains(attributeConfig.lovs, option.value);})
+            	options = _.filter(options , function(option){return _.contains(attributeConfig.lovs, option.value);})
             }
-            else{
-            	attributeConfig.picklistValues = options;
-            }
+            
+            // add None Option as first in the list.
+            options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
+            attributeConfig.picklistValues = options;
+            
         }
 		
 		// prepare javascript version  of fieldDescribe based on Schema.DescribeFieldResult
