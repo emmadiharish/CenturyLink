@@ -12,7 +12,6 @@
 		service.fieldNametoDFRMap = {};
 		service.getPAVFieldMetaData = getPAVFieldMetaData;
 		service.configurePAVFields = configurePAVFields;
-		// service.applyDependedPicklistsOnChange = applyDependedPicklistsOnChange;
 		service.getPortOptions = getPortOptions;
 
 		// helper methods;
@@ -45,14 +44,6 @@
 			return [];
 		}
 		
-		// when drop down value is change on the attributes then apply all dependent dropdowns.
-		/*function applyDependedPicklistsOnChange(attributeGroups, PAV, fieldName){
-			var res = {};
-			applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, fieldName);
-			res = {pavConfigGroups: attributeGroups, PAVObj: PAV};
-			return res;
-		}*/
-
 		// this is applicable on page load or first time renedeing of attribute groups.
 		// load picklist options from database.
 		// apply dependent picklists.
@@ -67,58 +58,51 @@
                     if(attributeConfig.isHidden == false
                     	&& fieldDescribe.fieldType == 'picklist')
                     {
-                    	if(!_.isEmpty(attributeConfig.lovs)
-                    		|| attributeConfig.isDynamicAttr == true)
+                		if(!_.isEmpty(attributeConfig.lovs)
+                			|| attributeConfig.isDynamicAttr == true){
+                			// load picklist LOV's within APTPS_CPQ.productAtribute for dynamic attributes and custom attributes from custom settings: APTPS_ProdSpec_DynAttr__c. 
+                			attributeConfig['picklistValues'] = getPicklistValues(prepareOptionsList(attributeConfig.lovs));
+                		}
+                		else{
+                			// load Normal picklist LOV's from Salesforce config.
+                    		attributeConfig['picklistValues'] = fieldDescribe.picklistValues;	
+                		}
+                		
+                    	// load Other field value to Other field.
+                    	var pavValue = PAV[fieldName];
+                    	if((!_.has(PAV, 'isDefaultLoadComplete')
+							|| PAV.isDefaultLoadComplete == false)
+							&& _.contains(_.pluck(attributeConfig.picklistValues, 'value'), 'Other')
+							&& _.isString(pavValue)
+							&& pavValue.endsWith('**'))
 	                    {
-	                    	// load picklist LOV's within APTPS_CPQ.productAtribute for dynamic attributes and custom attributes from custom settings: APTPS_ProdSpec_DynAttr__c. 
-                    		attributeConfig['picklistValues'] = getPicklistValues(prepareOptionsList(attributeConfig.lovs));
-                    		
-                    		// load Other field values to Other field.
-	                    	if((!_.has(PAV, 'isDefaultLoadComplete')
-								|| PAV.isDefaultLoadComplete == false)
-								&& _.contains(_.pluck(attributeConfig.picklistValues, 'value'), 'Other')
-								&& PAV[fieldName] != 'Other')
-		                    {
-		                    	PAV[fieldName+'Otherdb'] = PAV[fieldName];
-		                    }
-
-                    	}else{
-                    		// load Normal picklist LOV's from Salesforce config.
-	                    	attributeConfig['picklistValues'] = fieldDescribe.picklistValues;
-
-	                    	// load Other field value to Other field.
-	                    	if((!_.has(PAV, 'isDefaultLoadComplete')
-								|| PAV.isDefaultLoadComplete == false)
-								&& _.contains(_.pluck(attributeConfig.picklistValues, 'value'), 'Other')
-								&& PAV[fieldName] != 'Other')
-		                    {
-		                    	PAV[fieldName+'Otherdb'] = PAV[fieldName];
-		                    }
-		                    	
-	                    	// load dependent picklists if current field is dependentField.
-	                    	if(fieldDescribe.isDependentPicklist == true)
-	                    	{
-	                    		var controllingField = fieldDescribe.controllerName;
-	                    		applyDependentLOVSConfig(attributeConfig, PAV, fieldName, controllingField);	
-	                    	}
+	                    	PAV[fieldName+'Other'] = pavValue.slice( 0, pavValue.lastIndexOf( "**" ));
+	                    	PAV[fieldName] = 'Other';
+	                    }
 	                    	
-	                    	// if 'Other' LOV option exists in the database then add the previously selected value to options.
-		                    var selectedOtherValue = PAV[fieldName+'Otherdb'];
-		                    if(!_.isUndefined(selectedOtherValue)
-		                    	&& !_.contains(_.pluck(attributeConfig.picklistValues, 'value'), selectedOtherValue) 
-		                    	&& _.contains(_.pluck(attributeConfig.picklistValues, 'value'), 'Other'))
-		                    {
-		                    	attributeConfig.picklistValues.push(selectoptionObject(true, selectedOtherValue, selectedOtherValue, false));
-		                    } 
-		                    
-	                    	// if dependend selected value does not exists in the options then set the PAV to null
-							var selectedPAVValue = PAV[fieldName];
-							if(!_.contains(_.pluck(attributeConfig.picklistValues,  'value'), selectedPAVValue))
-							{
-								PAV[fieldName] = null;// set the PAV of field to null.
-							}
+                    	// load dependent picklists if current field is dependentField.
+                    	if(fieldDescribe.isDependentPicklist == true)
+                    	{
+                    		var controllingField = fieldDescribe.controllerName;
+                    		applyDependentLOVSConfig(attributeConfig, PAV, fieldName, controllingField);	
+                    	}
+                    	
+                    	// if 'Other' LOV option exists in the database then add the previously selected value to options.
+	                    /*var selectedOtherValue = PAV[fieldName+'Otherdb'];
+	                    if(!_.isUndefined(selectedOtherValue)
+	                    	&& !_.contains(_.pluck(attributeConfig.picklistValues, 'value'), selectedOtherValue) 
+	                    	&& _.contains(_.pluck(attributeConfig.picklistValues, 'value'), 'Other'))
+	                    {
+	                    	attributeConfig.picklistValues.push(selectoptionObject(true, selectedOtherValue, selectedOtherValue, false));
+	                    }*/ 
+	                    
+                    	// if dependend selected value does not exists in the options then set the PAV to null
+						var selectedPAVValue = PAV[fieldName];
+						if(!_.contains(_.pluck(attributeConfig.picklistValues,  'value'), selectedPAVValue))
+						{
+							PAV[fieldName] = null;// set the PAV of field to null.
 						}
-
+						
 						if(!_.has(PAV, 'isDefaultLoadComplete')
 							|| PAV.isDefaultLoadComplete == false)
 	                    {
@@ -131,9 +115,10 @@
 	                    }
                     }
 					else{
+
 						
 					}
-				})
+				});
 					
             });
 				
@@ -157,7 +142,7 @@
 					
 					ctodFieldMap.push({cField:controller, dField:fieldName});
 				}
-
+				
 				service.fieldNametoDFRMap[fieldName] = {fieldDescribe:fieldDescribe, dPicklistObj:dPicklistObj};
 			})
 		}
@@ -181,51 +166,17 @@
             	options = dPicklistConfig[cSelectedPAVValue].slice();// do a slice to cline the list.
             }
             options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
-            attributeConfig.picklistValues = options;
-		}
+            
+            // if dependent fields are loaded from Custom settings then apply dependencies on top of custom settings. else just apply normal dependencies.
+            if(!_.isEmpty(attributeConfig.lovs))
+            {
+            	attributeConfig.picklistValues = _.filter(options , function(option){return _.contains(attributeConfig.lovs, option.value);})
+            }
+            else{
+            	attributeConfig.picklistValues = options;
+            }
+        }
 		
-		// reload all dependent dropdowns on controlling field change.
-		/*function applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, cField){
-			// get all dependent fields for given controllingField: cField.
-			var dFields = _.pluck(_.where(ctodFieldMap, {cField:cField}), 'dField');
-			// apply dependencies only if cField is a controlling Field else return.
-			if(_.isUndefined(dFields) 
-				|| _.isEmpty(dFields))
-				return;
-			var selectedPAVValue = PAV[cField];
-			_.each(attributeGroups, function(attributeGroup){
-				_.each(attributeGroup.productAtributes, function(attributeConfig){
-					var currentField = attributeConfig.fieldName;
-					// if attribute field exists in the dependent fields for given controlling field:fieldName then apply dependency.
-					if(_.contains(dFields, currentField))
-					{
-						var dPicklistConfig = service.fieldNametoDFRMap[currentField].dPicklistObj;
-						PAV[currentField] = null;
-						var options = [];
-                        if(_.has(dPicklistConfig, selectedPAVValue))
-                        {
-                        	// do a slice to cline the list.
-                        	options = dPicklistConfig[selectedPAVValue].slice();
-            				options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
-                        }
-
-                        // if 'Other' LOV option exists in the database then add the previously selected value to options.
-	                    var selectedOtherValue = PAV[currentField+'Other'];
-	                    if(!_.isUndefined(selectedOtherValue)
-	                    	&& !_.contains(_.pluck(options, 'value'), selectedOtherValue) 
-	                    	&& _.contains(_.pluck(options, 'value'), 'Other'))
-	                    {
-	                    	options.push(selectoptionObject(true, selectedOtherValue, selectedOtherValue, false));
-	                    }
-
-                        attributeConfig.picklistValues = options;
-                        // more than one level-dependency could exist..so recursive call.
-                        applyDependedPicklistsOnChange_SingleField(attributeGroups, PAV, currentField);
-					}
-				})
-			})
-		}*/
-
 		// prepare javascript version  of fieldDescribe based on Schema.DescribeFieldResult
 		function getFieldDescribe(fdrWrapper){
 			var res = {};

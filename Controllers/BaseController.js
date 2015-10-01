@@ -352,17 +352,17 @@
                 function(key){
                     var keywithnoother = key.slice( 0, key.lastIndexOf( "Other" ) );
                     if(pav[keywithnoother] == 'Other')    
-                        pav[keywithnoother] = pav[key];
+                        pav[keywithnoother] = pav[key]+'**';
                     pav = _.omit(pav, key);
             })
             
             // remove Otherdb field.
-             _.each(_.filter(_.keys(pav), function(pavField){
+            /*_.each(_.filter(_.keys(pav), function(pavField){
                             return pavField.endsWith('Otherdb');
                         }), 
                 function(key){
                    pav = _.omit(pav, key);
-            })
+            })*/
             return pav;
         }
 
