@@ -4,10 +4,10 @@
 ;(function() {
 	'use strict';
 
-	angular.module('APTPS_ngCPQ').directive('serviceLocation', ServiceLocation);
+	angular.module('APTPS_ngCPQ').directive('serviceLocations', ServiceLocations);
 
-	ServiceLocation.$inject = ['SystemConstants'];
-	function ServiceLocation(SystemConstants){
+	ServiceLocations.$inject = ['SystemConstants'];
+	function ServiceLocations(SystemConstants){
 		// Runs during compile
 		return {
 			// name: '',
@@ -15,7 +15,7 @@
 			// terminal: true,
 			// scope: {}, // {} = isolate, true = child, false/undefined = no change
 			controller: 'LocationController',
-			// controllerAs: 'ServiceLocation',
+			// controllerAs: 'ServiceLocations',
 			// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
 			restrict: 'AE', // E = Element, A = Attribute, C = Class, M = Comment
 			//template: '<div>pageHeader</div>',
