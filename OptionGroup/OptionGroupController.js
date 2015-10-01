@@ -5,8 +5,11 @@
 (function() {
     var OptionGroupController;
 
-    OptionGroupController = function($scope, $log, $location, QuoteDataService, OptionGroupDataService) {
-		// all variable intializations.
+    OptionGroupController = function($scope, $log, $location, $sce, QuoteDataService, OptionGroupDataService) {
+		var groupCtrl = this;
+        groupCtrl.renderHTML = renderHTML;
+
+        // all variable intializations.
         $scope.init = function(){
         	$scope.quoteService = QuoteDataService;
             $scope.optionGroupService = OptionGroupDataService;
@@ -104,10 +107,14 @@
                 pcomponent.quantity = 1;
             }
         }
+
+        function renderHTML(html_code) {
+            return $sce.trustAsHtml(html_code);
+        }
         
         $scope.init();
 	};
 
-    OptionGroupController.$inject = ['$scope', '$log', '$location', 'QuoteDataService', 'OptionGroupDataService'];
+    OptionGroupController.$inject = ['$scope', '$log', '$location', '$sce', 'QuoteDataService', 'OptionGroupDataService'];
 	angular.module('APTPS_ngCPQ').controller('OptionGroupController', OptionGroupController);
 }).call(this);

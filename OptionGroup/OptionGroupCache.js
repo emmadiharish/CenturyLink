@@ -27,9 +27,9 @@
 			_.map(results, (function(optionGroups, prodId){
                  /* removal of special characters*/
                 _.each(optionGroups, function(group){
-                	group.groupName = characterRepace(group.groupName);
+                	//group.groupName = characterRepace(group.groupName);
                 	_.each(group.productOptionComponents, function(component){
-                		component.productName = characterRepace(component.productName);
+                		//component.productName = characterRepace(component.productName);
                 		if(_.has(productIdtoComponentId_hasOptions, prodId))
                 		{
                 			component['parentComponentId'] = productIdtoComponentId_hasOptions[prodId];
@@ -45,13 +45,13 @@
 			service.isValid = true;
 		}
 
-		function characterRepace(item){
+		/*function characterRepace(item){
             var changedItem = item;
             changedItem = changedItem.split("&#39;").join("'");
             // unescape : replaces &amp;, &lt;, &gt;, &quot;, &#96; and &#x27; with their unescaped counterparts.
             changedItem = _.unescape(changedItem);          
             return changedItem;
-        }
+        }*/
 
         function getProductIdsofBundles(){
         	return _.keys(productIdtoComponentId_hasOptions);	
