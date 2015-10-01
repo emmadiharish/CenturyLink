@@ -1,29 +1,29 @@
 /**
- * Directive: ValidateConfigDirective 
+ * Directive: OptionsGroupHierarchyDirective 
  */
 ;(function() {
 	'use strict';
 
-	angular.module('APTPS_ngCPQ').directive('validateConfig', ValidateConfig);
+	angular.module('APTPS_ngCPQ').directive('optionsGroupHierarchy', OptionsGroupHierarchy);
 
-	ValidateConfig.$inject = ['SystemConstants'];
-	function ValidateConfig(SystemConstants){
+	OptionsGroupHierarchy.$inject = ['SystemConstants'];
+	function OptionsGroupHierarchy(SystemConstants){
 		// Runs during compile
 		return {
 			// name: '',
 			// priority: 1,
 			// terminal: true,
 			// scope: {}, // {} = isolate, true = child, false/undefined = no change
-			controller: 'BaseController',
-			// controllerAs: 'baseCon',
+			controller: 'OptionGroupHierarchyController',
+			// controllerAs: 'OptionGroup',
 			// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
 			restrict: 'AE', // E = Element, A = Attribute, C = Class, M = Comment
 			//template: '<div>pageHeader</div>',
-			templateUrl: SystemConstants.baseUrl + "/Templates/ValidateConfigView.html",
+			templateUrl: SystemConstants.baseUrl + "/Templates/OptionsGroupHierarchyView.html",
 			// replace: true,
 			// transclude: true,
 			// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
-			//link: function($scope, iElm, iAttrs, controller) {
+			//link: function(cartCtrl, iElm, iAttrs, controller) {
 			//}
 			bindToController: true
 		};
