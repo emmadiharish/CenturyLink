@@ -1,13 +1,13 @@
 /**
- * Directive: OptionGroupsDirective 
+ * Directive: OptionGroupDirective 
  */
 ;(function() {
 	'use strict';
 
-	angular.module('APTPS_ngCPQ').directive('optionGroups', OptionGroups);
+	angular.module('APTPS_ngCPQ').directive('optionGroups', OptionGroup);
 
-	OptionGroups.$inject = ['SystemConstants'];
-	function OptionGroups(SystemConstants){
+	OptionGroup.$inject = ['SystemConstants'];
+	function OptionGroup(SystemConstants){
 		// Runs during compile
 		return {
 			// name: '',
@@ -19,7 +19,7 @@
 			// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
 			restrict: 'AE', // E = Element, A = Attribute, C = Class, M = Comment
 			//template: '<div>pageHeader</div>',
-			templateUrl: SystemConstants.baseUrl + "/Templates/OptionsGroupView.html",
+			templateUrl: SystemConstants.baseUrl + "/Templates/OptionGroupView.html",
 			// replace: true,
 			// transclude: true,
 			// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
