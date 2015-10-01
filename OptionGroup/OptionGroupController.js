@@ -61,8 +61,6 @@
             }
         }
         
-        
-
         $scope.selectProductrenderoptionproductattributes = function(prodcomponent, groupindex){
             // select the product and add to tree.
             $scope.selectOptionProduct(prodcomponent, groupindex);
@@ -106,10 +104,6 @@
             }
         }
 
-        $scope.renderHTML = function(html_code) {
-            return $sce.trustAsHtml(html_code);
-        }
-        
         $scope.init();
 	};
 
