@@ -1,13 +1,13 @@
 /**
- * Directive: ValidateDirective 
+ * Directive: ValidateConfigDirective 
  */
 ;(function() {
 	'use strict';
 
-	angular.module('APTPS_ngCPQ').directive('validateBtn', ValidateBtn);
+	angular.module('APTPS_ngCPQ').directive('validateConfig', ValidateConfig);
 
-	ValidateBtn.$inject = ['SystemConstants'];
-	function ValidateBtn(SystemConstants){
+	ValidateConfig.$inject = ['SystemConstants'];
+	function ValidateConfig(SystemConstants){
 		// Runs during compile
 		return {
 			// name: '',
