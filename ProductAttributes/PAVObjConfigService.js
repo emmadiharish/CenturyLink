@@ -5,8 +5,7 @@
 		var service = this;
 		var optionOptionAttributes = {};
 		var isOptiontoOptionAttrsvalid = false;
-		var ctodFieldMap = [];
-
+		
 		service.isvalid = false;
 
 		service.fieldNametoDFRMap = {};
@@ -58,8 +57,7 @@
                     if(attributeConfig.isHidden == false
                     	&& fieldDescribe.fieldType == 'picklist')
                     {
-                		if(!_.isEmpty(attributeConfig.lovs)
-                			|| attributeConfig.isDynamicAttr == true){
+                		if(!_.isEmpty(attributeConfig.lovs))
                 			// load picklist LOV's within APTPS_CPQ.productAtribute for dynamic attributes and custom attributes from custom settings: APTPS_ProdSpec_DynAttr__c. 
                 			attributeConfig['picklistValues'] = getPicklistValues(prepareOptionsList(attributeConfig.lovs));
                 		}
@@ -114,6 +112,7 @@
 		                	PAV[fieldName] = !_.isUndefined(defaultValue) && _.isNull(PAV[fieldName]) ? defaultValue : PAV[fieldName];      	
 	                    }
                     }
+                    // if not picklist.
 					else{
 
 						
@@ -139,8 +138,6 @@
 					var controller = fieldDescribe.controllerName;
 					var controllingpicklistOptions = response[controller].picklistOptions;
 					dPicklistObj = getStructuredDependentFields(fdrWrapper.picklistOptions, controllingpicklistOptions);	
-					
-					ctodFieldMap.push({cField:controller, dField:fieldName});
 				}
 				
 				service.fieldNametoDFRMap[fieldName] = {fieldDescribe:fieldDescribe, dPicklistObj:dPicklistObj};
@@ -163,7 +160,7 @@
             var dPicklistConfig = service.fieldNametoDFRMap[dependentField].dPicklistObj;
             if(_.has(dPicklistConfig, cSelectedPAVValue))
             {
-            	options = dPicklistConfig[cSelectedPAVValue].slice();// do a slice to cline the list.
+            	options = dPicklistConfig[cSelectedPAVValue].slice();// do a slice to clone the list.
             }
             
             // if dependent fields are loaded from Custom settings then apply dependencies on top of custom settings. else just apply normal dependencies.
@@ -175,7 +172,6 @@
             // add None Option as first in the list.
             options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
             attributeConfig.picklistValues = options;
-            
         }
 		
 		// prepare javascript version  of fieldDescribe based on Schema.DescribeFieldResult
