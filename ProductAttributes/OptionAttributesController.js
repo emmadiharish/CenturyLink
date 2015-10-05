@@ -26,7 +26,7 @@
             {   
                 var optionProductId = $scope.Selectedoptionproduct.productId;
                 var componentId = $scope.Selectedoptionproduct.componentId;
-                $scope.retrieveproductattributeGroupData(optionProductId, componentId);
+                retrieveproductattributeGroupData(optionProductId, componentId);
             }    
         });
 
@@ -36,7 +36,7 @@
                 $scope.Selectedoptionproduct = newVal;
                 var optionProductId = newVal.productId;
                 var componentId = newVal.componentId;
-                $scope.retrieveproductattributeGroupData(optionProductId, componentId);
+                retrieveproductattributeGroupData(optionProductId, componentId);
             }
         });
 
@@ -62,7 +62,7 @@
         }
             
 
-        $scope.retrieveproductattributeGroupData = function(productId, componentId){
+        function retrieveproductattributeGroupData(productId, componentId){
             // collect all products at this level and make a remote call for attributes.
             var alllocationIdSet = LocationDataService.getalllocationIdSet();
             var selectedlocationId = LocationDataService.getselectedlpaId();

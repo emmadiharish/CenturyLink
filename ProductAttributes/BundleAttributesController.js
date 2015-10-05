@@ -19,7 +19,7 @@
                 && !_.isEqual(newVal, oldVal)
                 && $scope.remotecallinitiated == false)
             {   
-                $scope.retrieveproductattributeGroupData();
+                retrieveproductattributeGroupData();
             }    
         });
 
@@ -28,12 +28,12 @@
                 && newVal == true
                 && $scope.remotecallinitiated == false)
             {   
-                $scope.retrieveproductattributeGroupData();
+                retrieveproductattributeGroupData();
             }    
         });
         
         // Note : this method should be invoked only when remotecallinitiated flag is false;
-        $scope.retrieveproductattributeGroupData = function(){
+        function retrieveproductattributeGroupData(){
             // run only if location remote call is complete.
             if($scope.locationService.getisRemotecallComplete() == true)
             {
