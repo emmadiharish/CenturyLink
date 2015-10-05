@@ -29,7 +29,7 @@
 		}
 
     	$scope.renderhierarchy = function(){
-            var selectedproducts = [BaseConfigService.getbundleproductId()];
+            var selectedproducts = [BaseConfigService.bundleProdId];
             var allOptionGroups = $scope.optionGroupService.getallOptionGroups();
 
             var  productGroupList = [
