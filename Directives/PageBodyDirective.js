@@ -3,13 +3,14 @@
  */
 ;(function() {
 	'use strict';
+	var PageBodyCtrl;
 
-	function PageBodyCtrl(){
+	PageBodyCtrl = function(){
 
 	};
+	PageBodyCtrl.$inject = [];
 
 	angular.module('APTPS_ngCPQ').directive('PageBody', PageBody);
-
 	PageBody.$inject = ['SystemConstants'];
 	function PageBody(SystemConstants){
 		// Runs during compile
@@ -22,14 +23,14 @@
 			// controllerAs: 'baseCon',
 			// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
 			restrict: 'AE', // E = Element, A = Attribute, C = Class, M = Comment
-			//template: '<div>pageHeader</div>',
+			// template: '<div>pageHeader</div>',
 			templateUrl: SystemConstants.baseUrl + "/Templates/PageBodyView.html",
 			// replace: true,
 			// transclude: true,
 			// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
-			//link: function($scope, iElm, iAttrs, controller) {
-			//}
-			bindToController: true
+			// link: function($scope, iElm, iAttrs, controller) {
+			// }
+			// bindToController: true
 		};
 	}
 }).call(this);
