@@ -4,6 +4,10 @@
 ;(function() {
 	'use strict';
 
+	PageBodyCtrl = function(){
+
+	};
+
 	angular.module('APTPS_ngCPQ').directive('PageBody', PageBody);
 
 	PageBody.$inject = ['SystemConstants'];
@@ -14,7 +18,7 @@
 			// priority: 1,
 			// terminal: true,
 			// scope: {}, // {} = isolate, true = child, false/undefined = no change
-			// controller: 'BaseController',
+			controller: 'PageBodyCtrl',
 			// controllerAs: 'baseCon',
 			// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
 			restrict: 'AE', // E = Element, A = Attribute, C = Class, M = Comment
