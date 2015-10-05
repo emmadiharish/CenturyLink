@@ -5,9 +5,9 @@
 (function() {
     var OptionGroupHierarchyController;
 
-    OptionGroupHierarchyController = function($scope, $log, QuoteDataService, OptionGroupDataService) {
+    OptionGroupHierarchyController = function($scope, $log, BaseConfigService, OptionGroupDataService) {
     	// all variable intializations.
-        $scope.init = function(){
+        function init(){
 			$scope.productGroupList =[];// to load hierarchy
 			$scope.optionGroupService = OptionGroupDataService;
 
@@ -29,11 +29,11 @@
 		}
 
     	$scope.renderhierarchy = function(){
-            var selectedproducts = [QuoteDataService.getbundleproductId()];
+            var selectedproducts = [BaseConfigService.getbundleproductId()];
             var allOptionGroups = $scope.optionGroupService.getallOptionGroups();
 
             var  productGroupList = [
-                { "groupName" : QuoteDataService.getbundleproductName(), "groupId" : QuoteDataService.getbundleproductId(), "Parent": "", "isproduct" : true}];
+                { "groupName" : BaseConfigService.bundleProdName, "groupId" : BaseConfigService.bundleProdId, "Parent": "", "isproduct" : true}];
             _.each(allOptionGroups, function(optiongroups, bundleprodId){
                 if(selectedproducts.indexOf(bundleprodId) > -1)
                 {
@@ -98,9 +98,9 @@
             $scope.productGroupList = target;
         }
    		
-   		$scope.init();
+   		init();
    	};
 
-   	OptionGroupHierarchyController.$inject = ['$scope', '$log', 'QuoteDataService', 'OptionGroupDataService'];
+   	OptionGroupHierarchyController.$inject = ['$scope', '$log', 'BaseConfigService', 'OptionGroupDataService'];
 	angular.module('APTPS_ngCPQ').controller('OptionGroupHierarchyController', OptionGroupHierarchyController);
 }).call(this);

@@ -1,7 +1,7 @@
 (function() {
 	angular.module('APTPS_ngCPQ').service('ProductDataService', ProductDataService); 
-	ProductDataService.$inject = ['$q', '$log', 'QuoteDataService', 'RemoteService'];
-	function ProductDataService($q, $log, QuoteDataService, RemoteService){
+	ProductDataService.$inject = ['$q', '$log', 'RemoteService'];
+	function ProductDataService($q, $log, RemoteService){
 		var service = this;
 
 		service.isValid = false;

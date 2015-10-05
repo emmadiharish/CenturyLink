@@ -1,7 +1,7 @@
 (function() {
 	angular.module('APTPS_ngCPQ').service('ProductAttributeConfigDataService', ProductAttributeConfigDataService); 
-	ProductAttributeConfigDataService.$inject = ['$q', '$log', 'BaseService', 'QuoteDataService', 'RemoteService', 'OptionGroupDataService', 'ProductAttributeConfigCache'];
-	function ProductAttributeConfigDataService($q, $log, BaseService, QuoteDataService, RemoteService, OptionGroupDataService, ProductAttributeConfigCache) {
+	ProductAttributeConfigDataService.$inject = ['$q', '$log', 'BaseService', 'BaseConfigService', 'RemoteService', 'OptionGroupDataService', 'ProductAttributeConfigCache'];
+	function ProductAttributeConfigDataService($q, $log, BaseService, BaseConfigService, RemoteService, OptionGroupDataService, ProductAttributeConfigCache) {
 		var service = this;
 		
 		var bundleAttribueFields = [];
@@ -23,8 +23,8 @@
 				return $q.when(cachedProductAttributes);
 			}
 
-			// locationRequest = createOptionGroupRequestDO(productIds_filtered, QuoteDataService.getcartId(), QuoteDataService.getcontextLineNumber());
-			var requestPromise = RemoteService.getProductAttributeConfigData(servicelocationIdSet, QuoteDataService.getbundleproductId(), productIds_filtered, groupIds);
+			// locationRequest = createOptionGroupRequestDO(productIds_filtered, BaseConfigService.getcartId(), BaseConfigService.getcontextLineNumber());
+			var requestPromise = RemoteService.getProductAttributeConfigData(servicelocationIdSet, BaseConfigService.bundleProdId, productIds_filtered, groupIds);
 			BaseService.startprogress();// start progress bar.
 			return requestPromise.then(function(response){
 				ProductAttributeConfigCache.initializeProductAttributes(response);

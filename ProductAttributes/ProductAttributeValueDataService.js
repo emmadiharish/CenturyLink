@@ -1,9 +1,8 @@
 (function() {
 	angular.module('APTPS_ngCPQ').service('ProductAttributeValueDataService', ProductAttributeValueDataService); 
-	ProductAttributeValueDataService.$inject = ['$q', '$log', 'BaseService', 'QuoteDataService','RemoteService'];
-	function ProductAttributeValueDataService($q, $log, BaseService, QuoteDataService, RemoteService) {
+	ProductAttributeValueDataService.$inject = ['$q', '$log', 'BaseService', 'BaseConfigService','RemoteService'];
+	function ProductAttributeValueDataService($q, $log, BaseService, BaseConfigService, RemoteService) {
 		var service = this;
-
 		var bundleproductattributevalues = {};
 		var componentIdtoOptionPAVMap = {};
 		
@@ -14,7 +13,7 @@
 		service.getoptionproductattributevalues = getoptionproductattributevalues;
 
 		function getProductAttributeValues_bulk(){
-			var requestPromise = RemoteService.getProductAttributeValueData(QuoteDataService.getcartId(), QuoteDataService.getcontextLineNumber());
+			var requestPromise = RemoteService.getProductAttributeValueData(BaseConfigService.cartId, BaseConfigService.bundleLineNumber);
 			BaseService.startprogress();// start progress bar.
 			return requestPromise.then(function(response){
 				initializeProductAttributeValues(response);
