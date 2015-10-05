@@ -1,12 +1,13 @@
 (function() {
     var BundleAttributesController;
 
-    BundleAttributesController = function($scope, $log, SystemConstants, BaseConfigService, LocationDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVObjConfigService) {
+    BundleAttributesController = function($scope, $log, SystemConstants, BaseService, BaseConfigService, LocationDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVObjConfigService) {
 		// all variable intializations.
         $scope.init = function(){
         	$scope.locationService = LocationDataService;
             $scope.constants = SystemConstants;
             $scope.BaseConfig = BaseConfigService;
+            $scope.baseService = BaseService;
 
             $scope.AttributeGroups = [];// attribute config groups for main bundle.
             $scope.pavfieldDescribeMap = {};
@@ -23,7 +24,7 @@
             }    
         });
 
-        $scope.$watch('locationService.getisRemotecallComplete()', function(newVal, oldVal) {
+        $scope.$watch('baseService.getLocationLoadComplete()', function(newVal, oldVal) {
             if(newVal != oldVal
                 && newVal == true
                 && $scope.remotecallinitiated == false)
@@ -35,7 +36,7 @@
         // Note : this method should be invoked only when remotecallinitiated flag is false;
         function retrieveproductattributeGroupData(){
             // run only if location remote call is complete.
-            if($scope.locationService.getisRemotecallComplete() == true)
+            if(BaseService.getLocationLoadComplete() == true)
             {
                 $scope.remotecallinitiated = true;
                 var alllocationIdSet = $scope.locationService.getalllocationIdSet();
@@ -78,6 +79,6 @@
         $scope.init();
 	};
 
-    BundleAttributesController.$inject = ['$scope', '$log', 'SystemConstants', 'BaseConfigService', 'LocationDataService', 'ProductAttributeConfigDataService', 'ProductAttributeValueDataService', 'PAVObjConfigService'];
+    BundleAttributesController.$inject = ['$scope', '$log', 'SystemConstants', 'BaseService', 'BaseConfigService', 'LocationDataService', 'ProductAttributeConfigDataService', 'ProductAttributeValueDataService', 'PAVObjConfigService'];
 	angular.module('APTPS_ngCPQ').controller('BundleAttributesController', BundleAttributesController);
 }).call(this);

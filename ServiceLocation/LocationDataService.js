@@ -1,13 +1,11 @@
 (function() {
 	angular.module('APTPS_ngCPQ').service('LocationDataService', LocationDataService); 
-	LocationDataService.$inject = ['$q', '$log', 'BaseService', 'LocationCache', 'QuoteDataService', 'RemoteService'];
-	function LocationDataService($q, $log, BaseService, LocationCache, QuoteDataService, RemoteService) {
+	LocationDataService.$inject = ['$q', 'BaseService', 'BaseConfigService', 'LocationCache', 'RemoteService'];
+	function LocationDataService($q, BaseService, BaseConfigService, LocationCache, RemoteService) {
 		var service = this;
-
-		service.locationIdSet = [];
-		service.selectedlpa = {};
-		service.isRemotecallComplete = false;
-		service.hasServicelocations = false;
+		var locationIdSet = [];
+		var selectedlpa = {};
+		var hasServicelocations = false;
 
 		// location methods.
 		service.gethasServicelocations = gethasServicelocations;
@@ -16,7 +14,6 @@
 		service.setselectedlpa = setselectedlpa;
 		service.getselectedlpaId = getselectedlpaId;
 		service.getalllocationIdSet = getalllocationIdSet;
-		service.getisRemotecallComplete = getisRemotecallComplete;
 		
 		function getlocItems() {
 			if (LocationCache.isValid) {
@@ -25,21 +22,19 @@
 				return $q.when(cachedLocations);
 			}
 
-			// locationRequest = createlocationRequestDO(QuoteDataService.getbundleproductId(), QuoteDataService.getopportunityId());
-			var requestPromise = RemoteService.getServiceLocations(QuoteDataService.getbundleproductId(), QuoteDataService.getopportunityId());
+			var requestPromise = RemoteService.getServiceLocations(BaseConfigService.bundleProdId, BaseConfigService.opportunityId);
 			BaseService.startprogress();// start progress bar.
 			return requestPromise.then(function(response){
 				LocationCache.initializeLocations(response.locations);
-				service.isRemotecallComplete = true;
 				BaseService.setLocationLoadComplete();
 				if(response.locations.length > 0)
 				{
-					service.hasServicelocations = true;
+					hasServicelocations = true;
 					setalllocationIdSet(_.pluck(response.locations, 'Id'));
 				}
 				
 				// logTransaction(response, categoryRequest);
-				var locationId = QuoteDataService.getbundleServiceLocation();
+				var locationId = BaseConfigService.bundleServiceLocationId;
                 if(!_.isUndefined(locationId)
                 	&& !_.isNull(locationId))
                 {
@@ -50,38 +45,26 @@
 		}
 
 		function gethasServicelocations(){
-			return service.hasServicelocations;
+			return hasServicelocations;
 		}
 		function setselectedlpa(selectedlpa) {
-			service.selectedlpa = selectedlpa;
+			selectedlpa = selectedlpa;
 		}
 		
 		function getselectedlpa() {
-			return service.selectedlpa;
+			return selectedlpa;
 		}
 
 		function getselectedlpaId() {
-			return _.isObject(service.selectedlpa) ? service.selectedlpa.Id : '';
+			return _.isObject(selectedlpa) ? selectedlpa.Id : '';
 		}
 
 		function setalllocationIdSet(locIds){
-			service.locationIdSet = locIds;
+			locationIdSet = locIds;
 		}
 
 		function getalllocationIdSet(){
-			return service.locationIdSet;
+			return locationIdSet;
 		}
-
-		function getisRemotecallComplete(){
-			return service.isRemotecallComplete;
-		}
-		/*function createlocationRequestDO(){
-			var request = [];
-			$log.log('argument count inside createlocationRequestDO is: '+arguments.length);
-			for (var argIndex = 0; argIndex < arguments.length; argIndex++) {
-				request.push(arguments[argIndex]);
-			}
-			return request;
-		}*/
 	}
 })();
