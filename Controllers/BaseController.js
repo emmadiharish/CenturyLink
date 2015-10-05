@@ -43,7 +43,7 @@
             var allOptionGroups = OptionGroupDataService.getallOptionGroups();
             var productIdtoComponentMap = {};
             var productIdtoGroupMap = {};
-            var bundleProdId = BaseConfigService.bundleProdId;
+            var bundleProdId = BaseConfigService.lineItem.bundleProdId;
             _.each(allOptionGroups, function(optiongroups, bundleprodId){
                 _.each(optiongroups, function(optiongroup){
                     _.each(optiongroup.productOptionComponents, function(productcomponent){
@@ -138,7 +138,7 @@
       
 
         $scope.Abandon = function(){
-            var cartId = BaseConfigService.cartId, quoteId = BaseConfigService.quoteId;
+            var cartId = BaseConfigService.cartId, quoteId = BaseConfigService.proposal.Id;
             var requestPromise = RemoteService.doAbandonCart(cartId, quoteId);
             return requestPromise.then(function(response){
                 var URL = parsePagereference(response);
@@ -148,7 +148,7 @@
         }
 
         $scope.removeItemFromCart = function(){
-            var cartId = BaseConfigService.cartId, configRequestId = BaseConfigService.configRequestId, flowName = BaseConfigService.flowName, primaryLineNumber = BaseConfigService.bundleLineNumber, bundleProdId = BaseConfigService.bundleProdId;
+            var cartId = BaseConfigService.cartId, configRequestId = BaseConfigService.configRequestId, flowName = BaseConfigService.flowName, primaryLineNumber = BaseConfigService.lineItem.lineNumber, bundleProdId = BaseConfigService.lineItem.bundleProdId;
             var requestPromise = RemoteService.removeBundleLineItem(cartId, configRequestId, flowName, primaryLineNumber, bundleProdId);
             return requestPromise.then(function(response){
                 var URL = parsePagereference(response);
@@ -233,7 +233,7 @@
                 
                 var productIdtoComponentMap = {};
                 var productIdtoGroupMap = {};
-                var bundleProdId = BaseConfigService.bundleProdId;
+                var bundleProdId = BaseConfigService.lineItem.bundleProdId;
                 _.each(allOptionGroups, function(optiongroups, bundleprodId){
                     _.each(optiongroups, function(optiongroup){
                         _.each(optiongroup.productOptionComponents, function(productcomponent){

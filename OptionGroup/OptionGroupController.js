@@ -13,7 +13,7 @@
             $scope.constants = SystemConstants;
             
             $scope.currentbundleproductId = '';
-            $scope.rendercurrentproductoptiongroups(BaseConfigService.bundleProdId, null, null);
+            $scope.rendercurrentproductoptiongroups(BaseConfigService.lineItem.bundleProdId, null, null);
         }
 
         $scope.$watch('optionGroupService.getslectedOptionGroupProdId()', function(newVal, oldVal) {

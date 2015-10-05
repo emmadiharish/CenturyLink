@@ -22,7 +22,7 @@
 				return $q.when(cachedLocations);
 			}
 
-			var requestPromise = RemoteService.getServiceLocations(BaseConfigService.bundleProdId, BaseConfigService.opportunityId);
+			var requestPromise = RemoteService.getServiceLocations(BaseConfigService.lineItem.bundleProdId, BaseConfigService.opportunityId);
 			BaseService.startprogress();// start progress bar.
 			return requestPromise.then(function(response){
 				LocationCache.initializeLocations(response.locations);
@@ -34,7 +34,7 @@
 				}
 				
 				// logTransaction(response, categoryRequest);
-				var locationId = BaseConfigService.bundleServiceLocationId;
+				var locationId = BaseConfigService.lineItem.serviceLocationId;
                 if(!_.isUndefined(locationId)
                 	&& !_.isNull(locationId))
                 {

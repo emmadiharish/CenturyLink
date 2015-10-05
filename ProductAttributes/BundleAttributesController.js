@@ -41,7 +41,7 @@
                 remotecallinitiated = true;
                 var alllocationIdSet = $scope.locationService.getalllocationIdSet();
                 var selectedlocationId = $scope.locationService.getselectedlpaId();
-                var bundleProductId = BaseConfigService.bundleProdId;
+                var bundleProductId = BaseConfigService.lineItem.bundleProdId;
                 PAVObjConfigService.getPAVFieldMetaData().then(function(fieldDescribeMap){
                     if(_.isEmpty($scope.pavfieldDescribeMap))
                     {

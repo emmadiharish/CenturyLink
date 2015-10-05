@@ -29,11 +29,11 @@
 		}
 
     	$scope.renderhierarchy = function(){
-            var selectedproducts = [BaseConfigService.bundleProdId];
+            var selectedproducts = [BaseConfigService.lineItem.bundleProdId];
             var allOptionGroups = $scope.optionGroupService.getallOptionGroups();
 
             var  productGroupList = [
-                { "groupName" : BaseConfigService.bundleProdName, "groupId" : BaseConfigService.bundleProdId, "Parent": "", "isproduct" : true}];
+                { "groupName" : BaseConfigService.lineItem.bundleProdName, "groupId" : BaseConfigService.lineItem.bundleProdId, "Parent": "", "isproduct" : true}];
             _.each(allOptionGroups, function(optiongroups, bundleprodId){
                 if(selectedproducts.indexOf(bundleprodId) > -1)
                 {

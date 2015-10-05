@@ -33,7 +33,7 @@
 
 		function getOptionGroups(productIds) {
             var cartId = BaseConfigService.cartId;
-            var lineNumber = BaseConfigService.bundleLineNumber;
+            var lineNumber = BaseConfigService.lineItem.lineNumber;
             var requestPromise = RemoteService.getproductoptiongroupsData(productIds, cartId, lineNumber);
             currentSubBundleLevel ++;
             BaseService.startprogress();// start progress bar.
@@ -119,7 +119,7 @@
             // remote call to save Quote Config.
             var deferred = $q.defer();
             var cartId = BaseConfigService.cartId;
-            var lineNumber = BaseConfigService.bundleLineNumber;
+            var lineNumber = BaseConfigService.lineItem.lineNumber;
             requestPromise = RemoteService.runConstraintRules(cartId, lineNumber);
             requestPromise.then(function(result){
                 /*appliedActionDOList is a List<Apttus_CPQApi.CPQ.AppliedActionDO>.

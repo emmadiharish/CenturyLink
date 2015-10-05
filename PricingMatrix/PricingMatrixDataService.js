@@ -18,7 +18,7 @@
 				return $q.when(pricingMatrixSearchResult);
 			}
 			
-			var requestPromise = RemoteService.getPricingMatrixData(BaseConfigService.bundleProdId);
+			var requestPromise = RemoteService.getPricingMatrixData(BaseConfigService.lineItem.bundleProdId);
 			BaseService.startprogress();// start progress bar.
 			return requestPromise.then(function(response){
 				initializePricingMatrix(response);

@@ -11,11 +11,11 @@
 	function PageHeaderCtrl(BaseConfigService){
 		var headerCtrl = this;
 
-		var lineItem = BaseConfigService.lineItem;
-		headerCtrl.QuoteId = lineItem.quoteId;
-		headerCtrl.QuoteName = lineItem.quoteName;
-    	headerCtrl.QuoteNumber = lineItem.quoteNumber;
-    	headerCtrl.ApprovalStatus = lineItem.approvalStatus;
+		var proposal = BaseConfigService.proposal;
+		headerCtrl.QuoteId = proposal.Id;
+		headerCtrl.QuoteName = proposal.name;
+    	headerCtrl.QuoteNumber = proposal.number;
+    	headerCtrl.ApprovalStatus = proposal.approvalStatus;
 
 		function init(){
     		
