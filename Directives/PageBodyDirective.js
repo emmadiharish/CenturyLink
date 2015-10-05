@@ -3,14 +3,12 @@
  */
 ;(function() {
 	'use strict';
-	var PageBodyCtrl;
-
-	PageBodyCtrl = function(){
+	
+	function PageBodyCtrl(){
 
 	};
-	PageBodyCtrl.$inject = [];
-
-	angular.module('APTPS_ngCPQ').directive('PageBody', PageBody);
+	
+	angular.module('APTPS_ngCPQ').directive('pageBody', PageBody);
 	PageBody.$inject = ['SystemConstants'];
 	function PageBody(SystemConstants){
 		// Runs during compile
