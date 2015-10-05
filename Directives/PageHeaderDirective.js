@@ -6,16 +6,16 @@
 
 	angular.module('APTPS_ngCPQ').directive('pageHeader', PageHeader);
 
-	PageHeaderCtrl.$inject = ['QuoteDataService'];
+	PageHeaderCtrl.$inject = ['BaseConfigService'];
 	
-	function PageHeaderCtrl(QuoteDataService){
+	function PageHeaderCtrl(BaseConfigService){
 		var headerCtrl = this;
 
-		var lineItem = QuoteDataService.getlineItem();
-		headerCtrl.QuoteId = lineItem.Apttus_Config2__ConfigurationId__r.Apttus_QPConfig__Proposald__c;
-		headerCtrl.QuoteName = lineItem.Apttus_Config2__ConfigurationId__r.Apttus_QPConfig__Proposald__r.Apttus_Proposal__Proposal_Name__c;
-    	headerCtrl.QuoteNumber = lineItem.Apttus_Config2__ConfigurationId__r.Apttus_QPConfig__Proposald__r.Name;
-    	headerCtrl.ApprovalStatus = lineItem.Apttus_Config2__ConfigurationId__r.Apttus_QPConfig__Proposald__r.Apttus_QPApprov__Approval_Status__c;
+		var lineItem = BaseConfigService.lineItem;
+		headerCtrl.QuoteId = lineItem.quoteId;
+		headerCtrl.QuoteName = lineItem.quoteName;
+    	headerCtrl.QuoteNumber = lineItem.quoteNumber;
+    	headerCtrl.ApprovalStatus = lineItem.approvalStatus;
 
 		function init(){
     		

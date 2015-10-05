@@ -5,15 +5,14 @@
 (function() {
     var OptionGroupController;
 
-    OptionGroupController = function($scope, $location, BaseConfigService, OptionGroupDataService) {
+    OptionGroupController = function($scope, $location, SystemConstants, BaseConfigService, OptionGroupDataService) {
 		
         // all variable intializations.
         function init(){
         	$scope.optionGroupService = OptionGroupDataService;
-
-            $scope.imagesbaseURL = $scope.quoteService.getCAPResourcebaseURL()+'/Images';
-            $scope.currentbundleproductId = '';
+            $scope.constants = SystemConstants;
             
+            $scope.currentbundleproductId = '';
             $scope.rendercurrentproductoptiongroups(BaseConfigService.bundleProdId, null, null);
         }
 
@@ -106,6 +105,6 @@
         init();
 	};
 
-    OptionGroupController.$inject = ['$scope', '$location', 'BaseConfigService', 'OptionGroupDataService'];
+    OptionGroupController.$inject = ['$scope', '$location', 'SystemConstants', 'BaseConfigService', 'OptionGroupDataService'];
 	angular.module('APTPS_ngCPQ').controller('OptionGroupController', OptionGroupController);
 }).call(this);

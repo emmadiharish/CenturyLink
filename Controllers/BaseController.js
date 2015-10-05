@@ -5,18 +5,15 @@
 (function() {
     var BaseController;
 
-    BaseController = function($scope, $q, $log, $window, $dialogs, BaseService, BaseConfigService, QuoteDataService, MessageService, RemoteService, LocationDataService, PricingMatrixDataService, OptionGroupDataService, ProductAttributeValueDataService) {
+    BaseController = function($scope, $q, $log, $window, $dialogs, SystemConstants, BaseService, BaseConfigService, MessageService, RemoteService, LocationDataService, PricingMatrixDataService, OptionGroupDataService, ProductAttributeValueDataService) {
         // all variable intializations.
-        $scope.quoteService = QuoteDataService;
+        $scope.constants = SystemConstants;
         $scope.baseService = BaseService;
-        $scope.locationService = LocationDataService;
-        $scope.pricingMatrixService = PricingMatrixDataService;
         $scope.optionGroupService = OptionGroupDataService;
-        $scope.PAVService = ProductAttributeValueDataService;
         $scope.ProgressBartinprogress = false;
         $scope.showOptionsTab = true;
 
-        $scope.imagesbaseURL = $scope.quoteService.getCAPResourcebaseURL()+'/Images';
+        $scope.imagesbaseURL = $scope.constants.baseUrl+'/Images';
         
         $scope.$watch('baseService.getProgressBartinprogress()', function(newVal, oldVal){
             $scope.ProgressBartinprogress = newVal;
@@ -32,8 +29,8 @@
             MessageService.clearAll();
             // Validation 1 : Service location has to be selected.
             var res = true;
-            var servicelocation = $scope.locationService.getselectedlpa();
-            var hasLocations = $scope.locationService.gethasServicelocations();
+            var servicelocation = LocationDataService.getselectedlpa();
+            var hasLocations = LocationDataService.gethasServicelocations();
             if(_.isEmpty(servicelocation)
                 && hasLocations)
             {
@@ -43,7 +40,7 @@
             }
             
             // Validation 2 : validate Min/Max options on option groups.
-            var allOptionGroups = $scope.optionGroupService.getallOptionGroups();
+            var allOptionGroups = OptionGroupDataService.getallOptionGroups();
             var productIdtoComponentMap = {};
             var productIdtoGroupMap = {};
             var bundleProdId = BaseConfigService.bundleProdId;
@@ -208,21 +205,31 @@
             if($scope.validateonsubmit())
             {
                 // selected service location Id.
-                var servicelocationId = $scope.locationService.getselectedlpaId();
+                var servicelocationId = LocationDataService.getselectedlpaId();
                 
                 // get the firstPMRecordId from PricingMatrixDataService and set PriceMatrixEntry__c on bundle.
-                var pricingmatrixId = $scope.pricingMatrixService.getfirstPMRecordId();
+                var pricingmatrixId = PricingMatrixDataService.getfirstPMRecordId();
                 
                 // prepare the bundleLine item to be passed to Remote actions.
-                var bundleLine = $scope.quoteService.getlineItem();
-                var bundleProdId = bundleLine.Apttus_Config2__ProductId__c;
-                var bundlePrimaryNumber = bundleLine.Apttus_Config2__PrimaryLineNumber__c
-                var bundleLineItem ={Id:bundleLine.Id, Apttus_Config2__ConfigurationId__c:bundleLine.Apttus_Config2__ConfigurationId__c, Service_Location__c:servicelocationId, Apttus_Config2__ProductId__c:bundleProdId, Apttus_Config2__LineNumber__c:bundleLine.Apttus_Config2__LineNumber__c, PriceMatrixEntry__c:pricingmatrixId, Apttus_Config2__PrimaryLineNumber__c:bundlePrimaryNumber};
+                var bundleLine = BaseConfigService.lineItem;
+                var cartID = BaseConfigService.cartId;
+                var bundleLineId = bundleLine.Id;
+                var bundleProdId = bundleLine.bundleProdId;
+                var bundleLineNumber = bundleLine.lineNumber;
+                var bundlePrimaryNumber = bundleLine.primaryLineNumber;
+
+                var bundleLineItem ={Id:bundleLineId, 
+                                        Apttus_Config2__ConfigurationId__c:cartID,
+                                        Service_Location__c:servicelocationId,
+                                        Apttus_Config2__ProductId__c:bundleProdId, 
+                                        Apttus_Config2__LineNumber__c:bundleLineNumber, 
+                                        PriceMatrixEntry__c:pricingmatrixId, 
+                                        Apttus_Config2__PrimaryLineNumber__c:bundlePrimaryNumber};
 
                 var productcomponents = [];
                 var componentIdtoPAVMap = {};
-                var allOptionGroups = $scope.optionGroupService.getallOptionGroups();
-                var allcomponentIdToOptionPAVMap = $scope.PAVService.getoptionproductattributevalues();
+                var allOptionGroups = OptionGroupDataService.getallOptionGroups();
+                var allcomponentIdToOptionPAVMap = ProductAttributeValueDataService.getoptionproductattributevalues();
                 
                 var productIdtoComponentMap = {};
                 var productIdtoGroupMap = {};
@@ -277,7 +284,7 @@
                 
                 // add bundleLine PAV.
                 var otherSelected_bundle = false;
-                var bundlePAV = $scope.PAVService.getbundleproductattributevalues();
+                var bundlePAV = ProductAttributeValueDataService.getbundleproductattributevalues();
                 // Other picklist is selected then set OtherSelected to true.
                 if(!_.isUndefined(_.findKey(bundlePAV, function(value, pavField){return pavField.endsWith('Other');}))){
                     otherSelected_bundle = true;
@@ -292,11 +299,11 @@
                 requestPromise.then(function(saveresult){
                     if(saveresult.isSuccess)// if save call is successfull.
                     {
-                        $scope.optionGroupService.runConstraintRules().then(function(constraintsResult){
+                        OptionGroupDataService.runConstraintRules().then(function(constraintsResult){
                             if(constraintsResult.numRulesApplied > 0)
                             {
                                 // render Hierarchy Once Constraint rules are run.
-                                $scope.optionGroupService.setrerenderHierarchy(true);
+                                OptionGroupDataService.setrerenderHierarchy(true);
                                 deferred.reject('Constraint rules Error.');    
                             }
                             else{
@@ -375,6 +382,6 @@
         };
     };
     
-    BaseController.$inject = ['$scope', '$q', '$log', '$window', '$dialogs', 'BaseService', 'BaseConfigService', 'QuoteDataService', 'MessageService', 'RemoteService', 'LocationDataService', 'PricingMatrixDataService', 'OptionGroupDataService', 'ProductAttributeValueDataService'];
+    BaseController.$inject = ['$scope', '$q', '$log', '$window', '$dialogs', 'SystemConstants', 'BaseService', 'BaseConfigService', 'MessageService', 'RemoteService', 'LocationDataService', 'PricingMatrixDataService', 'OptionGroupDataService', 'ProductAttributeValueDataService'];
     angular.module('APTPS_ngCPQ').controller('BaseController', BaseController);
 }).call(this);
