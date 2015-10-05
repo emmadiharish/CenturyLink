@@ -3,6 +3,8 @@
 
     BundleAttributesController = function($scope, SystemConstants, BaseService, BaseConfigService, LocationDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVObjConfigService) {
 		// all variable intializations.
+        var remotecallinitiated = false;
+        
         function init(){
         	$scope.locationService = LocationDataService;
             $scope.constants = SystemConstants;
@@ -11,7 +13,6 @@
             $scope.AttributeGroups = [];// attribute config groups for main bundle.
             $scope.pavfieldDescribeMap = {};
             $scope.productAttributeValues = {};
-            var remotecallinitiated = false;
         }
 
         $scope.$watch('locationService.getselectedlpa()', function(newVal, oldVal) {
