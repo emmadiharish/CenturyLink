@@ -4,7 +4,7 @@
 ;(function() {
 	'use strict';
 
-	PageBodyCtrl = function(){
+	function PageBodyCtrl(){
 
 	};
 
