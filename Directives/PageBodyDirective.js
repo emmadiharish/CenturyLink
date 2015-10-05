@@ -29,7 +29,7 @@
 			// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
 			//link: function($scope, iElm, iAttrs, controller) {
 			//}
-			bindToController: false
+			bindToController: true
 		};
 	}
 }).call(this);
