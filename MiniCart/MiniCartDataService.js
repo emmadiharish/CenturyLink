@@ -1,7 +1,7 @@
 (function() {
 	angular.module('APTPS_ngCPQ').service('MiniCartDataService', MiniCartDataService); 
-	MiniCartDataService.$inject = ['$q', '$log', 'BaseConfigService', 'RemoteService'];
-	function MiniCartDataService($q, $log, BaseConfigService, RemoteService){
+	MiniCartDataService.$inject = ['$q', '$log', 'BaseService', 'BaseConfigService', 'RemoteService'];
+	function MiniCartDataService($q, $log, BaseService, BaseConfigService, RemoteService){
 		var service = this;
 		var miniCartLines = [];
 		var miniCartLinesCount = 0;
@@ -21,8 +21,10 @@
 			}
 			
 			var requestPromise = RemoteService.getMiniCartLines(BaseConfigService.cartId);
+			BaseService.startprogress();// start progress bar.
 			return requestPromise.then(function(response){
 				service.isValid = true;
+				BaseService.setMiniCartLoadComplete();
 				miniCartLines = response;
 				miniCartLinesCount = response.length;
 				return miniCartLines;

@@ -6,6 +6,7 @@
         
         var pageloadComplete = false;
         var ProgressBartinprogress = false;
+        var isMiniCartLoadComplete = false;
     	var isLocationLoadComplete = false;
         var isPricingMatrixLoadComplete = false;
         var isOptionGroupLoadComplete = false;
@@ -18,6 +19,10 @@
     	service.completeprogress = completeprogress;
         service.getProgressBartinprogress = getProgressBartinprogress;
 
+        service.setMiniCartLoadComplete = function(){
+            isMiniCartLoadComplete = true;
+            completeprogress();
+        }
         service.setLocationLoadComplete = function(){
             isLocationLoadComplete = true;
             completeprogress();
@@ -47,7 +52,9 @@
             completeprogress();
         }
         
-
+        service.getMiniCartLoadComplete = function(){
+            return isMiniCartLoadComplete;
+        }
         service.getLocationLoadComplete = function(){
             return isLocationLoadComplete;
         }
@@ -90,7 +97,8 @@
         // complete the page level progress bar.
         function completeprogress(){
             // complete progress only after all loads are complete.
-            if(isLocationLoadComplete
+            if(isMiniCartLoadComplete
+                && isLocationLoadComplete
                 && isPricingMatrixLoadComplete
                 && isOptionGroupLoadComplete
                 && isPAVObjConfigLoadComplete
