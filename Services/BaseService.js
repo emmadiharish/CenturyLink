@@ -79,7 +79,7 @@
 
     	function init(){
             // set the color and height for status bar.
-            ngProgress.color('#5c8427');
+            ngProgress.color('#ffffff');
             ngProgress.height('4px');
         }
         
