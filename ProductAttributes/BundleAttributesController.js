@@ -5,7 +5,7 @@
 		// all variable intializations.
         var remotecallinitiated = false;
         var service = this;
-        
+
         function init(){
         	$scope.locationService = LocationDataService;
             $scope.constants = SystemConstants;
@@ -14,7 +14,7 @@
 
             service.AttributeGroups = [];// attribute config groups for main bundle.
             $scope.pavfieldDescribeMap = {};
-            $scope.productAttributeValues = {};
+            service.productAttributeValues = {};
         }
 
         $scope.$watch('locationService.getselectedlpa()', function(newVal, oldVal) {
@@ -66,15 +66,15 @@
         function renderBundleAttributes(attrgroups, pav){
             // clear the previous option attribute groups.
             service.AttributeGroups = attrgroups;
-            $scope.productAttributeValues = pav;
+            service.productAttributeValues = pav;
             PAVObjConfigService.configurePAVFields(service.AttributeGroups, service.productAttributeValues);
-            ProductAttributeValueDataService.setbundleproductattributevalues($scope.productAttributeValues);
+            ProductAttributeValueDataService.setbundleproductattributevalues(service.productAttributeValues);
             // $scope.productAttributeValues = ProductAttributeValueDataService.getbundleproductattributevalues();
             $scope.safeApply();   
         }
         
         $scope.PAVPicklistChange = function(fieldName){
-            renderBundleAttributes(service.AttributeGroups, $scope.productAttributeValues);
+            renderBundleAttributes(service.AttributeGroups, service.productAttributeValues);
         }
 
         init();
