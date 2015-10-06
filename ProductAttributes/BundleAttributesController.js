@@ -4,6 +4,7 @@
     BundleAttributesController = function($scope, SystemConstants, BaseService, BaseConfigService, LocationDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVObjConfigService) {
 		// all variable intializations.
         var remotecallinitiated = false;
+        var service = this;
         
         function init(){
         	$scope.locationService = LocationDataService;
@@ -11,7 +12,7 @@
             $scope.baseService = BaseService;
             $scope.baseConfig = BaseConfigService;
 
-            $scope.AttributeGroups = [];// attribute config groups for main bundle.
+            service.AttributeGroups = [];// attribute config groups for main bundle.
             $scope.pavfieldDescribeMap = {};
             $scope.productAttributeValues = {};
         }
@@ -64,16 +65,16 @@
 
         function renderBundleAttributes(attrgroups, pav){
             // clear the previous option attribute groups.
-            $scope.AttributeGroups = attrgroups;
+            service.AttributeGroups = attrgroups;
             $scope.productAttributeValues = pav;
-            PAVObjConfigService.configurePAVFields($scope.AttributeGroups, $scope.productAttributeValues);
+            PAVObjConfigService.configurePAVFields(service.AttributeGroups, service.productAttributeValues);
             ProductAttributeValueDataService.setbundleproductattributevalues($scope.productAttributeValues);
             // $scope.productAttributeValues = ProductAttributeValueDataService.getbundleproductattributevalues();
             $scope.safeApply();   
         }
         
         $scope.PAVPicklistChange = function(fieldName){
-            renderBundleAttributes($scope.AttributeGroups, $scope.productAttributeValues);
+            renderBundleAttributes(service.AttributeGroups, $scope.productAttributeValues);
         }
 
         init();
