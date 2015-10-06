@@ -4,17 +4,16 @@
     BundleAttributesController = function($scope, SystemConstants, BaseService, BaseConfigService, LocationDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVObjConfigService) {
 		// all variable intializations.
         var remotecallinitiated = false;
-        var service = this;
-
+        
         function init(){
         	$scope.locationService = LocationDataService;
             $scope.constants = SystemConstants;
             $scope.baseService = BaseService;
             $scope.baseConfig = BaseConfigService;
 
-            service.AttributeGroups = [];// attribute config groups for main bundle.
+            $scope.AttributeGroups = [];// attribute config groups for main bundle.
             $scope.pavfieldDescribeMap = {};
-            service.productAttributeValues = {};
+            $scope.productAttributeValues = {};
         }
 
         $scope.$watch('locationService.getselectedlpa()', function(newVal, oldVal) {
@@ -65,16 +64,16 @@
 
         function renderBundleAttributes(attrgroups, pav){
             // clear the previous option attribute groups.
-            service.AttributeGroups = attrgroups;
-            service.productAttributeValues = pav;
-            PAVObjConfigService.configurePAVFields(service.AttributeGroups, service.productAttributeValues);
-            ProductAttributeValueDataService.setbundleproductattributevalues(service.productAttributeValues);
+            $scope.AttributeGroups = attrgroups;
+            $scope.productAttributeValues = pav;
+            PAVObjConfigService.configurePAVFields($scope.AttributeGroups, $scope.productAttributeValues);
+            ProductAttributeValueDataService.setbundleproductattributevalues($scope.productAttributeValues);
             // $scope.productAttributeValues = ProductAttributeValueDataService.getbundleproductattributevalues();
             $scope.safeApply();   
         }
         
         $scope.PAVPicklistChange = function(fieldName){
-            renderBundleAttributes(service.AttributeGroups, service.productAttributeValues);
+            renderBundleAttributes($scope.AttributeGroups, $scope.productAttributeValues);
         }
 
         init();
