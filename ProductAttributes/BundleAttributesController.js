@@ -9,6 +9,7 @@
         	$scope.locationService = LocationDataService;
             $scope.constants = SystemConstants;
             $scope.baseService = BaseService;
+            $scope.baseConfig = BaseConfigService;
 
             $scope.AttributeGroups = [];// attribute config groups for main bundle.
             $scope.pavfieldDescribeMap = {};
