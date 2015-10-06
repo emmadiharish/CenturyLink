@@ -4,17 +4,16 @@
     BundleAttributesController = function($scope, SystemConstants, BaseService, BaseConfigService, LocationDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVObjConfigService) {
 		// all variable intializations.
         var remotecallinitiated = false;
-        var bAtrCtrl = this;
-
+        
         function init(){
         	$scope.locationService = LocationDataService;
             $scope.constants = SystemConstants;
             $scope.baseService = BaseService;
             $scope.baseConfig = BaseConfigService;
 
-            bAtrCtrl.AttributeGroups = [];// attribute config groups for main bundle.
-            bAtrCtrl.pavfieldDescribeMap = {};
-            bAtrCtrl.productAttributeValues = {};
+            $scope.AttributeGroups = [];// attribute config groups for main bundle.
+            $scope.pavfieldDescribeMap = {};
+            $scope.productAttributeValues = {};
         }
 
         $scope.$watch('locationService.getselectedlpa()', function(newVal, oldVal) {
@@ -45,9 +44,9 @@
                 var selectedlocationId = $scope.locationService.getselectedlpaId();
                 var bundleProductId = BaseConfigService.lineItem.bundleProdId;
                 PAVObjConfigService.getPAVFieldMetaData().then(function(fieldDescribeMap){
-                    if(_.isEmpty(bAtrCtrl.pavfieldDescribeMap))
+                    if(_.isEmpty($scope.pavfieldDescribeMap))
                     {
-                        bAtrCtrl.pavfieldDescribeMap = fieldDescribeMap;
+                        $scope.pavfieldDescribeMap = fieldDescribeMap;
                     }
                     ProductAttributeConfigDataService.getProductAttributesConfig(bundleProductId, alllocationIdSet, selectedlocationId).then(function(attributeconfigresult) {
                         ProductAttributeValueDataService.getProductAttributeValues(bundleProductId).then(function(result)
@@ -65,16 +64,16 @@
 
         function renderBundleAttributes(attrgroups, pav){
             // clear the previous option attribute groups.
-            bAtrCtrl.AttributeGroups = attrgroups;
-            bAtrCtrl.productAttributeValues = pav;
-            PAVObjConfigService.configurePAVFields(bAtrCtrl.AttributeGroups, bAtrCtrl.productAttributeValues);
-            ProductAttributeValueDataService.setbundleproductattributevalues(bAtrCtrl.productAttributeValues);
+            $scope.AttributeGroups = attrgroups;
+            $scope.productAttributeValues = pav;
+            PAVObjConfigService.configurePAVFields($scope.AttributeGroups, $scope.productAttributeValues);
+            ProductAttributeValueDataService.setbundleproductattributevalues($scope.productAttributeValues);
             // $scope.productAttributeValues = ProductAttributeValueDataService.getbundleproductattributevalues();
             $scope.safeApply();   
         }
         
         $scope.PAVPicklistChange = function(fieldName){
-            renderBundleAttributes(bAtrCtrl.AttributeGroups, bAtrCtrl.productAttributeValues);
+            renderBundleAttributes($scope.AttributeGroups, $scope.productAttributeValues);
         }
 
         init();

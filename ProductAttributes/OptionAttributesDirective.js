@@ -13,7 +13,7 @@
 			// name: '',
 			// priority: 1,
 			// terminal: true,
-			// scope: {}, // {} = isolate, true = child, false/undefined = no change
+			scope: {}, // {} = isolate, true = child, false/undefined = no change
 			controller: 'OptionAttributesController',
 			// controllerAs: 'OptionAttributes',
 			// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
