@@ -11,9 +11,10 @@
         var attrCtrl = this;
         
         function init(){
-        	attrCtrl.locationService = LocationDataService;
+        	$scope.locationService = LocationDataService;
+            $scope.baseService = BaseService;
+            
             attrCtrl.constants = SystemConstants;
-            attrCtrl.baseService = BaseService;
             attrCtrl.baseConfig = BaseConfigService;
 
             attrCtrl.AttributeGroups = [];// attribute config groups for main bundle.
@@ -45,8 +46,8 @@
             if(BaseService.getLocationLoadComplete() == true)
             {
                 remotecallinitiated = true;
-                var alllocationIdSet = attrCtrl.locationService.getalllocationIdSet();
-                var selectedlocationId = attrCtrl.locationService.getselectedlpaId();
+                var alllocationIdSet = LocationDataService.getalllocationIdSet();
+                var selectedlocationId = LocationDataService.getselectedlpaId();
                 var bundleProductId = BaseConfigService.lineItem.bundleProdId;
                 PAVObjConfigService.getPAVFieldMetaData().then(function(fieldDescribeMap){
                     if(_.isEmpty(attrCtrl.pavfieldDescribeMap))
