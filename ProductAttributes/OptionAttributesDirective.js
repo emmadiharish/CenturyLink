@@ -25,7 +25,7 @@
 			// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
 			//link: function(cartCtrl, iElm, iAttrs, controller) {
 			//}
-			bindToController: true
+			bindToController: false
 		};
 	}
 }).call(this);
