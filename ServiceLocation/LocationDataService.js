@@ -47,8 +47,8 @@
 		function gethasServicelocations(){
 			return hasServicelocations;
 		}
-		function setselectedlpa(selectedlpa) {
-			selectedlpa = selectedlpa;
+		function setselectedlpa(loc) {
+			selectedlpa = loc;
 		}
 		
 		function getselectedlpa() {
