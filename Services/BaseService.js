@@ -80,7 +80,7 @@
     	function init(){
             // set the color and height for status bar.
             ngProgress.color('#ffffff');
-            ngProgress.height('4px');
+            ngProgress.height('3px');
         }
         
         // start the page level progress bar.
