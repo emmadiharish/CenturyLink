@@ -8,16 +8,16 @@
 	    var msgCtrl = this;
 
 	    function init(){
-	    	msgCtrl.msgService = MessageService;
+	    	msgCtrl.messages = MessageService.messages;
 	    }
 	    
 	    msgCtrl.closeMsg = function(index) {
 	        //$scope.messages[index].remove();
-	        msgCtrl.msgService.removeMessage(index);
+	        MessageService.removeMessage(index);
 	    };
 
 	    $scope.closeAlert = function(index) {
-			msgCtrl.msgService.removeMessage(index);
+			MessageService.removeMessage(index);
 	  	};
 
 	  	init();
