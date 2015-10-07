@@ -18,8 +18,9 @@
 		    pmCtrl.pagedItems = [];
 		    pmCtrl.currentPage = 0;
 		    pmCtrl.pavfieldDescribeMap = {};
-		    pmCtrl.imagesbaseURL = SystemConstants.baseUrl+'/Images';
-		    pmCtrl.paginationLinksTemplateURL = SystemConstants.baseUrl+'/Templates/PaginationLinksView.html';
+		    //pmCtrl.imagesbaseURL = SystemConstants.baseUrl+'/Images';
+		    //pmCtrl.paginationLinksTemplateURL = SystemConstants.baseUrl+'/Templates/PaginationLinksView.html';
+        	pmCtrl.baseUrl = SystemConstants.baseUrl;
         }
         
 	    
@@ -127,6 +128,8 @@
 	    pmCtrl.setPage = function () {
 	        pmCtrl.currentPage = this.n;
 	    };
+
+	    init();
     };
 
     PricingMatrixController.$inject = ['$scope', 
