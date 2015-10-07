@@ -4,8 +4,8 @@
 	function LocationDataService($q, BaseService, BaseConfigService, LocationCache, RemoteService) {
 		var service = this;
 		var locationIdSet = [];
-		var hasServicelocations = false;
-
+		
+		service.hasServicelocations = false;
 		service.selectedlpa = {};
 		
 		// location methods.
@@ -30,7 +30,7 @@
 				BaseService.setLocationLoadComplete();
 				if(response.locations.length > 0)
 				{
-					hasServicelocations = true;
+					service.hasServicelocations = true;
 					setalllocationIdSet(_.pluck(response.locations, 'Id'));
 				}
 				
@@ -46,7 +46,7 @@
 		}
 
 		function gethasServicelocations(){
-			return hasServicelocations;
+			return service.hasServicelocations;
 		}
 		function setselectedlpa(loc) {
 			service.selectedlpa = loc;
