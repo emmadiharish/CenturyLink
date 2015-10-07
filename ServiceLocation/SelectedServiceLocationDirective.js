@@ -4,6 +4,20 @@
 ;(function() {
 	'use strict';
 
+	SelectLocationController = function(LocationDataService) {
+        // all variable intializations.
+        var slocCtrl = this;
+
+        function init(){
+            slocCtrl.selectedlpa = LocationDataService.selectedlpa;
+        	slocCtrl.displaylocations = LocationDataService.gethasServicelocations();
+        }
+        
+        init();
+    };
+    
+    SelectLocationController.$inject = ['LocationDataService'];
+
 	angular.module('APTPS_ngCPQ').directive('selectedServiceLocation', SelectedServiceLocation);
 
 	SelectedServiceLocation.$inject = ['SystemConstants'];
@@ -13,9 +27,9 @@
 			// name: '',
 			// priority: 1,
 			// terminal: true,
-			// scope: {}, // {} = isolate, true = child, false/undefined = no change
-			controller: 'SelectLocationController',
-			// controllerAs: 'SelectedServiceLocation',
+			scope: {}, // {} = isolate, true = child, false/undefined = no change
+			controller: SelectLocationController,
+			controllerAs: 'slocCtrl',
 			// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
 			restrict: 'AE', // E = Element, A = Attribute, C = Class, M = Comment
 			//template: '<div>pageHeader</div>',

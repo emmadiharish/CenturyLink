@@ -4,6 +4,29 @@
 ;(function() {
 	'use strict';
 
+	LocationController = function(BaseConfigService, LocationDataService) {
+        // all variable intializations.
+        var locCtrl = this;
+        function init(){
+            LocationDataService.getlocItems().then(function(result) {
+                locCtrl.locItems = result;
+                locCtrl.selectedlpa = LocationDataService.getselectedlpa();
+                locCtrl.displaylocations = LocationDataService.gethasServicelocations();
+            })
+            
+            locCtrl.newserviceLocationURL = BaseConfigService.newLocationURL;
+        }
+        
+        init();
+
+        locCtrl.setSelectedlocation = function(la){
+            LocationDataService.setselectedlpa(la);
+        }
+    };
+    
+    LocationController.$inject = ['BaseConfigService', 
+    							   'LocationDataService'];
+
 	angular.module('APTPS_ngCPQ').directive('serviceLocations', ServiceLocations);
 
 	ServiceLocations.$inject = ['SystemConstants'];
@@ -13,9 +36,9 @@
 			// name: '',
 			// priority: 1,
 			// terminal: true,
-			// scope: {}, // {} = isolate, true = child, false/undefined = no change
-			controller: 'LocationController',
-			// controllerAs: 'ServiceLocations',
+			scope: {}, // {} = isolate, true = child, false/undefined = no change
+			controller: LocationController,
+			controllerAs: 'locCtrl',
 			// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
 			restrict: 'AE', // E = Element, A = Attribute, C = Class, M = Comment
 			//template: '<div>pageHeader</div>',
