@@ -88,7 +88,7 @@
             PAVObjConfigService.configurePAVFields(attrCtrl.AttributeGroups, attrCtrl.productAttributeValues);
             attrCtrl.optionLevelAttributeChange();
             attrCtrl.seatTypeExpressions(attrgroups, pav);
-            $scope.safeApply();
+            //$scope.safeApply();
         }
 
         attrCtrl.PAVPicklistChange = function(fieldName){
