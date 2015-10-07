@@ -8,12 +8,12 @@
 	function PricingMatrixController($scope, $filter, $log, SystemConstants, BaseService, PAVObjConfigService, ProductAttributeValueDataService, PricingMatrixDataService) {
         /*Initialize Scope Variables*/
         var pmCtrl = this;
-
+        var filteredItems = [];
+        
         function init(){
     		$scope.baseService = BaseService;
     		$scope.PAVService = ProductAttributeValueDataService;
 
-		    var filteredItems = [];
 		    pmCtrl.itemsPerPage = 20;
 		    pmCtrl.pagedItems = [];
 		    pmCtrl.currentPage = 0;
