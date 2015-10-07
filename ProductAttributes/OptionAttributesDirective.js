@@ -8,7 +8,7 @@
         var depattributes = {};
         var attrCtrl = this;
 
-        init = function(){
+        function init(){
             // all variable intializations.
             $scope.locationService = LocationDataService;
             $scope.PAVService = ProductAttributeValueDataService;
