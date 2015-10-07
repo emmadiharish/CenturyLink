@@ -10,7 +10,7 @@
 
         function init(){
             //$scope.locationService = LocationDataService;
-        	slocCtrl.selectedlpa = LocationDataService.getselectedlpa();
+        	slocCtrl.selectedlpa = LocationDataService.selectedlpa;
         }
         
         init();

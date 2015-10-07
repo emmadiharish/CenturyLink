@@ -4,9 +4,10 @@
 	function LocationDataService($q, BaseService, BaseConfigService, LocationCache, RemoteService) {
 		var service = this;
 		var locationIdSet = [];
-		var selectedlpa = {};
 		var hasServicelocations = false;
 
+		service.selectedlpa = {};
+		
 		// location methods.
 		service.gethasServicelocations = gethasServicelocations;
 		service.getlocItems = getlocItems;
@@ -48,15 +49,15 @@
 			return hasServicelocations;
 		}
 		function setselectedlpa(loc) {
-			selectedlpa = loc;
+			service.selectedlpa = loc;
 		}
 		
 		function getselectedlpa() {
-			return selectedlpa;
+			return service.selectedlpa;
 		}
 
 		function getselectedlpaId() {
-			return _.isObject(selectedlpa) ? selectedlpa.Id : '';
+			return _.isObject(service.selectedlpa) ? service.selectedlpa.Id : '';
 		}
 
 		function setalllocationIdSet(locIds){
