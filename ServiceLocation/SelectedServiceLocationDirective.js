@@ -4,7 +4,7 @@
 ;(function() {
 	'use strict';
 
-	function SelectLocationController($scope, LocationDataService) {
+	/*function SelectLocationController($scope, LocationDataService) {
         // all variable intializations.
         var slocCtrl = this;
 
@@ -15,7 +15,7 @@
         init();
     };
     
-    SelectLocationController.$inject = ['$scope', 'LocationDataService'];
+    SelectLocationController.$inject = ['$scope', 'LocationDataService'];*/
 
 	angular.module('APTPS_ngCPQ').directive('selectedServiceLocation', SelectedServiceLocation);
 
@@ -27,7 +27,7 @@
 			// priority: 1,
 			// terminal: true,
 			// scope: {}, // {} = isolate, true = child, false/undefined = no change
-			controller: SelectLocationController,
+			controller: 'SelectLocationController',
 			// controllerAs: 'slocCtrl',
 			// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
 			restrict: 'AE', // E = Element, A = Attribute, C = Class, M = Comment
