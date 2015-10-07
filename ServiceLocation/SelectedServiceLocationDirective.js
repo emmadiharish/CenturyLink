@@ -4,7 +4,7 @@
 ;(function() {
 	'use strict';
 
-	SelectLocationController = function(LocationDataService) {
+	function SelectLocationController(LocationDataService) {
         // all variable intializations.
         var slocCtrl = this;
 

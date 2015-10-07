@@ -4,7 +4,7 @@
 ;(function() {
 	'use strict';
 
-	LocationController = function(BaseConfigService, LocationDataService) {
+	function LocationController(BaseConfigService, LocationDataService) {
         // all variable intializations.
         var locCtrl = this;
         function init(){
