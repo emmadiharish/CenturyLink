@@ -13,8 +13,8 @@
 
 		var proposal = BaseConfigService.proposal;
 		headerCtrl.QuoteId = proposal.Id;
-		headerCtrl.QuoteName = proposal.name;
-    	headerCtrl.QuoteNumber = proposal.number;
+		headerCtrl.QuoteName = proposal.number;
+    	headerCtrl.QuoteNumber = proposal.name;
     	headerCtrl.ApprovalStatus = proposal.approvalStatus;
 
 		function init(){

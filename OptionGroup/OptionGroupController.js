@@ -102,7 +102,7 @@
             }
         }
 
-        init();
+        //init();
 	};
 
     OptionGroupController.$inject = ['$scope', '$location', 'SystemConstants', 'BaseConfigService', 'OptionGroupDataService'];
