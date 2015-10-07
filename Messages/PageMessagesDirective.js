@@ -16,7 +16,7 @@
 	        MessageService.removeMessage(index);
 	    };
 
-	    $scope.closeAlert = function(index) {
+	    msgCtrl.closeAlert = function(index) {
 			MessageService.removeMessage(index);
 	  	};
 
