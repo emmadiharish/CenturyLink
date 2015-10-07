@@ -59,7 +59,7 @@
             Array.prototype.insertChildAtId = function (strId, objChild)
             {
                 // Beware, here there be recursion
-                found = false;
+                var found = false;
                 _.each(this, function(node){
                     if (node.groupId == strId)
                     {
