@@ -16,7 +16,7 @@
 			$scope.optionGroupService = OptionGroupDataService;
 
 			ghCtrl.productGroupList =[];// to load hierarchy
-			ghCtrl.renderhierarchy();
+			renderhierarchy();
 		}
 
 		$scope.$watch('optionGroupService.getrerenderHierarchy()', function(newVal, oldVal) {
@@ -24,7 +24,7 @@
 			if(newVal != oldVal
 				&& newVal == true)
 			{
-				ghCtrl.renderhierarchy();
+				renderhierarchy();
 				OptionGroupDataService.setrerenderHierarchy(false);
 			}
 		});
@@ -33,7 +33,7 @@
 			OptionGroupDataService.setslectedOptionGroupProdId(arg1);
 		}
 
-    	ghCtrl.renderhierarchy = function(){
+    	function renderhierarchy(){
             var selectedproducts = [BaseConfigService.lineItem.bundleProdId];
             var allOptionGroups = OptionGroupDataService.getallOptionGroups();
 
