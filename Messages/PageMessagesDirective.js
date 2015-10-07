@@ -4,6 +4,27 @@
 ;(function() {
 	'use strict';
 
+	function MessageController(MessageService) {
+	    var msgCtrl = this;
+
+	    function init(){
+	    	msgCtrl.msgService = MessageService;
+	    }
+	    
+	    msgCtrl.closeMsg = function(index) {
+	        //$scope.messages[index].remove();
+	        msgCtrl.msgService.removeMessage(index);
+	    };
+
+	    $scope.closeAlert = function(index) {
+			msgCtrl.msgService.removeMessage(index);
+	  	};
+
+	  	init();
+	};
+
+	MessageController.$inject = ['MessageService'];
+
 	angular.module('APTPS_ngCPQ').directive('pageMessages', PageMessages);
 
 	PageMessages.$inject = ['SystemConstants'];
@@ -13,9 +34,9 @@
 			// name: '',
 			// priority: 1,
 			// terminal: true,
-			// scope: {}, // {} = isolate, true = child, false/undefined = no change
-			controller: 'MessageController',
-			// controllerAs: 'PageMessages',
+			scope: {}, // {} = isolate, true = child, false/undefined = no change
+			controller: MessageController,
+			controllerAs: 'msgCtrl',
 			// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
 			restrict: 'AE', // E = Element, A = Attribute, C = Class, M = Comment
 			//template: '<div>pageHeader</div>',
