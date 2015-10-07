@@ -1,6 +1,10 @@
 /**
  * Directive: OptionGroupDirective 
  */
+ /*
+    OptionGroupController controller should be changed later because this was build under assumotion that one product can only belong to one option group.
+    componentId should be used instead of productId for parentId to create hierarchy or rendering sub option groups.
+*/
 ;(function() {
 	'use strict';
 	
@@ -120,7 +124,7 @@
 			// name: '',
 			// priority: 1,
 			// terminal: true,
-			// scope: {}, // {} = isolate, true = child, false/undefined = no change
+			scope: {}, // {} = isolate, true = child, false/undefined = no change
 			controller: OptionGroupController,
 			controllerAs: 'grpCtrl',
 			// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
