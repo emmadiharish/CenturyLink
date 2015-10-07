@@ -4,7 +4,7 @@
 ;(function() {
 	'use strict';
 
-	function MessageController(MessageService) {
+	/*function MessageController(MessageService) {
 	    var msgCtrl = this;
 
 	    function init(){
@@ -23,7 +23,7 @@
 	  	init();
 	};
 
-	MessageController.$inject = ['MessageService'];
+	MessageController.$inject = ['MessageService'];*/
 
 	angular.module('APTPS_ngCPQ').directive('pageMessages', PageMessages);
 
@@ -35,8 +35,8 @@
 			// priority: 1,
 			// terminal: true,
 			scope: {}, // {} = isolate, true = child, false/undefined = no change
-			controller: MessageController,
-			controllerAs: 'msgCtrl',
+			controller: 'MessageController',
+			// controllerAs: 'msgCtrl',
 			// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
 			restrict: 'AE', // E = Element, A = Attribute, C = Class, M = Comment
 			//template: '<div>pageHeader</div>',
