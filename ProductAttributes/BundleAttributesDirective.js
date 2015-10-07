@@ -74,7 +74,7 @@
             PAVObjConfigService.configurePAVFields(attrCtrl.AttributeGroups, attrCtrl.productAttributeValues);
             ProductAttributeValueDataService.setbundleproductattributevalues(attrCtrl.productAttributeValues);
             // attrCtrl.productAttributeValues = ProductAttributeValueDataService.getbundleproductattributevalues();
-            attrCtrl.safeApply();   
+            //$scope.safeApply();   
         }
         
         attrCtrl.PAVPicklistChange = function(fieldName){
