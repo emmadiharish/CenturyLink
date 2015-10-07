@@ -66,10 +66,10 @@
         grpCtrl.selectProductrenderoptionproductattributes = function(prodcomponent, groupindex){
             // select the product and add to tree.
             grpCtrl.selectOptionProduct(prodcomponent, groupindex);
-            grpCtrl.optionGroupService.setrerenderHierarchy(true);
+            OptionGroupDataService.setrerenderHierarchy(true);
             
             // set selected option product which has watch with option Attribute Controller.
-            grpCtrl.optionGroupService.setSelectedoptionproduct(prodcomponent);
+            OptionGroupDataService.setSelectedoptionproduct(prodcomponent);
         }
 
         grpCtrl.renderoptionproductattributes = function(prodcomponent, groupindex){
