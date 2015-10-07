@@ -9,8 +9,7 @@
         var slocCtrl = this;
 
         function init(){
-            $scope.selectedlpa = LocationDataService.selectedlpa;
-        	$scope.displaylocations = LocationDataService.gethasServicelocations();
+            $scope.locationService = LocationDataService;
         }
         
         init();
