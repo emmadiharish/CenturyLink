@@ -4,7 +4,6 @@
 ;(function() {
 	'use strict';
 	
-	BundleAttributesController.$inject = ['$scope', 'SystemConstants', 'BaseService', 'BaseConfigService', 'LocationDataService', 'ProductAttributeConfigDataService', 'ProductAttributeValueDataService', 'PAVObjConfigService'];
 	function BundleAttributesController($scope, SystemConstants, BaseService, BaseConfigService, LocationDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVObjConfigService) {
 		// all variable intializations.
         var remotecallinitiated = false;
@@ -84,6 +83,14 @@
 
         init();
 	};
+    BundleAttributesController.$inject = ['$scope', 
+                                           'SystemConstants', 
+                                           'BaseService', 
+                                           'BaseConfigService', 
+                                           'LocationDataService', 
+                                           'ProductAttributeConfigDataService', 
+                                           'ProductAttributeValueDataService', 
+                                           'PAVObjConfigService'];
 
 	BundleAttributes.$inject = ['SystemConstants'];
 	function BundleAttributes(SystemConstants){
