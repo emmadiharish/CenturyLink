@@ -10,7 +10,7 @@
         // all variable intializations.
         function init(){
         	$scope.optionGroupService = OptionGroupDataService;
-            OptionGroupDataService.constants = SystemConstants;
+            grpCtrl.constants = SystemConstants;
             
             grpCtrl.currentbundleproductId = '';
             grpCtrl.rendercurrentproductoptiongroups(BaseConfigService.lineItem.bundleProdId, null, null);
