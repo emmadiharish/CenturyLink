@@ -16,7 +16,7 @@
 			$scope.optionGroupService = OptionGroupDataService;
 
 			ghCtrl.productGroupList =[];// to load hierarchy
-			renderhierarchy();
+			// renderhierarchy();
 		}
 
 		$scope.$watch('optionGroupService.getrerenderHierarchy()', function(newVal, oldVal) {
