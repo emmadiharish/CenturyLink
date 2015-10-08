@@ -41,7 +41,7 @@
 
             var cartId = BaseConfigService.cartId;
             var lineNumber = BaseConfigService.lineItem.lineNumber;
-            var requestPromise = RemoteService.getproductoptiongroupsData(productIds, cartId, lineNumber);
+            var requestPromise = RemoteService.getProductoptiongroupsData(productIds, cartId, lineNumber);
             requestPromise.then(function(response) {
                 OptionGroupCache.initializeOptionGroups(response);
                 var cachedOptionGroups = OptionGroupCache.getOptionGroups();
