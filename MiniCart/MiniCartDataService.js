@@ -33,7 +33,7 @@
 
 		function configureLineItem(lineItemId){
 			var cartId = BaseConfigService.cartId, configRequestId = BaseConfigService.configRequestId, flowName = BaseConfigService.flowName;
-			var requestPromise = RemoteService.configureLineItem(cartId, configRequestId, flowValue, lineItemId);
+			var requestPromise = RemoteService.configureLineItem(cartId, configRequestId, flowName, lineItemId);
 			return requestPromise.then(function(response){
 				return response;
 			});
