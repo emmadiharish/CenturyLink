@@ -35,7 +35,7 @@
                     // terminal: true,
                     scope: {}, // {} = isolate, true = child, false/undefined = no change
                     controller: MessageController,
-                    controllerAs: 'msgCtrl',
+                    // controllerAs: 'msgCtrl',
                     // require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
                     restrict: 'AE', // E = Element, A = Attribute, C = Class, M = Comment
                     //template: '<div>pageHeader</div>',
