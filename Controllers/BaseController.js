@@ -323,6 +323,7 @@
                 })// end of saveQuoteConfig remote call.
             }// end of validateonsubmit.
             else{
+                $scope.safeApply();
                 $scope.baseService.completeprogress();// end progress bar.
                 deferred.reject('Validations Failed.');
                 return deferred.promise;
