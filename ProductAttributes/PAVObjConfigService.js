@@ -171,7 +171,7 @@
             }
             
             // add None Option as first in the list.
-            options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
+            // options.splice(0, 0, selectoptionObject(true, '--None--', null, false));
             attributeConfig.picklistValues = options;
         }
 		
@@ -245,7 +245,7 @@
 			var res = [];// defaultValue
 			// add a blank option.{--None--}
 			res = ples;
-			res.splice(0, 0, selectoptionObject(true, '--None--', null, false));
+			// res.splice(0, 0, selectoptionObject(true, '--None--', null, false));
 			return res;
 		}
 
