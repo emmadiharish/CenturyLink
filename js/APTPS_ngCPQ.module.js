@@ -8,7 +8,10 @@
     Our module will be called 'APTPS_ngCPQ'.
  	*/
 	angular.module('APTPS_ngCPQ',
-		['ngProgress', 'ui.bootstrap', 'dialogs']
+		['ngProgress', 
+		'ui.bootstrap', 
+		'dialogs', 
+		'ui.select']
 		)
 }).call(this);
 
