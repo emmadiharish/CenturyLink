@@ -5,17 +5,23 @@
             'use strict';
 
             function MessageController($scope, MessageService) {
+                var msgCtrl = this;
                 
                 function init(){
-                    $scope.messages = MessageService.messages;
-                };
+                    $scope.msgService = MessageService;
+                }
 
-                $scope.closeMsg = function(index) {
+                $scope.$watchCollection('msgService.getMessages()', function(newVal){
+                    if(!_.isUndefined(newVal))
+                        msgCtrl.messages = newVal;
+                });
+                
+                msgCtrl.closeMsg = function(index) {
                     //$scope.messages[index].remove();
                     MessageService.removeMessage(index);
                 };
 
-                $scope.closeAlert = function(index) {
+                msgCtrl.closeAlert = function(index) {
                     MessageService.removeMessage(index);
                 };
 
@@ -35,7 +41,7 @@
                     // terminal: true,
                     scope: {}, // {} = isolate, true = child, false/undefined = no change
                     controller: MessageController,
-                    // controllerAs: 'msgCtrl',
+                    controllerAs: 'msgCtrl',
                     // require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
                     restrict: 'AE', // E = Element, A = Attribute, C = Class, M = Comment
                     //template: '<div>pageHeader</div>',
