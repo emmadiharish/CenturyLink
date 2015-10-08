@@ -14,6 +14,7 @@
         var slectedOptionGroupProdId;
         var maxSubBundleLevel = 5;
         var currentSubBundleLevel = 0;
+        var showOptions = true;
 
         // option group methods.
 		service.getallOptionGroups = getallOptionGroups;
@@ -161,9 +162,40 @@
                     var ActionType = ActionDo.ActionType;
                     var ActionIntent = ActionDo.ActionIntent;
                     var SuggestedProductIds = ActionDo.SuggestedProductIds;
-                    _.each(SuggestedProductIds, function(productId){
-                        productIdtoActionDOMap[productId] = {'ActionType': ActionType, 'ActionIntent': ActionIntent, 'Message':Message, 'MessageType':MessageType};
-                    })
+
+                    // this is for exclusion and inclusion.
+                    if(ActionType == 'Inclusion'
+                        || ActionType == 'Exclusion')
+                    {
+                        _.each(SuggestedProductIds, function(productId){
+                            productIdtoActionDOMap[productId] = {'ActionType': ActionType, 'ActionIntent': ActionIntent, 'Message':Message, 'MessageType':MessageType};
+                        })    
+                    }
+
+                    // for Validations, Recommendation and Replacement
+                    if(ActionType == 'Validation'
+                        || ActionType == 'Recommendation')
+                        // || ActionType == 'Replacement')
+                    {
+                        switch(ActionIntent)
+                        {
+                            case 'Auto Include':
+                                break;
+                            case 'Prompt':
+                                break;
+                            case 'Show Message':
+                                if(ActionType == 'Validation'){
+                                    MessageService.addMessage(MessageType, Message);
+                                }
+                                else if(ActionType == 'Recommendation'){
+                                    MessgeService.addMessage('notice', Message);
+                                }
+                                numRulesApplied++;
+                                break;
+                            case 'Check on Finalization':
+                                break;
+                        }
+                    }
                 })
 
                 // exclude or include products according to productIdtoActionDOMap.
@@ -195,6 +227,7 @@
                                             {    
                                                 
                                                 numRulesApplied++;
+
                                                 // if product is radio then include using group by setting selectedproduct.
                                                 if(optiongroup.ischeckbox == false)
                                                 {
@@ -211,10 +244,7 @@
                                         break;
                                     case 'Show Message':
                                         if(ActionType == 'Inclusion'
-                                            || ActionType == 'Exclusion'
-                                            || ActionType == 'Validation'
-                                            || ActionType == 'Recommendation'
-                                            || ActionType == 'Replacement')
+                                            || ActionType == 'Exclusion')
                                         {
                                             MessageService.addMessage(MessageType, Message);
                                             numRulesApplied++;
