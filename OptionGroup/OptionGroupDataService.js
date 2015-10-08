@@ -31,8 +31,32 @@
 		function getallOptionGroups(){
 			return OptionGroupCache.getOptionGroups();
 		}
+        
+        function getOptionGroups(productIds, deferred) {
+            if (!deferred) {
+                deferred = $q.defer();
+            }
+            var requestPromise = RemoteService.getproductoptiongroupsData(productIds, cartId, lineNumber);
+            requestPromise.then(function(response) {
+            OptionGroupCache.initializeOptionGroups(response);
+            var cachedOptionGroups = OptionGroupCache.getOptionGroups();
+            var alloptionProductIds_hasOptions = OptionGroupCache.getProductIdsofBundles();
+            var prodIds_filtered = _.difference(alloptionProductIds_hasOptions, _.keys(cachedOptionGroups)); 
+            if (prodIds_filtered.length > 0
+                && currentSubBundleLevel < maxSubBundleLevel) {
+                getOptionGroups(prodIds_filtered, deferred);    
+            }
+            else{
+                deferred.resolve();
+                BaseService.setOptionGroupLoadComplete();
+                return deferred.promise;
+            }
 
-		function getOptionGroups(productIds) {
+            deferred.notify();
+            return deferred.promise;
+        }
+
+		/*function getOptionGroups(productIds) {
             var cartId = BaseConfigService.cartId;
             var lineNumber = BaseConfigService.lineItem.lineNumber;
             var requestPromise = RemoteService.getproductoptiongroupsData(productIds, cartId, lineNumber);
@@ -51,9 +75,9 @@
                     BaseService.setOptionGroupLoadComplete();
                     // return OptionGroupCache.getOptionGroups();
                 }
-                return OptionGroupCache.getOptionGroups();
+                // return OptionGroupCache.getOptionGroups();
             });
-        }
+        }*/
 
         function getOptionGroup(productId) {
 			var cachedOptionGroups = OptionGroupCache.getOptionGroups();
@@ -65,9 +89,9 @@
 
 			var bundleproductIds = [];
             bundleproductIds.push(productId);
-            return getOptionGroups(bundleproductIds).then(function(response){
-                var optionGroups = response;
-                setcurrentproductoptiongroups(optionGroups[productId]);
+            return getOptionGroups(bundleproductIds, undefined).then(function(response){
+                cachedOptionGroups = OptionGroupCache.getOptionGroups();
+                setcurrentproductoptiongroups(cachedOptionGroups[productId]);
                 return true;
             })
 		}
