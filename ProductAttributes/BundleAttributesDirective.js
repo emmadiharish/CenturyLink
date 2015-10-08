@@ -4,7 +4,7 @@
 ;(function() {
 	'use strict';
 	
-	function BundleAttributesController($scope, SystemConstants, BaseService, BaseConfigService, LocationDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVObjConfigService) {
+	function BundleAttributesController($scope, SystemConstants, $sce, BaseService, BaseConfigService, LocationDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVObjConfigService) {
 		// all variable intializations.
         var remotecallinitiated = false;
         var attrCtrl = this;
@@ -81,10 +81,15 @@
             renderBundleAttributes(attrCtrl.AttributeGroups, attrCtrl.productAttributeValues);
         }
 
+        attrCtrl.trustAsHtml = function(value) {
+            return $sce.trustAsHtml(value);
+        };
+
         init();
 	};
     BundleAttributesController.$inject = ['$scope', 
-                                           'SystemConstants', 
+                                           'SystemConstants',
+                                           '$sce', 
                                            'BaseService', 
                                            'BaseConfigService', 
                                            'LocationDataService', 

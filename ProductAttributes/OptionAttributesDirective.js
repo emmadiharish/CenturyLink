@@ -4,7 +4,7 @@
 ;(function() {
 	'use strict';
 
-	function OptionAttributesController($scope, $log, SystemConstants, LocationDataService, OptionGroupDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVObjConfigService) {
+	function OptionAttributesController($scope, $log, $sce, SystemConstants, LocationDataService, OptionGroupDataService, ProductAttributeConfigDataService, ProductAttributeValueDataService, PAVObjConfigService) {
         var depattributes = {};
         var attrCtrl = this;
 
@@ -154,12 +154,17 @@
                 });
             });
         }
-        
+
+        attrCtrl.trustAsHtml = function(value) {
+            return $sce.trustAsHtml(value);
+        };
+
         init();
     }
 
     OptionAttributesController.$inject = ['$scope', 
-    										'$log', 
+    										'$log',
+                                            '$sce',
 											'SystemConstants', 
 											'LocationDataService', 
 											'OptionGroupDataService', 

@@ -1,7 +1,0 @@
-<!-- fieldType: PICKLIST -->
-<ui-select ng-model="productAttributeValues[optionattr.fieldName]" theme="select2" ng-disabled="optionattr.isReadOnly" append-to-body="true" style="width:100%">
-    <ui-select-match placeholder="--None--" allow-clear="true">{{$select.selected.label}}</ui-select-match>
-    <ui-select-choices repeat="o.value as o.label for o in optionattr.picklistValues | filter : $select.search">
-      <div ng-bind-html="trustAsHtml((o.label | highlight: $select.search))"></div>
-    </ui-select-choices>
-</ui-select>
