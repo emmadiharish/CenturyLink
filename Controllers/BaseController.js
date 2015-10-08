@@ -291,7 +291,13 @@
                 }
 
                 // clone Other Picklist values to regular Dropdowns and delete Other Field from PAV.
-                componentIdtoPAVMap[bundleProdId] = formatPAVBeforeSave(bundlePAV);
+                // bundle product can exist without options.
+                bundlePAV = formatPAVBeforeSave(bundlePAV);
+                if(!_.isEmpty(bundlePAV))
+                {
+                    componentIdtoPAVMap[bundleProdId] = bundlePAV;
+                }
+
                 bundleLineItem = _.extend(bundleLineItem, {Custom__c:otherSelected_bundle});
 
                 // remote call to save Quote Config.
