@@ -99,7 +99,7 @@
         };*/
 
         // anchor links in option groups.
-        $scope.gotosection = function(x) {
+        grpCtrl.gotosection = function(x) {
             var newHash = 'anchor' + x;
             if ($location.hash() !== newHash) {
                 // set the $location.hash to `newHash` and
