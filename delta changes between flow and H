@@ -11,6 +11,5 @@
 Dynamic attribute rendering is changed.
 	- attributes from product will be replaced with dynamic attributes.
 	- modified buildattributegroups method in ProductAttributeConfigDataService.
-	- APTPS_ProductAttributeConfigController code is pending.
-	- Ethernet_Local_Access_Speed__c should be added back to attribute group at product level.
-
+	- APTPS_ProductAttributeConfigController codechange(add dynamic attributes even if no LOV's) - Pending.
+	- Ethernet_Local_Access_Speed__c should be added back to attribute group as hidden at product level. - Pending.
