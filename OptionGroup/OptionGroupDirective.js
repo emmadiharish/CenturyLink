@@ -88,16 +88,6 @@
             OptionGroupDataService.setSelectedoptionproduct(prodcomponent);
         }
         
-        
-        /*grpCtrl.gotosection = function(sectionId) {
-            // set the location.hash to the id of
-            // the element you wish to scroll to.
-            $location.hash(sectionId);
-
-            // call $anchorScroll()
-            $anchorScroll();
-        };*/
-
         // anchor links in option groups.
         grpCtrl.gotosection = function(x) {
             var newHash = 'anchor' + x;
