@@ -71,7 +71,7 @@
 		}
 
 		// Util methid. a: product Id to attribute groups map, b: productId, c: product to dynamic group map., d: dynamic group Id.
-        function buildattributegroups(a, b, c, d){
+        /*function buildattributegroups(a, b, c, d){
             var res = [];
             if(_.has(a, b))
             {
@@ -86,10 +86,10 @@
                 res.push(c[d]);
             }
             return res;
-        }
+        }*/
 
         // Util methid. a: product Id to attribute groups map, b: productId, c: product to dynamic group map., d: dynamic group Id.
-        /*function buildattributegroups(prodIdtoattributegroups, prodId, prodIdtodynamicattributegroups, dynamicgroupId){
+        function buildattributegroups(prodIdtoattributegroups, prodId, prodIdtodynamicattributegroups, dynamicgroupId){
             var res = [];
             
             // collect all dynamic attributes if exists.
@@ -118,15 +118,15 @@
 	            		if(_.has(dynamicAttributes, prodAttribute.fieldName))
 	            		{
 	            			prodAttribute.lovs = dynamicAttributes[prodAttribute.fieldName].lovs;
-	            			// hide dynamic attribute if no values.
-	            			prodAttribute.isHidden = _.size(prodAttribute.lovs) < 1 ? true : prodAttribute.isHidden;
+	            			// unhide dynamic attribute if lov's exists.
+	            			prodAttribute.isHidden = _.size(prodAttribute.lovs) > 0 ? false : prodAttribute.isHidden;
 	            			prodAttribute.isDynamicAttr = true;
 	            		}
 	            	})
 	            })	
             }
             return res;
-        }*/
+        }
 
 		// util method. a: option groups, b: field name to access product components, c: field name to access product Id within product component.
         function getAllProductsinCurrentOptiongroups(a, b, c){
