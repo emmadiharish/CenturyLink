@@ -8,7 +8,7 @@
 ;(function() {
 	'use strict';
 	
-	function OptionGroupController($scope, $location, SystemConstants, BaseConfigService, OptionGroupDataService) {
+	function OptionGroupController($scope, $location, $anchorScroll, SystemConstants, BaseConfigService, OptionGroupDataService) {
 		var grpCtrl = this;
         
         // all variable intializations.
@@ -88,15 +88,28 @@
             OptionGroupDataService.setSelectedoptionproduct(prodcomponent);
         }
         
-        // anchor links in option groups.
-        grpCtrl.gotosection = function(sectionId) {
+        
+        /*grpCtrl.gotosection = function(sectionId) {
             // set the location.hash to the id of
             // the element you wish to scroll to.
             $location.hash(sectionId);
 
             // call $anchorScroll()
             $anchorScroll();
-        };
+        };*/
+
+        // anchor links in option groups.
+        $scope.gotosection = function(x) {
+          var newHash = 'anchor' + x;
+          if ($location.hash() !== newHash) {
+            // set the $location.hash to `newHash` and
+            // $anchorScroll will automatically scroll to it
+            $location.hash('anchor' + x);
+          } else {
+            // call $anchorScroll() explicitly,
+            // since $location.hash hasn't changed
+            $anchorScroll();
+        }
         
         // quantity cannot be negative.
         grpCtrl.changeQuantity = function(pcomponent){
@@ -110,7 +123,8 @@
 	};
 
 	OptionGroupController.$inject = ['$scope', 
-									  '$location', 
+									  '$location',
+                                      '$anchorScroll', 
 									  'SystemConstants', 
 									  'BaseConfigService', 
 									  'OptionGroupDataService'];
