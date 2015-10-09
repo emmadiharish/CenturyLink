@@ -71,19 +71,39 @@
 		}
 
 		// Util methid. a: product Id to attribute groups map, b: productId, c: product to dynamic group map., d: dynamic group Id.
-        function buildattributegroups(a, b, c, d){
+        function buildattributegroups(prodIdtoattributegroups, prodId, prodIdtodynamicattributegroups, dynamicgroupId){
             var res = [];
-            if(_.has(a, b))
+            
+            // collect all dynamic attributes if exists.
+            var dynamicAttributes = {};
+            if(_.isObject(prodIdtodynamicattributegroups)
+            	&& _.has(prodIdtodynamicattributegroups, dynamicgroupId))
             {
-                _.each(a[b], function(g) {
+                _.each(prodIdtodynamicattributegroups[dynamicgroupId].productAtributes, function(dynamicattribute){
+                	dynamicAttributes[dynamicattribute.fieldName] = dynamicattribute;
+                })
+            }
+
+            // get attributes configured at product level.
+            if(_.has(prodIdtoattributegroups, prodId))
+            {
+                _.each(prodIdtoattributegroups[prodId], function(g) {
                     res.push(g);
                 })
             }
-            
-            if(_.isObject(c)
-            	&& _.has(c, d))
+
+            // replace attributes(product level) values with dynamic attributes from location availability.
+            if(!_.isEmpty(dynamicAttributes))
             {
-                res.push(c[d]);
+            	_.each(res, function(attrGroup){
+	            	_.each(attrGroup.productAtributes, function(prodAttribute){
+	            		if(_.has(dynamicAttributes, prodAttribute.fieldName))
+	            		{
+	            			prodAttribute.lovs = dynamicAttributes[prodAttribute.fieldName].lovs;
+	            			prodAttribute.isDynamicAttr = true;
+	            		}
+	            	})
+	            })	
             }
             return res;
         }
