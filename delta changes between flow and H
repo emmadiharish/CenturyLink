@@ -6,3 +6,11 @@
 2. special characters in attributes.
 	- BundleController
 	- OptionController
+
+
+Dynamic attribute rendering is changed.
+	- attributes from product will be replaced with dynamic attributes.
+	- modified buildattributegroups method in ProductAttributeConfigDataService.
+	- APTPS_ProductAttributeConfigController code is pending.
+	- Ethernet_Local_Access_Speed__c should be added back to attribute group at product level.
+

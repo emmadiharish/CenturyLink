@@ -12,3 +12,11 @@ DE2318 : Dependent Picklist updates based on 'other' selections aren’t working
 	Metadata components : 
 		BaseController
 		PAVObjConfigService
+
+DE2705 : Pricing approvals are not getting triggered as expected - Fixed.
+		Apex Classes:
+           APTPS_ProductAttributeValueSelector - Update
+			APTPS_PriceMatrixHelper - New
+			APTPS_PriceMatrixSelector - New
+			APTPS_PricingMatrixController - Update
+			APTPS_PricingHelper - Update
