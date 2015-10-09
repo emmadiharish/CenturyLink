@@ -100,6 +100,8 @@
 	            		if(_.has(dynamicAttributes, prodAttribute.fieldName))
 	            		{
 	            			prodAttribute.lovs = dynamicAttributes[prodAttribute.fieldName].lovs;
+	            			// hide dynamic attribute if no values.
+	            			prodAttribute.isHidden = _.size(prodAttribute.lovs) > 0 ? true : prodAttribute.isHidden;
 	            			prodAttribute.isDynamicAttr = true;
 	            		}
 	            	})
