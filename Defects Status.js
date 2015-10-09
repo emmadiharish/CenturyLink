@@ -20,3 +20,10 @@ DE2705 : Pricing approvals are not getting triggered as expected - Fixed.
 			APTPS_PriceMatrixSelector - New
 			APTPS_PricingMatrixController - Update
 			APTPS_PricingHelper - Update
+
+DE2394: CCE Rate Card displays an empty line - Closed
+
+DE2465: SF: Incorrect Local Access Speeds are displayed for Option Products (Defect On US17258) - Need More Details - 10/09
+
+DE2650: Rate Card on IQ Data Bundle is unintelligible without Port Type displayed - Data issue - 10/09
+
