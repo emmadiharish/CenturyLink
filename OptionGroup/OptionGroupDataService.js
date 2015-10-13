@@ -13,6 +13,7 @@
         var rerenderHierarchy = false;// to render option group hierarchy whenever product is added/removed from option groups.
         var slectedOptionGroupProdId;// to render option groups based on group hierarchy traversal.
         var showConfigureOptionstab = true;// used to hide the 'Configure Options' tab if no option group exists.
+        var recommendedproductsMap = {};
 
         // option group methods.
         service.getallOptionGroups = getallOptionGroups;
@@ -25,6 +26,7 @@
         service.setrerenderHierarchy = setrerenderHierarchy;
         service.getslectedOptionGroupProdId = getslectedOptionGroupProdId;
         service.setslectedOptionGroupProdId = setslectedOptionGroupProdId;
+        service.getsrecommendedproducts = getrecommendedproducts;
         
         function getallOptionGroups(){
             return OptionGroupCache.getOptionGroups();
@@ -123,6 +125,10 @@
             slectedOptionGroupProdId = val;
         }
 
+        function getrecommendedproducts(){
+            return _.values(recommendedproductsMap);
+        }
+
         function runConstraintRules(){
             // remote call to save Quote Config.
             var deferred = $q.defer();
@@ -189,6 +195,13 @@
                             case 'Auto Include':
                                 break;
                             case 'Prompt':
+                                if(ActionType == 'Validation'){
+                                    MessageService.addMessage(MessageType, Message);
+                                }
+                                else if(ActionType == 'Recommendation'){
+                                    MessgeService.addMessage('notice', Message);
+                                }
+                                numRulesApplied++;
                                 break;
                             case 'Show Message':
                                 if(ActionType == 'Validation'){
