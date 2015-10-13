@@ -8,13 +8,11 @@
     function OptionGroupDataService($q, $log, BaseService, BaseConfigService, RemoteService, MessageService, OptionGroupCache) {
         var service = this;
         
-        var Selectedoptionproduct = {};
+        var Selectedoptionproduct = {};// to render option attributes.
         var currentproductoptiongroups = {};
-        var rerenderHierarchy = false;
-        var slectedOptionGroupProdId;
-        var maxSubBundleLevel = 5;
-        var currentSubBundleLevel = 0;
-        var showOptions = true;
+        var rerenderHierarchy = false;// to render option group hierarchy whenever product is added/removed from option groups.
+        var slectedOptionGroupProdId;// to render option groups based on group hierarchy traversal.
+        var showConfigureOptionstab = true;// used to hide the 'Configure Options' tab if no option group exists.
 
         // option group methods.
         service.getallOptionGroups = getallOptionGroups;
@@ -42,6 +40,8 @@
             var cartId = BaseConfigService.cartId;
             var lineNumber = BaseConfigService.lineItem.lineNumber;
             var requestPromise = RemoteService.getProductoptiongroupsData(productIds, cartId, lineNumber);
+            var currentSubBundleLevel = 0;
+            var maxSubBundleLevel = 5;// constant to limit the option group recursive remote call.
             requestPromise.then(function(response) {
                 OptionGroupCache.initializeOptionGroups(response);
                 var cachedOptionGroups = OptionGroupCache.getOptionGroups();
