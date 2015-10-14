@@ -28,7 +28,7 @@
 
 			}
 
-			_.omit(recommendedproductsMap, product);
+			_.omit(recCtrl.recommendedproductsMap, product);
 		}
 
 		init();
