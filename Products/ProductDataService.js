@@ -10,9 +10,11 @@
 		service.getProducts = getProducts;
 
 		function getProducts(ProductIds){
+			var res = {};
+			
 			var existingproductIds = _.keys(service.productIdtoProductMap);
 			var ProductIds_filtered = _.filter(ProductIds, function(Id){return !_.contains(existingproductIds, Id);});
-			var res = {};
+
 			if(service.isValid
 				&& _.size(ProductIds_filtered) < 1)
 			{
@@ -23,13 +25,13 @@
 			}
 
 			var requestPromise = RemoteService.getProducts(ProductIds_filtered);
-			requestPromise.then(function(response){
+			return requestPromise.then(function(response){
 				initializeproductIdtoProductMap(response);
 				_.each(ProductIds, function(prodId){
 					res[prodId] = service.productIdtoProductMap[prodId];
 				})
 				return res;
-			})
+			});
 		}
 
 		function initializeproductIdtoProductMap(products){
