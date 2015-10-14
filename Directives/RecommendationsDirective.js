@@ -34,6 +34,9 @@
 		init();
 	}
 
+	RecommendationsController.$inject = ['$scope', 
+									  	  'OptionGroupDataService'];
+
 	angular.module('APTPS_ngCPQ').directive('recommendations', recommendations);
 
 	recommendations.$inject = ['SystemConstants'];
