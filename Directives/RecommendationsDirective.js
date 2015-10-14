@@ -28,7 +28,7 @@
 
             }
 
-            _.omit(recCtrl.recommendedproductsMap, productId);
+            OptionGroupDataService.omitrecommendedproduct(productId);
         }
 
         init();

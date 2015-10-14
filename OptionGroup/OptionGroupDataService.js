@@ -27,6 +27,7 @@
         service.getslectedOptionGroupProdId = getslectedOptionGroupProdId;
         service.setslectedOptionGroupProdId = setslectedOptionGroupProdId;
         service.getrecommendedproductsMap = getrecommendedproductsMap;
+        service.omitrecommendedproduct = omitrecommendedproduct;
         
         function getallOptionGroups(){
             return OptionGroupCache.getOptionGroups();
@@ -127,6 +128,10 @@
 
         function getrecommendedproductsMap(){
             return recommendedproductsMap;
+        }
+
+        function omitrecommendedproduct(productId){
+            _.omit(recommendedproductsMap, productId);
         }
 
         function runConstraintRules(){
