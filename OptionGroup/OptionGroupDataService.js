@@ -307,9 +307,12 @@
                 })
                 
                 // query the recommended products using productDataService.
-                ProductDataService.getProducts(recommendedProductIds).then(function(result){
-                    recommendedproductsMap = result;
-                });
+                if(_.size(recommendedProductIds) > 0)
+                {
+                    ProductDataService.getProducts(recommendedProductIds).then(function(result){
+                        recommendedproductsMap = result;
+                    });
+                }
                 
                 res = {isSuccess:true, numRulesApplied:numRulesApplied};
                 deferred.resolve(res);
