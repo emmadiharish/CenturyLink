@@ -20,11 +20,11 @@
             // Identify if product is option or bundle and make respective remote calls.
             var selectedProduct = recCtrl.recommendedproductsMap[productId];
             // if option then auto-include in the option groups and save to server.
-            if(product.Apttus_Config2__ConfigurationType__c == 'Option'){
+            if(selectedProduct.Apttus_Config2__ConfigurationType__c == 'Option'){
                 
             }// if bundle then remote call to add to cart.
-            else if(product.Apttus_Config2__ConfigurationType__c == 'Bundle'
-                    || product.Apttus_Config2__ConfigurationType__c == 'Standalone'){
+            else if(selectedProduct.Apttus_Config2__ConfigurationType__c == 'Bundle'
+                    || selectedProduct.Apttus_Config2__ConfigurationType__c == 'Standalone'){
 
             }
 
