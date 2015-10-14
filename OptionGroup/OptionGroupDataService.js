@@ -307,6 +307,7 @@
                 })
                 
                 // query the recommended products using productDataService.
+                recommendedProductIds = _.flatten(recommendedProductIds);
                 if(_.size(recommendedProductIds) > 0)
                 {
                     ProductDataService.getProducts(recommendedProductIds).then(function(result){
