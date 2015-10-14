@@ -165,7 +165,8 @@
                 var numRulesApplied = 0; //constraintActionDoList.length;
                 var allOptionGroups = getallOptionGroups();
                 var productIdtoActionDOMap = {};
-                
+                var recommendedProductIds = [];
+
                 _.each(constraintActionDoList, function(ActionDo){
                     // get all error messages and add to MessageService.
                     var TriggeringProductIds = ActionDo.TriggeringProductIds;
@@ -185,6 +186,9 @@
                         })    
                     }
 
+                    // Just for testing as recommendations are not firing.
+                    recommendedProductIds.push(SuggestedProductIds);
+
                     // for Validations, Recommendation and Replacement
                     if(ActionType == 'Validation'
                         || ActionType == 'Recommendation')
@@ -199,6 +203,7 @@
                                     MessageService.addMessage(MessageType, Message);
                                 }
                                 else if(ActionType == 'Recommendation'){
+                                    recommendedProductIds.push(SuggestedProductIds);
                                     MessgeService.addMessage('notice', Message);
                                 }
                                 numRulesApplied++;
@@ -208,6 +213,7 @@
                                     MessageService.addMessage(MessageType, Message);
                                 }
                                 else if(ActionType == 'Recommendation'){
+                                    recommendedProductIds.push(SuggestedProductIds);
                                     MessgeService.addMessage('notice', Message);
                                 }
                                 numRulesApplied++;
@@ -300,6 +306,11 @@
                     })
                 })
                 
+                // query the recommended products using productDataService.
+                ProductDataService.getProducts().then(function(result){
+                    recommendedproductsMap = result;
+                })
+                
                 res = {isSuccess:true, numRulesApplied:numRulesApplied};
                 deferred.resolve(res);
             })// end of runConstraintRules remote call.
@@ -310,7 +321,7 @@
             if((productcomponent.isselected && optiongroup.ischeckbox)
                 || (productcomponent.productId == optiongroup.selectedproduct && !optiongroup.ischeckbox))
             return true;
-            return false;
+            return false;recommendedProductIds
         }
     }
 })();

@@ -12,15 +12,23 @@
 		function getProducts(ProductIds){
 			var existingproductIds = _.keys(service.productIdtoProductMap);
 			var ProductIds_filtered = _.filter(ProductIds, function(Id){return !_.contains(existingproductIds, Id);});
-			if(service.isValid)
+			var res = {};
+			if(service.isValid
+				&& _.size(ProductIds_filtered) < 1)
 			{
-				return $q.when(service.productIdtoProductMap);
+				_.each(ProductIds, function(prodId){
+					res[prodId] = service.productIdtoProductMap[prodId];
+				})
+				return $q.when(res);
 			}
 
 			var requestPromise = RemoteService.getProducts(ProductIds_filtered);
 			requestPromise.then(function(response){
 				initializeproductIdtoProductMap(response);
-				return service.productIdtoProductMap;
+				_.each(ProductIds, function(prodId){
+					res[prodId] = service.productIdtoProductMap[prodId];
+				})
+				return res;
 			})
 		}
 
