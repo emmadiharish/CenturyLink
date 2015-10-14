@@ -4,8 +4,8 @@
 */
 (function() {
     angular.module('APTPS_ngCPQ').service('OptionGroupDataService', OptionGroupDataService); 
-    OptionGroupDataService.$inject = ['$q', '$log', 'BaseService', 'BaseConfigService', 'RemoteService', 'MessageService', 'OptionGroupCache'];
-    function OptionGroupDataService($q, $log, BaseService, BaseConfigService, RemoteService, MessageService, OptionGroupCache) {
+    OptionGroupDataService.$inject = ['$q', '$log', 'BaseService', 'BaseConfigService', 'RemoteService', 'MessageService', 'ProductDataService', 'OptionGroupCache'];
+    function OptionGroupDataService($q, $log, BaseService, BaseConfigService, RemoteService, MessageService, ProductDataService, OptionGroupCache) {
         var service = this;
         
         var Selectedoptionproduct = {};// to render option attributes.
