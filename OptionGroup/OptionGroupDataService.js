@@ -321,7 +321,7 @@
             if((productcomponent.isselected && optiongroup.ischeckbox)
                 || (productcomponent.productId == optiongroup.selectedproduct && !optiongroup.ischeckbox))
             return true;
-            return false;recommendedProductIds
+            return false;
         }
     }
 })();
