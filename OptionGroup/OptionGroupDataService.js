@@ -26,7 +26,7 @@
         service.setrerenderHierarchy = setrerenderHierarchy;
         service.getslectedOptionGroupProdId = getslectedOptionGroupProdId;
         service.setslectedOptionGroupProdId = setslectedOptionGroupProdId;
-        service.getsrecommendedproducts = getrecommendedproducts;
+        service.getrecommendedproductsMap = getrecommendedproductsMap;
         
         function getallOptionGroups(){
             return OptionGroupCache.getOptionGroups();
@@ -125,8 +125,8 @@
             slectedOptionGroupProdId = val;
         }
 
-        function getrecommendedproducts(){
-            return _.values(recommendedproductsMap);
+        function getrecommendedproductsMap(){
+            return recommendedproductsMap;
         }
 
         function runConstraintRules(){
