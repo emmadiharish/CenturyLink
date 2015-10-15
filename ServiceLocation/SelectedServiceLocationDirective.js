@@ -5,14 +5,13 @@
 	'use strict';
 
 	function SelectLocationController($scope, LocationDataService) {
-        var slocCtrl = this;
+        // var slocCtrl = this;
 
         // all variable intializations.
         function init(){
-            $scope.locationService = LocationDataService;
-
-            slocCtrl.selectedlpa = LocationDataService.getselectedlpa();
-        }
+            $scope.displaySelectedLocationSection = LocationDataService.hasServicelocations;
+            $scope.selectedlpa = LocationDataService.selectedlpa;
+		}
         
         init();
     };
