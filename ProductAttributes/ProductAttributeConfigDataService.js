@@ -136,6 +136,7 @@
                 res.push(_.pluck(group[b], c));
             });
             res = _.flatten(res);// Flattens a nested array.
+            res = _.filter(res, function(prodId){return !_.isUndefined(prodId)});
             return res;
         }
 
