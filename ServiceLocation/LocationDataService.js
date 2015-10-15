@@ -49,13 +49,13 @@
 			
 			if(locations.length > 0)
 			{
-				hasServicelocations = true;
+				service.hasServicelocations = true;
 				setalllocationIdSet(_.pluck(locations, 'Id'));
 			}
 		}
 
 		function gethasServicelocations(){
-			return hasServicelocations;
+			return service.hasServicelocations;
 		}
 		function setselectedlpa(loc) {
 			service.selectedlpa = loc;
