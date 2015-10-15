@@ -18,7 +18,7 @@
 		    pmCtrl.pagedItems = [];
 		    pmCtrl.currentPage = 0;
 		    pmCtrl.pavfieldDescribeMap = {};
-		    pmCtrl.displayPricingMatrix = PricingMatrixDataService.gethasPricingMatrix();
+		    pmCtrl.displayPricingMatrix = false;
         	pmCtrl.baseUrl = SystemConstants.baseUrl;
         }
         
@@ -32,7 +32,8 @@
 					pmCtrl.dimensions = result.dimensions;
 					pmCtrl.pavfieldDescribeMap = PAVObjConfigService.fieldNametoDFRMap;
 					pmCtrl.currentPage = 0;   
-			    	
+			    	pmCtrl.displayPricingMatrix = PricingMatrixDataService.gethasPricingMatrix();
+
 			    	// functions have been describe process the data for display
 				    pmCtrl.search();
 				})  
