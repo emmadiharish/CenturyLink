@@ -193,18 +193,16 @@
 			// transclude: true,
 			// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
 			link: function(cartCtrl, iElm, iAttrs, controller) {
-    			$(function() {
-                    var top = $('.thisone').offset().top;
+    			var top = $('.thisone').offset().top;
                     
-                    $(document).scroll(function(){
-                        $('.thisone').css('position','');
-                        top = $('.thisone').offset().top;
-                        $('.thisone').css('position','absolute');
-                        $('.thisone').css('top',Math.max(top,$(document).scrollTop()));
-                    });
+                $(document).scroll(function(){
+                    $('.thisone').css('position','');
+                    top = $('.thisone').offset().top;
+                    $('.thisone').css('position','absolute');
+                    $('.thisone').css('top',Math.max(top,$(document).scrollTop()));
                 });
-            }
-			bindToController: true
+            },
+            bindToController: true
 		};
 	}
 }).call(this);
