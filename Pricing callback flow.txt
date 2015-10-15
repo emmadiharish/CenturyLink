@@ -1,0 +1,10 @@
+Start - once
+Setmode - once
+beforePricing - bulk - PME is populated using Interface2 but not with 3.
+	beforePricingLineItem - bulk but only on ADJ
+
+onPriceItemSet - for each line and only on BAS
+
+afterPricing - bulk
+	afterPricingLineItem - for each line only on ADJ
+finish
