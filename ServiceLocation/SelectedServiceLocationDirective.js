@@ -5,7 +5,6 @@
 	'use strict';
 
 	function SelectLocationController($scope, LocationDataService) {
-        
         // all variable intializations.
         function init(){
             $scope.locationService = LocationDataService;

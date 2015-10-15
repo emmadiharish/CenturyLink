@@ -5,11 +5,11 @@
 		var service = this;
 
 		var locationIdSet = [];
-		var hasServicelocations = false;
 		var isValid = false;
 		var locations = [];
 
 		service.selectedlpa = {};
+		service.hasServicelocations = false;
 		
 		// location methods.
 		service.gethasServicelocations = gethasServicelocations;
