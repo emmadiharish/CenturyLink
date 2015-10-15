@@ -5,9 +5,13 @@
 	'use strict';
 
 	function SelectLocationController($scope, LocationDataService) {
+        var slocCtrl = this;
+
         // all variable intializations.
         function init(){
             $scope.locationService = LocationDataService;
+
+            slocCtrl.selectedlpa = LocationDataService.getselectedlpa();
         }
         
         init();
@@ -26,7 +30,7 @@
 			// terminal: true,
 			scope: {}, // {} = isolate, true = child, false/undefined = no change
 			controller: SelectLocationController,
-			// controllerAs: 'slocCtrl',
+			controllerAs: 'slocCtrl',
 			// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
 			restrict: 'AE', // E = Element, A = Attribute, C = Class, M = Comment
 			//template: '<div>pageHeader</div>',
