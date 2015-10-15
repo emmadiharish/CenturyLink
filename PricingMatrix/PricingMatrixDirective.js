@@ -18,7 +18,7 @@
 		    pmCtrl.pagedItems = [];
 		    pmCtrl.currentPage = 0;
 		    pmCtrl.pavfieldDescribeMap = {};
-		    pmCtrl.displayPricingMatrix = ProductAttributeValueDataService.gethasPricingMatrix();
+		    pmCtrl.displayPricingMatrix = PricingMatrixDataService.gethasPricingMatrix();
         	pmCtrl.baseUrl = SystemConstants.baseUrl;
         }
         
