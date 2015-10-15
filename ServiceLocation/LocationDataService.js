@@ -7,9 +7,8 @@
 		var locationIdSet = [];
 		var isValid = false;
 		var locations = [];
-
-		service.selectedlpa = {};
-		service.hasServicelocations = false;
+		var selectedlpa = {};
+		var hasServicelocations = false;
 		
 		// location methods.
 		service.gethasServicelocations = gethasServicelocations;
@@ -49,24 +48,24 @@
 			
 			if(locations.length > 0)
 			{
-				service.hasServicelocations = true;
+				hasServicelocations = true;
 				setalllocationIdSet(_.pluck(locations, 'Id'));
 			}
 		}
 
 		function gethasServicelocations(){
-			return service.hasServicelocations;
+			return hasServicelocations;
 		}
 		function setselectedlpa(loc) {
-			service.selectedlpa = loc;
+			selectedlpa = loc;
 		}
 		
 		function getselectedlpa() {
-			return service.selectedlpa;
+			return selectedlpa;
 		}
 
 		function getselectedlpaId() {
-			return _.isObject(service.selectedlpa) ? service.selectedlpa.Id : '';
+			return _.isObject(selectedlpa) ? selectedlpa.Id : '';
 		}
 
 		function setalllocationIdSet(locIds){
