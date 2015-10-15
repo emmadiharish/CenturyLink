@@ -18,8 +18,7 @@
 		    pmCtrl.pagedItems = [];
 		    pmCtrl.currentPage = 0;
 		    pmCtrl.pavfieldDescribeMap = {};
-		    //pmCtrl.imagesbaseURL = SystemConstants.baseUrl+'/Images';
-		    //pmCtrl.paginationLinksTemplateURL = SystemConstants.baseUrl+'/Templates/PaginationLinksView.html';
+		    pmCtrl.displayPricingMatrix = ProductAttributeValueDataService.gethasPricingMatrix();
         	pmCtrl.baseUrl = SystemConstants.baseUrl;
         }
         

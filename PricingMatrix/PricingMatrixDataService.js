@@ -7,11 +7,13 @@
 		var pricingMatrixSearchResult = {};
 		var isValid = false;
 		var firstPMRecordId = null;
-		
+		var hasPricingMatrix = false;
+
 		// Pricing Methods.
 		service.getPricingMatrix = getPricingMatrix;
 		service.setfirstPricingMatrixRecord = setfirstPricingMatrixRecord;
 		service.getfirstPMRecordId  = getfirstPMRecordId;
+		service.gethasPricingMatrix = gethasPricingMatrix;
 
 		function getPricingMatrix() {
 			if (isValid) {
@@ -33,6 +35,10 @@
 			var pavfieldDescribeMap = PAVObjConfigService.fieldNametoDFRMap;
 			
 			var priceMatrices = response.priceMatrices;
+			if(priceMatrices.length > 0)
+			{
+				hasPricingMatrix = true;
+			}
 			_.each(priceMatrices, function(pm){
 				var dimension1 = _.has(pm, 'Apttus_Config2__Dimension1Id__r') ? pm.Apttus_Config2__Dimension1Id__r.Apttus_Config2__Datasource__c : null;
 				var dimension2 = _.has(pm, 'Apttus_Config2__Dimension2Id__r') ? pm.Apttus_Config2__Dimension2Id__r.Apttus_Config2__Datasource__c : null;
@@ -97,6 +103,10 @@
 				dimensions.push('Price__c');
 			pricingMatrixSearchResult = {lines:PAVlines, dimensions:dimensions};
 			isValid = true;
+		}
+
+		function gethasPricingMatrix(){
+			return hasPricingMatrix;
 		}
 
 		function setfirstPricingMatrixRecord(pmId){

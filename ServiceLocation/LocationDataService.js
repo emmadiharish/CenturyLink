@@ -1,11 +1,14 @@
 (function() {
 	angular.module('APTPS_ngCPQ').service('LocationDataService', LocationDataService); 
-	LocationDataService.$inject = ['$q', 'BaseService', 'BaseConfigService', 'LocationCache', 'RemoteService'];
-	function LocationDataService($q, BaseService, BaseConfigService, LocationCache, RemoteService) {
+	LocationDataService.$inject = ['$q', 'BaseService', 'BaseConfigService', 'RemoteService'];
+	function LocationDataService($q, BaseService, BaseConfigService, RemoteService) {
 		var service = this;
+
 		var locationIdSet = [];
-		
-		service.hasServicelocations = false;
+		var hasServicelocations = false;
+		var isValid = false;
+		var locations = [];
+
 		service.selectedlpa = {};
 		
 		// location methods.
@@ -17,8 +20,8 @@
 		service.getalllocationIdSet = getalllocationIdSet;
 		
 		function getlocItems() {
-			if (LocationCache.isValid) {
-				var cachedLocations = LocationCache.getLocations();
+			if (isValid) {
+				var cachedLocations = locations;
 				// logTransaction(cachedLocations);
 				return $q.when(cachedLocations);
 			}
@@ -26,27 +29,33 @@
 			var requestPromise = RemoteService.getServiceLocations(BaseConfigService.lineItem.bundleProdId, BaseConfigService.opportunityId);
 			BaseService.startprogress();// start progress bar.
 			return requestPromise.then(function(response){
-				LocationCache.initializeLocations(response.locations);
+				initializeLocations(response);
 				BaseService.setLocationLoadComplete();
-				if(response.locations.length > 0)
-				{
-					service.hasServicelocations = true;
-					setalllocationIdSet(_.pluck(response.locations, 'Id'));
-				}
 				
 				// logTransaction(response, categoryRequest);
 				var locationId = BaseConfigService.lineItem.serviceLocationId;
                 if(!_.isUndefined(locationId)
                 	&& !_.isNull(locationId))
                 {
-                    setselectedlpa(_.findWhere(response.locations, {Id:locationId}));
+                    setselectedlpa(_.findWhere(locations, {Id:locationId}));
                 }
-				return LocationCache.getLocations();
+				return locations;
 			});
 		}
 
+		function initializeLocations(response) {
+			locations = response.locations;
+			isValid = true;
+			
+			if(locations.length > 0)
+			{
+				hasServicelocations = true;
+				setalllocationIdSet(_.pluck(locations, 'Id'));
+			}
+		}
+
 		function gethasServicelocations(){
-			return service.hasServicelocations;
+			return hasServicelocations;
 		}
 		function setselectedlpa(loc) {
 			service.selectedlpa = loc;
