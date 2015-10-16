@@ -367,7 +367,7 @@
 
         function formatPAVBeforeSave(pav){
             //// set the other picklist to original fields.
-            pav = _.omit(pav, 'isDefaultLoadComplete');
+            pav = _.omit(pav, 'isDefaultLoadComplete', 'isUpdatedLocal');
             _.each(_.filter(_.keys(pav), function(pavField){
                             return pavField.endsWith('Other');
                         }), 
