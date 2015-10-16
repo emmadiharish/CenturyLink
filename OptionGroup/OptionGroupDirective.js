@@ -10,13 +10,13 @@
 	
 	function OptionGroupController($scope, $location, $anchorScroll, SystemConstants, BaseConfigService, OptionGroupDataService) {
 		var grpCtrl = this;
-        
+        var currentbundleproductId = '';
+
         // all variable intializations.
         function init(){
         	$scope.optionGroupService = OptionGroupDataService;
             grpCtrl.constants = SystemConstants;
             
-            grpCtrl.currentbundleproductId = '';
             grpCtrl.rendercurrentproductoptiongroups(BaseConfigService.lineItem.bundleProdId, null, null);
         }
 
@@ -31,43 +31,27 @@
         });
 
         grpCtrl.rendercurrentproductoptiongroups = function(bundleproductId, prodcomponent, groupindex){
-            // grpCtrl.selectOptionProduct(prodcomponent, groupindex, true);
-            OptionGroupDataService.setslectedOptionGroupProdId(null);// set the selectedOptionGroup to null so tree Tree traversal would work fine. 
+            // OptionGroupDataService.setslectedOptionGroupProdId(null);// set the selectedOptionGroup to null so tree Tree traversal would work fine. 
             var productId = bundleproductId != null ? bundleproductId : prodcomponent.productId;
-            if(OptionGroupDataService.currentbundleproductId != productId)
+            if(currentbundleproductId != productId)
             {
-                grpCtrl.currentbundleproductId = productId;
-                // var allOptionGroups = OptionGroupDataService.getallOptionGroups(); 
+                currentbundleproductId = productId;
+                
                 // make a remote call to get option groups for all bundles in current option groups.
                 OptionGroupDataService.getOptionGroup(productId).then(function(result) {
-                    grpCtrl.selectOptionProduct(prodcomponent, groupindex);
-                    OptionGroupDataService.setrerenderHierarchy(true);
+                    selectOptionProduct(prodcomponent, groupindex);
+                    
+                    // OptionGroupDataService.setrerenderHierarchy(true);
                     grpCtrl.currentproductoptiongroups = OptionGroupDataService.getcurrentproductoptiongroups();
-                    // As the official documentation states "The remote method call executes synchronously, but it doesn’t wait for the response to return. When the response returns, the callback function handles it asynchronously."
-                    // $scope.safeApply();
                 })
             }
         }
 
-        grpCtrl.selectOptionProduct = function(prodcomponent, groupindex){
-            if(prodcomponent != null
-                && groupindex != null)
-            {
-                if(grpCtrl.currentproductoptiongroups[groupindex].ischeckbox == false)// radio button
-                {
-                    grpCtrl.currentproductoptiongroups[groupindex].selectedproduct = prodcomponent.productId;
-                }
-                else {// checkbox.
-                     prodcomponent.isselected = true;
-                }
-            }
-        }
-        
         grpCtrl.selectProductrenderoptionproductattributes = function(prodcomponent, groupindex){
             setisUpdatedLocal(prodcomponent);
+
             // select the product and add to tree.
-            grpCtrl.selectOptionProduct(prodcomponent, groupindex);
-            OptionGroupDataService.setrerenderHierarchy(true);
+            selectOptionProduct(prodcomponent, groupindex);
             
             // set selected option product which has watch with option Attribute Controller.
             OptionGroupDataService.setSelectedoptionproduct(prodcomponent);
@@ -75,26 +59,19 @@
 
         grpCtrl.renderoptionproductattributes = function(prodcomponent, groupindex){
             setisUpdatedLocal(prodcomponent);
-            // select the product and add to tree.
+
+            // rerender the tree so Add/remove of line item will be applied to tree.
             OptionGroupDataService.setrerenderHierarchy(true);
+
             // do not render attributes when option product is unchecked or product does not have attributes.
-            if(prodcomponent != null
-                && ( (prodcomponent.isselected == false 
-                        && grpCtrl.currentproductoptiongroups[groupindex].ischeckbox)
-                      || !prodcomponent.hasAttributes))
+            if(isProdSelected(prodcomponent, grpCtrl.currentproductoptiongroups[groupindex])
+                && prodcomponent.hasAttributes == true)
             {
-                return;
-            }
-
-            // set selected option product which has watch with option Attribute Controller.
-            OptionGroupDataService.setSelectedoptionproduct(prodcomponent);
+                // set selected option product which has watch with option Attribute Controller.
+                OptionGroupDataService.setSelectedoptionproduct(prodcomponent);
+            }    
         }
 
-        function setisUpdatedLocal(pComponent){
-            // Set isUpdatedLocal flag to true for whenever its seleceted or unselected.
-            pComponent['isUpdatedLocal'] = true;
-        }
-        
         // anchor links in option groups.
         grpCtrl.gotosection = function(x) {
             var newHash = 'anchor' + x;
@@ -115,6 +92,37 @@
             {
                 pcomponent.quantity = 1;
             }
+        }
+
+        function setisUpdatedLocal(pComponent){
+            // Set isUpdatedLocal flag to true for whenever its seleceted or unselected.
+            pComponent['isUpdatedLocal'] = true;
+        }
+
+        function selectOptionProduct = function(prodcomponent, groupindex){
+            if(prodcomponent != null
+                && groupindex != null)
+            {
+                if(grpCtrl.currentproductoptiongroups[groupindex].ischeckbox == false)// radio button
+                {
+                    grpCtrl.currentproductoptiongroups[groupindex].selectedproduct = prodcomponent.productId;
+                }
+                else {// checkbox.
+                     prodcomponent.isselected = true;
+                }
+            }
+
+            // rerender the tree so Add/remove of line item will be applied to tree.
+            OptionGroupDataService.setrerenderHierarchy(true);
+        }
+
+        function isProdSelected(productcomponent, optiongroup){
+            if((productcomponent.isselected 
+                 && optiongroup.ischeckbox)
+                    || (productcomponent.productId == optiongroup.selectedproduct 
+                        && !optiongroup.ischeckbox))
+            return true;
+            return false;
         }
 
         init();
