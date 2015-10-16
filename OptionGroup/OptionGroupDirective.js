@@ -99,7 +99,7 @@
             pComponent['isUpdatedLocal'] = true;
         }
 
-        function selectOptionProduct = function(prodcomponent, groupindex){
+        function selectOptionProduct(prodcomponent, groupindex){
             if(prodcomponent != null
                 && groupindex != null)
             {

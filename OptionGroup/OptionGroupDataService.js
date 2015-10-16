@@ -239,9 +239,6 @@
                             {
                                 productcomponent['isDisabled'] = false;
                             }
-                            // Set isUpdatedLocal flag to false for all components.
-                            productcomponent['isUpdatedLocal'] = false;
-                             
                             var productId = productcomponent.productId;
                             if(_.has(productIdtoActionDOMap, productId))
                             {
