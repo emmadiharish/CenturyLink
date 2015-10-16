@@ -17,6 +17,7 @@
         	$scope.optionGroupService = OptionGroupDataService;
             grpCtrl.constants = SystemConstants;
             
+            // Load option Groups of Main bundle Product on page load.
             grpCtrl.rendercurrentproductoptiongroups(BaseConfigService.lineItem.bundleProdId, null, null);
         }
 
@@ -31,7 +32,7 @@
         });
 
         grpCtrl.rendercurrentproductoptiongroups = function(bundleproductId, prodcomponent, groupindex){
-            // OptionGroupDataService.setslectedOptionGroupProdId(null);// set the selectedOptionGroup to null so tree Tree traversal would work fine. 
+            OptionGroupDataService.setslectedOptionGroupProdId(null);// set the selectedOptionGroup to null so tree Tree traversal would work fine. 
             var productId = bundleproductId != null ? bundleproductId : prodcomponent.productId;
             if(currentbundleproductId != productId)
             {
