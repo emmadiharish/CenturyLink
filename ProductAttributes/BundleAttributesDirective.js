@@ -78,6 +78,7 @@
         }
         
         attrCtrl.PAVPicklistChange = function(fieldName){
+            attrCtrl.productAttributeValues['isUpdatedLocal'] = true;
             renderBundleAttributes(attrCtrl.AttributeGroups, attrCtrl.productAttributeValues);
         }
 

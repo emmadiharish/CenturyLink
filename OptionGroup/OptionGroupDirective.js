@@ -64,6 +64,7 @@
         }
         
         grpCtrl.selectProductrenderoptionproductattributes = function(prodcomponent, groupindex){
+            setisUpdatedLocal(prodcomponent);
             // select the product and add to tree.
             grpCtrl.selectOptionProduct(prodcomponent, groupindex);
             OptionGroupDataService.setrerenderHierarchy(true);
@@ -73,6 +74,7 @@
         }
 
         grpCtrl.renderoptionproductattributes = function(prodcomponent, groupindex){
+            setisUpdatedLocal(prodcomponent);
             // select the product and add to tree.
             OptionGroupDataService.setrerenderHierarchy(true);
             // do not render attributes when option product is unchecked or product does not have attributes.
@@ -86,6 +88,11 @@
 
             // set selected option product which has watch with option Attribute Controller.
             OptionGroupDataService.setSelectedoptionproduct(prodcomponent);
+        }
+
+        function setisUpdatedLocal(pComponent){
+            // Set isUpdatedLocal flag to true for whenever its seleceted or unselected.
+            pComponent['isUpdatedLocal'] = true;
         }
         
         // anchor links in option groups.

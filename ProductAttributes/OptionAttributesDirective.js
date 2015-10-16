@@ -93,6 +93,7 @@
 
                 attrCtrl.PAVPicklistChange = function(fieldName){
                     // var res = PAVObjConfigService.applyDependedPicklistsOnChange(attrCtrl.AttributeGroups, attrCtrl.productAttributeValues, fieldName);    
+                    attrCtrl.productAttributeValues['isUpdatedLocal'] = true;
                     renderOptionAttributes(res.pavConfigGroups, res.PAVObj);
                 }
 
