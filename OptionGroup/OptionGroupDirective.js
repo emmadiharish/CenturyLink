@@ -28,11 +28,11 @@
                 && !_.isNull(newVal))
             {
                 grpCtrl.rendercurrentproductoptiongroups(newVal, null, null);
+                OptionGroupDataService.setslectedOptionGroupProdId(null);// set the selectedOptionGroup to null so tree Tree traversal would work fine. 
             }
         });
 
         grpCtrl.rendercurrentproductoptiongroups = function(bundleproductId, prodcomponent, groupindex){
-            OptionGroupDataService.setslectedOptionGroupProdId(null);// set the selectedOptionGroup to null so tree Tree traversal would work fine. 
             var productId = bundleproductId != null ? bundleproductId : prodcomponent.productId;
             if(currentbundleproductId != productId)
             {
