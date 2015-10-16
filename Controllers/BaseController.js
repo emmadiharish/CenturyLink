@@ -226,7 +226,8 @@
                                         PriceMatrixEntry__c:pricingmatrixId, 
                                         Apttus_Config2__PrimaryLineNumber__c:bundlePrimaryNumber};
 
-                var productcomponents = [];
+                var productcomponentstobeUpserted = [];
+                var productcomponentstobeDeleted = [];
                 var componentIdtoPAVMap = {};
                 var allOptionGroups = OptionGroupDataService.getallOptionGroups();
                 var allcomponentIdToOptionPAVMap = ProductAttributeValueDataService.getoptionproductattributevalues();
@@ -257,25 +258,32 @@
                                 && isProdSelected(productIdtoComponentMap[parentId], productIdtoGroupMap[parentId])))
                         {
                             _.each(optiongroup.productOptionComponents, function(productcomponent){
-                                if(isProdSelected(productcomponent,optiongroup))
+                                if(productcomponent['isUpdatedLocal'] == true)
                                 {
-                                    productcomponent.isselected = true;
-                                    productcomponent = _.omit(productcomponent, ['$$hashKey', 'isDisabled']);
-                                    
-                                    var componentId = productcomponent.componentId;
-                                    var otherSelected = false;
-                                    if(_.has(allcomponentIdToOptionPAVMap, componentId))
+                                    productcomponent = _.omit(productcomponent, ['$$hashKey', 'isDisabled', 'isUpdatedLocal']);
+
+                                    if(isProdSelected(productcomponent,optiongroup))
                                     {
-                                        var optionPAV = allcomponentIdToOptionPAVMap[componentId];
-                                        // Other picklist is selected then set OtherSelected to true.
-                                        if(!_.isUndefined(_.findKey(optionPAV, function(value, pavField){return value == 'Other' && pavField.endsWith('Other');}))){
-                                            otherSelected = true;
+                                        productcomponent.isselected = true;
+
+                                        var componentId = productcomponent.componentId;
+                                        var otherSelected = false;
+                                        if(_.has(allcomponentIdToOptionPAVMap, componentId))
+                                        {
+                                            var optionPAV = allcomponentIdToOptionPAVMap[componentId];
+                                            // Other picklist is selected then set OtherSelected to true.
+                                            if(!_.isUndefined(_.findKey(optionPAV, function(value, pavField){return value == 'Other' && pavField.endsWith('Other');}))){
+                                                otherSelected = true;
+                                            }
+                                            // clone Other Picklist values to regular Dropdowns and delete Other Field from PAV.
+                                            componentIdtoPAVMap[componentId] = formatPAVBeforeSave(optionPAV);
                                         }
-                                        // clone Other Picklist values to regular Dropdowns and delete Other Field from PAV.
-                                        componentIdtoPAVMap[componentId] = formatPAVBeforeSave(optionPAV);
+                                        productcomponent.customFlag = otherSelected;
+                                        productcomponentstobeUpserted.push(productcomponent);
                                     }
-                                    productcomponent.customFlag = otherSelected;
-                                    productcomponents.push(productcomponent);
+                                    else{// prod is unselected then option lines should be deleted from server.
+                                        productcomponentstobeDeleted.push(productcomponent);
+                                    }
                                 }
                             })
                         }// end of if - only if parent component is selected.
@@ -301,7 +309,7 @@
                 bundleLineItem = _.extend(bundleLineItem, {Custom__c:otherSelected_bundle});
 
                 // remote call to save Quote Config.
-                var requestPromise = RemoteService.saveQuoteConfig(bundleLineItem, productcomponents, componentIdtoPAVMap);
+                var requestPromise = RemoteService.saveQuoteConfig(bundleLineItem, productcomponentstobeUpserted, productcomponentstobeDeleted, componentIdtoPAVMap);
                 requestPromise.then(function(saveresult){
                     if(saveresult.isSuccess)// if save call is successfull.
                     {
