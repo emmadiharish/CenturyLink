@@ -14,6 +14,7 @@
         var isPAConfigLoadComplete = false;
         var isOptiontoOptionAttributeLoadComplete = false;
         var isPAVLoadComplete = false;
+        var isSaveCallinProgress = false;
 
     	service.startprogress = startprogress;
     	service.completeprogress = completeprogress;
@@ -51,6 +52,9 @@
             isPAVLoadComplete = true;
             completeprogress();
         }
+        service.setisSaveCallinProgress = function(){
+            isSaveCallinProgress = true;
+        }
         
         service.getMiniCartLoadComplete = function(){
             return isMiniCartLoadComplete;
@@ -75,6 +79,9 @@
         }
         service.getPAVLoadComplete = function(){
             return isPAVLoadComplete;
+        }
+        service.getisSaveCallinProgress = function(){
+            return isSaveCallinProgress;
         }
 
     	function init(){

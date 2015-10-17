@@ -49,7 +49,7 @@
         }
 
         grpCtrl.selectProductrenderoptionproductattributes = function(prodcomponent, groupindex){
-            setisUpdatedLocal(prodcomponent);
+            // setisUpdatedLocal(prodcomponent);
 
             // select the product and add to tree.
             selectOptionProduct(prodcomponent, groupindex);
@@ -59,7 +59,7 @@
         }
 
         grpCtrl.renderoptionproductattributes = function(prodcomponent, groupindex){
-            setisUpdatedLocal(prodcomponent);
+            // setisUpdatedLocal(prodcomponent);
 
             // rerender the tree so Add/remove of line item will be applied to tree.
             OptionGroupDataService.setrerenderHierarchy(true);
@@ -95,10 +95,10 @@
             }
         }
 
-        function setisUpdatedLocal(pComponent){
+        /*function setisUpdatedLocal(pComponent){
             // Set isUpdatedLocal flag to true for whenever its seleceted or unselected.
             pComponent['isUpdatedLocal'] = true;
-        }
+        }*/
 
         function selectOptionProduct(prodcomponent, groupindex){
             if(prodcomponent != null

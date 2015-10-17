@@ -158,33 +158,39 @@
         }
 
         $scope.addMoreProducts = function(){
-            $scope.saveinformation().then(function(response){
-                if(response == true)
-                {
-                    var cartId = BaseConfigService.cartId, configRequestId = BaseConfigService.configRequestId, flowName = BaseConfigService.flowName;
-                    var requestPromise = RemoteService.addMoreProducts(cartId, configRequestId, flowName);
-                    return requestPromise.then(function(response){
-                        var URL = parsePagereference(response);
-                        if(!_.isNull(URL))
-                            $window.location.href = URL;
-                    });
-                }
-            })
+            // apply timeout if saveCall is in progress.
+            $timeout(function() {
+                $scope.saveinformation().then(function(response){
+                    if(response == true)
+                    {
+                        var cartId = BaseConfigService.cartId, configRequestId = BaseConfigService.configRequestId, flowName = BaseConfigService.flowName;
+                        var requestPromise = RemoteService.addMoreProducts(cartId, configRequestId, flowName);
+                        return requestPromise.then(function(response){
+                            var URL = parsePagereference(response);
+                            if(!_.isNull(URL))
+                                $window.location.href = URL;
+                        });
+                    }
+                })
+            }, gettimeinmillis());
         }
 
         $scope.GoToPricing = function(){
-            $scope.saveinformation().then(function(response){
-                if(response == true)
-                {
-                    var cartId = BaseConfigService.cartId, configRequestId = BaseConfigService.configRequestId, flowName = BaseConfigService.flowName;
-                    var requestPromise = RemoteService.goToPricing(cartId, configRequestId, flowName);
-                    return requestPromise.then(function(response){
-                        var URL = parsePagereference(response);
-                        if(!_.isNull(URL))
-                            $window.location.href = URL;
-                    });
-                }
-            })
+            // apply timeout if saveCall is in progress.
+            $timeout(function() {
+                $scope.saveinformation().then(function(response){
+                    if(response == true)
+                    {
+                        var cartId = BaseConfigService.cartId, configRequestId = BaseConfigService.configRequestId, flowName = BaseConfigService.flowName;
+                        var requestPromise = RemoteService.goToPricing(cartId, configRequestId, flowName);
+                        return requestPromise.then(function(response){
+                            var URL = parsePagereference(response);
+                            if(!_.isNull(URL))
+                                $window.location.href = URL;
+                        });
+                    }
+                })
+            }, gettimeinmillis());
         }
 
         /*@Validate
@@ -204,6 +210,12 @@
             $scope.baseService.startprogress();// start progress bar.
             if($scope.validateonsubmit())
             {
+                // if save call is in progress then do not proceed.
+                if($scope.baseService.getisSaveCallinProgress() == true)
+                    return;
+                else// set the savecallprogress so next request will be denied.
+                   $scope.baseService.setisSaveCallinProgress();
+               
                 // selected service location Id.
                 var servicelocationId = LocationDataService.getselectedlpaId();
                 
@@ -258,10 +270,10 @@
                                 && isProdSelected(productIdtoComponentMap[parentId], productIdtoGroupMap[parentId])))
                         {
                             _.each(optiongroup.productOptionComponents, function(productcomponent){
-                                if(productcomponent['isUpdatedLocal'] == true)
-                                {
-                                    productcomponent = _.omit(productcomponent, ['$$hashKey', 'isDisabled', 'isUpdatedLocal']);
-
+                                // if(productcomponent['isUpdatedLocal'] == true)
+                                // {
+                                    // productcomponent = _.omit(productcomponent, ['$$hashKey', 'isDisabled', 'isUpdatedLocal']);
+                                    productcomponent = _.omit(productcomponent, ['$$hashKey', 'isDisabled']);
                                     if(isProdSelected(productcomponent,optiongroup))
                                     {
                                         productcomponent.isselected = true;
@@ -281,10 +293,10 @@
                                         productcomponent.customFlag = otherSelected;
                                         productcomponentstobeUpserted.push(productcomponent);
                                     }
-                                    else{// prod is unselected then option lines should be deleted from server.
+                                    /*else{// prod is unselected then option lines should be deleted from server.
                                         productcomponentstobeDeleted.push(productcomponent);
-                                    }
-                                }
+                                    }*/
+                                // }
                             })
                         }// end of if - only if parent component is selected.
                     })
@@ -309,7 +321,8 @@
                 bundleLineItem = _.extend(bundleLineItem, {Custom__c:otherSelected_bundle});
 
                 // remote call to save Quote Config.
-                var requestPromise = RemoteService.saveQuoteConfig(bundleLineItem, productcomponentstobeUpserted, productcomponentstobeDeleted, componentIdtoPAVMap);
+                //var requestPromise = RemoteService.saveQuoteConfig(bundleLineItem, productcomponentstobeUpserted, productcomponentstobeDeleted, componentIdtoPAVMap);
+                var requestPromise = RemoteService.saveQuoteConfig(bundleLineItem, productcomponentstobeUpserted, componentIdtoPAVMap);
                 requestPromise.then(function(saveresult){
                     if(saveresult.isSuccess)// if save call is successfull.
                     {
@@ -367,7 +380,8 @@
 
         function formatPAVBeforeSave(pav){
             //// set the other picklist to original fields.
-            pav = _.omit(pav, 'isDefaultLoadComplete', 'isUpdatedLocal');
+            // pav = _.omit(pav, 'isDefaultLoadComplete', 'isUpdatedLocal');
+            pav = _.omit(pav, 'isDefaultLoadComplete');
             _.each(_.filter(_.keys(pav), function(pavField){
                             return pavField.endsWith('Other');
                         }), 
@@ -395,6 +409,13 @@
                 res = _.unescape(pgReference);
             return res;
         };
+
+        function gettimeinmillis(){
+            if($scope.baseService.getisSaveCallinProgress() == true)
+                return 5000;
+            else
+                return 100;
+        }
     };
     
     BaseController.$inject = ['$scope', '$q', '$log', '$window', '$dialogs', 'SystemConstants', 'BaseService', 'BaseConfigService', 'MessageService', 'RemoteService', 'LocationDataService', 'PricingMatrixDataService', 'OptionGroupDataService', 'ProductAttributeValueDataService'];
