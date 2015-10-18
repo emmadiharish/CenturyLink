@@ -5,95 +5,34 @@
 (function() {
     var BaseController;
 
-    BaseController = function($scope, $q, $log, $window, $dialogs, SystemConstants, BaseService, BaseConfigService, MessageService, RemoteService, LocationDataService, PricingMatrixDataService, OptionGroupDataService, ProductAttributeValueDataService) {
+    BaseController = function($scope, $q, $log, $location, $window, $dialogs, SystemConstants, BaseService, BaseConfigService, MessageService, RemoteService, LocationDataService, PricingMatrixDataService, OptionGroupDataService, ProductAttributeValueDataService) {
         // all variable intializations.
-        $scope.constants = SystemConstants;
-        $scope.baseService = BaseService;
-        $scope.optionGroupService = OptionGroupDataService;
-        $scope.ProgressBartinprogress = false;
-        $scope.showOptionsTab = true;
-
-        $scope.imagesbaseURL = $scope.constants.baseUrl+'/Images';
+        var baseCtrl = this;
         
-        $scope.$watch('baseService.getProgressBartinprogress()', function(newVal, oldVal){
-            $scope.ProgressBartinprogress = newVal;
-        });
-
-        $scope.$watch('optionGroupService.showOptions', function(newVal, oldVal){
-            if($scope.optionGroupService.showOptions == false){
-                $scope.showOptionsTab= false;
-            }
-        });
-
-        $scope.validateonsubmit = function(){
-            MessageService.clearAll();
-            // Validation 1 : Service location has to be selected.
-            var res = true;
-            var servicelocation = LocationDataService.getselectedlpa();
-            var hasLocations = LocationDataService.gethasServicelocations();
-            if(_.isEmpty(servicelocation)
-                && hasLocations)
-            {
-                // alert('Please select service location to proceed.');
-                MessageService.addMessage('danger', 'Please select location to Proceed.');
-                res = false;
-            }
+        function init(){
+            $scope.baseService = BaseService;
             
-            // Validation 2 : validate Min/Max options on option groups.
-            var allOptionGroups = OptionGroupDataService.getallOptionGroups();
-            var productIdtoComponentMap = {};
-            var productIdtoGroupMap = {};
-            var bundleProdId = BaseConfigService.lineItem.bundleProdId;
-            _.each(allOptionGroups, function(optiongroups, bundleprodId){
-                _.each(optiongroups, function(optiongroup){
-                    _.each(optiongroup.productOptionComponents, function(productcomponent){
-                        var productId = productcomponent.productId;
-                        if(!_.isNull(productId))
-                        {
-                            productIdtoGroupMap[productId] = optiongroup;
-                            productIdtoComponentMap[productId] = productcomponent;
-                        }
-                    })
-                })
-            })
-
-            _.each(allOptionGroups, function(optiongroups, bundleprodId){
-                _.each(optiongroups, function(optiongroup){
-                    var parentId = optiongroup.parentId;
-                    //if parent is bundle productId or selected then validate min max.
-                    if(parentId == bundleProdId
-                        || (_.has(productIdtoComponentMap, parentId)
-                            && _.has(productIdtoGroupMap, parentId)
-                            && isProdSelected(productIdtoComponentMap[parentId], productIdtoGroupMap[parentId])))
-                    {
-                        var minOptions = optiongroup.minOptions;
-                        var maxOptions = optiongroup.maxOptions;
-                        var selectedOptionsCount = 0;
-                        _.each(optiongroup.productOptionComponents, function(productcomponent){
-                            if(isProdSelected(productcomponent,optiongroup))
-                            {
-                                selectedOptionsCount++;
-                            }
-                        })
-                        if(minOptions > 0
-                            && selectedOptionsCount < minOptions)
-                        {
-                            MessageService.addMessage('danger', 'Minimum of '+minOptions+' options have to be selected in '+optiongroup.groupName);
-                            res = false;
-                        }
-                        if(maxOptions > 0
-                            && selectedOptionsCount > maxOptions)
-                        {
-                            MessageService.addMessage('danger', 'Maximum of '+maxOptions+' options can to be selected from '+optiongroup.groupName);
-                            res = false;
-                        }
-                    }
-                })
-            })
-            return res;
+            baseCtrl.constants = SystemConstants;
+            baseCtrl.baseUrl = SystemConstants.baseUrl;
+            baseCtrl.ProgressBartinprogress = false;
         }
 
-        $scope.launch = function(which){
+        $scope.$watch('baseService.getProgressBartinprogress()', function(newVal, oldVal){
+            baseCtrl.ProgressBartinprogress = newVal;
+        });
+
+        $scope.safeApply = function(fn) {
+            var phase = this.$root.$$phase;
+            if(phase == '$apply' || phase == '$digest') {
+                if(fn && (typeof(fn) === 'function')) {
+                    fn();
+                }
+            } else {
+                this.$apply(fn);
+            }
+        };
+
+        baseCtrl.launch = function(which){
             var dlg = null;
             switch(which){
 
@@ -117,7 +56,7 @@
                 case 'confirmAbandon':
                     dlg = $dialogs.confirm('Please Confirm','Are you sure you want to abandon the current cart?');
                     dlg.result.then(function(btn){
-                        $scope.Abandon();
+                        Abandon();
                     },function(btn){
                         
                 });
@@ -127,7 +66,7 @@
                 case 'confirmRemoveItem':
                     dlg = $dialogs.confirm('Please Confirm','Are you sure you want to remove the current Line item?');
                     dlg.result.then(function(btn){
-                        $scope.removeItemFromCart();
+                        removeItemFromCart();
                     },function(btn){
                     
                 });
@@ -135,58 +74,32 @@
             }; // end switch
         }; // end launch
 
-      
-
-        $scope.Abandon = function(){
-            var cartId = BaseConfigService.cartId, quoteId = BaseConfigService.proposal.Id;
-            var requestPromise = RemoteService.doAbandonCart(cartId, quoteId);
-            return requestPromise.then(function(response){
-                var URL = parsePagereference(response);
-                if(!_.isNull(URL))
-                    $window.location.href = URL;
-            });
-        }
-
-        $scope.removeItemFromCart = function(){
-            var cartId = BaseConfigService.cartId, configRequestId = BaseConfigService.configRequestId, flowName = BaseConfigService.flowName, primaryLineNumber = BaseConfigService.lineItem.lineNumber, bundleProdId = BaseConfigService.lineItem.bundleProdId;
-            var requestPromise = RemoteService.removeBundleLineItem(cartId, configRequestId, flowName, primaryLineNumber, bundleProdId);
-            return requestPromise.then(function(response){
-                var URL = parsePagereference(response);
-                if(!_.isNull(URL))
-                    $window.location.href = URL;
-            });
-        }
-
-        $scope.addMoreProducts = function(){
+        baseCtrl.addMoreProducts = function(){
             // apply timeout if saveCall is in progress.
             $timeout(function() {
-                $scope.saveinformation().then(function(response){
+                saveinformation().then(function(response){
                     if(response == true)
                     {
                         var cartId = BaseConfigService.cartId, configRequestId = BaseConfigService.configRequestId, flowName = BaseConfigService.flowName;
                         var requestPromise = RemoteService.addMoreProducts(cartId, configRequestId, flowName);
                         return requestPromise.then(function(response){
-                            var URL = parsePagereference(response);
-                            if(!_.isNull(URL))
-                                $window.location.href = URL;
+                            parsenRedirect(response);
                         });
                     }
                 })
             }, gettimeinmillis());
         }
 
-        $scope.GoToPricing = function(){
+        baseCtrl.GoToPricing = function(){
             // apply timeout if saveCall is in progress.
             $timeout(function() {
-                $scope.saveinformation().then(function(response){
+                saveinformation().then(function(response){
                     if(response == true)
                     {
                         var cartId = BaseConfigService.cartId, configRequestId = BaseConfigService.configRequestId, flowName = BaseConfigService.flowName;
                         var requestPromise = RemoteService.goToPricing(cartId, configRequestId, flowName);
                         return requestPromise.then(function(response){
-                            var URL = parsePagereference(response);
-                            if(!_.isNull(URL))
-                                $window.location.href = URL;
+                            parsenRedirect(response);
                         });
                     }
                 })
@@ -196,8 +109,8 @@
         /*@Validate
             Save Config and run constraint rules.
         */
-        $scope.Validate = function(){
-            $scope.saveinformation().then(function(response){
+        baseCtrl.ValidateConfig = function(){
+            saveinformation().then(function(response){
                 if(response == true)
                 {
                     
@@ -205,17 +118,38 @@
             })
         }
 
-        $scope.saveinformation = function(){
+        function Abandon(){
+            var cartId = BaseConfigService.cartId, quoteId = BaseConfigService.proposal.Id;
+            var requestPromise = RemoteService.doAbandonCart(cartId, quoteId);
+            return requestPromise.then(function(response){
+                var URL = parsePagereference(response);
+                if(!_.isNull(URL))
+                    $window.location.href = URL;
+            });
+        }
+
+        function removeItemFromCart(){
+            var cartId = BaseConfigService.cartId, configRequestId = BaseConfigService.configRequestId, flowName = BaseConfigService.flowName, primaryLineNumber = BaseConfigService.lineItem.lineNumber, bundleProdId = BaseConfigService.lineItem.bundleProdId;
+            var requestPromise = RemoteService.removeBundleLineItem(cartId, configRequestId, flowName, primaryLineNumber, bundleProdId);
+            return requestPromise.then(function(response){
+                var URL = parsePagereference(response);
+                if(!_.isNull(URL))
+                    $window.location.href = URL;
+            });
+        }
+
+        function saveinformation(){
             var deferred = $q.defer();
-            $scope.baseService.startprogress();// start progress bar.
-            if($scope.validateonsubmit())
+            if(runClientsideValidations())
             {
                 // if save call is in progress then do not proceed.
-                if($scope.baseService.getisSaveCallinProgress() == true)
+                if(BaseService.getisSaveCallinProgress() == true)
                     return;
                 else// set the savecallprogress so next request will be denied.
-                   $scope.baseService.setisSaveCallinProgress();
-               
+                   BaseService.setisSaveCallinProgress();
+                
+                BaseService.startprogress();// start progress bar.
+                
                 // selected service location Id.
                 var servicelocationId = LocationDataService.getselectedlpaId();
                 
@@ -337,12 +271,12 @@
                                 // resolve the save promise after constraint remote call is complete with no constraint actions.
                                 deferred.resolve(true);
                             }
-                            $scope.baseService.completeprogress();// end progress bar.
+                            BaseService.completeSaveProgress();// end progress bar.
                         })
                     }// end of saveresult.isSuccess check.
                     else{
                         MessageService.addMessage('danger', 'Save call is Failing: '+saveresult.errorMessage);
-                        $scope.baseService.completeprogress();// end progress bar.
+                        BaseService.completeSaveProgress();// end progress bar.
                         $scope.safeApply();
                         deferred.reject('Save Failed.');
                         return deferred.promise;
@@ -351,23 +285,80 @@
             }// end of validateonsubmit.
             else{
                 $scope.safeApply();
-                $scope.baseService.completeprogress();// end progress bar.
+                BaseService.completeSaveProgress();// end progress bar.
                 deferred.reject('Validations Failed.');
                 return deferred.promise;
             }
             return deferred.promise;
         }
-        
-        $scope.safeApply = function(fn) {
-            var phase = this.$root.$$phase;
-            if(phase == '$apply' || phase == '$digest') {
-                if(fn && (typeof(fn) === 'function')) {
-                    fn();
-                }
-            } else {
-                this.$apply(fn);
+
+        function runClientsideValidations = function(){
+            MessageService.clearAll();
+            // Validation 1 : Service location has to be selected.
+            var res = true;
+            var servicelocation = LocationDataService.getselectedlpa();
+            var hasLocations = LocationDataService.gethasServicelocations();
+            if(_.isEmpty(servicelocation)
+                && hasLocations)
+            {
+                // alert('Please select service location to proceed.');
+                MessageService.addMessage('danger', 'Please select location to Proceed.');
+                res = false;
             }
-        };
+            
+            // Validation 2 : validate Min/Max options on option groups.
+            var allOptionGroups = OptionGroupDataService.getallOptionGroups();
+            var productIdtoComponentMap = {};
+            var productIdtoGroupMap = {};
+            var bundleProdId = BaseConfigService.lineItem.bundleProdId;
+            _.each(allOptionGroups, function(optiongroups, bundleprodId){
+                _.each(optiongroups, function(optiongroup){
+                    _.each(optiongroup.productOptionComponents, function(productcomponent){
+                        var productId = productcomponent.productId;
+                        if(!_.isNull(productId))
+                        {
+                            productIdtoGroupMap[productId] = optiongroup;
+                            productIdtoComponentMap[productId] = productcomponent;
+                        }
+                    })
+                })
+            })
+
+            _.each(allOptionGroups, function(optiongroups, bundleprodId){
+                _.each(optiongroups, function(optiongroup){
+                    var parentId = optiongroup.parentId;
+                    //if parent is bundle productId or selected then validate min max.
+                    if(parentId == bundleProdId
+                        || (_.has(productIdtoComponentMap, parentId)
+                            && _.has(productIdtoGroupMap, parentId)
+                            && isProdSelected(productIdtoComponentMap[parentId], productIdtoGroupMap[parentId])))
+                    {
+                        var minOptions = optiongroup.minOptions;
+                        var maxOptions = optiongroup.maxOptions;
+                        var selectedOptionsCount = 0;
+                        _.each(optiongroup.productOptionComponents, function(productcomponent){
+                            if(isProdSelected(productcomponent,optiongroup))
+                            {
+                                selectedOptionsCount++;
+                            }
+                        })
+                        if(minOptions > 0
+                            && selectedOptionsCount < minOptions)
+                        {
+                            MessageService.addMessage('danger', 'Minimum of '+minOptions+' options have to be selected in '+optiongroup.groupName);
+                            res = false;
+                        }
+                        if(maxOptions > 0
+                            && selectedOptionsCount > maxOptions)
+                        {
+                            MessageService.addMessage('danger', 'Maximum of '+maxOptions+' options can to be selected from '+optiongroup.groupName);
+                            res = false;
+                        }
+                    }
+                })
+            })
+            return res;
+        }
         
         function isProdSelected(productcomponent, optiongroup){
             if((productcomponent.isselected 
@@ -389,35 +380,27 @@
                     var keywithnoother = key.slice( 0, key.lastIndexOf( "Other" ) );
                     if(pav[keywithnoother] == 'Other')    
                         pav[keywithnoother] = pav[key]+'**';
-                    pav = _.omit(pav, key);
+                    pav = _.omit(pav, key);// remove Other field from PAV before sending to Server.
             })
-            
-            // remove Otherdb field.
-            /*_.each(_.filter(_.keys(pav), function(pavField){
-                            return pavField.endsWith('Otherdb');
-                        }), 
-                function(key){
-                   pav = _.omit(pav, key);
-            })*/
             return pav;
         }
 
-        function parsePagereference(pgReference){
-            var res = null;
+        function parsenRedirect(pgReference){
             if(!_.isNull(pgReference)
                 && !_.isEmpty(pgReference))
-                res = _.unescape(pgReference);
-            return res;
+                $location.absUrl() = _.unescape(pgReference);
         };
 
         function gettimeinmillis(){
-            if($scope.baseService.getisSaveCallinProgress() == true)
+            if(BaseService.getisSaveCallinProgress() == true)
                 return 5000;
             else
                 return 100;
         }
+
+        init();
     };
     
-    BaseController.$inject = ['$scope', '$q', '$log', '$window', '$dialogs', 'SystemConstants', 'BaseService', 'BaseConfigService', 'MessageService', 'RemoteService', 'LocationDataService', 'PricingMatrixDataService', 'OptionGroupDataService', 'ProductAttributeValueDataService'];
+    BaseController.$inject = ['$scope', '$q', '$log', '$location', '$window', '$dialogs', 'SystemConstants', 'BaseService', 'BaseConfigService', 'MessageService', 'RemoteService', 'LocationDataService', 'PricingMatrixDataService', 'OptionGroupDataService', 'ProductAttributeValueDataService'];
     angular.module('APTPS_ngCPQ').controller('BaseController', BaseController);
 }).call(this);

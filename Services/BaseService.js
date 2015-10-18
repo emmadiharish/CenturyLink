@@ -18,6 +18,7 @@
 
     	service.startprogress = startprogress;
     	service.completeprogress = completeprogress;
+        service.completeSaveProgress = completeSaveProgress;
         service.getProgressBartinprogress = getProgressBartinprogress;
 
         service.setMiniCartLoadComplete = function(){
@@ -99,6 +100,15 @@
                 ngProgress.reset();// reset the progress bar if not completed by previous methids.
                 ngProgress.start(); // start progress.
             }
+        }
+
+        // complete the page level progress on Save bar. Use this only for save call.
+        function completeSaveProgress(){
+            // complete progress only after all loads are complete.
+            $log.log('inside completeprogress');
+            ngProgress.complete();
+            isSaveCallinProgress = false;
+            ProgressBartinprogress = false;
         }
         
         // complete the page level progress bar.

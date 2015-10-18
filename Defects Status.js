@@ -26,3 +26,10 @@ DE2394: CCE Rate Card displays an empty line - Closed
 DE2465: SF: Incorrect Local Access Speeds are displayed for Option Products (Defect On US17258) - Need More Details - 10/09
 
 DE2650: Rate Card on IQ Data Bundle is unintelligible without Port Type displayed - Data issue - 10/09
+
+DE2716:  Reconfigure and going back to cart does not display all line items (Harish) - Done
+	Static Resource: APTPS_CAPResourceBundle_Flow - Update
+
+DE2787 Save Call is Failing  : Upsert Failed .First exception on row 0 with id xxxxxxxxxxxxx first error : UNABLE_TO_LOCK_ROW - Fixed
+	Static Resource: APTPS_CAPResourceBundle_Flow - Update
+
