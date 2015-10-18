@@ -292,7 +292,7 @@
             return deferred.promise;
         }
 
-        function runClientsideValidations = function(){
+        function runClientsideValidations(){
             MessageService.clearAll();
             // Validation 1 : Service location has to be selected.
             var res = true;
