@@ -8,7 +8,9 @@
     BaseController = function($scope, $q, $log, $location, $window, $dialogs, SystemConstants, BaseService, BaseConfigService, MessageService, RemoteService, LocationDataService, PricingMatrixDataService, OptionGroupDataService, ProductAttributeValueDataService) {
         // all variable intializations.
         var baseCtrl = this;
-        
+        var productIdtoComponentMap = {};
+        var productIdtoGroupMap = {};
+
         function init(){
             $scope.baseService = BaseService;
             
@@ -178,7 +180,7 @@
                 var allOptionGroups = OptionGroupDataService.getallOptionGroups();
                 var allcomponentIdToOptionPAVMap = ProductAttributeValueDataService.getoptionproductattributevalues();
                 
-                var productIdtoComponentMap = {};
+                /*var productIdtoComponentMap = {};
                 var productIdtoGroupMap = {};
                 var bundleProdId = BaseConfigService.lineItem.bundleProdId;
                 _.each(allOptionGroups, function(optiongroups, bundleprodId){
@@ -192,7 +194,7 @@
                             }
                         })
                     })
-                })
+                })*/
 
                 _.each(allOptionGroups, function(optiongroups, bundleprodId){
                     _.each(optiongroups, function(optiongroup){
@@ -308,9 +310,9 @@
             
             // Validation 2 : validate Min/Max options on option groups.
             var allOptionGroups = OptionGroupDataService.getallOptionGroups();
-            var productIdtoComponentMap = {};
-            var productIdtoGroupMap = {};
             var bundleProdId = BaseConfigService.lineItem.bundleProdId;
+            productIdtoGroupMap = {};
+            productIdtoComponentMap = {};
             _.each(allOptionGroups, function(optiongroups, bundleprodId){
                 _.each(optiongroups, function(optiongroup){
                     _.each(optiongroup.productOptionComponents, function(productcomponent){
