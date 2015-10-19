@@ -386,7 +386,7 @@
         function parsenRedirect(pgReference){
             if(!_.isNull(pgReference)
                 && !_.isEmpty(pgReference))
-                $window.location.href= = _.unescape(pgReference);
+                $window.location.href = _.unescape(pgReference);
         };
 
         function gettimeinmillis(){
