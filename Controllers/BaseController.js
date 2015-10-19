@@ -5,7 +5,7 @@
 (function() {
     var BaseController;
 
-    BaseController = function($scope, $q, $log, $location, $timeout, $dialogs, SystemConstants, BaseService, BaseConfigService, MessageService, RemoteService, LocationDataService, PricingMatrixDataService, OptionGroupDataService, ProductAttributeValueDataService) {
+    BaseController = function($scope, $q, $log, $window, $timeout, $dialogs, SystemConstants, BaseService, BaseConfigService, MessageService, RemoteService, LocationDataService, PricingMatrixDataService, OptionGroupDataService, ProductAttributeValueDataService) {
         // all variable intializations.
         var baseCtrl = this;
         var productIdtoComponentMap = {};
@@ -386,7 +386,7 @@
         function parsenRedirect(pgReference){
             if(!_.isNull(pgReference)
                 && !_.isEmpty(pgReference))
-                $location.absUrl() = _.unescape(pgReference);
+                $window.location.href= = _.unescape(pgReference);
         };
 
         function gettimeinmillis(){
@@ -399,6 +399,6 @@
         init();
     };
     
-    BaseController.$inject = ['$scope', '$q', '$log', '$location', '$timeout', '$dialogs', 'SystemConstants', 'BaseService', 'BaseConfigService', 'MessageService', 'RemoteService', 'LocationDataService', 'PricingMatrixDataService', 'OptionGroupDataService', 'ProductAttributeValueDataService'];
+    BaseController.$inject = ['$scope', '$q', '$log', '$window', '$timeout', '$dialogs', 'SystemConstants', 'BaseService', 'BaseConfigService', 'MessageService', 'RemoteService', 'LocationDataService', 'PricingMatrixDataService', 'OptionGroupDataService', 'ProductAttributeValueDataService'];
     angular.module('APTPS_ngCPQ').controller('BaseController', BaseController);
 }).call(this);
