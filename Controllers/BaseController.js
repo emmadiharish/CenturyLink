@@ -5,7 +5,7 @@
 (function() {
     var BaseController;
 
-    BaseController = function($scope, $q, $log, $location, $window, $dialogs, SystemConstants, BaseService, BaseConfigService, MessageService, RemoteService, LocationDataService, PricingMatrixDataService, OptionGroupDataService, ProductAttributeValueDataService) {
+    BaseController = function($scope, $q, $log, $location, $timeout, $window, $dialogs, SystemConstants, BaseService, BaseConfigService, MessageService, RemoteService, LocationDataService, PricingMatrixDataService, OptionGroupDataService, ProductAttributeValueDataService) {
         // all variable intializations.
         var baseCtrl = this;
         var productIdtoComponentMap = {};
@@ -124,9 +124,7 @@
             var cartId = BaseConfigService.cartId, quoteId = BaseConfigService.proposal.Id;
             var requestPromise = RemoteService.doAbandonCart(cartId, quoteId);
             return requestPromise.then(function(response){
-                var URL = parsePagereference(response);
-                if(!_.isNull(URL))
-                    $window.location.href = URL;
+                parsenRedirect(response);
             });
         }
 
@@ -134,9 +132,7 @@
             var cartId = BaseConfigService.cartId, configRequestId = BaseConfigService.configRequestId, flowName = BaseConfigService.flowName, primaryLineNumber = BaseConfigService.lineItem.lineNumber, bundleProdId = BaseConfigService.lineItem.bundleProdId;
             var requestPromise = RemoteService.removeBundleLineItem(cartId, configRequestId, flowName, primaryLineNumber, bundleProdId);
             return requestPromise.then(function(response){
-                var URL = parsePagereference(response);
-                if(!_.isNull(URL))
-                    $window.location.href = URL;
+                parsenRedirect(response);
             });
         }
 
@@ -403,6 +399,6 @@
         init();
     };
     
-    BaseController.$inject = ['$scope', '$q', '$log', '$location', '$window', '$dialogs', 'SystemConstants', 'BaseService', 'BaseConfigService', 'MessageService', 'RemoteService', 'LocationDataService', 'PricingMatrixDataService', 'OptionGroupDataService', 'ProductAttributeValueDataService'];
+    BaseController.$inject = ['$scope', '$q', '$log', '$location', '$timeout', '$window', '$dialogs', 'SystemConstants', 'BaseService', 'BaseConfigService', 'MessageService', 'RemoteService', 'LocationDataService', 'PricingMatrixDataService', 'OptionGroupDataService', 'ProductAttributeValueDataService'];
     angular.module('APTPS_ngCPQ').controller('BaseController', BaseController);
 }).call(this);
