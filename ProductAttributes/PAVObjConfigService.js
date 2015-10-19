@@ -208,9 +208,10 @@
 		// return HTML matching fieldtype based on Salesforce field Type.
 		function getFieldType(sfdctype){
 			var res = 'text';// default.
-			if(sfdctype == 'picklist'
-				|| sfdctype == 'multiPicklist')
+			if(sfdctype == 'picklist')
 				return 'picklist';
+			else if(sfdctype == 'multiPicklist')
+				return 'multiPicklist';
 			else if(sfdctype == 'string'
 					|| sfdctype == 'textarea'
 					|| sfdctype == 'phone'
