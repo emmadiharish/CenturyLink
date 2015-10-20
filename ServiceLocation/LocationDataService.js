@@ -30,15 +30,15 @@
 				return $q.when(cachedLocations);
 			}
 
-			/*var requestPromise = RemoteService.getServiceLocations(BaseConfigService.lineItem.bundleProdId, BaseConfigService.opportunityId);
+			var requestPromise = RemoteService.getServiceLocations(BaseConfigService.lineItem.bundleProdId, BaseConfigService.opportunityId);
 			BaseService.startprogress();// start progress bar.
 			return requestPromise.then(function(response){
 				initializeLocations(response);
 				BaseService.setLocationLoadComplete();
 				return locations;
-			});*/
+			});
 
-			var requestPromise = RemoteService.getServiceLocations(BaseConfigService.lineItem.bundleProdId, BaseConfigService.opportunityId);
+			/*var requestPromise = RemoteService.getServiceLocations(BaseConfigService.lineItem.bundleProdId, BaseConfigService.opportunityId);
 			BaseService.startprogress();// start progress bar.
 			var methodName = 'ServiceLocationsRequest';
             var defer = $q.defer();
@@ -68,7 +68,7 @@
  
             });
 
-            return defer.promise;
+            return defer.promise;*/
 	    }
 
 		function initializeLocations(response) {
