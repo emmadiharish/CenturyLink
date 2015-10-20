@@ -54,7 +54,7 @@
                             return value.method == methodName;
                         }), function (value, index) {
                             processQueue.promises.splice(_.indexOf(processQueue, { id: value.id }));
-                            value.promise.resolve(data);
+                            value.promise.resolve(response);
                         });
                     processQueue.isRunning.splice(processQueue.isRunning.indexOf(methodName));
                 	return locations;
