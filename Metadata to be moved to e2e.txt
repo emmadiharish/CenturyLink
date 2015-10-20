@@ -1,0 +1,14 @@
+Classes:
+	APTPS_PricingGateway.cls - create
+	APTPS_PriceMatrixHelper.cls - update
+	APTPS_PricingHelper.cls - update
+	APTPS_PricingCallBack.cls - update
+	APTPS_CAP_MS_H.cls - update
+	APTPS_CustomAttributeUtil.cls - update
+	APTPS_LineItemSelector.cls - update
+	APTPS_CAP_RA.cls - update
+Pages:
+	APTPS_CAP_MS_Flow.page - update
+
+Static Resource:
+	APTPS_CAPResourceBundle_Flow - update
