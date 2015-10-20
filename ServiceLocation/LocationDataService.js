@@ -30,15 +30,15 @@
 				return $q.when(cachedLocations);
 			}
 
-			var requestPromise = RemoteService.getServiceLocations(BaseConfigService.lineItem.bundleProdId, BaseConfigService.opportunityId);
+			/*var requestPromise = RemoteService.getServiceLocations(BaseConfigService.lineItem.bundleProdId, BaseConfigService.opportunityId);
 			BaseService.startprogress();// start progress bar.
 			return requestPromise.then(function(response){
 				initializeLocations(response);
 				BaseService.setLocationLoadComplete();
 				return locations;
-			});
+			});*/
 
-			/*var requestPromise = RemoteService.getServiceLocations(BaseConfigService.lineItem.bundleProdId, BaseConfigService.opportunityId);
+			var requestPromise = RemoteService.getServiceLocations(BaseConfigService.lineItem.bundleProdId, BaseConfigService.opportunityId);
 			BaseService.startprogress();// start progress bar.
 			var methodName = 'ServiceLocationsRequest';
             var defer = $q.defer();
@@ -54,10 +54,10 @@
                             return value.method == methodName;
                         }), function (value, index) {
                             processQueue.promises.splice(_.indexOf(processQueue, { id: value.id }));
-                            value.promise.resolve(response);
+                            value.promise.resolve(locations);
                         });
                     processQueue.isRunning.splice(processQueue.isRunning.indexOf(methodName));
-                	return locations;
+                	// return locations;
                 });
             }
 
@@ -67,8 +67,7 @@
                 id: Date.now()
  
             });
-
-            return defer.promise;*/
+			return defer.promise;
 	    }
 
 		function initializeLocations(response) {
