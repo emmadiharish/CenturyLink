@@ -10,6 +10,11 @@
 		var selectedlpa = {};
 		var hasServicelocations = false;
 		
+		var processQueue = {
+	        isRunning: [],
+	        promises: []
+	    };
+
 		// location methods.
 		service.gethasServicelocations = gethasServicelocations;
 		service.getlocItems = getlocItems;
@@ -25,21 +30,47 @@
 				return $q.when(cachedLocations);
 			}
 
-			var requestPromise = RemoteService.getServiceLocations(BaseConfigService.lineItem.bundleProdId, BaseConfigService.opportunityId);
+			/*var requestPromise = RemoteService.getServiceLocations(BaseConfigService.lineItem.bundleProdId, BaseConfigService.opportunityId);
 			BaseService.startprogress();// start progress bar.
 			return requestPromise.then(function(response){
 				initializeLocations(response);
 				BaseService.setLocationLoadComplete();
-				
-				// logTransaction(response, categoryRequest);
-				var locationId = BaseConfigService.lineItem.serviceLocationId;
-                if(!_.isUndefined(locationId)
-                	&& !_.isNull(locationId))
-                {
-                    setselectedlpa(_.findWhere(locations, {Id:locationId}));
-                }
 				return locations;
-			});
+			});*/
+
+			var requestPromise = RemoteService.getServiceLocations(BaseConfigService.lineItem.bundleProdId, BaseConfigService.opportunityId);
+			BaseService.startprogress();// start progress bar.
+			return {
+		        ServiceLocationsRequest: function (userId) {
+		            var methodName = 'ServiceLocationsRequest';
+		            var defer = $q.defer();
+		            if (processQueue.isRunning.indexOf(methodName) == -1) {
+		                processQueue.isRunning.push(methodName);
+		                requestPromise.then(function(response){
+		                    
+		                    initializeLocations(response);
+							BaseService.setLocationLoadComplete();
+		                    
+		                    _.each(
+		                        _.filter(processQueue.promises, function (value, index) {
+		                            return value.method == methodName;
+		                        }), function (value, index) {
+		                            processQueue.promises.splice(_.indexOf(processQueue, { id: value.id }));
+		                            value.promise.resolve(data);
+		                        });
+		                    processQueue.isRunning.splice(processQueue.isRunning.indexOf(methodName));
+		                	return locations;
+		                });
+		            }
+		            processQueue.promises.push({
+		                method: methodName,
+		                promise: defer,
+		                id: Date.now()
+		 
+		            });
+		            return defer.promise;
+		        }
+	    	};
 		}
 
 		function initializeLocations(response) {
@@ -51,6 +82,13 @@
 				hasServicelocations = true;
 				setalllocationIdSet(_.pluck(locations, 'Id'));
 			}
+
+			var locationId = BaseConfigService.lineItem.serviceLocationId;
+            if(!_.isUndefined(locationId)
+            	&& !_.isNull(locationId))
+            {
+                setselectedlpa(_.findWhere(locations, {Id:locationId}));
+            }
 		}
 
 		function gethasServicelocations(){
