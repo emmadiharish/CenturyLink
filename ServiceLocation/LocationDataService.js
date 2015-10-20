@@ -40,38 +40,36 @@
 
 			var requestPromise = RemoteService.getServiceLocations(BaseConfigService.lineItem.bundleProdId, BaseConfigService.opportunityId);
 			BaseService.startprogress();// start progress bar.
-			return {
-		        ServiceLocationsRequest: function (userId) {
-		            var methodName = 'ServiceLocationsRequest';
-		            var defer = $q.defer();
-		            if (processQueue.isRunning.indexOf(methodName) == -1) {
-		                processQueue.isRunning.push(methodName);
-		                requestPromise.then(function(response){
-		                    
-		                    initializeLocations(response);
-							BaseService.setLocationLoadComplete();
-		                    
-		                    _.each(
-		                        _.filter(processQueue.promises, function (value, index) {
-		                            return value.method == methodName;
-		                        }), function (value, index) {
-		                            processQueue.promises.splice(_.indexOf(processQueue, { id: value.id }));
-		                            value.promise.resolve(data);
-		                        });
-		                    processQueue.isRunning.splice(processQueue.isRunning.indexOf(methodName));
-		                	return locations;
-		                });
-		            }
-		            processQueue.promises.push({
-		                method: methodName,
-		                promise: defer,
-		                id: Date.now()
-		 
-		            });
-		            return defer.promise;
-		        }
-	    	};
-		}
+			var methodName = 'ServiceLocationsRequest';
+            var defer = $q.defer();
+            if (processQueue.isRunning.indexOf(methodName) == -1) {
+                processQueue.isRunning.push(methodName);
+                requestPromise.then(function(response){
+                    
+                    initializeLocations(response);
+					BaseService.setLocationLoadComplete();
+                    
+                    _.each(
+                        _.filter(processQueue.promises, function (value, index) {
+                            return value.method == methodName;
+                        }), function (value, index) {
+                            processQueue.promises.splice(_.indexOf(processQueue, { id: value.id }));
+                            value.promise.resolve(data);
+                        });
+                    processQueue.isRunning.splice(processQueue.isRunning.indexOf(methodName));
+                	return locations;
+                });
+            }
+
+            processQueue.promises.push({
+                method: methodName,
+                promise: defer,
+                id: Date.now()
+ 
+            });
+
+            return defer.promise;
+	    }
 
 		function initializeLocations(response) {
 			locations = response.locations;
