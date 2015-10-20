@@ -6,8 +6,8 @@
 */
 (function() {
 	angular.module('APTPS_ngCPQ').service('OptionGroupCache', OptionGroupCache); 
-	OptionGroupCache.$inject = ['$log'];
-	function OptionGroupCache($log) {
+	OptionGroupCache.$inject = ['$log', 'BaseConfigService'];
+	function OptionGroupCache($log, BaseConfigService) {
 		var service = this;
 		var prodIdtoOptionGroupsMap = {};
 		var productIdtoComponentId_hasOptions = {};
@@ -18,6 +18,11 @@
 		service.getProductIdsofBundles = getProductIdsofBundles;
 		service.getOptionGroups = getOptionGroups;
 		service.initializeOptionGroups = initializeOptionGroups;
+
+        function init(){
+            // initalize with bundle prodId to bundle prod componentId.
+            productIdtoComponentId_hasOptions[BaseConfigService.lineItem.bundleProdId] = BaseConfigService.lineItem.bundleProductOptionId;
+        }
 
 		function getOptionGroups() {
 			return prodIdtoOptionGroupsMap;
@@ -56,5 +61,7 @@
         function getProductIdsofBundles(){
         	return _.keys(productIdtoComponentId_hasOptions);	
         };
+
+        init();
 	}
 })();
