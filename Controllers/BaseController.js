@@ -399,6 +399,21 @@
         init();
     };
     
-    BaseController.$inject = ['$scope', '$q', '$log', '$window', '$timeout', '$dialogs', 'SystemConstants', 'BaseService', 'BaseConfigService', 'MessageService', 'RemoteService', 'LocationDataService', 'PricingMatrixDataService', 'OptionGroupDataService', 'ProductAttributeValueDataService'];
+    BaseController.$inject = ['$scope', 
+                               '$q', 
+                               '$log', 
+                               '$window', 
+                               '$timeout', 
+                               '$dialogs', 
+                               'SystemConstants', 
+                               'BaseService', 
+                               'BaseConfigService', 
+                               'MessageService', 
+                               'RemoteService', 
+                               'LocationDataService', 
+                               'PricingMatrixDataService', 
+                               'OptionGroupDataService', 
+                               'ProductAttributeValueDataService', 
+                               'ConstraintRuleDataService'];
     angular.module('APTPS_ngCPQ').controller('BaseController', BaseController);
 }).call(this);
