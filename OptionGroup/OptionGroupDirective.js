@@ -8,25 +8,35 @@
 ;(function() {
 	'use strict';
 	
-	function OptionGroupController($scope, $location, $anchorScroll, SystemConstants, BaseConfigService, OptionGroupDataService, LocationDataService) {
+	function OptionGroupController($scope, $location, $anchorScroll, SystemConstants, BaseService, BaseConfigService, OptionGroupDataService, LocationDataService) {
 		var grpCtrl = this;
         var currentbundleproductId = '';
+        var remotecallinitiated = false;
 
         // all variable intializations.
         function init(){
         	$scope.optionGroupService = OptionGroupDataService;
             $scope.locationService = LocationDataService;
+            $scope.baseService = BaseService;
 
             grpCtrl.constants = SystemConstants;
-            
-            // Load option Groups of Main bundle Product on page load.
-            // grpCtrl.rendercurrentproductoptiongroups(BaseConfigService.lineItem.bundleProdId, null, null);
         }
 
         // reload the optionGroups when location section is changed.
         $scope.$watch('locationService.getselectedlpa()', function(newVal, oldVal) {
             if(!_.isEmpty(newVal)
-                && !_.isEqual(newVal, oldVal))
+                && !_.isEqual(newVal, oldVal)
+                && remotecallinitiated == false)
+            {   
+                grpCtrl.rendercurrentproductoptiongroups(BaseConfigService.lineItem.bundleProdId, null, null);
+            }    
+        });
+
+        // Load option Groups of Main bundle Product on location load complete.
+        $scope.$watch('baseService.getLocationLoadComplete()', function(newVal, oldVal) {
+            if(newVal != oldVal
+                && newVal == true
+                && remotecallinitiated == false)
             {   
                 grpCtrl.rendercurrentproductoptiongroups(BaseConfigService.lineItem.bundleProdId, null, null);
             }    
@@ -44,18 +54,26 @@
         });
 
         grpCtrl.rendercurrentproductoptiongroups = function(bundleproductId, prodcomponent, groupindex){
-            var productId = bundleproductId != null ? bundleproductId : prodcomponent.productId;
-            if(currentbundleproductId != productId)
+            // run only if location remote call is complete.
+            if(BaseService.getLocationLoadComplete() == true)
             {
-                currentbundleproductId = productId;
-                
-                // make a remote call to get option groups for all bundles in current option groups.
-                OptionGroupDataService.getOptionGroup(productId).then(function(result) {
-                    selectOptionProduct(prodcomponent, groupindex);
+                remotecallinitiated = true;
+
+                var productId = bundleproductId != null ? bundleproductId : prodcomponent.productId;
+                if(currentbundleproductId != productId)
+                {
+                    currentbundleproductId = productId;
                     
-                    // OptionGroupDataService.setrerenderHierarchy(true);
-                    grpCtrl.currentproductoptiongroups = OptionGroupDataService.getcurrentproductoptiongroups();
-                })
+                    // make a remote call to get option groups for all bundles in current option groups.
+                    OptionGroupDataService.getOptionGroup(productId).then(function(result) {
+                        selectOptionProduct(prodcomponent, groupindex);
+                        
+                        // OptionGroupDataService.setrerenderHierarchy(true);
+                        grpCtrl.currentproductoptiongroups = OptionGroupDataService.getcurrentproductoptiongroups();
+                        
+                        remotecallinitiated = false;
+                    })
+                }
             }
         }
 
@@ -143,7 +161,8 @@
 	OptionGroupController.$inject = ['$scope', 
 									  '$location',
                                       '$anchorScroll', 
-									  'SystemConstants', 
+									  'SystemConstants',
+                                      'BaseService', 
 									  'BaseConfigService', 
 									  'OptionGroupDataService',
                                       'LocationDataService'];
