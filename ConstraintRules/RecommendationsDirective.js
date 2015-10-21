@@ -4,14 +4,14 @@
 ;(function() {
     'use strict';
 
-    function RecommendationsController($scope, OptionGroupDataService){
+    function RecommendationsController($scope, ConstraintRuleDataService){
         var recCtrl = this;
 
         function init(){
-            $scope.optionGroupService = OptionGroupDataService; 
+            $scope.constraintRuleService = ConstraintRuleDataService; 
         }
         
-        $scope.$watchCollection('optionGroupService.getrecommendedproductsMap()', function(newVal){
+        $scope.$watchCollection('constraintRuleService.getrecommendedproductsMap()', function(newVal){
             if(!_.isUndefined(newVal))
                 recCtrl.recommendedproductsMap = newVal;
         });
@@ -28,14 +28,14 @@
 
             }
 
-            OptionGroupDataService.omitrecommendedproduct(productId);
+            ConstraintRuleDataService.omitrecommendedproduct(productId);
         }
 
         init();
     }
 
     RecommendationsController.$inject = ['$scope', 
-                                          'OptionGroupDataService'];
+                                          'ConstraintRuleDataService'];
 
     angular.module('APTPS_ngCPQ').directive('recommendations', recommendations);
 
