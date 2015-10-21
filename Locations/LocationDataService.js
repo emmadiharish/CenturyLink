@@ -54,7 +54,7 @@
                 requestPromise.then(function(response){
                     initializeLocations(response);
 					BaseService.setLocationLoadComplete();
-                    requestPromise = RemoteService.getlocAvls(locationIdSet, BaseConfigService.lineItem.bundleProdId);
+                    requestPromise = RemoteService.getLocationAvailabilities(locationIdSet, BaseConfigService.lineItem.bundleProdId);
 						return requestPromise.then(function(laresponse){
 							initializelocationAvailabilities(laresponse);
 							
