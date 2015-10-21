@@ -8,7 +8,7 @@
     									  'MessageService', 
     									  'ProductDataService',
                                           'OptionGroupDataService'];
-    function ConstraintRuleDataService($q, $log, BaseService, BaseConfigService, RemoteService, MessageService, ProductDataService) {
+    function ConstraintRuleDataService($q, $log, BaseService, BaseConfigService, RemoteService, MessageService, ProductDataService, OptionGroupDataService) {
         var service = this;
         var recommendedproductsMap = {};
 
