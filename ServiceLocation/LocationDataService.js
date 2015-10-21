@@ -9,7 +9,9 @@
 		var locations = [];
 		var selectedlpa = {};
 		var hasServicelocations = false;
-		
+		var locIdtolocAvlsMap = {};
+		var locIdtoOptionProductsMap = {};
+
 		var processQueue = {
 	        isRunning: [],
 	        promises: []
@@ -22,6 +24,9 @@
 		service.setselectedlpa = setselectedlpa;
 		service.getselectedlpaId = getselectedlpaId;
 		service.getalllocationIdSet = getalllocationIdSet;
+		service.getLocationAvailabilityforBundle = getLocationAvailabilityforBundle;
+		service.getLocationAvailabilityforOption = getLocationAvailabilityforOption;
+		service.getAvailableProductsforLocation = getAvailableProductsforLocation;
 		
 		function getlocItems() {
 			if (isValid) {
@@ -37,7 +42,8 @@
 				BaseService.setLocationLoadComplete();
 				return locations;
 			});*/
-
+	
+			// chain the location call and location availability calls.
 			var requestPromise = RemoteService.getServiceLocations(BaseConfigService.lineItem.bundleProdId, BaseConfigService.opportunityId);
 			BaseService.startprogress();// start progress bar.
 			var methodName = 'ServiceLocationsRequest';
@@ -45,20 +51,22 @@
             if (processQueue.isRunning.indexOf(methodName) == -1) {
                 processQueue.isRunning.push(methodName);
                 requestPromise.then(function(response){
-                    
                     initializeLocations(response);
 					BaseService.setLocationLoadComplete();
-                    
-                    _.each(
-                        _.filter(processQueue.promises, function (value, index) {
-                            return value.method == methodName;
-                        }), function (value, index) {
-                            processQueue.promises.splice(_.indexOf(processQueue, { id: value.id }));
-                            value.promise.resolve(locations);
-                        });
-                    processQueue.isRunning.splice(processQueue.isRunning.indexOf(methodName));
-                	// return locations;
-                });
+                    requestPromise = RemoteService.getlocAvls(locationIdSet, BaseConfigService.lineItem.bundleProdId);
+						return requestPromise.then(function(laresponse){
+							initializelocIdtolocAvlsMap(laresponse);
+							
+						_.each(
+	                        _.filter(processQueue.promises, function (value, index) {
+	                            return value.method == methodName;
+	                        }), function (value, index) {
+	                            processQueue.promises.splice(_.indexOf(processQueue, { id: value.id }));
+	                            value.promise.resolve(locations);
+	                        });
+	                    processQueue.isRunning.splice(processQueue.isRunning.indexOf(methodName));
+					});
+				});
             }
 
             processQueue.promises.push({
@@ -86,6 +94,62 @@
             {
                 setselectedlpa(_.findWhere(locations, {Id:locationId}));
             }
+		}
+
+		function initializelocIdtolocAvlsMap(response){
+			service.isValid = true;
+			_.each(response.locAvls, function(la){
+				var las = [];
+				var locId = la.Service_Location__c;
+				if(_.has(locIdtolocAvlsMap, locId))
+				{
+					las = locIdtolocAvlsMap[locId];
+				}
+				las.push(la);
+				locIdtolocAvlsMap[locId] = las;
+				
+				// if option product exits then add them to locIdtoOptionProductsMap.
+				if(_.has(la, 'Option_Product__c')){
+					var optionProd = la.Option_Product__c;
+					var pIds = [];
+					if(_.has(locIdtolocAvlsMap, locId))
+					{
+						pIds = locIdtoOptionProductsMap[locId];
+					}
+					pIds.push(optionProd);
+					locIdtoOptionProductsMap[locId] = pIds;
+				}
+			});
+		}
+
+		function getLocationAvailabilityforBundle(locId, productId){
+			// find the location availability record where location matches with service location and productId matches with bundle product and option product = null
+			var res = [];
+			if(_.has(locIdtolocAvlsMap, locId))
+			{
+				_.each(_.where(locIdtolocAvlsMap[locId], {Bundle_Product__c: productId}), 
+					function(la){
+					if(!_.has(la, 'Option_Product__c'))
+						res.push(la);
+				});
+			}
+			return res;
+		}
+
+		function getLocationAvailabilityforOption(locId, productId){
+			// find the location availability record where location matches with service location and option product = productId
+			var res = [];
+			if(_.has(locIdtolocAvlsMap, locId))
+			{
+				res = _.where(locIdtolocAvlsMap[locId], {Option_Product__c: productId});
+			}
+			return res;
+		}
+
+		function getAvailableProductsforLocation(locId){
+			if(_.has(locIdtoOptionProductsMap, locId))
+				return locIdtoOptionProductsMap[locId];
+			return [];
 		}
 
 		function gethasServicelocations(){
