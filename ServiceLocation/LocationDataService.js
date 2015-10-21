@@ -27,7 +27,6 @@
 		service.getalllocationIdSet = getalllocationIdSet;
 		service.getLocationAvailabilityforBundle = getLocationAvailabilityforBundle;
 		service.getLocationAvailabilityforOption = getLocationAvailabilityforOption;
-		service.getAvailableProductsforLocation = getAvailableProductsforLocation;
 		service.getAvailableOptionProducts = getAvailableOptionProducts;
 
 		function getlocItems() {
