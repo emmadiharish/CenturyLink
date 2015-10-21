@@ -26,8 +26,7 @@
         // reload the optionGroups when location section is changed.
         $scope.$watch('locationService.getselectedlpa()', function(newVal, oldVal) {
             if(!_.isEmpty(newVal)
-                && !_.isEqual(newVal, oldVal)
-                && remotecallinitiated == false)
+                && !_.isEqual(newVal, oldVal))
             {   
                 grpCtrl.rendercurrentproductoptiongroups(BaseConfigService.lineItem.bundleProdId, null, null);
             }    
