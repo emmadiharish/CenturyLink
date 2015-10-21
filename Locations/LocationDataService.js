@@ -82,19 +82,12 @@
 		function initializeLocations(response) {
 			locations = response.locations;
 			isValid = true;
-			
+
 			if(locations.length > 0)
 			{
 				hasServicelocations = true;
 				setalllocationIdSet(_.pluck(locations, 'Id'));
 			}
-
-			var locationId = BaseConfigService.lineItem.serviceLocationId;
-            if(!_.isUndefined(locationId)
-            	&& !_.isNull(locationId))
-            {
-                setselectedlpa(_.findWhere(locations, {Id:locationId}));
-            }
 		}
 
 		function initializelocationAvailabilities(response){
@@ -121,6 +114,14 @@
 					locIdtoOptionProductsMap[locId] = pIds;
 				}
 			});
+
+			//set selected lpa after the location availability initialization.
+			var locationId = BaseConfigService.lineItem.serviceLocationId;
+            if(!_.isUndefined(locationId)
+            	&& !_.isNull(locationId))
+            {
+                setselectedlpa(_.findWhere(locations, {Id:locationId}));
+            }
 		}
 
 		function getLocationAvailabilityforBundle(locId, productId){
