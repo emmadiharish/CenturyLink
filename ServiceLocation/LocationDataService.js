@@ -11,6 +11,7 @@
 		var hasServicelocations = false;
 		var locIdtolocAvlsMap = {};
 		var locIdtoOptionProductsMap = {};
+		var availableOptionProducts = [];
 
 		var processQueue = {
 	        isRunning: [],
@@ -27,6 +28,7 @@
 		service.getLocationAvailabilityforBundle = getLocationAvailabilityforBundle;
 		service.getLocationAvailabilityforOption = getLocationAvailabilityforOption;
 		service.getAvailableProductsforLocation = getAvailableProductsforLocation;
+		service.getAvailableOptionProducts = getAvailableOptionProducts;
 
 		function getlocItems() {
 			if (isValid) {
@@ -146,10 +148,15 @@
 			return res;
 		}
 
-		function getAvailableProductsforLocation(locId){
+		function setAvailableOptionProductsforLocation(locId){
 			if(_.has(locIdtoOptionProductsMap, locId))
-				return locIdtoOptionProductsMap[locId];
-			return [];
+				availableOptionProducts = locIdtoOptionProductsMap[locId];
+			else
+				availableOptionProducts = [];
+		}
+
+		function getAvailableOptionProducts(){
+			return availableOptionProducts;
 		}
 
 		function gethasServicelocations(){
@@ -157,13 +164,14 @@
 		}
 		function setselectedlpa(loc) {
 			selectedlpa = loc;
+			setAvailableOptionProductsforLocation(getselectedlpaId());
 		}
 		
 		function getselectedlpa() {
 			return selectedlpa;
 		}
 
-		function getselectedlpaId() {
+		function getselectedlpaId(){
 			return _.isObject(selectedlpa) ? selectedlpa.Id : '';
 		}
 

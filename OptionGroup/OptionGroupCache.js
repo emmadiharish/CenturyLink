@@ -30,16 +30,15 @@
 
 		function initializeOptionGroups(results) {
 			_.map(results, (function(optionGroups, prodId){
-                 /* removal of special characters*/
-                _.each(optionGroups, function(group){
-                	//group.groupName = characterRepace(group.groupName);
+                 _.each(optionGroups, function(group){
                 	_.each(group.productOptionComponents, function(component){
                 		//component.productName = characterRepace(component.productName);
                 		if(_.has(productIdtoComponentId_hasOptions, prodId))
                 		{
                 			component['parentComponentId'] = productIdtoComponentId_hasOptions[prodId];
                 		}
-                		if(component.hasOptions == true)
+
+                        if(component.hasOptions == true)
                 		{
                 			productIdtoComponentId_hasOptions[component.productId] = component.componentId;
                 		}
@@ -50,15 +49,7 @@
 			service.isValid = true;
 		}
 
-		/*function characterRepace(item){
-            var changedItem = item;
-            changedItem = changedItem.split("&#39;").join("'");
-            // unescape : replaces &amp;, &lt;, &gt;, &quot;, &#96; and &#x27; with their unescaped counterparts.
-            changedItem = _.unescape(changedItem);          
-            return changedItem;
-        }*/
-
-        function getProductIdsofBundles(){
+		function getProductIdsofBundles(){
         	return _.keys(productIdtoComponentId_hasOptions);	
         };
 

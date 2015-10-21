@@ -205,7 +205,7 @@
                                 // if(productcomponent['isUpdatedLocal'] == true)
                                 // {
                                     // productcomponent = _.omit(productcomponent, ['$$hashKey', 'isDisabled', 'isUpdatedLocal']);
-                                    productcomponent = _.omit(productcomponent, ['$$hashKey', 'isDisabled']);
+                                    productcomponent = _.omit(productcomponent, ['$$hashKey', 'isDisabled', 'isAvailableonSLocation']);
                                     if(isProdSelected(productcomponent,optiongroup))
                                     {
                                         productcomponent.isselected = true;

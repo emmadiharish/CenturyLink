@@ -4,8 +4,16 @@
 */
 (function() {
     angular.module('APTPS_ngCPQ').service('OptionGroupDataService', OptionGroupDataService); 
-    OptionGroupDataService.$inject = ['$q', '$log', 'BaseService', 'BaseConfigService', 'RemoteService', 'MessageService', 'ProductDataService', 'OptionGroupCache'];
-    function OptionGroupDataService($q, $log, BaseService, BaseConfigService, RemoteService, MessageService, ProductDataService, OptionGroupCache) {
+    OptionGroupDataService.$inject = ['$q', 
+                                        '$log', 
+                                        'BaseService', 
+                                        'BaseConfigService', 
+                                        'RemoteService', 
+                                        'MessageService', 
+                                        'ProductDataService', 
+                                        'OptionGroupCache',
+                                        'LocationDataService'];
+    function OptionGroupDataService($q, $log, BaseService, BaseConfigService, RemoteService, MessageService, ProductDataService, OptionGroupCache, LocationDataService) {
         var service = this;
         
         var Selectedoptionproduct = {};// to render option attributes.
@@ -91,7 +99,18 @@
         }
 
         function setcurrentproductoptiongroups(result){
+            var availableProductIds = LocationDataService.getAvailableOptionProducts();
             currentproductoptiongroups = result;
+            // mark if product is available for selected location or not. 
+            _.each(currentproductoptiongroups, function(group){
+                _.each(group.productOptionComponents, function(component){
+                    if(_.size(availableProductIds) > 0
+                        && !_.has(availableProductIds, component.productId))
+                    {
+                        component['isAvailableonSLocation'] = true;
+                    }
+                })
+            })
         }
 
         // util method. a: option groups, b: field name to access product components, c:field to identify if product is bundle or not, d: field name to access product Id within product component.

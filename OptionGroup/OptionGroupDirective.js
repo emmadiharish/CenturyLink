@@ -8,18 +8,30 @@
 ;(function() {
 	'use strict';
 	
-	function OptionGroupController($scope, $location, $anchorScroll, SystemConstants, BaseConfigService, OptionGroupDataService) {
+	function OptionGroupController($scope, $location, $anchorScroll, SystemConstants, BaseConfigService, OptionGroupDataService, LocationDataService) {
 		var grpCtrl = this;
         var currentbundleproductId = '';
 
         // all variable intializations.
         function init(){
         	$scope.optionGroupService = OptionGroupDataService;
+            $scope.locationService = LocationDataService;
+
             grpCtrl.constants = SystemConstants;
             
             // Load option Groups of Main bundle Product on page load.
             grpCtrl.rendercurrentproductoptiongroups(BaseConfigService.lineItem.bundleProdId, null, null);
         }
+
+        // reload the optionGroups when location section is changed.
+        $scope.$watch('locationService.getselectedlpa()', function(newVal, oldVal) {
+            if(!_.isEmpty(newVal)
+                && !_.isEqual(newVal, oldVal)
+                && remotecallinitiated == false)
+            {   
+                grpCtrl.rendercurrentproductoptiongroups(BaseConfigService.lineItem.bundleProdId, null, null);
+            }    
+        });
 
         $scope.$watch('optionGroupService.getslectedOptionGroupProdId()', function(newVal, oldVal) {
             // rerender Hierarchy whenever rerenderHierarchy flag changes on OptionGroupDataService.
@@ -134,7 +146,8 @@
                                       '$anchorScroll', 
 									  'SystemConstants', 
 									  'BaseConfigService', 
-									  'OptionGroupDataService'];
+									  'OptionGroupDataService',
+                                      'LocationDataService'];
 
 	angular.module('APTPS_ngCPQ').directive('optionGroups', OptionGroup);
 
