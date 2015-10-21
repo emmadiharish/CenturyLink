@@ -20,7 +20,7 @@
             grpCtrl.constants = SystemConstants;
             
             // Load option Groups of Main bundle Product on page load.
-            grpCtrl.rendercurrentproductoptiongroups(BaseConfigService.lineItem.bundleProdId, null, null);
+            // grpCtrl.rendercurrentproductoptiongroups(BaseConfigService.lineItem.bundleProdId, null, null);
         }
 
         // reload the optionGroups when location section is changed.
