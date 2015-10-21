@@ -53,11 +53,11 @@
                 processQueue.isRunning.push(methodName);
                 requestPromise.then(function(response){
                     initializeLocations(response);
-					BaseService.setLocationLoadComplete();
-                    requestPromise = RemoteService.getLocationAvailabilities(locationIdSet, BaseConfigService.lineItem.bundleProdId);
+					requestPromise = RemoteService.getLocationAvailabilities(locationIdSet, BaseConfigService.lineItem.bundleProdId);
 						return requestPromise.then(function(laresponse){
 							initializelocationAvailabilities(laresponse);
-							
+							BaseService.setLocationLoadComplete();
+									
 						_.each(
 	                        _.filter(processQueue.promises, function (value, index) {
 	                            return value.method == methodName;
