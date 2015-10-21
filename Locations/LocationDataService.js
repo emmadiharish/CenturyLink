@@ -99,7 +99,7 @@
 
 		function initializelocationAvailabilities(response){
 			service.isValid = true;
-			_.each(response.locAvls, function(la){
+			_.each(response.locAvailabilities, function(la){
 				var las = [];
 				var locId = la.Service_Location__c;
 				if(_.has(locIdtolocAvlsMap, locId))
