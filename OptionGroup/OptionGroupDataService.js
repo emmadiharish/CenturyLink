@@ -104,8 +104,8 @@
             // mark if product is available for selected location or not. 
             _.each(currentproductoptiongroups, function(group){
                 _.each(group.productOptionComponents, function(component){
-                    if(_.size(availableProductIds) > 0
-                        && !_.has(availableProductIds, component.productId))
+                    if(!_.size(availableProductIds) > 0
+                        && _.has(availableProductIds, component.productId))
                     {
                         component['isAvailableonSLocation'] = true;
                     }
