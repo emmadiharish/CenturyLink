@@ -6,7 +6,8 @@
     									  'BaseConfigService', 
     									  'RemoteService', 
     									  'MessageService', 
-    									  'ProductDataService'];
+    									  'ProductDataService',
+                                          'OptionGroupDataService'];
     function ConstraintRuleDataService($q, $log, BaseService, BaseConfigService, RemoteService, MessageService, ProductDataService) {
         var service = this;
         var recommendedproductsMap = {};
@@ -49,7 +50,7 @@
                 */
                 var constraintActionDoList = result.appliedActionDOList;
                 var numRulesApplied = 0; //constraintActionDoList.length;
-                var allOptionGroups = getallOptionGroups();
+                var allOptionGroups = OptionGroupDataService.getallOptionGroups();
                 var productIdtoActionDOMap = {};
                 var recommendedProductIds = [];
 
