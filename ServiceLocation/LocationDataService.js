@@ -27,7 +27,7 @@
 		service.getLocationAvailabilityforBundle = getLocationAvailabilityforBundle;
 		service.getLocationAvailabilityforOption = getLocationAvailabilityforOption;
 		service.getAvailableProductsforLocation = getAvailableProductsforLocation;
-		
+
 		function getlocItems() {
 			if (isValid) {
 				var cachedLocations = locations;
@@ -55,7 +55,7 @@
 					BaseService.setLocationLoadComplete();
                     requestPromise = RemoteService.getlocAvls(locationIdSet, BaseConfigService.lineItem.bundleProdId);
 						return requestPromise.then(function(laresponse){
-							initializelocIdtolocAvlsMap(laresponse);
+							initializelocationAvailabilities(laresponse);
 							
 						_.each(
 	                        _.filter(processQueue.promises, function (value, index) {
@@ -96,7 +96,7 @@
             }
 		}
 
-		function initializelocIdtolocAvlsMap(response){
+		function initializelocationAvailabilities(response){
 			service.isValid = true;
 			_.each(response.locAvls, function(la){
 				var las = [];
