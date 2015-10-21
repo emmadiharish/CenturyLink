@@ -5,7 +5,7 @@
 (function() {
     var BaseController;
 
-    BaseController = function($scope, $q, $log, $window, $timeout, $dialogs, SystemConstants, BaseService, BaseConfigService, MessageService, RemoteService, LocationDataService, PricingMatrixDataService, OptionGroupDataService, ProductAttributeValueDataService) {
+    BaseController = function($scope, $q, $log, $window, $timeout, $dialogs, SystemConstants, BaseService, BaseConfigService, MessageService, RemoteService, LocationDataService, PricingMatrixDataService, OptionGroupDataService, ProductAttributeValueDataService, ConstraintRuleDataService) {
         // all variable intializations.
         var baseCtrl = this;
         var productIdtoComponentMap = {};
@@ -258,7 +258,7 @@
                 requestPromise.then(function(saveresult){
                     if(saveresult.isSuccess)// if save call is successfull.
                     {
-                        OptionGroupDataService.runConstraintRules().then(function(constraintsResult){
+                        ConstraintRuleDataService.runConstraintRules().then(function(constraintsResult){
                             if(constraintsResult.numRulesApplied > 0)
                             {
                                 // render Hierarchy Once Constraint rules are run.
