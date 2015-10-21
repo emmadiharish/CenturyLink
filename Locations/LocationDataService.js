@@ -113,7 +113,7 @@
 				if(_.has(la, 'Option_Product__c')){
 					var optionProd = la.Option_Product__c;
 					var pIds = [];
-					if(_.has(locIdtolocAvlsMap, locId))
+					if(_.has(locIdtoOptionProductsMap, locId))
 					{
 						pIds = locIdtoOptionProductsMap[locId];
 					}
