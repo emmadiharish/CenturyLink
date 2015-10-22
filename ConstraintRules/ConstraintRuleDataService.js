@@ -7,8 +7,9 @@
     									  'RemoteService', 
     									  'MessageService', 
     									  'ProductDataService',
-                                          'OptionGroupDataService'];
-    function ConstraintRuleDataService($q, $log, BaseService, BaseConfigService, RemoteService, MessageService, ProductDataService, OptionGroupDataService) {
+                                          'OptionGroupDataService',
+                                          'LocationDataService'];
+    function ConstraintRuleDataService($q, $log, BaseService, BaseConfigService, RemoteService, MessageService, ProductDataService, OptionGroupDataService, LocationDataService) {
         var service = this;
         var recommendedproductsMap = {};
 
@@ -21,6 +22,8 @@
             var deferred = $q.defer();
             var cartId = BaseConfigService.cartId;
             var lineNumber = BaseConfigService.lineItem.lineNumber;
+            var hasLocations = LocationDataService.gethasServicelocations();
+            var availableProductIds = LocationDataService.getAvailableOptionProducts();
             requestPromise = RemoteService.runConstraintRules(cartId, lineNumber);
             requestPromise.then(function(result){
                 /*appliedActionDOList is a List<Apttus_CPQApi.CPQ.AppliedActionDO>.
@@ -63,6 +66,7 @@
                     var ActionType = ActionDo.ActionType;
                     var ActionIntent = ActionDo.ActionIntent;
                     var SuggestedProductIds = ActionDo.SuggestedProductIds;
+                    SuggestedProductIds = _.filter(SuggestedProductIds, function(productId){return hasLocations == false || _.contains(availableProductIds, productId);});
 
                     // this is for exclusion and inclusion.
                     if(ActionType == 'Inclusion'
@@ -83,13 +87,8 @@
                     {
                         switch(ActionIntent)
                         {
-                            case 'Auto Include':
-                                break;
                             case 'Prompt':
-                                if(ActionType == 'Validation'){
-                                    MessageService.addMessage(MessageType, Message);
-                                }
-                                else if(ActionType == 'Recommendation'){
+                                if(ActionType == 'Recommendation'){
                                     recommendedProductIds.push(SuggestedProductIds);
                                     MessgeService.addMessage('notice', Message);
                                 }

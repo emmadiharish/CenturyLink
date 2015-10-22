@@ -111,6 +111,8 @@
                             && _.contains(availableProductIds, component.productId)))
                     {
                         component['isAvailableonSLocation'] = true;
+                    }else{
+                        component['isAvailableonSLocation'] = false;
                     }
                 })
             })
