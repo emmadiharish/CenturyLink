@@ -10,7 +10,6 @@
 	
 	function OptionGroupController($scope, $location, $anchorScroll, SystemConstants, BaseService, BaseConfigService, OptionGroupDataService, LocationDataService) {
 		var grpCtrl = this;
-        var currentbundleproductId = '';
         var remotecallinitiated = false;
 
         // all variable intializations.
@@ -28,7 +27,6 @@
                 && !_.isEqual(newVal, oldVal)
                 && remotecallinitiated == false)
             {   
-                currentbundleproductId = null;// make it null so option groups will be reloaded.
                 grpCtrl.rendercurrentproductoptiongroups(BaseConfigService.lineItem.bundleProdId, null, null);
             }    
         });
@@ -61,20 +59,15 @@
                 remotecallinitiated = true;
 
                 var productId = bundleproductId != null ? bundleproductId : prodcomponent.productId;
-                if(currentbundleproductId != productId)
-                {
-                    currentbundleproductId = productId;
+                // make a remote call to get option groups for all bundles in current option groups.
+                OptionGroupDataService.getOptionGroup(productId).then(function(result) {
+                    selectOptionProduct(prodcomponent, groupindex);
                     
-                    // make a remote call to get option groups for all bundles in current option groups.
-                    OptionGroupDataService.getOptionGroup(productId).then(function(result) {
-                        selectOptionProduct(prodcomponent, groupindex);
+                    // OptionGroupDataService.setrerenderHierarchy(true);
+                    grpCtrl.currentproductoptiongroups = OptionGroupDataService.getcurrentproductoptiongroups();
                         
-                        // OptionGroupDataService.setrerenderHierarchy(true);
-                        grpCtrl.currentproductoptiongroups = OptionGroupDataService.getcurrentproductoptiongroups();
-                        
-                        remotecallinitiated = false;
-                    })
-                }
+                    remotecallinitiated = false;
+                })
             }
         }
 
