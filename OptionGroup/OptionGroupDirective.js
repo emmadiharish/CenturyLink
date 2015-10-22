@@ -28,6 +28,7 @@
                 && !_.isEqual(newVal, oldVal)
                 && remotecallinitiated == false)
             {   
+                currentbundleproductId = null;// make it null so option groups will be reloaded.
                 grpCtrl.rendercurrentproductoptiongroups(BaseConfigService.lineItem.bundleProdId, null, null);
             }    
         });
