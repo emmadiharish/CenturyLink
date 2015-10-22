@@ -16,12 +16,13 @@
             
             baseCtrl.constants = SystemConstants;
             baseCtrl.baseUrl = SystemConstants.baseUrl;
-            baseCtrl.ProgressBartinprogress = false;
+            //baseCtrl.ProgressBartinprogress = false;
+            baseCtrl.ProgressBartinprogress = BaseService.getProgressBartinprogress();
         }
 
-        $scope.$watch('baseService.getProgressBartinprogress()', function(newVal, oldVal){
+        /*$scope.$watch('baseService.getProgressBartinprogress()', function(newVal, oldVal){
             baseCtrl.ProgressBartinprogress = newVal;
-        });
+        });*/
 
         $scope.safeApply = function(fn) {
             var phase = this.$root.$$phase;
