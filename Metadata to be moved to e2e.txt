@@ -18,4 +18,6 @@ Static Resource:
 Classes:
 	APTPS_LocationAvailabilityController.cls
 	APTPS_CAP_RA.cls
-	
+	APTPS_PricingCallBack.cls
+	APTPS_PriceMatrixHelper.cls
+
