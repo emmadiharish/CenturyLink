@@ -21,6 +21,8 @@
         var rerenderHierarchy = false;// to render option group hierarchy whenever product is added/removed from option groups.
         var slectedOptionGroupProdId;// to render option groups based on group hierarchy traversal.
         var showConfigureOptionstab = true;// used to hide the 'Configure Options' tab if no option group exists.
+        var currentSubBundleLevel = 0;
+        var maxSubBundleLevel = 5;// constant to limit the option group recursive remote call.
         
         // option group methods.
         service.getallOptionGroups = getallOptionGroups;
@@ -47,8 +49,6 @@
             var cartId = BaseConfigService.cartId;
             var lineNumber = BaseConfigService.lineItem.lineNumber;
             var requestPromise = RemoteService.getProductoptiongroupsData(productIds, cartId, lineNumber);
-            var currentSubBundleLevel = 0;
-            var maxSubBundleLevel = 5;// constant to limit the option group recursive remote call.
             requestPromise.then(function(response) {
                 OptionGroupCache.initializeOptionGroups(response);
                 var cachedOptionGroups = OptionGroupCache.getOptionGroups();
@@ -56,7 +56,8 @@
                 var prodIds_filtered = _.difference(alloptionProductIds_hasOptions, _.keys(cachedOptionGroups)); 
                 if (prodIds_filtered.length > 0
                     && currentSubBundleLevel < maxSubBundleLevel) {
-                    getOptionGroups(prodIds_filtered, deferred);    
+                    getOptionGroups(prodIds_filtered, deferred);
+                    currentSubBundleLevel++;    
                 }
                 else{
                     deferred.resolve();

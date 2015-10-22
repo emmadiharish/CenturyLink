@@ -1,9 +1,11 @@
 Start - once
 Setmode - once
 beforePricing - bulk - PME is populated using Interface2 but not with 3.
+				- APTTUS recalculate baseprice.
 	beforePricingLineItem - bulk but only on ADJ
 
 onPriceItemSet - for each line and only on BAS
+					- add ESL to base price
 
 afterPricing - bulk
 	afterPricingLineItem - for each line only on ADJ
