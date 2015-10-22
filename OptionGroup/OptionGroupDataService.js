@@ -100,12 +100,14 @@
 
         function setcurrentproductoptiongroups(result){
             var availableProductIds = LocationDataService.getAvailableOptionProducts();
+            var hasLocations = LocationDataService.gethasServicelocations();
             currentproductoptiongroups = result;
             // mark if product is available for selected location or not. 
             _.each(currentproductoptiongroups, function(group){
                 _.each(group.productOptionComponents, function(component){
-                    if(_.size(availableProductIds) > 0
-                        && _.contains(availableProductIds, component.productId))
+                    if(!hasLocations
+                        ||((_.size(availableProductIds) > 0
+                            && _.contains(availableProductIds, component.productId)))
                     {
                         component['isAvailableonSLocation'] = true;
                     }
