@@ -106,7 +106,7 @@
             _.each(currentproductoptiongroups, function(group){
                 _.each(group.productOptionComponents, function(component){
                     if(!hasLocations
-                        ||((_.size(availableProductIds) > 0
+                        ||(_.size(availableProductIds) > 0
                             && _.contains(availableProductIds, component.productId)))
                     {
                         component['isAvailableonSLocation'] = true;
