@@ -59,7 +59,8 @@
                             ProductAttributeConfigDataService.setBundleAttributeFields(attributeconfigresult);
                             var bundlePAV = ProductAttributeValueDataService.getbundleproductattributevalues();
                             // var res = PAVObjConfigService.configurePAVFields(attributeconfigresult, bundlePAV);
-                            renderBundleAttributes(attributeconfigresult, bundlePAV);
+                            setBundleAttributes(attributeconfigresult, bundlePAV);
+                            renderBundleAttributes();
                             remotecallinitiated = false;
                         })
                     })
@@ -67,10 +68,13 @@
             }
         }
 
-        function renderBundleAttributes(attrgroups, pav){
-            // clear the previous option attribute groups.
+        function setBundleAttributes(attrgroups, pav){
             attrCtrl.AttributeGroups = attrgroups;
             attrCtrl.productAttributeValues = pav;
+        }
+
+        function renderBundleAttributes(){
+            // clear the previous option attribute groups.
             PAVObjConfigService.configurePAVFields(attrCtrl.AttributeGroups, attrCtrl.productAttributeValues);
             ProductAttributeValueDataService.setbundleproductattributevalues(attrCtrl.productAttributeValues);
             // attrCtrl.productAttributeValues = ProductAttributeValueDataService.getbundleproductattributevalues();
@@ -79,7 +83,7 @@
         
         attrCtrl.PAVPicklistChange = function(fieldName){
             // attrCtrl.productAttributeValues['isUpdatedLocal'] = true;
-            renderBundleAttributes(attrCtrl.AttributeGroups, attrCtrl.productAttributeValues);
+            renderBundleAttributes();
         }
 
         attrCtrl.trustAsHtml = function(value) {

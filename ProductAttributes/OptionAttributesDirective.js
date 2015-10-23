@@ -75,26 +75,28 @@
                         {
                             // var res = PAVObjConfigService.configurePAVFields(attributeconfigresult, pavresult);
                             // $scope.optionDynamicAttributeValidation(res.pavConfigGroups);
-                            renderOptionAttributes(attributeconfigresult, pavresult);
+                            setOptionAttributes(attributeconfigresult, pavresult);
+                            renderOptionAttributes();
                         })
                     })
                 }
 
-                function renderOptionAttributes(attrgroups, pav){
-                    // clear the previous option attribute groups.
+                function setOptionAttributes(attrgroups, pav){
                     attrCtrl.AttributeGroups = attrgroups;
                     attrCtrl.productAttributeValues = pav;
+                }
+
+                function renderOptionAttributes(){
+                    // clear the previous option attribute groups.
                     attrCtrl.CascadeBunleAttributestoOptions();
                     PAVObjConfigService.configurePAVFields(attrCtrl.AttributeGroups, attrCtrl.productAttributeValues);
                     attrCtrl.optionLevelAttributeChange();
-                    attrCtrl.seatTypeExpressions(attrgroups, pav);
+                    attrCtrl.seatTypeExpressions();
                     //$scope.safeApply();
                 }
 
                 attrCtrl.PAVPicklistChange = function(fieldName){
-                    // var res = PAVObjConfigService.applyDependedPicklistsOnChange(attrCtrl.AttributeGroups, attrCtrl.productAttributeValues, fieldName);    
-                    // attrCtrl.productAttributeValues['isUpdatedLocal'] = true;
-                    renderOptionAttributes(res.pavConfigGroups, res.PAVObj);
+                    renderOptionAttributes();
                 }
 
                 attrCtrl.optionLevelAttributeChange = function(){
@@ -144,7 +146,7 @@
                     }
                 }
 
-                attrCtrl.seatTypeExpressions = function(attributes){
+                attrCtrl.seatTypeExpressions = function(){
                     var count = OptionGroupDataService.seatTypeCount;
                     _.each(attrCtrl.AttributeGroups, function(attrGroups){
                         _.each(attrGroups.productAtributes, function(item){
