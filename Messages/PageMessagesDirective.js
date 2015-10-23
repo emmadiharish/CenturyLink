@@ -27,8 +27,7 @@
 
     }
 
-    PageMessagesController.$inject = ['$scope', 
-                                                'MessageService'];
+    PageMessagesController.$inject = ['MessageService'];
 
     angular.module('APTPS_ngCPQ').directive('pageMessages', PageMessages);
 
