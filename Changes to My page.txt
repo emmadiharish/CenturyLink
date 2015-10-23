@@ -1,5 +1,0 @@
-BundleAttributesController
-BundleAttributesDirective
-BundleAttributeView.html
-APTPS_CAP_MS.page - include bundle attributes tags with directive.
-

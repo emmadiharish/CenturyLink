@@ -23,7 +23,7 @@
         }
 
         function clearAll(){
-            service.messages = [];
+            service.messages.length = 0;
         }
     }
 })();

@@ -77,7 +77,7 @@
                         })    
                     }
 
-                    // Just for testing as recommendations are not firing.
+                    // Just for testing - adding here as recommendations are not firing.
                     recommendedProductIds.push(SuggestedProductIds);
 
                     // for Validations, Recommendation and Replacement
@@ -89,7 +89,6 @@
                         {
                             case 'Prompt':
                                 if(ActionType == 'Recommendation'){
-                                    recommendedProductIds.push(SuggestedProductIds);
                                     MessgeService.addMessage('notice', Message);
                                 }
                                 numRulesApplied++;
