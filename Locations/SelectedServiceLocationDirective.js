@@ -4,16 +4,21 @@
 ;(function() {
 	'use strict';
 
-	function SelectLocationController($scope, LocationDataService) {
-        // all variable intializations.
-        function init(){
-            $scope.locationService = LocationDataService;
-        }
+	function PageMessagesController(LocationDataService) {
         
-        init();
-    };
+        this.getselectedlpa = function() {
+            return LocationDataService.selectedlpa;
+        };
+
+        this.gethasServicelocations = function() {
+            return LocationDataService.hasServicelocations;
+        };
+
+        return this;
+
+    }
     
-    SelectLocationController.$inject = ['$scope', 'LocationDataService'];
+    SelectLocationController.$inject = ['LocationDataService'];
 
 	angular.module('APTPS_ngCPQ').directive('selectedServiceLocation', SelectedServiceLocation);
 

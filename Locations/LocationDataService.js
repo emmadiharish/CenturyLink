@@ -7,8 +7,6 @@
 		var locationIdSet = [];
 		var isValid = false;
 		var locations = [];
-		var selectedlpa = {};
-		var hasServicelocations = false;
 		var locIdtolocAvlsMap = {};
 		var locIdtoOptionProductsMap = {};
 		var availableOptionProducts = [];
@@ -19,6 +17,8 @@
 	    };
 
 		// location methods.
+		service.selectedlpa = {};
+		service.hasServicelocations = false;
 		service.gethasServicelocations = gethasServicelocations;
 		service.getlocItems = getlocItems;
 		service.getselectedlpa = getselectedlpa;
@@ -85,7 +85,7 @@
 
 			if(locations.length > 0)
 			{
-				hasServicelocations = true;
+				service.hasServicelocations = true;
 				setalllocationIdSet(_.pluck(locations, 'Id'));
 			}
 		}
@@ -160,19 +160,19 @@
 		}
 
 		function gethasServicelocations(){
-			return hasServicelocations;
+			return service.hasServicelocations;
 		}
 		function setselectedlpa(loc) {
-			selectedlpa = loc;
+			service.selectedlpa = loc;
 			setAvailableOptionProductsforLocation(getselectedlpaId());
 		}
 		
 		function getselectedlpa() {
-			return selectedlpa;
+			return service.selectedlpa;
 		}
 
 		function getselectedlpaId(){
-			return _.isObject(selectedlpa) ? selectedlpa.Id : '';
+			return _.isObject(service.selectedlpa) ? service.selectedlpa.Id : '';
 		}
 
 		function setalllocationIdSet(locIds){
