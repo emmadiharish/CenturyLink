@@ -19,6 +19,7 @@
         // location methods.
         service.selectedlpa = {};
         service.hasServicelocations = false;
+        
         service.gethasServicelocations = gethasServicelocations;
         service.getlocItems = getlocItems;
         service.getselectedlpa = getselectedlpa;
