@@ -10,8 +10,8 @@
         function init(){
             LocationDataService.getlocItems().then(function(result) {
                 locCtrl.locItems = result;
-                locCtrl.selectedlpa = LocationDataService.getselectedlpa();
-                locCtrl.displaylocations = LocationDataService.gethasServicelocations();
+                locCtrl.selectedlpaId = LocationDataService.getselectedlpaId();
+                locCtrl.displaylocations = LocationDataService.hasServicelocations;
             })
             
             locCtrl.newserviceLocationURL = BaseConfigService.newLocationURL;
