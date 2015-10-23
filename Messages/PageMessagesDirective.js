@@ -4,7 +4,7 @@
 ;(function() {
             'use strict';
 
-            function PageMessagesCController(MessageService) {
+            function PageMessagesController(MessageService) {
                 
                 this.messages = function() {
                     return MessageService.messages;
@@ -27,7 +27,7 @@
 
             }
 
-            PageErrorMessagesCController.$inject = ['$scope', 
+            PageMessagesController.$inject = ['$scope', 
                                                         'MessageService'];
 
             angular.module('APTPS_ngCPQ').directive('pageMessages', PageMessages);
