@@ -27,7 +27,7 @@
             pgFooterCtrl.constants = SystemConstants;
             pgFooterCtrl.baseUrl = SystemConstants.baseUrl;
             pgFooterCtrl.ProgressBartinprogress = false;
-            //baseCtrl.ProgressBartinprogress = BaseService.getProgressBartinprogress();
+            //pgFooterCtrl.ProgressBartinprogress = BaseService.getProgressBartinprogress();
         }
 
         $scope.$watch('baseService.getProgressBartinprogress()', function(newVal, oldVal){
@@ -45,7 +45,7 @@
             }
         };
 
-        baseCtrl.launch = function(which){
+        pgFooterCtrl.launch = function(which){
             var dlg = null;
             switch(which){
 
@@ -87,7 +87,7 @@
             }; // end switch
         }; // end launch
 
-        baseCtrl.addMoreProducts = function(){
+        pgFooterCtrl.addMoreProducts = function(){
             // apply timeout if saveCall is in progress.
             $timeout(function() {
                 SaveConfigService.saveinformation().then(function(response){
@@ -103,7 +103,7 @@
             }, gettimeinmillis());
         }
 
-        baseCtrl.GoToPricing = function(){
+        pgFooterCtrl.GoToPricing = function(){
             // apply timeout if saveCall is in progress.
             $timeout(function() {
                 SaveConfigService.saveinformation().then(function(response){
