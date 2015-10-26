@@ -23,7 +23,7 @@
         function saveinformation(){
             var deferred = $q.defer();
             
-            if(runClientsideValidations())
+            if(runClientValidations())
             {
                 // if save call is in progress then do not proceed.
                 if(BaseService.getisSaveCallinProgress() == true)
@@ -32,7 +32,8 @@
                    BaseService.setisSaveCallinProgress();
                 
                 BaseService.startprogress();// start progress bar.
-                
+                $log.info('saving config to DB.');
+
                 // selected service location Id.
                 var servicelocationId = LocationDataService.getselectedlpaId();
                 
@@ -160,6 +161,7 @@
         }
 
         function runConstraintRules(){
+            $log.info('running Constraint rules.');
             // remote call to save Quote Config.
             var deferred = $q.defer();
             var cartId = BaseConfigService.cartId;
@@ -348,7 +350,8 @@
             return deferred.promise;
         }
 
-        function runClientsideValidations(){
+        function runClientValidations(){
+            $log.info('running Client Validations.');
             MessageService.clearAll();
             // Validation 1 : Service location has to be selected.
             var res = true;
@@ -440,9 +443,6 @@
             })
             return pav;
         }
-
-
-
     }
     
 })();

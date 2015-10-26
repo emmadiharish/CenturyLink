@@ -55,7 +55,7 @@
 		*/
 		function invokeRemoteAction(actionName, actionParams) {
 			//Constuct deferred object for return
-			$log.log('invokeRemoteAction for: '+actionName);
+			$log.info('invokeRemoteAction for: '+actionName);
 			var deferred, errorMessage, remoteActionWithParams, resolver, remotingParams;
 			deferred = $q.defer();
 			if (!actionName || typeof actionName !== 'string') {
