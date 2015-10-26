@@ -1,7 +1,6 @@
 (function() {
     angular.module('APTPS_ngCPQ').service('SaveConfigService', SaveConfigService); 
-    SaveConfigService.$inject = ['$scope', 
-                                  '$q', 
+    SaveConfigService.$inject = [ '$q', 
                                   '$log', 
                                   'BaseService', 
                                   'BaseConfigService', 
@@ -15,7 +14,7 @@
     
     function SaveConfigService($q, $log, BaseService, BaseConfigService, RemoteService, MessageService, LocationDataService, PricingMatrixDataService, OptionGroupDataService, ProductAttributeValueDataService, ConstraintRuleDataService) {
         var service = this;
-        
+
         var productIdtoComponentMap = {};
         var productIdtoGroupMap = {};
 
@@ -143,14 +142,14 @@
                     else{
                         MessageService.addMessage('danger', 'Save call is Failing: '+saveresult.errorMessage);
                         BaseService.completeSaveProgress();// end progress bar.
-                        $scope.safeApply();
+                        // $scope.safeApply();
                         deferred.reject('Save Failed.');
                         return deferred.promise;
                     }
                 })// end of saveQuoteConfig remote call.
             }// end of validateonsubmit.
             else{
-                $scope.safeApply();
+                // $scope.safeApply();
                 BaseService.completeSaveProgress();// end progress bar.
                 deferred.reject('Validations Failed.');
                 return deferred.promise;
