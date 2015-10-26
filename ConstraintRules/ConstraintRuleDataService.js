@@ -94,7 +94,8 @@
             var i, prompt;
             for (i = 0; i < primaryPrompts.length; i++) {
                 prompt = primaryPrompts[i];
-                if (processedIds[prompt.Id] !== true && prompt['Apttus_Config2__Ignored__c'] !== true) {
+                if (processedIds[prompt.Id] !== true 
+                    && prompt['IsIgnoredByUser'] !== true) {
                     activePrompt = primaryPrompts[i];
                     break;
                 }
@@ -103,7 +104,8 @@
                 var optionPrompts = service.getMessages().prompt;
                 for (i = 0; i < optionPrompts.length; i++) {
                     prompt = optionPrompts[i];
-                    if (processedIds[prompt.Id] !== true && prompt['Apttus_Config2__Ignored__c'] !== true) {
+                    if (processedIds[prompt.Id] !== true 
+                        && prompt['IsIgnoredByUser'] !== true) {
                         activePrompt = optionPrompts[i];
                         break;
                     }
@@ -159,7 +161,7 @@
             _.each(ruleTypes, function (ruleType) {
                 var ruleActions = ruleTypetoActionsMap[ruleType];
                 _.each(ruleActions, function (ruleAction) {
-                    var targetBundleNumber = ruleAction['Apttus_Config2__TargetBundleNumber__c'];//TODO: set as zero for null
+                    var targetBundleNumber = ruleAction['TargetBundleNumber'];//TODO: set as zero for null
                     linesWithMessage[targetBundleNumber] = ruleType;
                     
                     if (angular.isUndefined(messages[targetBundleNumber])) {
@@ -167,7 +169,8 @@
                     }
                     var targetMessages = messages[targetBundleNumber];
                     
-                    if (ruleAction['Apttus_Config2__IsPrompt__c'] && !ruleAction['Apttus_Config2__Ignored__c']) {
+                    if (ruleAction['IsShowPrompt'] 
+                         && !ruleAction['IsIgnoredByUser']) {
                         targetMessages.prompt.push(ruleAction);
                         
                     } else {
@@ -199,7 +202,7 @@
         service.ignoreRuleAction = function(activePrompt) {
             var ruleActionId = activePrompt.Id;
             processedIds[activePrompt.Id] = true;
-            activePrompt['Apttus_Config2__Ignored__c'] = true;
+            activePrompt['IsIgnoredByUser'] = true;
             
             ConfigurationDataService.createCartRequestDO().then(function(cartRequest) {
                 cartRequest.ruleActionId = ruleActionId;
