@@ -196,6 +196,7 @@
                                                    by exclusion.
                 */
                 var constraintActionDoList = result.appliedActionDOList;
+                ConstraintRuleDataService.updateRuleActions(constraintActionDoList);
                 var numRulesApplied = 0; //constraintActionDoList.length;
                 var allOptionGroups = OptionGroupDataService.getallOptionGroups();
                 var productIdtoActionDOMap = {};
