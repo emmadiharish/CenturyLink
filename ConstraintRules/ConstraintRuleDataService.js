@@ -6,7 +6,7 @@
 
         var recommendedproductsMap = {};
         var linesWithMessage = {};
-        var ruleTypes = ['Error', 'Warning', 'Info'];
+        var ruleTypes = ['error', 'warning', 'info'];
         var processedIds = {};
 
         //targetBundleNumder to message map
@@ -154,9 +154,9 @@
 
             var ruleTypetoActionsMap = angular.copy(actionRulesMapTemplate);
             _.each(newActions, function(ruleAction){
-                ruleTypetoActionsMap[ruleAction.MessageType].push(ruleAction);
+                ruleTypetoActionsMap[angular.lowercase(ruleAction.MessageType)].push(ruleAction);
             })
-            
+
             // messages.prompt = [];
             _.each(ruleTypes, function (ruleType) {
                 var ruleActions = ruleTypetoActionsMap[ruleType];
