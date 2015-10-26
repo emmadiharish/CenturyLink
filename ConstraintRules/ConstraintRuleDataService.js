@@ -147,16 +147,16 @@
             messages[0] = angular.copy(messageTemplate);
             linesWithMessage = {};
             
+            //do nothing if there are no messages.
+            if (!newActions) {
+                return;
+            }
+
             var ruleTypetoActionsMap = angular.copy(actionRulesMapTemplate);
             _.each(newActions, function(ruleAction){
                 ruleTypetoActionsMap[ruleAction.MessageType].push(ruleAction);
             })
-
-            //do nothing if there are no messages.
-            if (!newActions) {
-                return;
-
-            }
+            
             // messages.prompt = [];
             _.each(ruleTypes, function (ruleType) {
                 var ruleActions = ruleTypetoActionsMap[ruleType];
