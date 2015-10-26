@@ -6,10 +6,19 @@
 
 	angular.module('APTPS_ngCPQ').directive('validateConfig', ValidateConfig);
 
-	ValidateConfigController.$inject = ['SaveConfigService'];
+	ValidateConfigController.$inject = ['$scope', 'BaseService', 'SaveConfigService'];
 	
-	function ValidateConfigController(SaveConfigService){
+	function ValidateConfigController($scope, BaseService, SaveConfigService){
 		var validateCtrl = this;
+		
+		function init(){
+			validateCtrl.ProgressBartinprogress = false;
+		}
+		
+
+		$scope.$watch('baseService.getProgressBartinprogress()', function(newVal, oldVal){
+            validateCtrl.ProgressBartinprogress = newVal;
+        });
 
 		/*@Validate
             Save Config and run constraint rules.
@@ -22,6 +31,8 @@
                 }
             })
         }
+
+        init();
 
         return validateCtrl;
 	}
