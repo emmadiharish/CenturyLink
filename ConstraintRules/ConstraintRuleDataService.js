@@ -204,12 +204,12 @@
             processedIds[activePrompt.Id] = true;
             activePrompt['IsIgnoredByUser'] = true;
             
-            ConfigurationDataService.createCartRequestDO().then(function(cartRequest) {
+            /*ConfigurationDataService.createCartRequestDO().then(function(cartRequest) {
                 cartRequest.ruleActionId = ruleActionId;
                 RemoteService.ignoreRuleAction(cartRequest).then(function(result) {
                     service.updateRuleActions(result.ruleActions);              
                 });
-            });
+            });*/
             
         }
     }
