@@ -3,7 +3,7 @@
     ConstraintRuleDataService.$inject = [];
     function ConstraintRuleDataService(){
         var service = this;
-        
+
         var recommendedproductsMap = {};
 
         service.getrecommendedproductsMap = getrecommendedproductsMap;
@@ -14,7 +14,7 @@
             return recommendedproductsMap;
         }
 
-        function getrecommendedproductsMap(productIds){
+        function setrecommendedproductsMap(productIds){
             recommendedproductsMap = productIds;
         }
 
