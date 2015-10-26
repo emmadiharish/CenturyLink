@@ -12,6 +12,7 @@
 		var validateCtrl = this;
 		
 		function init(){
+			$scope.baseService = BaseService;
 			validateCtrl.ProgressBartinprogress = false;
 		}
 		
