@@ -148,8 +148,8 @@
             linesWithMessage = {};
             
             var ruleTypetoActionsMap = angular.copy(actionRulesMapTemplate);
-            _.each(newActions, function(Action){
-                ruleTypetoActionsMap[Action.MessageType] = Action;
+            _.each(newActions, function(ruleAction){
+                ruleTypetoActionsMap[ruleAction.MessageType].push(ruleAction);
             })
 
             //do nothing if there are no messages.
