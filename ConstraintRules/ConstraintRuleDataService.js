@@ -24,9 +24,9 @@
         };
 
         var actionRulesMapTemplate = {
-            Error:[],
-            Warning:[],
-            Info:[]
+            error:[],
+            warning:[],
+            info:[]
         }
 
         // Constant action types
