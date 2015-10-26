@@ -18,6 +18,8 @@
         var productIdtoComponentMap = {};
         var productIdtoGroupMap = {};
 
+        service.saveinformation = saveinformation;
+
         function saveinformation(){
             var deferred = $q.defer();
             
