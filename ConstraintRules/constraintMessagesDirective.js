@@ -13,7 +13,7 @@
 			controller: ConstraintMessagesCtrl,
 			controllerAs: 'messageCtrl',
 			bindToController: true,
-			templateUrl: SystemConstants.baseUrl + '/templates/directives/common/constraint-messages.html'
+			templateUrl: SystemConstants.baseUrl + '/Templates/constraint-messages.html'
 		};
 	}
 
