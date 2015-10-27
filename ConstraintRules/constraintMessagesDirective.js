@@ -7,13 +7,13 @@
 
 	angular.module('APTPS_ngCPQ').directive('constraintMessages', ConstraintMessages);
 
-	ConstraintMessages.$inject = ['systemConstants'];
-	function ConstraintMessages(systemConstants) {
+	ConstraintMessages.$inject = ['SystemConstants'];
+	function ConstraintMessages(SystemConstants) {
 		return {
 			controller: ConstraintMessagesCtrl,
 			controllerAs: 'messageCtrl',
 			bindToController: true,
-			templateUrl: systemConstants.baseUrl + '/templates/directives/common/constraint-messages.html'
+			templateUrl: SystemConstants.baseUrl + '/templates/directives/common/constraint-messages.html'
 		};
 	}
 
@@ -26,7 +26,7 @@
 		
 		// ctrl.labels = i18nService.CustomLabel;
 		ctrl.errorMessages = [];
-		ctrl.messageField = 'Message__c';
+		ctrl.messageField = 'Message';
 
 		ctrl.pageErrors = function() {
 			return ctrl.messenger.getMessages().page.error;
