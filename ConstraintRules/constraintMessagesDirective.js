@@ -5,7 +5,7 @@
 (function() {
 	'use strict';
 
-	angular.module('aptCPQUI').directive('constraintMessages', ConstraintMessages);
+	angular.module('APTPS_ngCPQ').directive('constraintMessages', ConstraintMessages);
 
 	ConstraintMessages.$inject = ['systemConstants'];
 	function ConstraintMessages(systemConstants) {
