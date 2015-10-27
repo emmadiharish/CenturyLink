@@ -6,14 +6,14 @@
 	'use strict';
 	angular.module('APTPS_ngCPQ').directive('constraintDialog', ConstraintDialog);
 
-	ConstraintDialog.$inject = ['systemConstants'];
+	ConstraintDialog.$inject = ['SystemConstants'];
 
 	ConstraintDialogCtrl.$inject = [
 	                           '$log',                            
 	                           '$scope',
 	                           'ConstraintRuleDataService',
 	                           'ProductDataService',
-	                           'CartDataService'
+	                           'SaveConfigService'
 	                           ];
 
 	
@@ -34,7 +34,7 @@
 	/**
 	 * Constraint Dialog controller
 	 */ 
-	function ConstraintDialogCtrl($log, $scope, ConstraintRuleDataService, ProductDataService, CartDataService) {
+	function ConstraintDialogCtrl($log, $scope, ConstraintRuleDataService, ProductDataService, SaveConfigService) {
 		var nsPrefix = 'Apttus_Config2__';
 		var ctrl = this;
 		ctrl.visible = false;
@@ -57,7 +57,7 @@
 
 		/** Perform rule action based on action type */
 		ctrl.performRuleAction = function() {
-			var actionType = ctrl.activePrompt[nsPrefix + 'ConstraintRuleActionId__r'][nsPrefix + 'ActionType__c'];
+			var actionType = ctrl.activePrompt['ConstraintRuleActionId']['ActionType'];
 			if (actionType === ConstraintRuleDataService.ACTIONTYPE_INCLUDE) {
 				ctrl.addSelectedProducts();
 
@@ -69,12 +69,12 @@
 		}; 
 
 		ctrl.addSelectedProducts = function() {
-			var targetBundleNumber = ctrl.activePrompt[nsPrefix + 'TargetBundleNumber__c'];
+			var targetBundleNumber = ctrl.activePrompt['TargetBundleNumber'];
 			if (!targetBundleNumber) { //add as primary line
-				CartDataService.addToCart(angular.copy(ctrl.selectedProducts));
+				SaveConfigService.addToCart(angular.copy(ctrl.selectedProducts));
 				
 			} else { //add to bundle
-				CartDataService.addToBundle(targetBundleNumber, ctrl.selectedProducts);
+				SaveConfigService.addToBundle(targetBundleNumber, ctrl.selectedProducts);
 				
 			}
 			
@@ -88,7 +88,7 @@
 		};
 
 		ctrl.removeSelectedProducts = function() {
-			var targetBundleNumber = ctrl.activePrompt[nsPrefix + 'TargetBundleNumber__c'];
+			var targetBundleNumber = ctrl.activePrompt['TargetBundleNumber'];
 			if (!targetBundleNumber) {
 				//Find affected primary lines with matching products and remove them.
 				var selectedProductIds = {};
@@ -96,20 +96,20 @@
 					selectedProductIds[product.Id] = true;
 				});
 
-				var affectedPrimaryNumbers = ctrl.activePrompt[nsPrefix + 'AffectedPrimaryNumbers__c'].split(/,\W*/);
+				var affectedPrimaryNumbers = ctrl.activePrompt['AffectedPrimaryNumbers'].split(/,\W*/);
 				CartDataService.getLineItems(affectedPrimaryNumbers).then(function(result) {
 					//Filter to find only lines with matching products
 					lineItemsToDelete = _.filter(result, function(nextLineItem) {
 						return selectedProductIds[nextLineItem.productId()];
 
 					});
-					CartDataService.removeFromCart(lineItemsToDelete);
+					SaveConfigService.removeFromCart(lineItemsToDelete);
 					
 				});	
 
 			} else {
 				//Handle remove of options from bundle
-				CartDataService.removeFromBundle(targetBundleNumber, ctrl.selectedProducts);
+				SaveConfigService.removeFromBundle(targetBundleNumber, ctrl.selectedProducts);
 				
 			}
 

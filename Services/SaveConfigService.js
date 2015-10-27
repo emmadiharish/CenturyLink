@@ -19,6 +19,11 @@
         var productIdtoGroupMap = {};
 
         service.saveinformation = saveinformation;
+        service.addToCart = addToCart;
+        service.addToBundle = addToBundle;
+        service.removeFromCart = removeFromCart;
+        service.removeFromBundle = removeFromBundle;
+        service.getLineItems = getLineItems;
 
         function saveinformation(){
             var deferred = $q.defer();
@@ -443,6 +448,114 @@
                     pav = _.omit(pav, key);// remove Other field from PAV before sending to Server.
             })
             return pav;
+        }
+
+        /**
+         * Add one or more products to the cart and return the new line items.
+         * A product wrapper just needs the properties "productSO" and "quantity",
+         *  which is made to fit with how products are wrapped by the category directive.
+         * If the input is exactly one product object instead of an array, the promise
+         *  resolves with one line item instead of an array of line items. May change
+         *  this for consistency.
+         *  
+         * @param {object/array}        productWrappers 
+         * @return {promise}    promise that resolves with the collection of new line items
+         */
+        function addToCart(productWrappers) {
+            //Ensure array structure
+            var allProductWrappers = [].concat(productWrappers);
+            /*//Use helper method to wrap product in line item
+            var lineItemPromises = [];
+            var nextProductWrapper, nextPromise;
+            for (var  productIndex = allProductWrappers.length - 1;   productIndex >= 0;   productIndex--) {
+                nextProductWrapper = allProductWrappers[productIndex];
+                nextPromise = LineItemSupport.newLineItemForProduct(nextProductWrapper.productSO, nextProductWrapper.quantity);
+                lineItemPromises.push(nextPromise);
+
+            }
+            return $q.all(lineItemPromises).then(addLineItemsToCart);*/
+            var deferred = $q.defer();
+            return deferred.promise;
+
+        }
+
+        /*function addLineItemsToCart(lineItems) {
+            LineItemCache.putLineItemDOs(lineItems, createLineItemModel);
+            refreshItemsFromCache();
+            return ActionQueueService
+                            .scheduleAction(['update', 'finish'])
+                            .then(function (result) {
+                                if (angular.isArray(lineItems) && lineItems.length == 1) {
+                                    return lineItems[0];
+                                }
+                                return lineItems;
+                            });
+        
+        }*/
+
+        /**
+         * Add option line items to bundle based on product id.
+         * @param targetBundleNumber primary line number of the target bundle
+         * @param productDO productSO wrapper which is an option
+         */
+        function addToBundle(targetBundleNumber, productDO) {
+            //Ensure array of product DOs
+            /*var bundleLine = LineItemCache.getLineItem(targetBundleNumber);
+            var optionLines = bundleLine.findOptionLinesForProducts(productDO);
+            _.forEach(optionLines, function (nextOptionLine) {
+                nextOptionLine.select();
+            });
+            return updateBundle(bundleLine);*/
+            return;
+        }
+
+        /**
+         * Remove an option on a particluar bundle. 
+         * @param targetBundleNumber primary line number of the target bundle
+         * @param productDO productSO wrapper which is an option
+         * @return {[type]}                    [description]
+         */
+        function removeFromBundle(targetBundleNumber, productDO) {
+            //Ensure array of product DOs
+            /*var bundleLine = LineItemCache.getLineItem(targetBundleNumber);
+            var optionLines = bundleLine.findOptionLinesForProducts(productDO);
+            _.forEach(optionLines, function (nextOptionLine) {
+                nextOptionLine.deselect();
+            });
+            return updateBundle(bundleLine);*/
+            return;
+
+        }
+
+        /**
+         * Remove an array of line items from cart. These items can be
+         *  from the server or temporary items -- the cache handles 
+         *  organizing what to delete.
+         *  
+         * @param  {array}  lineItems 
+         * @return {promise}    promise that resolves with the cart line
+         *                    items either immediately or after the 
+         *                    delete has ben sync'd
+         */
+        function removeFromCart(lineItems) {
+            lineItems = [].concat(lineItems);
+            //Set line action
+            //Remove all items that haven't been sync'd
+            /*var needSync = LineItemCache.removeLineItems(lineItems);
+            FieldExpressionCache.updateCacheAfterItemDelete(LineItemCache.getLineItemsByPrimaryLineNumber());
+            refreshItemsFromCache();
+            if (needSync) {
+                return ActionQueueService.scheduleAction(['update', 'finish']);
+
+            }
+            return $q.when(lineItemArray);*/
+            return;
+
+        }
+
+        function getLineItems(primaryNumber){
+            // return all option products under this bundle primaryNumber
+            return [];
         }
     }
     
