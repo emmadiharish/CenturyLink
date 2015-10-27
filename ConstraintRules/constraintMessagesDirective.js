@@ -23,6 +23,7 @@
 	
 	function ConstraintMessagesCtrl(ConstraintRuleDataService) {
 		var ctrl = this;
+		
 		// ctrl.labels = i18nService.CustomLabel;
 		ctrl.errorMessages = [];
 		ctrl.messageField = 'Message__c';
@@ -84,8 +85,7 @@
 		//initialize
 		processCommonErrors();
 
-		return this;
-
+		return ctrl;
 	}
 
 }).call(this);
