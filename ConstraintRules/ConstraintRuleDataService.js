@@ -1,7 +1,7 @@
 (function() {
     angular.module('APTPS_ngCPQ').service('ConstraintRuleDataService', ConstraintRuleDataService); 
-    ConstraintRuleDataService.$inject = ['$log'];
-    function ConstraintRuleDataService($log){
+    ConstraintRuleDataService.$inject = ['$log', 'BaseConfigService'];
+    function ConstraintRuleDataService($log, BaseConfigService){
         var service = this;
 
         var recommendedproductsMap = {};
