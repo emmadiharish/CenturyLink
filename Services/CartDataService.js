@@ -14,7 +14,7 @@
         service.addToBundle = addToBundle;
         service.addToCart = addToCart;
         service.removeFromBundle = removeFromBundle;
-        service.removeFromCart = removeFromCart;
+        //service.removeFromCart = removeFromCart;
         service.getLineItems = getLineItems;
 
         service.autoIncludeOptions = autoIncludeOptions;
