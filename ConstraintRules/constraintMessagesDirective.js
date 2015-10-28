@@ -68,16 +68,16 @@
             return ctrl.messenger.getMessages().page.warning.length !== 0;
         };
 
-        ctrl.hasCommonErrors = function() {
+        /*ctrl.hasCommonErrors = function() {
             return ctrl.messenger.getCommonErrorLines().length !== 0;
-        };
+        };*/
 
         ctrl.hasInfo = function() {
             return ctrl.messenger.getMessages().page.info.length !== 0;
         };
 
         ctrl.hasMessages = function() {
-            return ctrl.hasError() || ctrl.hasWarning() || ctrl.hasInfo() || ctrl.hasCommonErrors();
+            return ctrl.hasError() || ctrl.hasWarning() || ctrl.hasInfo();// || ctrl.hasCommonErrors();
         };
 
         ctrl.messenger = ConstraintRuleDataService;
