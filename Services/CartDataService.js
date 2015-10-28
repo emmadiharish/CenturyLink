@@ -193,6 +193,15 @@
             })
         }
 
+        function isProdSelected(productcomponent, optiongroup){
+            if((productcomponent.isselected 
+                 && optiongroup.ischeckbox)
+                    || (productcomponent.productId == optiongroup.selectedproduct 
+                        && !optiongroup.ischeckbox))
+            return true;
+            return false;
+        }
+        
         function getLineItems(primaryNumber){
             // return all option products under this bundle primaryNumber
             return [];
