@@ -46,7 +46,7 @@
                                     productcomponent.isselected = true;
                                 }
                             }
-                            break;
+                            //break;
                         }
                     })
                 })
@@ -105,7 +105,7 @@
                                 }
                             }
                             // productcomponent['isDisabled'] = true;
-                            break;
+                            //break;
                         }
                     })
                 })
@@ -158,7 +158,7 @@
                                     productcomponent.isselected = true;
                                 }
                             }
-                            break;
+                            //break;
                         }
                     })
                 })
@@ -186,7 +186,7 @@
                                 }
                             }
                             productcomponent['isDisabled'] = true;
-                            break;
+                            //break;
                         }
                     })
                 })
