@@ -73,7 +73,7 @@
             var deferred = $q.defer();
             requestPromise.then(function(result){
 
-            }
+            });
             return deferred.promise;
         }
 
