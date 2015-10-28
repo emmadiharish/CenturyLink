@@ -104,7 +104,7 @@
             var hasLocations = LocationDataService.gethasServicelocations();
             currentproductoptiongroups = result;
             // mark if product is available for selected location or not. 
-            _.each(currentproductoptiongroups, function(group){
+            /*_.each(currentproductoptiongroups, function(group){
                 _.each(group.productOptionComponents, function(component){
                     if(!hasLocations
                         ||(_.size(availableProductIds) > 0
@@ -115,7 +115,9 @@
                         component['isAvailableonSLocation'] = false;
                     }
                 })
-            })
+            })*/
+            // mark all as avaialable...just for testing. - H.E 1028
+            component['isAvailableonSLocation'] = true;
         }
 
         // util method. a: option groups, b: field name to access product components, c:field to identify if product is bundle or not, d: field name to access product Id within product component.
