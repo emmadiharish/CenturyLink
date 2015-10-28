@@ -13,7 +13,7 @@
 	                           '$scope',
 	                           'ConstraintRuleDataService',
 	                           'ProductDataService',
-	                           'SaveConfigService'
+	                           'CartDataService'
 	                           ];
 
 	
@@ -34,8 +34,7 @@
 	/**
 	 * Constraint Dialog controller
 	 */ 
-	function ConstraintDialogCtrl($log, $scope, ConstraintRuleDataService, ProductDataService, SaveConfigService) {
-		var nsPrefix = 'Apttus_Config2__';
+	function ConstraintDialogCtrl($log, $scope, ConstraintRuleDataService, ProductDataService, CartDataService) {
 		var ctrl = this;
 		ctrl.visible = false;
 		ctrl.selectedProducts = [];
@@ -57,8 +56,9 @@
 
 		/** Perform rule action based on action type */
 		ctrl.performRuleAction = function() {
-			var actionType = ctrl.activePrompt['ConstraintRuleActionId']['ActionType'];
-			if (actionType === ConstraintRuleDataService.ACTIONTYPE_INCLUDE) {
+			var actionType = ctrl.activePrompt['ActionType'];
+			if (actionType === ConstraintRuleDataService.ACTIONTYPE_INCLUDE
+				|| actionType == ConstraintRuleDataService.ACTIONTYPE_RECOMMEND) {
 				ctrl.addSelectedProducts();
 
 			} else if (actionType === ConstraintRuleDataService.ACTIONTYPE_EXCLUDE) {
@@ -71,10 +71,10 @@
 		ctrl.addSelectedProducts = function() {
 			var targetBundleNumber = ctrl.activePrompt['TargetBundleNumber'];
 			if (!targetBundleNumber) { //add as primary line
-				SaveConfigService.addToCart(angular.copy(ctrl.selectedProducts));
+				CartDataService.addToCart(angular.copy(ctrl.selectedProducts));
 				
 			} else { //add to bundle
-				SaveConfigService.addToBundle(targetBundleNumber, ctrl.selectedProducts);
+				CartDataService.addToBundle(ctrl.selectedProducts);
 				
 			}
 			
@@ -88,30 +88,7 @@
 		};
 
 		ctrl.removeSelectedProducts = function() {
-			var targetBundleNumber = ctrl.activePrompt['TargetBundleNumber'];
-			if (!targetBundleNumber) {
-				//Find affected primary lines with matching products and remove them.
-				var selectedProductIds = {};
-				_.forEach(ctrl.selectedProducts, function(product) {
-					selectedProductIds[product.Id] = true;
-				});
-
-				var affectedPrimaryNumbers = ctrl.activePrompt['AffectedPrimaryNumbers'].split(/,\W*/);
-				CartDataService.getLineItems(affectedPrimaryNumbers).then(function(result) {
-					//Filter to find only lines with matching products
-					lineItemsToDelete = _.filter(result, function(nextLineItem) {
-						return selectedProductIds[nextLineItem.productId()];
-
-					});
-					SaveConfigService.removeFromCart(lineItemsToDelete);
-					
-				});	
-
-			} else {
-				//Handle remove of options from bundle
-				SaveConfigService.removeFromBundle(targetBundleNumber, ctrl.selectedProducts);
-				
-			}
+			CartDataService.removeFromBundle(ctrl.selectedProducts);
 
 			/*if (ctrl.minSelected()) {
 				ConstraintRuleDataService.markAsProcessed(ctrl.activePrompt);
@@ -139,7 +116,7 @@
 			return ctrl.activePrompt;
 		};
 
-		ctrl.minSelected = function() {
+		/*ctrl.minSelected = function() {
 			if (ctrl.activePrompt) {
 				return ctrl.selectedProducts.length >= ctrl.activePrompt[nsPrefix + 'RequiredMin__c'];
 
@@ -148,10 +125,10 @@
 
 			}
 
-		};
+		};*/
 
 		ctrl.selectProduct = function(product) {
-			if (_.includes(ctrl.selectedProducts, product)) {
+			if (_.contains(ctrl.selectedProducts, product)) {
 				return _.pull(ctrl.selectedProducts, product);
 
 			} else {
@@ -173,21 +150,23 @@
 
 				}
 				ctrl.promptMessage = activePrompt['Message'];
-				var actionType = activePrompt['ConstraintRuleActionId']['ActionType'];
+				var actionType = activePrompt['ActionType'];
 				var promptProductIds = [];
 				
 				if (actionType == ConstraintRuleDataService.ACTIONTYPE_INCLUDE) {
 					//Inclusion type rules
-					var suggestedIdString = activePrompt['SuggestedProductIds'];
-					var suggestedProductIds = suggestedIdString != null ? suggestedIdString.split(/,\W*/) : [];
+					//var suggestedIdString = activePrompt['SuggestedProductIds'];
+					//var suggestedProductIds = suggestedIdString != null ? suggestedIdString.split(/,\W*/) : [];
+					var suggestedProductIds = activePrompt['SuggestedProductIds'];
 					promptProductIds = suggestedProductIds;
 					
-					var affectedIdString = activePrompt['AffectedProductIds'];
-					if (affectedIdString != null) {
-						var affectedProductIds = affectedIdString.split(/,\W*/);
+					//var affectedIdString = activePrompt['AffectedProductIds'];
+					//if (affectedIdString != null) {
+						//var affectedProductIds = affectedIdString.split(/,\W*/);
+						var affectedProductIds = activePrompt['AffectedProductIds'];
 						promptProductIds = _.difference(suggestedProductIds, affectedProductIds);
 
-					}
+					//}
 					if (activePrompt['TargetBundleNumber']) {
 						ctrl.ruleActionLabel = 'Add To Bundle';
 					
@@ -198,8 +177,11 @@
 					
 				} else if (actionType == ConstraintRuleDataService.ACTIONTYPE_EXCLUDE) {
 					//Exclusion type rules
-					var actionIdString = activePrompt[nsPrefix + 'ActionProductIds__c'];
-					var actionProductIds = actionIdString != null ? actionIdString.split(/,\W*/) : [];
+					//var actionIdString = activePrompt[nsPrefix + 'ActionProductIds__c'];
+					// should be changed if exclusion does not apply for suggested products.
+					//var actionIdString = activePrompt['SuggestedProductIds'];
+					//var actionProductIds = actionIdString != null ? actionIdString.split(/,\W*/) : [];
+					var actionProductIds = activePrompt['SuggestedProductIds'];
 					promptProductIds = actionProductIds;
 
 					if (activePrompt['TargetBundleNumber']) {
@@ -237,15 +219,10 @@
 				});
 			} else {
 				return ctrl.close();
-
 			}
-
 		}
 
 		$scope.$watch(dialogWatchExpression, dialogWatchListener);
-
 		return ctrl;
-
 	}
-
 }).call(this);

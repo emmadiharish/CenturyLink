@@ -36,13 +36,13 @@
             return ctrl.messenger.getMessages().page.warning;
         };
 
-        function processCommonErrors() {
+        /*function processCommonErrors() {
             ctrl.errorMessages.length = 0;
 
             var contextBundleNumber = ConstraintRuleDataService.getContextBundleNumber();
             var errorLineNumbers = ctrl.messenger.getCommonErrorLines();
 
-            /*if (errorLineNumbers.length !== 0) {
+            if (errorLineNumbers.length !== 0) {
                 var lineItemsWithErrors = OptionGroupDataService.getLineItems(errorLineNumbers);
                 angular.forEach(lineItemsWithErrors, function(nextLineItem, index) {
                     var lineSequence = nextLineItem.primaryLine().sequence();
@@ -52,9 +52,9 @@
                     }; 
                     ctrl.errorMessages.push(newError);
                 });
-            }*/
+            }
             return ctrl.errorMessages;
-        }
+        }*/
 
         ctrl.pageInfos = function() {
             return ctrl.messenger.getMessages().page.info;
@@ -83,7 +83,7 @@
         ctrl.messenger = ConstraintRuleDataService;
 
         //initialize
-        processCommonErrors();
+        //processCommonErrors();
 
         return ctrl;
     }

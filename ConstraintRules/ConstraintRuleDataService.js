@@ -1,10 +1,10 @@
 (function() {
     angular.module('APTPS_ngCPQ').service('ConstraintRuleDataService', ConstraintRuleDataService); 
-    ConstraintRuleDataService.$inject = ['$log', 'BaseConfigService'];
-    function ConstraintRuleDataService($log, BaseConfigService){
+    ConstraintRuleDataService.$inject = ['$log', 'BaseConfigService', 'CartDataService'];
+    function ConstraintRuleDataService($log, BaseConfigService, CartDataService){
         var service = this;
 
-        var recommendedproductsMap = {};
+        // var recommendedproductsMap = {};
         var linesWithMessage = {};
         var ruleTypes = ['error', 'warning', 'info'];
         var processedIds = {};
@@ -36,11 +36,11 @@
         service.ACTIONTYPE_VALIDATE = 'Validation';
         service.ACTIONTYPE_REPLACE = 'Replacement';
 
-        service.getrecommendedproductsMap = getrecommendedproductsMap;
+        /*service.getrecommendedproductsMap = getrecommendedproductsMap;
         service.setrecommendedproductsMap = setrecommendedproductsMap;
-        service.omitrecommendedproduct = omitrecommendedproduct;
+        service.omitrecommendedproduct = omitrecommendedproduct;*/
 
-        function getrecommendedproductsMap(){
+        /*function getrecommendedproductsMap(){
             return recommendedproductsMap;
         }
 
@@ -50,7 +50,7 @@
 
         function omitrecommendedproduct(productId){
             recommendedproductsMap = _.omit(recommendedproductsMap, productId);
-        }
+        }*/
 
         /**
          * @return 0 or context bundles primary line number
@@ -119,7 +119,7 @@
         /**
          * @return [Object] list of warnings 
          */
-        service.getCommonErrorLines = function() {
+        /*service.getCommonErrorLines = function() {
             var contextBundleNumber = service.getContextBundleNumber();
             var errorLines = [];
             angular.forEach(linesWithMessage, function(value, key){
@@ -132,7 +132,7 @@
             });
             return errorLines;
             
-        };
+        };*/
 
         /**
          * Insert new rule actions into stored actions.
@@ -175,8 +175,9 @@
                         
                     } else {
                         targetMessages.page[ruleType].push(ruleAction);
-                        
                     }
+
+                    processInclusionsandExclusions(ruleAction);
                     
                 });
 
@@ -211,6 +212,19 @@
                 });
             });*/
             
+        }
+
+        function processInclusionsandExclusions(ruleAction){
+            var ActionType = ruleAction['ActionType'];
+            var ActionIntent = ruleAction['ActionIntent'];
+            if(ActionIntent == 'Auto Include')
+            {
+                CartDataService.autoIncludeOptions(ruleAction['SuggestedProductIds']);
+            }
+            if(ActionIntent = 'Disable Selection')
+            {
+                CartDataService.disableOptionSelections(ruleAction['SuggestedProductIds']);
+            }
         }
     }
 })();
