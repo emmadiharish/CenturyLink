@@ -33,16 +33,19 @@
 		}
 
 		function configureLineItem(lineItemId){
-			var cartId = BaseConfigService.cartId, configRequestId = BaseConfigService.configRequestId, flowName = BaseConfigService.flowName;
-			var requestPromise = RemoteService.configureLineItem(cartId, configRequestId, flowName, lineItemId);
+			var configureLineRequest = {cartHeader:BaseConfigService.cartHeader
+										, lineItemId: lineItemId};
+			var requestPromise = RemoteService.configureLineItem(configureLineRequest);
 			return requestPromise.then(function(response){
 				return response;
 			});
 		}
 
 		function deleteLineItemFromCart(lineNumber_tobedeleted){
-			var cartId = BaseConfigService.cartId, configRequestId = BaseConfigService.configRequestId, flowName = BaseConfigService.flowName, currentlineNumber = BaseConfigService.lineItem.lineNumber;
-            var requestPromise = RemoteService.deleteLineItemFromCart(cartId, configRequestId, flowName, lineNumber_tobedeleted, currentlineNumber);
+			var deleteLineRequest = {cartHeader:BaseConfigService.cartHeader
+									 , lineItemNumber_tobedeleted: lineNumber_tobedeleted
+									 , currentLineNumber: BaseConfigService.lineItem.lineNumber};
+            var requestPromise = RemoteService.deleteLineItemFromCart(deleteLineRequest);
 			return requestPromise.then(function(response){
 				return response;
 			});
