@@ -46,8 +46,10 @@
             });*/
     
             // chain the location call and location availability calls.
-            var locationRequest = {productId: BaseConfigService.lineItem.bundleProdId, 
-                                    opportunityId: BaseConfigService.opportunityId}; 
+            var locationRequest = {
+                                    productId: BaseConfigService.lineItem.bundleProdId
+                                    , opportunityId: BaseConfigService.opportunityId
+                                }; 
             var requestPromise = RemoteService.getServiceLocations(locationRequest);
             BaseService.startprogress();// start progress bar.
             var methodName = 'ServiceLocationsRequest';
@@ -56,7 +58,11 @@
                 processQueue.isRunning.push(methodName);
                 requestPromise.then(function(response){
                     initializeLocations(response);
-                    requestPromise = RemoteService.getLocationAvailabilities(locationIdSet, BaseConfigService.lineItem.bundleProdId);
+                    var locationAvailabiltyRequest = {
+                                                        servicelocationIdSet:locationIdSet
+                                                        , bundleprodId: BaseConfigService.lineItem.bundleProdId
+                                                    };
+                    requestPromise = RemoteService.getLocationAvailabilities(locationAvailabiltyRequest);
                         return requestPromise.then(function(laresponse){
                             initializelocationAvailabilities(laresponse);
                             BaseService.setLocationLoadComplete();
