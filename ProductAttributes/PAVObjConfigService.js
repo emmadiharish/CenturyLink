@@ -25,8 +25,8 @@
 
 			var requestPromise = RemoteService.getPAVFieldMetaData();
 			BaseService.startprogress();// start progress bar.
-			return requestPromise.then(function(response_FieldDescribe){
-				initializefieldNametoDFRMap(response_FieldDescribe);
+			return requestPromise.then(function(response){
+				initializefieldNametoDFRMap(response);
 				BaseService.setPAVObjConfigLoadComplete();
 				return RemoteService.getOptiontoOptionAttributes().then(function(optiontoOptionattrs){
 					initializeportOptions(optiontoOptionattrs);
@@ -130,7 +130,7 @@
 		// ###################### private methods.###############################
 		function initializefieldNametoDFRMap(response){
 			service.isvalid = true;
-			_.each(response, function(fdrWrapper, fieldName){
+			_.each(response.fieldNametoFieldDescribeWrapperMap, function(fdrWrapper, fieldName){
 				var fieldDescribe = getFieldDescribe(fdrWrapper);
 				var dPicklistObj = {};
 				if(fieldDescribe.fieldType == 'picklist'
