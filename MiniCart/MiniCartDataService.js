@@ -20,7 +20,8 @@
 				return $q.when(miniCartLines);
 			}
 			
-			var requestPromise = RemoteService.getMiniCartLines(BaseConfigService.cartId);
+			var miniCartRequest = {cartId : BaseConfigService.cartId};
+			var requestPromise = RemoteService.getMiniCartLines(miniCartRequest);
 			BaseService.startprogress();// start progress bar.
 			return requestPromise.then(function(response){
 				service.isValid = true;
