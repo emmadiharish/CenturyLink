@@ -130,14 +130,15 @@
 		// ###################### private methods.###############################
 		function initializefieldNametoDFRMap(response){
 			service.isvalid = true;
-			_.each(response.fieldNametoFieldDescribeWrapperMap, function(fdrWrapper, fieldName){
+			var fieldNametoFieldDescribeWrapperMap = response.fieldNametoFieldDescribeWrapperMap;
+			_.each(fieldNametoFieldDescribeWrapperMap, function(fdrWrapper, fieldName){
 				var fieldDescribe = getFieldDescribe(fdrWrapper);
 				var dPicklistObj = {};
 				if(fieldDescribe.fieldType == 'picklist'
 					&& fieldDescribe.isDependentPicklist == true)
 				{
 					var controller = fieldDescribe.controllerName;
-					var controllingpicklistOptions = response[controller].picklistOptions;
+					var controllingpicklistOptions = fieldNametoFieldDescribeWrapperMap[controller].picklistOptions;
 					dPicklistObj = getStructuredDependentFields(fdrWrapper.picklistOptions, controllingpicklistOptions);	
 				}
 				
