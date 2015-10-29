@@ -46,7 +46,9 @@
             });*/
     
             // chain the location call and location availability calls.
-            var requestPromise = RemoteService.getServiceLocations(BaseConfigService.lineItem.bundleProdId, BaseConfigService.opportunityId);
+            var locationRequest = {productId: BaseConfigService.lineItem.bundleProdId, 
+                                    opportunityId: BaseConfigService.opportunityId}; 
+            var requestPromise = RemoteService.getServiceLocations(locationRequest);
             BaseService.startprogress();// start progress bar.
             var methodName = 'ServiceLocationsRequest';
             var defer = $q.defer();
