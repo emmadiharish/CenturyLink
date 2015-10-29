@@ -28,8 +28,8 @@
 			return prodIdtoOptionGroupsMap;
 		}
 
-		function initializeOptionGroups(results) {
-			_.map(results, (function(optionGroups, prodId){
+		function initializeOptionGroups(response) {
+			_.map(response.productIdtoOptionGroupsMap, (function(optionGroups, prodId){
                  _.each(optionGroups, function(group){
                 	_.each(group.productOptionComponents, function(component){
                 		//component.productName = characterRepace(component.productName);
