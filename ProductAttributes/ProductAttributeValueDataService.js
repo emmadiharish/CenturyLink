@@ -57,7 +57,7 @@
 
 		function initializeProductAttributeValues(response){
 			service.isValid = true;
-			_.each(response, function(pavwrapper){
+			_.each(response.pavWrapList, function(pavwrapper){
 				// bundle pav if Apttus_Config2__OptionId__c is null.
 				if(!_.has(pavwrapper.lineItem, 'Apttus_Config2__OptionId__c')
 					|| _.isNull(pavwrapper.lineItem.Apttus_Config2__OptionId__c))

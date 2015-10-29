@@ -26,7 +26,7 @@
 			return requestPromise.then(function(response){
 				service.isValid = true;
 				BaseService.setMiniCartLoadComplete();
-				miniCartLines = response;
+				miniCartLines = response.lineItems;
 				miniCartLinesCount = response.length;
 				return miniCartLines;
 			});
