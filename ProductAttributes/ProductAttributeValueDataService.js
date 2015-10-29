@@ -13,7 +13,9 @@
 		service.getoptionproductattributevalues = getoptionproductattributevalues;
 
 		function getProductAttributeValues_bulk(){
-			var requestPromise = RemoteService.getProductAttributeValueData(BaseConfigService.cartId, BaseConfigService.lineItem.lineNumber);
+			var productAttributeValueDataRequest = {cartId: BaseConfigService.cartId
+													, lineNumber: BaseConfigService.lineItem.lineNumber};
+			var requestPromise = RemoteService.getProductAttributeValueData(productAttributeValueDataRequest);
 			BaseService.startprogress();// start progress bar.
 			return requestPromise.then(function(response){
 				initializeProductAttributeValues(response);
