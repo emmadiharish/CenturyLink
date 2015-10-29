@@ -124,7 +124,11 @@
 
                 // remote call to save Quote Config.
                 //var requestPromise = RemoteService.saveQuoteConfig(bundleLineItem, productcomponentstobeUpserted, productcomponentstobeDeleted, componentIdtoPAVMap);
-                var requestPromise = RemoteService.saveQuoteConfig(bundleLineItem, productcomponentstobeUpserted, componentIdtoPAVMap);
+                var saveRequest = {
+                                    bundleLineItem:bundleLineItem
+                                    , productOptionComponents: productcomponentstobeUpserted
+                                    , componentIdtoPAVMap: componentIdtoPAVMap};
+                var requestPromise = RemoteService.saveQuoteConfig(saveRequest);
                 requestPromise.then(function(saveresult){
                     if(saveresult.isSuccess)// if save call is successfull.
                     {
@@ -164,11 +168,13 @@
             $log.info('running Constraint rules.');
             // remote call to save Quote Config.
             var deferred = $q.defer();
-            var cartId = BaseConfigService.cartId;
-            var lineNumber = BaseConfigService.lineItem.lineNumber;
             var hasLocations = LocationDataService.gethasServicelocations();
             var availableProductIds = LocationDataService.getAvailableOptionProducts();
-            requestPromise = RemoteService.runConstraintRules(cartId, lineNumber);
+            var constraintRuleRequest = {
+                                        cartId: BaseConfigService.cartId
+                                        , lineNumber: BaseConfigService.lineItem.lineNumber
+                                        };
+            var requestPromise = RemoteService.runConstraintRules(constraintRuleRequest);
             requestPromise.then(function(result){
                 /*appliedActionDOList is a List<Apttus_CPQApi.CPQ.AppliedActionDO>.
                 IsPending                       :  Indicates Whether the rule action is pending user action.
