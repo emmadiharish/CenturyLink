@@ -52,9 +52,9 @@
                                         Apttus_Config2__ConfigurationId__c:cartID,
                                         Service_Location__c:servicelocationId,
                                         Apttus_Config2__ProductId__c:bundleProdId, 
-                                        Apttus_Config2__LineNumber__c:bundleLineNumber, 
+                                        Apttus_Config2__LineNumber__c:Number(bundleLineNumber),
                                         PriceMatrixEntry__c:pricingmatrixId, 
-                                        Apttus_Config2__PrimaryLineNumber__c:bundlePrimaryNumber};
+                                        Apttus_Config2__PrimaryLineNumber__c:Number(bundlePrimaryNumber)};
 
                 var productcomponentstobeUpserted = [];
                 var productcomponentstobeDeleted = [];
