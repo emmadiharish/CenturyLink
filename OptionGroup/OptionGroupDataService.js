@@ -46,12 +46,10 @@
                 deferred = $q.defer();
             }
 
-            var cartId = BaseConfigService.cartId;
-            var lineNumber = BaseConfigService.lineItem.lineNumber;
             var optionGroupRequest = {
                                       productIds: productIds
-                                      , cartId: cartId  
-                                      , lineNumber: lineNumber
+                                      , cartId: BaseConfigService.cartId  
+                                      , lineNumber: BaseConfigService.lineItem.lineNumber
                                     };
             var requestPromise = RemoteService.getProductoptiongroupsData(optionGroupRequest);
             requestPromise.then(function(response) {

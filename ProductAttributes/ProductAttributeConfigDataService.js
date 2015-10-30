@@ -29,7 +29,7 @@
                                         , productIdsList: productIds_filtered
                                         , allgroupIds: groupIds
                                         };
-            var requestPromise = RemoteService.getProductAttributeConfigData(attributeGroupRequest);
+            var requestPromise = RemoteService.getAttributeGroups(attributeGroupRequest);
 			BaseService.startprogress();// start progress bar.
 			return requestPromise.then(function(response){
 				ProductAttributeConfigCache.initializeProductAttributes(response);

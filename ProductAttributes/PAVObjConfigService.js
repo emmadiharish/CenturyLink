@@ -149,7 +149,7 @@
 		function initializeportOptions(result){
 			isOptiontoOptionAttrsvalid = true;
 			var portOptions = [];
-			_.each(result, function(portOption){
+			_.each(result.portOptions, function(portOption){
 				portOptions.push(portOption);
 			})
 			optionOptionAttributes ={ portOptions: portOptions };
