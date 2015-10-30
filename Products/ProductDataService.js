@@ -25,7 +25,7 @@
 			}
 
 			var productsRequest ={productIds : ProductIds_filtered};
-			var requestPromise = RemoteService.getProducts();
+			var requestPromise = RemoteService.getProducts(productsRequest);
 			return requestPromise.then(function(response){
 				initializeproductIdtoProductMap(response);
 				_.each(ProductIds, function(prodId){
