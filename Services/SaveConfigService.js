@@ -44,14 +44,14 @@
                 var bundleLine = BaseConfigService.lineItem;
                 var cartID = BaseConfigService.cartId;
                 var bundleLineId = bundleLine.Id;
-                var bundleProdId = bundleLine.bundleProdId;
+                var mainBundleProdId = bundleLine.bundleProdId;
                 var bundleLineNumber = bundleLine.lineNumber;
                 var bundlePrimaryNumber = bundleLine.primaryLineNumber;
 
                 var bundleLineItem ={Id:bundleLineId, 
                                         Apttus_Config2__ConfigurationId__c:cartID,
                                         Service_Location__c:servicelocationId,
-                                        Apttus_Config2__ProductId__c:bundleProdId, 
+                                        Apttus_Config2__ProductId__c:mainBundleProdId, 
                                         Apttus_Config2__LineNumber__c:parseInt(bundleLineNumber),
                                         PriceMatrixEntry__c:pricingmatrixId, 
                                         Apttus_Config2__PrimaryLineNumber__c:parseInt(bundlePrimaryNumber)};
@@ -66,7 +66,7 @@
                     _.each(optiongroups, function(optiongroup){
                         var parentId = optiongroup.parentId;
                         //if parent is bundle productId or selected then proceed.
-                        if(parentId == bundleProdId
+                        if(parentId == mainBundleProdId
                             || (_.has(productIdtoComponentMap, parentId)
                                 && _.has(productIdtoGroupMap, parentId)
                                 && isProdSelected(productIdtoComponentMap[parentId], productIdtoGroupMap[parentId])))
@@ -117,7 +117,7 @@
                 bundlePAV = formatPAVBeforeSave(bundlePAV);
                 if(!_.isEmpty(bundlePAV))
                 {
-                    componentIdtoPAVMap[bundleProdId] = bundlePAV;
+                    componentIdtoPAVMap[mainBundleProdId] = bundlePAV;
                 }
 
                 bundleLineItem = _.extend(bundleLineItem, {Custom__c:otherSelected_bundle});
@@ -374,7 +374,7 @@
             
             // Validation 2 : validate Min/Max options on option groups.
             var allOptionGroups = OptionGroupDataService.getallOptionGroups();
-            var bundleProdId = BaseConfigService.lineItem.bundleProdId;
+            var mainBundleProdId = BaseConfigService.lineItem.bundleProdId;
             productIdtoGroupMap = {};
             productIdtoComponentMap = {};
             _.each(allOptionGroups, function(optiongroups, bundleprodId){
@@ -394,7 +394,7 @@
                 _.each(optiongroups, function(optiongroup){
                     var parentId = optiongroup.parentId;
                     //if parent is bundle productId or selected then validate min max.
-                    if(parentId == bundleProdId
+                    if(parentId == mainBundleProdId
                         || (_.has(productIdtoComponentMap, parentId)
                             && _.has(productIdtoGroupMap, parentId)
                             && isProdSelected(productIdtoComponentMap[parentId], productIdtoGroupMap[parentId])))
