@@ -353,7 +353,7 @@
                     });
                 }*/
                 
-                res = {isSuccess:true, numRulesApplied:numRulesApplied};
+                var res = {isSuccess:true, numRulesApplied:numRulesApplied};
                 deferred.resolve(res);
             })// end of runConstraintRules remote call.
             return deferred.promise;
