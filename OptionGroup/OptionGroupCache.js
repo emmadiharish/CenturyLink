@@ -4,7 +4,8 @@
 	new variable should be introduced to prepare a componentId to optionGroups Map along with optionId to optionGroups Map
 	or there is chance to save wrong configuration(sub bundle config of one productA option group 1 will be saved to productA in option group 2) and Hierarchial tree will be effected.
 */
-(function() {
+;(function() {
+	'use strict';
 	angular.module('APTPS_ngCPQ').service('OptionGroupCache', OptionGroupCache); 
 	OptionGroupCache.$inject = ['$log', 'BaseConfigService'];
 	function OptionGroupCache($log, BaseConfigService) {

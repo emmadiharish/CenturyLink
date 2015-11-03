@@ -3,6 +3,7 @@
     componentId should be used instead of productId for parentId to create hierarchy or rendering sub option groups.
 */
 (function() {
+    'use strict';
     var BaseController;
 
     BaseController.$inject = ['$scope', 

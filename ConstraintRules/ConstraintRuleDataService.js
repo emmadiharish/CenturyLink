@@ -1,4 +1,5 @@
 (function() {
+    'use strict';
     angular.module('APTPS_ngCPQ').service('ConstraintRuleDataService', ConstraintRuleDataService); 
     ConstraintRuleDataService.$inject = ['$log', 'BaseConfigService', 'CartDataService'];
     function ConstraintRuleDataService($log, BaseConfigService, CartDataService){

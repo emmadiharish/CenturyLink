@@ -1,4 +1,5 @@
-(function() {
+;(function() {
+    'use strict';
     angular.module('APTPS_ngCPQ').service('MessageService', MessageService); 
     MessageService.$inject = ['$log'];
     function MessageService($log) {

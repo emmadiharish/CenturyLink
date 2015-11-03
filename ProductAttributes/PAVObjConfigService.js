@@ -1,4 +1,6 @@
-(function() {
+;(function() {
+	'use strict';
+	
 	angular.module('APTPS_ngCPQ').service('PAVObjConfigService', PAVObjConfigService); 
 	PAVObjConfigService.$inject = ['$q', '$log', 'BaseService', 'RemoteService'];
 	function PAVObjConfigService($q, $log, BaseService, RemoteService) {

@@ -1,4 +1,6 @@
-(function() {
+;(function() {
+    'use strict';
+    
     angular.module('APTPS_ngCPQ').service('BaseService', BaseService); 
     BaseService.$inject = ['$log','ngProgress'];
     function BaseService($log, ngProgress) {

@@ -1,4 +1,6 @@
-(function() {
+;(function() {
+    'use strict';
+    
     angular.module('APTPS_ngCPQ').service('LocationDataService', LocationDataService); 
     LocationDataService.$inject = ['$q', 'BaseService', 'BaseConfigService', 'RemoteService'];
     function LocationDataService($q, BaseService, BaseConfigService, RemoteService) {

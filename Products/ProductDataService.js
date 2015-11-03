@@ -1,4 +1,6 @@
-(function() {
+;(function() {
+	'use strict';
+	
 	angular.module('APTPS_ngCPQ').service('ProductDataService', ProductDataService); 
 	ProductDataService.$inject = ['$q', '$log', 'RemoteService'];
 	function ProductDataService($q, $log, RemoteService){

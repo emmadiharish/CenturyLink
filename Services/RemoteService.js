@@ -1,4 +1,6 @@
 ;(function() {
+	'use strict';
+	
 	angular.module('APTPS_ngCPQ').service('RemoteService', RemoteService); 
 	RemoteService.$inject = ['$q', '$log', 'BaseConfigService'];
 	function RemoteService($q, $log, BaseConfigService) {

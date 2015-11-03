@@ -1,4 +1,6 @@
-(function() {
+;(function() {
+    'use strict';
+    
     angular.module('APTPS_ngCPQ').service('CartDataService', CartDataService); 
     CartDataService.$inject = [ '$q', 
                                   '$log', 

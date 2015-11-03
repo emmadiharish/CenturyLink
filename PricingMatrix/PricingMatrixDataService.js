@@ -1,4 +1,5 @@
-(function() {
+;(function() {
+	'use strict';
 	angular.module('APTPS_ngCPQ').service('PricingMatrixDataService', PricingMatrixDataService); 
 	PricingMatrixDataService.$inject = ['$q', '$log', 'BaseService', 'BaseConfigService', 'PAVObjConfigService', 'RemoteService'];
 	function PricingMatrixDataService($q, $log, BaseService, BaseConfigService, PAVObjConfigService, RemoteService) {

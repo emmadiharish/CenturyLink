@@ -1,4 +1,6 @@
-(function() {
+;(function() {
+	'use strict';
+	
 	angular.module('APTPS_ngCPQ').service('ProductAttributeConfigCache', ProductAttributeConfigCache); 
 	ProductAttributeConfigCache.$inject = ['$log'];
 	function ProductAttributeConfigCache($log) {

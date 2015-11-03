@@ -1,4 +1,6 @@
-(function() {
+;(function() {
+	'use strict';
+	
 	angular.module('APTPS_ngCPQ').service('ProductAttributeValueDataService', ProductAttributeValueDataService); 
 	ProductAttributeValueDataService.$inject = ['$q', '$log', 'BaseService', 'BaseConfigService','RemoteService'];
 	function ProductAttributeValueDataService($q, $log, BaseService, BaseConfigService, RemoteService) {
