@@ -125,7 +125,7 @@
             });
 				
 			PAV['isDefaultLoadComplete'] = true;
-            res = {pavConfigGroups: attributeGroups, PAVObj: PAV};
+            var res = {pavConfigGroups: attributeGroups, PAVObj: PAV};
 			return res;
 		}
 
