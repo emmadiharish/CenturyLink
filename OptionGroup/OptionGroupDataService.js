@@ -96,7 +96,11 @@
         }
 
         function setSelectedoptionproduct(optionComponent) {
-            Selectedoptionproduct = {'productId':optionComponent.productId, 'productName': optionComponent.productName, 'componentId':optionComponent.componentId};
+            if(_.isObject(optionComponent)
+                && !_.isEmpty(optionComponent))
+                Selectedoptionproduct = {'productId':optionComponent.productId, 'productName': optionComponent.productName, 'componentId':optionComponent.componentId};
+            else
+                Selectedoptionproduct = {};
         }
 
         function getcurrentproductoptiongroups(){

@@ -23,8 +23,7 @@
         
         // Option Attribute load on location selection.
         $scope.$watch('locationService.getselectedlpa()', function(newVal, oldVal) {
-            if(_.isNull(newVal) ||
-                _.isEmpty(newVal))
+            if(_.isEmpty(newVal))
             {
                 // clear the option attributes.
                 clearAttributes();
