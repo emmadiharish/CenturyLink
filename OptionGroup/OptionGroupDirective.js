@@ -91,7 +91,11 @@
             {
                 // set selected option product which has watch with option Attribute Controller.
                 OptionGroupDataService.setSelectedoptionproduct(prodcomponent);
-            }    
+            }
+            else
+            {
+                OptionGroupDataService.setSelectedoptionproduct(null);   
+            }
         }
 
         // anchor links in option groups.

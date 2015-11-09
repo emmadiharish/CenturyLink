@@ -23,6 +23,13 @@
         
         // Option Attribute load on location selection.
         $scope.$watch('locationService.getselectedlpa()', function(newVal, oldVal) {
+            if(_.isNull(newVal) ||
+                _.isEmpty(newVal))
+            {
+                // clear the option attributes.
+                clearAttributes();
+            }
+
             if(!_.isEmpty(newVal)
                 && !_.isEqual(newVal, oldVal)
                 && !_.isEmpty(attrCtrl.Selectedoptionproduct))
@@ -161,6 +168,12 @@
         attrCtrl.trustAsHtml = function(value) {
             return $sce.trustAsHtml(value);
         };
+
+        function clearAttributes(){
+            attrCtrl.AttributeGroups = [];
+            attrCtrl.Selectedoptionproduct = {};       
+            attrCtrl.productAttributeValues = {};
+        }
 
         init();
     }
