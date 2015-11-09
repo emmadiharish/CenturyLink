@@ -111,8 +111,9 @@
             }
         };
 
+        // unselect all options within the group. - used for radio group. 
+        // Unselected child options is to be done.
         function selectNone(optionGroup) {
-            // unselect all options within the group.
             var hadSelection = false;
             _.each(optionGroup.productOptionComponents, function(nextOption) {
                 if (nextOption.isselected) {
