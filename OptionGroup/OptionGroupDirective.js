@@ -111,7 +111,7 @@
             }
         };
 
-        function selectNone = function(optionGroup) {
+        function selectNone(optionGroup) {
             // unselect all options within the group.
             var hadSelection = false;
             _.each(optionGroup.productOptionComponents, function(nextOption) {
@@ -155,7 +155,7 @@
             pComponent['isUpdatedLocal'] = true;
         }*/
 
-        function selectOptionProduct(prodcomponent, groupindex ){
+        function selectOptionProduct(prodcomponent, groupindex){
             if(prodcomponent != null
                 && groupindex != null)
             {
