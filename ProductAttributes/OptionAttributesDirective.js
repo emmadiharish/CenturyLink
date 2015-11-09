@@ -23,12 +23,6 @@
         
         // Option Attribute load on location selection.
         $scope.$watch('locationService.getselectedlpa()', function(newVal, oldVal) {
-            if(_.isEmpty(newVal))
-            {
-                // clear the option attributes.
-                clearAttributes();
-            }
-
             if(!_.isEmpty(newVal)
                 && !_.isEqual(newVal, oldVal)
                 && !_.isEmpty(attrCtrl.Selectedoptionproduct))
@@ -46,6 +40,10 @@
                 var optionProductId = newVal.productId;
                 var componentId = newVal.componentId;
                 retrieveproductattributeGroupData(optionProductId, componentId);
+            }
+            else{
+                // clear the option attributes.
+                clearAttributes();
             }
         });
 
