@@ -52,7 +52,7 @@
             }
         });
 
-        grpCtrl.rendercurrentproductoptiongroups = function(bundleproductId, prodcomponent, groupindex){
+        grpCtrl.rendercurrentproductoptiongroups = function(bundleproductId, prodcomponent, optionGroup){
             // run only if location remote call is complete.
             if(BaseService.getLocationLoadComplete() == true)
             {
@@ -61,7 +61,7 @@
                 var productId = bundleproductId != null ? bundleproductId : prodcomponent.productId;
                 // make a remote call to get option groups for all bundles in current option groups.
                 OptionGroupDataService.getOptionGroup(productId).then(function(result) {
-                    selectOptionProduct(prodcomponent, groupindex);
+                    selectOptionProduct(prodcomponent, optionGroup);
                     
                     // OptionGroupDataService.setrerenderHierarchy(true);
                     grpCtrl.currentproductoptiongroups = OptionGroupDataService.getcurrentproductoptiongroups();
@@ -71,7 +71,7 @@
             }
         }
 
-        grpCtrl.selectProductrenderoptionproductattributes = function(prodcomponent, groupindex){
+        /*grpCtrl.selectProductrenderoptionproductattributes = function(prodcomponent, groupindex){
             // setisUpdatedLocal(prodcomponent);
 
             // select the product and add to tree.
@@ -79,17 +79,10 @@
             
             // set selected option product which has watch with option Attribute Controller.
             OptionGroupDataService.setSelectedoptionproduct(prodcomponent);
-        }
+        }*/
 
         grpCtrl.renderoptionproductattributes = function(prodcomponent, optionGroup){
-            // setisUpdatedLocal(prodcomponent);
-
-            //var optionGroup = grpCtrl.currentproductoptiongroups[groupindex];
-            
-            toggleOption(prodcomponent, optionGroup);
-
-            // rerender the tree so Add/remove of line item will be applied to tree.
-            OptionGroupDataService.setrerenderHierarchy(true);
+            selectOptionProduct(prodcomponent, optionGroup);
 
             // do not render attributes when option product is unchecked or product does not have attributes.
             if(isProdSelected(prodcomponent, optionGroup)
@@ -99,35 +92,6 @@
                 OptionGroupDataService.setSelectedoptionproduct(prodcomponent);
             }    
         }
-
-        function toggleOption(productComponent, optionGroup) {
-            var thisGroup = optionGroup;
-            var toggledComponent = productComponent;
-            if (thisGroup.ischeckbox == false) {
-                //Always loop accross all to ensure unique selection.
-                selectNone(optionGroup);
-                // select current option.
-                productComponent.isselected = true;
-            }
-        };
-
-        // unselect all options within the group. - used for radio group. 
-        // Unselected child options is to be done.
-        function selectNone(optionGroup) {
-            var hadSelection = false;
-            _.each(optionGroup.productOptionComponents, function(nextOption) {
-                if (nextOption.isselected) {
-                    nextOption.isselected = false;
-                    hadSelection = true;
-                }
-            });
-
-           /* _.each(this.childGroups, function (nextGroup) {
-                nextGroup.selectNone();
-            });*/
-
-            return hadSelection;
-        };
 
         // anchor links in option groups.
         grpCtrl.gotosection = function(x) {
@@ -156,22 +120,42 @@
             pComponent['isUpdatedLocal'] = true;
         }*/
 
-        function selectOptionProduct(prodcomponent, groupindex){
-            if(prodcomponent != null
-                && groupindex != null)
-            {
-                if(grpCtrl.currentproductoptiongroups[groupindex].ischeckbox == false)// radio button
-                {
-                    grpCtrl.currentproductoptiongroups[groupindex].selectedproduct = prodcomponent.productId;
-                }
-                else {// checkbox.
-                     prodcomponent.isselected = true;
-                }
-            }
-
+        function selectOptionProduct(prodcomponent, optionGroup){
+            toggleOption(prodcomponent, optionGroup);
+            
             // rerender the tree so Add/remove of line item will be applied to tree.
             OptionGroupDataService.setrerenderHierarchy(true);
         }
+
+        function toggleOption(productComponent, optionGroup) {
+            var thisGroup = optionGroup;
+            var toggledComponent = productComponent;
+            if (thisGroup.ischeckbox == false) {
+                //Always loop accross all to ensure unique selection.
+                selectNone(optionGroup);
+            }
+
+            // select current option.
+            productComponent.isselected = true;
+        };
+
+        // unselect all options within the group. - used for radio group. 
+        // Unselected child options is to be done.
+        function selectNone(optionGroup) {
+            var hadSelection = false;
+            _.each(optionGroup.productOptionComponents, function(nextOption) {
+                if (nextOption.isselected) {
+                    nextOption.isselected = false;
+                    hadSelection = true;
+                }
+            });
+
+           /* _.each(this.childGroups, function (nextGroup) {
+                nextGroup.selectNone();
+            });*/
+
+            return hadSelection;
+        };
 
         function isProdSelected(productcomponent, optiongroup){
             if((productcomponent.isselected 
