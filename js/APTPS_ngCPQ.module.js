@@ -18,7 +18,7 @@
 
 	configBlock.$inject = [
 		'systemConstants',
-		'paginationTemplateProvider',
+		'paginationTemplateProvider'
 	];
 	
 	function configBlock(systemConstants, paginationTemplateProvider) {
