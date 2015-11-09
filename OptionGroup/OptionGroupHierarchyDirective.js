@@ -45,8 +45,7 @@
                     _.each(optiongroups, function(optiongroup){
                         productGroupList.push({"groupName" : optiongroup.groupName, "groupId" : optiongroup.groupId, "Parent": optiongroup.parentId, "isproduct" : false});
                         _.each(optiongroup.productOptionComponents, function(productcomponent){
-                            if((productcomponent.isselected && optiongroup.ischeckbox)
-                                || (productcomponent.productId == optiongroup.selectedproduct && !optiongroup.ischeckbox))
+                            if(productcomponent.isselected)
                             {
                                 productGroupList.push({"groupName" : productcomponent.productName, "groupId" : productcomponent.productId, "Parent": optiongroup.groupId, "isproduct" : true});
                                 selectedproducts.push(productcomponent.productId);

@@ -86,7 +86,7 @@
             selectOptionProduct(prodcomponent, optionGroup);
 
             // do not render attributes when option product is unchecked or product does not have attributes.
-            if(isProdSelected(prodcomponent, optionGroup)
+            if(isProdSelected(prodcomponent)
                 && prodcomponent.hasAttributes == true)
             {
                 // set selected option product which has watch with option Attribute Controller.
@@ -157,7 +157,7 @@
             return hadSelection;
         };
 
-        function isProdSelected(productcomponent, optiongroup){
+        function isProdSelected(productcomponent){
             if(productcomponent.isselected) 
                 return true;
             return false;

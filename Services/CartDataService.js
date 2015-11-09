@@ -35,7 +35,7 @@
                         if(productcomponent.productId == productDO.Id)
                         {
                             // apply rule only if option is selected.
-                            if(!isProdSelected(productcomponent, optiongroup))
+                            if(!isProdSelected(productcomponent))
                             {    
                                 
                                 // if product is radio then include using group by setting selectedproduct.
@@ -94,7 +94,7 @@
                         if(productcomponent.productId == productDO.Id)
                         {
                             // apply rule only if option is selected.
-                            if(isProdSelected(productcomponent, optiongroup))
+                            if(isProdSelected(productcomponent))
                             {
                                 // if disabled product is selected as radio then remove it.
                                 if(optiongroup.ischeckbox == false)
@@ -147,7 +147,7 @@
                         if(_.contains(productIds, productcomponent.productId))
                         {
                             // apply rule only if option is selected.
-                            if(!isProdSelected(productcomponent, optiongroup))
+                            if(!isProdSelected(productcomponent))
                             {    
                                 
                                 // if product is radio then include using group by setting selectedproduct.
@@ -175,7 +175,7 @@
                         if(_.contains(productIds, productcomponent.productId))
                         {
                             // apply rule only if option is selected.
-                            if(isProdSelected(productcomponent, optiongroup))
+                            if(isProdSelected(productcomponent))
                             {
                                 // if disabled product is selected as radio then remove it.
                                 if(optiongroup.ischeckbox == false)
@@ -195,12 +195,9 @@
             })
         }
 
-        function isProdSelected(productcomponent, optiongroup){
-            if((productcomponent.isselected 
-                 && optiongroup.ischeckbox)
-                    || (productcomponent.productId == optiongroup.selectedproduct 
-                        && !optiongroup.ischeckbox))
-            return true;
+        function isProdSelected(productcomponent){
+            if(productcomponent.isselected)
+                return true;
             return false;
         }
         

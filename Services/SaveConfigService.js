@@ -71,14 +71,14 @@
                         if(parentId == mainBundleProdId
                             || (_.has(productIdtoComponentMap, parentId)
                                 && _.has(productIdtoGroupMap, parentId)
-                                && isProdSelected(productIdtoComponentMap[parentId], productIdtoGroupMap[parentId])))
+                                && isProdSelected(productIdtoComponentMap[parentId])))
                         {
                             _.each(optiongroup.productOptionComponents, function(productcomponent){
                                 // if(productcomponent['isUpdatedLocal'] == true)
                                 // {
                                     // productcomponent = _.omit(productcomponent, ['$$hashKey', 'isDisabled', 'isUpdatedLocal']);
                                     productcomponent = _.omit(productcomponent, ['$$hashKey', 'isDisabled', 'isAvailableonSLocation']);
-                                    if(isProdSelected(productcomponent,optiongroup))
+                                    if(isProdSelected(productcomponent))
                                     {
                                         productcomponent.isselected = true;
 
@@ -399,13 +399,13 @@
                     if(parentId == mainBundleProdId
                         || (_.has(productIdtoComponentMap, parentId)
                             && _.has(productIdtoGroupMap, parentId)
-                            && isProdSelected(productIdtoComponentMap[parentId], productIdtoGroupMap[parentId])))
+                            && isProdSelected(productIdtoComponentMap[parentId])))
                     {
                         var minOptions = optiongroup.minOptions;
                         var maxOptions = optiongroup.maxOptions;
                         var selectedOptionsCount = 0;
                         _.each(optiongroup.productOptionComponents, function(productcomponent){
-                            if(isProdSelected(productcomponent,optiongroup))
+                            if(isProdSelected(productcomponent))
                             {
                                 selectedOptionsCount++;
                             }
@@ -428,12 +428,9 @@
             return res;
         }
         
-        function isProdSelected(productcomponent, optiongroup){
-            if((productcomponent.isselected 
-                 && optiongroup.ischeckbox)
-                    || (productcomponent.productId == optiongroup.selectedproduct 
-                        && !optiongroup.ischeckbox))
-            return true;
+        function isProdSelected(productcomponent){
+            if(productcomponent.isselected) 
+                return true;
             return false;
         }
 
