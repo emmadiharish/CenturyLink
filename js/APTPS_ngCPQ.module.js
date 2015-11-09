@@ -6,15 +6,13 @@
     general well being of our app in this file. 
     
     Our module will be called 'APTPS_ngCPQ'.
- 	*/
+ 	*/// dirPagination
 	angular.module('APTPS_ngCPQ',
 		['ngProgress', 
 		'ui.bootstrap', 
 		'dialogs', 
-		'ui.select',
-		'dirPagination']
-		).constant()
-			.config();
+		'ui.select']
+		);
 }).call(this);
 
 // angular.module('APTPS_ngCPQ', ['ngProgress']);
