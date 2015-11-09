@@ -129,10 +129,14 @@
             if (thisGroup.ischeckbox == false) {
                 //Always loop accross all to ensure unique selection.
                 selectNone(optionGroup);
+                
+                // select current option.
+                productComponent.isselected = true;
             }
-
-            // select current option.
-            productComponent.isselected = true;
+            else// select/unselect for checkbox based on prior value.
+            {
+                productComponent.isselected = !productComponent.isselected;
+            }    
         };
 
         // unselect all options within the group. - used for radio group. 
