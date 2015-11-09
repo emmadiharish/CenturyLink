@@ -13,7 +13,7 @@
 		'dialogs', 
 		'ui.select',
 		'dirPagination']
-		).constant('moment', moment)
+		).constant()
 			.config(configBlock);
 
 	configBlock.$inject = [
