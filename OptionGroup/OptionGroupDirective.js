@@ -74,8 +74,7 @@
         }
 
         /*grpCtrl.selectProductrenderoptionproductattributes = function(prodcomponent, groupindex){
-            // setisUpdatedLocal(prodcomponent);
-
+            
             // select the product and add to tree.
             selectOptionProduct(prodcomponent, groupindex);
             
@@ -117,11 +116,6 @@
             }
         }
 
-        /*function setisUpdatedLocal(pComponent){
-            // Set isUpdatedLocal flag to true for whenever its seleceted or unselected.
-            pComponent['isUpdatedLocal'] = true;
-        }*/
-
         function selectOptionProduct(prodcomponent, optionGroup){
             toggleOption(prodcomponent, optionGroup);
             
@@ -142,7 +136,7 @@
         };
 
         // unselect all options within the group. - used for radio group. 
-        // Unselected child options is to be done.
+        // TBD: Unselected child options.
         function selectNone(optionGroup) {
             var hadSelection = false;
             _.each(optionGroup.productOptionComponents, function(nextOption) {
