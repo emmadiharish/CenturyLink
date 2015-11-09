@@ -81,20 +81,52 @@
             OptionGroupDataService.setSelectedoptionproduct(prodcomponent);
         }
 
-        grpCtrl.renderoptionproductattributes = function(prodcomponent, groupindex){
+        grpCtrl.renderoptionproductattributes = function(prodcomponent, optionGroup){
             // setisUpdatedLocal(prodcomponent);
+
+            //var optionGroup = grpCtrl.currentproductoptiongroups[groupindex];
+            
+            toggleOption(prodcomponent, optionGroup);
 
             // rerender the tree so Add/remove of line item will be applied to tree.
             OptionGroupDataService.setrerenderHierarchy(true);
 
             // do not render attributes when option product is unchecked or product does not have attributes.
-            if(isProdSelected(prodcomponent, grpCtrl.currentproductoptiongroups[groupindex])
+            if(isProdSelected(prodcomponent, optionGroup)
                 && prodcomponent.hasAttributes == true)
             {
                 // set selected option product which has watch with option Attribute Controller.
                 OptionGroupDataService.setSelectedoptionproduct(prodcomponent);
             }    
         }
+
+        function toggleOption(productComponent, optionGroup) {
+            var thisGroup = optionGroup;
+            var toggledComponent = productComponent;
+            if (thisGroup.ischeckbox == false) {
+                //Always loop accross all to ensure unique selection.
+                selectNone(optionGroup);
+                // select current option.
+                productComponent.isSelected = true;
+            }
+        };
+
+        function selectNone = function(optionGroup) {
+            // unselect all options within the group.
+            var hadSelection = false;
+            _.each(optionGroup.productOptionComponents, function(nextOption) {
+                if (nextOption.isSelected) {
+                    nextOption.isSelected = false;
+                    hadSelection = true;
+                }
+            });
+
+           /* _.each(this.childGroups, function (nextGroup) {
+                nextGroup.selectNone();
+            });*/
+
+            return hadSelection;
+        };
 
         // anchor links in option groups.
         grpCtrl.gotosection = function(x) {
