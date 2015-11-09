@@ -160,11 +160,8 @@
         };
 
         function isProdSelected(productcomponent, optiongroup){
-            if((productcomponent.isselected 
-                 && optiongroup.ischeckbox)
-                    || (productcomponent.productId == optiongroup.selectedproduct 
-                        && !optiongroup.ischeckbox))
-            return true;
+            if(productcomponent.isselected) 
+                return true;
             return false;
         }
 
