@@ -62,7 +62,7 @@
                 // make a remote call to get option groups for all bundles in current option groups.
                 OptionGroupDataService.getOptionGroup(productId).then(function(result) {
                     // select Option component only if group is not null.
-                    if(!._isNull(optionGroup))
+                    if(!_.isNull(optionGroup))
                         selectOptionProduct(prodcomponent, optionGroup);
                     
                     // OptionGroupDataService.setrerenderHierarchy(true);
