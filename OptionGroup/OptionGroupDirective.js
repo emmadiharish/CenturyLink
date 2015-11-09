@@ -107,7 +107,7 @@
                 //Always loop accross all to ensure unique selection.
                 selectNone(optionGroup);
                 // select current option.
-                productComponent.isSelected = true;
+                productComponent.isselected = true;
             }
         };
 
@@ -115,8 +115,8 @@
             // unselect all options within the group.
             var hadSelection = false;
             _.each(optionGroup.productOptionComponents, function(nextOption) {
-                if (nextOption.isSelected) {
-                    nextOption.isSelected = false;
+                if (nextOption.isselected) {
+                    nextOption.isselected = false;
                     hadSelection = true;
                 }
             });
