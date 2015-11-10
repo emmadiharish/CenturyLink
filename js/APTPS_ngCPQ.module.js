@@ -11,8 +11,7 @@
 		['ngProgress', 
 		'ui.bootstrap', 
 		'dialogs', 
-		'ui.select',
-		'ui.bootstrap.pagination']
+		'ui.select']
 		);
 }).call(this);
 
