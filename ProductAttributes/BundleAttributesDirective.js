@@ -71,7 +71,7 @@
         function setBundleAttributes(attrgroups, pav){
             attrCtrl.AttributeGroups = attrgroups;
             attrCtrl.productAttributeValues = pav;
-            attrCtrl.productAttributeValues['Service_Term__c'] = null;
+            attrCtrl.productAttributeValues['Service_Term__c'] = undefined;
         }
 
         function renderBundleAttributes(){
