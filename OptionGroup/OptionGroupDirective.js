@@ -69,6 +69,10 @@
                     grpCtrl.currentproductoptiongroups = OptionGroupDataService.getcurrentproductoptiongroups();
                         
                     remotecallinitiated = false;
+
+                    // render the attributes for the sub-bundle
+                    if(_.isNull(bundleproductId))
+                        grpCtrl.renderoptionproductattributes(prodcomponent, optionGroup);
                 })
             }
         }
