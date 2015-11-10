@@ -16,398 +16,264 @@
 
 (function() {
 
-    /**
-     * Config
-     */
-    var moduleName = 'angularUtils.directives.dirPagination';
-    var DEFAULT_ID = '__default';
+    angular.module('ui.bootstrap.pagination', [])
+.controller('UibPaginationController', ['$scope', '$attrs', '$parse', function($scope, $attrs, $parse) {
+  var self = this,
+      ngModelCtrl = { $setViewValue: angular.noop }, // nullModelCtrl
+      setNumPages = $attrs.numPages ? $parse($attrs.numPages).assign : angular.noop;
 
-    /**
-     * Module
-     */
-    var module;
-    try {
-        module = angular.module(moduleName);
-    } catch(err) {
-        // named module does not exist, so create one
-        module = angular.module(moduleName, []);
+  this.init = function(ngModelCtrl_, config) {
+    ngModelCtrl = ngModelCtrl_;
+    this.config = config;
+
+    ngModelCtrl.$render = function() {
+      self.render();
+    };
+
+    if ($attrs.itemsPerPage) {
+      $scope.$parent.$watch($parse($attrs.itemsPerPage), function(value) {
+        self.itemsPerPage = parseInt(value, 10);
+        $scope.totalPages = self.calculateTotalPages();
+        updatePage();
+      });
+    } else {
+      this.itemsPerPage = config.itemsPerPage;
     }
 
-    module.directive('dirPaginate', ['$compile', '$parse', 'paginationService', function($compile, $parse, paginationService) {
+    $scope.$watch('totalItems', function(newTotal, oldTotal) {
+      if (angular.isDefined(newTotal) || newTotal !== oldTotal) {
+      $scope.totalPages = self.calculateTotalPages();
+        updatePage();
+      }
+    });
+  };
 
-        return  {
-            terminal: true,
-            multiElement: true,
-            priority: 5000, // This setting is used in conjunction with the later call to $compile() to prevent infinite recursion of compilation
-            compile: function dirPaginationCompileFn(tElement, tAttrs){
+  this.calculateTotalPages = function() {
+    var totalPages = this.itemsPerPage < 1 ? 1 : Math.ceil($scope.totalItems / this.itemsPerPage);
+    return Math.max(totalPages || 0, 1);
+  };
 
-                var expression = tAttrs.dirPaginate;
-                // regex taken directly from https://github.com/angular/angular.js/blob/master/src/ng/directive/ngRepeat.js#L211
-                var match = expression.match(/^\s*([\s\S]+?)\s+in\s+([\s\S]+?)(?:\s+track\s+by\s+([\s\S]+?))?\s*$/);
+  this.render = function() {
+    $scope.page = parseInt(ngModelCtrl.$viewValue, 10) || 1;
+  };
 
-                var filterPattern = /\|\s*itemsPerPage\s*:[^|]*/;
-                if (match[2].match(filterPattern) === null) {
-                    throw 'pagination directive: the \'itemsPerPage\' filter must be set.';
-                }
-                var itemsPerPageFilterRemoved = match[2].replace(filterPattern, '');
-                var collectionGetter = $parse(itemsPerPageFilterRemoved);
+  $scope.selectPage = function(page, evt) {
+    if (evt) {
+      evt.preventDefault();
+    }
 
-                // If any value is specified for paginationId, we register the un-evaluated expression at this stage for the benefit of any
-                // dir-pagination-controls directives that may be looking for this ID.
-                var rawId = tAttrs.paginationId || DEFAULT_ID;
-                paginationService.registerInstance(rawId);
+    var clickAllowed = !$scope.ngDisabled || !evt;
+    if (clickAllowed && $scope.page !== page && page > 0 && page <= $scope.totalPages) {
+      if (evt && evt.target) {
+        evt.target.blur();
+      }
+      ngModelCtrl.$setViewValue(page);
+      ngModelCtrl.$render();
+    }
+  };
 
-                return function dirPaginationLinkFn(scope, element, attrs){
+  $scope.getText = function(key) {
+    return $scope[key + 'Text'] || self.config[key + 'Text'];
+  };
 
-                    // Now that we have access to the `scope` we can interpolate any expression given in the paginationId attribute and
-                    // potentially register a new ID if it evaluates to a different value than the rawId.
-                    var paginationId = $parse(attrs.paginationId)(scope) || attrs.paginationId || DEFAULT_ID;
-                    paginationService.registerInstance(paginationId);
+  $scope.noPrevious = function() {
+    return $scope.page === 1;
+  };
 
-                    var repeatExpression;
-                    var idDefinedInFilter = !!expression.match(/(\|\s*itemsPerPage\s*:[^|]*:[^|]*)/);
-                    if (paginationId !== DEFAULT_ID && !idDefinedInFilter) {
-                        repeatExpression = expression.replace(/(\|\s*itemsPerPage\s*:[^|]*)/, "$1 : '" + paginationId + "'");
-                    } else {
-                        repeatExpression = expression;
-                    }
+  $scope.noNext = function() {
+    return $scope.page === $scope.totalPages;
+  };
 
-                    // Add ng-repeat to the dom element
-                    if (element[0].hasAttribute('dir-paginate-start') || element[0].hasAttribute('data-dir-paginate-start')) {
-                        // using multiElement mode (dir-paginate-start, dir-paginate-end)
-                        attrs.$set('ngRepeatStart', repeatExpression);
-                        element.eq(element.length - 1).attr('ng-repeat-end', true);
-                    } else {
-                        attrs.$set('ngRepeat', repeatExpression);
-                    }
+  function updatePage() {
+    setNumPages($scope.$parent, $scope.totalPages); // Readonly variable
 
-                    var compiled =  $compile(element, false, 5000); // we manually compile the element again, as we have now added ng-repeat. Priority less than 5000 prevents infinite recursion of compiling dirPaginate
+    if ($scope.page > $scope.totalPages) {
+      $scope.selectPage($scope.totalPages);
+    } else {
+      ngModelCtrl.$render();
+    }
+  }
+}])
 
-                    var currentPageGetter;
-                    if (attrs.currentPage) {
-                        currentPageGetter = $parse(attrs.currentPage);
-                    } else {
-                        // if the current-page attribute was not set, we'll make our own
-                        var defaultCurrentPage = paginationId + '__currentPage';
-                        scope[defaultCurrentPage] = 1;
-                        currentPageGetter = $parse(defaultCurrentPage);
-                    }
-                    paginationService.setCurrentPageParser(paginationId, currentPageGetter, scope);
+.constant('uibPaginationConfig', {
+  itemsPerPage: 10,
+  boundaryLinks: false,
+  boundaryLinkNumbers: false,
+  directionLinks: true,
+  firstText: 'First',
+  previousText: 'Previous',
+  nextText: 'Next',
+  lastText: 'Last',
+  rotate: true,
+  forceEllipses: false
+})
 
-                    if (typeof attrs.totalItems !== 'undefined') {
-                        paginationService.setAsyncModeTrue(paginationId);
-                        scope.$watch(function() {
-                            return $parse(attrs.totalItems)(scope);
-                        }, function (result) {
-                            if (0 <= result) {
-                                paginationService.setCollectionLength(paginationId, result);
-                            }
-                        });
-                    } else {
-                        scope.$watchCollection(function() {
-                            return collectionGetter(scope);
-                        }, function(collection) {
-                            if (collection) {
-                                paginationService.setCollectionLength(paginationId, collection.length);
-                            }
-                        });
-                    }
+.directive('uibPagination', ['$parse', 'uibPaginationConfig', function($parse, paginationConfig) {
+  return {
+    restrict: 'EA',
+    scope: {
+      totalItems: '=',
+      firstText: '@',
+      previousText: '@',
+      nextText: '@',
+      lastText: '@',
+      ngDisabled:'='
+    },
+    require: ['uibPagination', '?ngModel'],
+    controller: 'UibPaginationController',
+    controllerAs: 'pagination',
+    templateUrl: function(element, attrs) {
+      return attrs.templateUrl || 'uib/template/pagination/pagination.html';
+    },
+    replace: true,
+    link: function(scope, element, attrs, ctrls) {
+      var paginationCtrl = ctrls[0], ngModelCtrl = ctrls[1];
 
-                    // Delegate to the link function returned by the new compilation of the ng-repeat
-                    compiled(scope);
-                };
-            }
-        }; 
-    }]);
+      if (!ngModelCtrl) {
+         return; // do nothing if no ng-model
+      }
 
-    module.directive('dirPaginationControls', ['paginationService', 'paginationTemplate', function(paginationService, paginationTemplate) {
+      // Setup configuration parameters
+      var maxSize = angular.isDefined(attrs.maxSize) ? scope.$parent.$eval(attrs.maxSize) : paginationConfig.maxSize,
+        rotate = angular.isDefined(attrs.rotate) ? scope.$parent.$eval(attrs.rotate) : paginationConfig.rotate,
+        forceEllipses = angular.isDefined(attrs.forceEllipses) ? scope.$parent.$eval(attrs.forceEllipses) : paginationConfig.forceEllipses,
+        boundaryLinkNumbers = angular.isDefined(attrs.boundaryLinkNumbers) ? scope.$parent.$eval(attrs.boundaryLinkNumbers) : paginationConfig.boundaryLinkNumbers;
+      scope.boundaryLinks = angular.isDefined(attrs.boundaryLinks) ? scope.$parent.$eval(attrs.boundaryLinks) : paginationConfig.boundaryLinks;
+      scope.directionLinks = angular.isDefined(attrs.directionLinks) ? scope.$parent.$eval(attrs.directionLinks) : paginationConfig.directionLinks;
 
-        var numberRegex = /^\d+$/;
+      paginationCtrl.init(ngModelCtrl, paginationConfig);
 
-        /**
-         * Generate an array of page numbers (or the '...' string) which is used in an ng-repeat to generate the
-         * links used in pagination
-         *
-         * @param currentPage
-         * @param rowsPerPage
-         * @param paginationRange
-         * @param collectionLength
-         * @returns {Array}
-         */
-        function generatePagesArray(currentPage, collectionLength, rowsPerPage, paginationRange) {
-            var pages = [];
-            var totalPages = Math.ceil(collectionLength / rowsPerPage);
-            var halfWay = Math.ceil(paginationRange / 2);
-            var position;
+      if (attrs.maxSize) {
+        scope.$parent.$watch($parse(attrs.maxSize), function(value) {
+          maxSize = parseInt(value, 10);
+          paginationCtrl.render();
+        });
+      }
 
-            if (currentPage <= halfWay) {
-                position = 'start';
-            } else if (totalPages - halfWay < currentPage) {
-                position = 'end';
-            } else {
-                position = 'middle';
-            }
-
-            var ellipsesNeeded = paginationRange < totalPages;
-            var i = 1;
-            while (i <= totalPages && i <= paginationRange) {
-                var pageNumber = calculatePageNumber(i, currentPage, paginationRange, totalPages);
-
-                var openingEllipsesNeeded = (i === 2 && (position === 'middle' || position === 'end'));
-                var closingEllipsesNeeded = (i === paginationRange - 1 && (position === 'middle' || position === 'start'));
-                if (ellipsesNeeded && (openingEllipsesNeeded || closingEllipsesNeeded)) {
-                    pages.push('...');
-                } else {
-                    pages.push(pageNumber);
-                }
-                i ++;
-            }
-            return pages;
-        }
-
-        /**
-         * Given the position in the sequence of pagination links [i], figure out what page number corresponds to that position.
-         *
-         * @param i
-         * @param currentPage
-         * @param paginationRange
-         * @param totalPages
-         * @returns {*}
-         */
-        function calculatePageNumber(i, currentPage, paginationRange, totalPages) {
-            var halfWay = Math.ceil(paginationRange/2);
-            if (i === paginationRange) {
-                return totalPages;
-            } else if (i === 1) {
-                return i;
-            } else if (paginationRange < totalPages) {
-                if (totalPages - halfWay < currentPage) {
-                    return totalPages - paginationRange + i;
-                } else if (halfWay < currentPage) {
-                    return currentPage - halfWay + i;
-                } else {
-                    return i;
-                }
-            } else {
-                return i;
-            }
-        }
-
+      // Create page object used in template
+      function makePage(number, text, isActive) {
         return {
-            restrict: 'AE',
-            templateUrl: function(elem, attrs) {
-                return attrs.templateUrl || paginationTemplate.getPath();
-            },
-            scope: {
-                maxSize: '=?',
-                onPageChange: '&?',
-                paginationId: '=?'
-            },
-            link: function dirPaginationControlsLinkFn(scope, element, attrs) {
+          number: number,
+          text: text,
+          active: isActive
+        };
+      }
 
-                // rawId is the un-interpolated value of the pagination-id attribute. This is only important when the corresponding dir-paginate directive has
-                // not yet been linked (e.g. if it is inside an ng-if block), and in that case it prevents this controls directive from assuming that there is
-                // no corresponding dir-paginate directive and wrongly throwing an exception.
-                var rawId = attrs.paginationId ||  DEFAULT_ID;
-                var paginationId = scope.paginationId || attrs.paginationId ||  DEFAULT_ID;
+      function getPages(currentPage, totalPages) {
+        var pages = [];
 
-                if (!paginationService.isRegistered(paginationId) && !paginationService.isRegistered(rawId)) {
-                    var idMessage = (paginationId !== DEFAULT_ID) ? ' (id: ' + paginationId + ') ' : ' ';
-                    throw 'pagination directive: the pagination controls' + idMessage + 'cannot be used without the corresponding pagination directive.';
-                }
+        // Default page limits
+        var startPage = 1, endPage = totalPages;
+        var isMaxSized = angular.isDefined(maxSize) && maxSize < totalPages;
 
-                if (!scope.maxSize) { scope.maxSize = 9; }
-                scope.directionLinks = angular.isDefined(attrs.directionLinks) ? scope.$parent.$eval(attrs.directionLinks) : true;
-                scope.boundaryLinks = angular.isDefined(attrs.boundaryLinks) ? scope.$parent.$eval(attrs.boundaryLinks) : false;
+        // recompute if maxSize
+        if (isMaxSized) {
+          if (rotate) {
+            // Current page is displayed in the middle of the visible ones
+            startPage = Math.max(currentPage - Math.floor(maxSize / 2), 1);
+            endPage = startPage + maxSize - 1;
 
-                var paginationRange = Math.max(scope.maxSize, 5);
-                scope.pages = [];
-                scope.pagination = {
-                    last: 1,
-                    current: 1
-                };
-                scope.range = {
-                    lower: 1,
-                    upper: 1,
-                    total: 1
-                };
-
-                scope.$watch(function() {
-                    return (paginationService.getCollectionLength(paginationId) + 1) * paginationService.getItemsPerPage(paginationId);
-                }, function(length) {
-                    if (0 < length) {
-                        generatePagination();
-                    }
-                });
-                
-                scope.$watch(function() {
-                    return (paginationService.getItemsPerPage(paginationId));
-                }, function(current, previous) {
-                    if (current != previous && typeof previous !== 'undefined') {
-                        goToPage(scope.pagination.current);
-                    }
-                });
-
-                scope.$watch(function() {
-                    return paginationService.getCurrentPage(paginationId);
-                }, function(currentPage, previousPage) {
-                    if (currentPage != previousPage) {
-                        goToPage(currentPage);
-                    }
-                });
-
-                scope.setCurrent = function(num) {
-                    if (isValidPageNumber(num)) {
-                        paginationService.setCurrentPage(paginationId, num);
-                    }
-                };
-
-                function goToPage(num) {
-                    if (isValidPageNumber(num)) {
-                        scope.pages = generatePagesArray(num, paginationService.getCollectionLength(paginationId), paginationService.getItemsPerPage(paginationId), paginationRange);
-                        scope.pagination.current = num;
-                        updateRangeValues();
-
-                        // if a callback has been set, then call it with the page number as an argument
-                        if (scope.onPageChange) {
-                            scope.onPageChange({ newPageNumber : num });
-                        }
-                    }
-                }
-
-                function generatePagination() {
-                    var page = parseInt(paginationService.getCurrentPage(paginationId)) || 1;
-
-                    scope.pages = generatePagesArray(page, paginationService.getCollectionLength(paginationId), paginationService.getItemsPerPage(paginationId), paginationRange);
-                    scope.pagination.current = page;
-                    scope.pagination.last = scope.pages[scope.pages.length - 1];
-                    if (scope.pagination.last < scope.pagination.current) {
-                        scope.setCurrent(scope.pagination.last);
-                    } else {
-                        updateRangeValues();
-                    }
-                }
-
-                /**
-                 * This function updates the values (lower, upper, total) of the `scope.range` object, which can be used in the pagination
-                 * template to display the current page range, e.g. "showing 21 - 40 of 144 results";
-                 */
-                function updateRangeValues() {
-                    var currentPage = paginationService.getCurrentPage(paginationId),
-                        itemsPerPage = paginationService.getItemsPerPage(paginationId),
-                        totalItems = paginationService.getCollectionLength(paginationId);
-
-                    scope.range.lower = (currentPage - 1) * itemsPerPage + 1;
-                    scope.range.upper = Math.min(currentPage * itemsPerPage, totalItems);
-                    scope.range.total = totalItems;
-                }
-
-                function isValidPageNumber(num) {
-                    return (numberRegex.test(num) && (0 < num && num <= scope.pagination.last));
-                }
+            // Adjust if limit is exceeded
+            if (endPage > totalPages) {
+              endPage = totalPages;
+              startPage = endPage - maxSize + 1;
             }
-        };
-    }]);
+          } else {
+            // Visible pages are paginated with maxSize
+            startPage = (Math.ceil(currentPage / maxSize) - 1) * maxSize + 1;
 
-    module.filter('itemsPerPage', ['paginationService', function(paginationService) {
+            // Adjust last page if limit is exceeded
+            endPage = Math.min(startPage + maxSize - 1, totalPages);
+          }
+        }
 
-        return function(collection, itemsPerPage, paginationId) {
-            if (typeof (paginationId) === 'undefined') {
-                paginationId = DEFAULT_ID;
+        // Add page number links
+        for (var number = startPage; number <= endPage; number++) {
+          var page = makePage(number, number, number === currentPage);
+          pages.push(page);
+        }
+
+        // Add links to move between page sets
+        if (isMaxSized && maxSize > 0 && (!rotate || forceEllipses || boundaryLinkNumbers)) {
+          if (startPage > 1) {
+            if (!boundaryLinkNumbers || startPage > 3) { //need ellipsis for all options unless range is too close to beginning
+            var previousPageSet = makePage(startPage - 1, '...', false);
+            pages.unshift(previousPageSet);
+          }
+            if (boundaryLinkNumbers) {
+              if (startPage === 3) { //need to replace ellipsis when the buttons would be sequential
+                var secondPageLink = makePage(2, '2', false);
+                pages.unshift(secondPageLink);
+              }
+              //add the first page
+              var firstPageLink = makePage(1, '1', false);
+              pages.unshift(firstPageLink);
             }
-            if (!paginationService.isRegistered(paginationId)) {
-                throw 'pagination directive: the itemsPerPage id argument (id: ' + paginationId + ') does not match a registered pagination-id.';
+          }
+
+          if (endPage < totalPages) {
+            if (!boundaryLinkNumbers || endPage < totalPages - 2) { //need ellipsis for all options unless range is too close to end
+            var nextPageSet = makePage(endPage + 1, '...', false);
+            pages.push(nextPageSet);
+          }
+            if (boundaryLinkNumbers) {
+              if (endPage === totalPages - 2) { //need to replace ellipsis when the buttons would be sequential
+                var secondToLastPageLink = makePage(totalPages - 1, totalPages - 1, false);
+                pages.push(secondToLastPageLink);
+              }
+              //add the last page
+              var lastPageLink = makePage(totalPages, totalPages, false);
+              pages.push(lastPageLink);
             }
-            var end;
-            var start;
-            if (collection instanceof Array) {
-                itemsPerPage = parseInt(itemsPerPage) || 9999999999;
-                if (paginationService.isAsyncMode(paginationId)) {
-                    start = 0;
-                } else {
-                    start = (paginationService.getCurrentPage(paginationId) - 1) * itemsPerPage;
-                }
-                end = start + itemsPerPage;
-                paginationService.setItemsPerPage(paginationId, itemsPerPage);
+          }
+        }
+        return pages;
+      }
 
-                return collection.slice(start, end);
-            } else {
-                return collection;
-            }
-        };
-    }]);
+      var originalRender = paginationCtrl.render;
+      paginationCtrl.render = function() {
+        originalRender();
+        if (scope.page > 0 && scope.page <= scope.totalPages) {
+          scope.pages = getPages(scope.page, scope.totalPages);
+        }
+      };
+    }
+  };
+}])
 
-    module.service('paginationService', function() {
+.constant('uibPagerConfig', {
+  itemsPerPage: 10,
+  previousText: '« Previous',
+  nextText: 'Next »',
+  align: true
+})
 
-        var instances = {};
-        var lastRegisteredInstance;
+.directive('uibPager', ['uibPagerConfig', function(pagerConfig) {
+  return {
+    restrict: 'EA',
+    scope: {
+      totalItems: '=',
+      previousText: '@',
+      nextText: '@',
+      ngDisabled: '='
+    },
+    require: ['uibPager', '?ngModel'],
+    controller: 'UibPaginationController',
+    controllerAs: 'pagination',
+    templateUrl: function(element, attrs) {
+      return attrs.templateUrl || 'uib/template/pagination/pager.html';
+    },
+    replace: true,
+    link: function(scope, element, attrs, ctrls) {
+      var paginationCtrl = ctrls[0], ngModelCtrl = ctrls[1];
 
-        this.registerInstance = function(instanceId) {
-            if (typeof instances[instanceId] === 'undefined') {
-                instances[instanceId] = {
-                    asyncMode: false
-                };
-                lastRegisteredInstance = instanceId;
-            }
-        };
+      if (!ngModelCtrl) {
+         return; // do nothing if no ng-model
+      }
 
-        this.isRegistered = function(instanceId) {
-            return (typeof instances[instanceId] !== 'undefined');
-        };
-
-        this.getLastInstanceId = function() {
-            return lastRegisteredInstance;
-        };
-
-        this.setCurrentPageParser = function(instanceId, val, scope) {
-            instances[instanceId].currentPageParser = val;
-            instances[instanceId].context = scope;
-        };
-        this.setCurrentPage = function(instanceId, val) {
-            instances[instanceId].currentPageParser.assign(instances[instanceId].context, val);
-        };
-        this.getCurrentPage = function(instanceId) {
-            var parser = instances[instanceId].currentPageParser;
-            return parser ? parser(instances[instanceId].context) : 1;
-        };
-
-        this.setItemsPerPage = function(instanceId, val) {
-            instances[instanceId].itemsPerPage = val;
-        };
-        this.getItemsPerPage = function(instanceId) {
-            return instances[instanceId].itemsPerPage;
-        };
-
-        this.setCollectionLength = function(instanceId, val) {
-            instances[instanceId].collectionLength = val;
-        };
-        this.getCollectionLength = function(instanceId) {
-            return instances[instanceId].collectionLength;
-        };
-
-        this.setAsyncModeTrue = function(instanceId) {
-            instances[instanceId].asyncMode = true;
-        };
-
-        this.isAsyncMode = function(instanceId) {
-            return instances[instanceId].asyncMode;
-        };
-    });
-    
-    module.provider('paginationTemplate', function() {
-
-        var templatePath = 'directives/pagination/dirPagination.tpl.html';
-        
-        this.setPath = function(path) {
-            templatePath = path;
-        };
-        
-        this.$get = function() {
-            return {
-                getPath: function() {
-                    return templatePath;
-                }
-            };
-        };
-    });
+      scope.align = angular.isDefined(attrs.align) ? scope.$parent.$eval(attrs.align) : pagerConfig.align;
+      paginationCtrl.init(ngModelCtrl, pagerConfig);
+    }
+  };
+}]);
 })();
