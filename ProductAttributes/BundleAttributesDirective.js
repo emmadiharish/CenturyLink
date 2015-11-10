@@ -71,15 +71,13 @@
         function setBundleAttributes(attrgroups, pav){
             attrCtrl.AttributeGroups = attrgroups;
             attrCtrl.productAttributeValues = pav;
-            attrCtrl.productAttributeValues['Service_Term__c'] = undefined;
         }
 
         function renderBundleAttributes(){
             // clear the previous option attribute groups.
             PAVObjConfigService.configurePAVFields(attrCtrl.AttributeGroups, attrCtrl.productAttributeValues);
             ProductAttributeValueDataService.setbundleproductattributevalues(attrCtrl.productAttributeValues);
-            // attrCtrl.productAttributeValues = ProductAttributeValueDataService.getbundleproductattributevalues();
-            //$scope.safeApply();   
+            attrCtrl.productAttributeValues['Service_Term__c'] = undefined;   
         }
         
         attrCtrl.PAVPicklistChange = function(fieldName){
