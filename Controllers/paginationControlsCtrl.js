@@ -3,9 +3,12 @@
     
 	var PaginationControlsCtrl;
 
-	PaginationControlsCtrl = function(){
+	PaginationControlsCtrl.$inject = ['$scope'];
+
+	PaginationControlsCtrl = function($scope){
 	    var paginationCtrl = this;
-	}
+
+	};
 
 	angular.module('APTPS_ngCPQ').controller('paginationControlsCtrl', PaginationControlsCtrl);
 }).call(this);
