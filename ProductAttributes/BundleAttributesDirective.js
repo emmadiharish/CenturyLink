@@ -77,7 +77,6 @@
             // clear the previous option attribute groups.
             PAVObjConfigService.configurePAVFields(attrCtrl.AttributeGroups, attrCtrl.productAttributeValues);
             ProductAttributeValueDataService.setbundleproductattributevalues(attrCtrl.productAttributeValues);
-            attrCtrl.productAttributeValues['Service_Term__c'] = null;
         }
         
         attrCtrl.PAVPicklistChange = function(fieldName){
